@@ -10,43 +10,44 @@
 -->
 
 <html>
-	<head>
-		<title>schackmatt.net</title>
-		<link rel="stylesheet" href="style.css">
+<head>
+	<title>schackmatt.net</title>
+	<link rel="stylesheet" href="style.css">
 
-		<script type="text/javascript">
+	<script type="text/javascript">
 
-			var board_canvas;
-			var board_context;
-			var SQ_DIM = 80;
-			var board_img = new Image();
-			board_img.src = "./img/board_640x640.png";
+		var board_canvas;
+		var board_context;
+		var SQ_DIM = 80;
+		var board_img = new Image();
+		board_img.src = "./img/board_640x640.png";
 
-			var moveSrc, moveDest;
-			var mouse_over_board = false;
+		var moveSrc, moveDest;
+		var mouse_over_board = false;
 
-			function setup() {
-				board_canvas = document.getElementById("board");
-				board_context = board_canvas.getContext("2d");
+		function setup() {
+			board_canvas = document.getElementById("board");
+			board_context = board_canvas.getContext("2d");
 
-				drawBoard();				
+			drawBoard();				
 
-				board_canvas.addEventListener('mousedown',function(events){
-					var mousePos = getMousePos(board_canvas,events);
-					console.log("mousedown at (" + mousePos.x + "," + mousePos.y + ")");
-				});
-				board_canvas.addEventListener('mouseup',function(events){
-					var mousePos = getMousePos(board_canvas,events);
-					console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
-				});
-				board_canvas.addEventListener('mouseenter',function(events){
-					mouse_over_board = true;
-				});
-				board_canvas.addEventListener('mouseleave',function(events){
-					mouse_over_board = false;
-					for (var i = 0; i < 10; i++) { drawBoard(); }
-				});
-				board_canvas.addEventListener('mousemove',function(events){
+			board_canvas.addEventListener('mousedown',function(events){
+				var mousePos = getMousePos(board_canvas,events);
+				console.log("mousedown at (" + mousePos.x + "," + mousePos.y + ")");
+			});
+			board_canvas.addEventListener('mouseup',function(events){
+				var mousePos = getMousePos(board_canvas,events);
+				console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
+			});
+			board_canvas.addEventListener('mouseenter',function(events){
+				mouse_over_board = true;
+			});
+			board_canvas.addEventListener('mouseleave',function(events){
+				mouse_over_board = false;
+				for (var i = 0; i < 10; i++) { drawBoard(); }
+			});
+			board_canvas.addEventListener('mousemove',function(events){
+				if (mouse_over_board) {
 					var mousePos = getMousePos(board_canvas,events);
 					var x = mousePos.x;
 					var y = mousePos.y;
@@ -59,53 +60,54 @@
 					tintSq(x,y);
 					// console.log("mousemove");
 					drawBoard();
-				});
+				}
+			});
+		}
+
+		function getMousePos(canvas,events) {
+			var obj = canvas;
+			var top = 0, left = 0;
+			var mX = 0, mY = 0;
+			while (obj && obj.tagName != 'BODY') {
+				top += obj.offsetTop;
+				left += obj.offsetLeft;
+				obj = obj.offsetParent;
 			}
+			mX = events.clientX - left + window.pageXOffset;
+			mY = events.clientY - top + window.pageYOffset;
+			return { x: mX, y: mY };
+		}
 
-			function getMousePos(canvas,events) {
-        		var obj = canvas;
-        		var top = 0, left = 0;
-        		var mX = 0, mY = 0;
-        		while (obj && obj.tagName != 'BODY') {
-        		    top += obj.offsetTop;
-        		    left += obj.offsetLeft;
-        		    obj = obj.offsetParent;
-        		}
-        		mX = events.clientX - left + window.pageXOffset;
-        		mY = events.clientY - top + window.pageYOffset;
-        		return { x: mX, y: mY };
-    		}
+		function drawBoard() {
+			board_context.drawImage(board_img,0,0);
+		}
 
-    		function drawBoard() {
-    			board_context.drawImage(board_img,0,0);
-    		}
-
-    		function tintSq(x,y) {
-    			board_context.fillStyle = "yellow";
-    			board_context.globalAlpha = 0.5;
-    			board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
-    		}
+		function tintSq(x,y) {
+			board_context.fillStyle = "yellow";
+			board_context.globalAlpha = 0.5;
+			board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
+		}
 
 
-			window.addEventListener('load', setup, false);
-		</script>
-	</head>
-	<body>
-		<div id="container">
+		window.addEventListener('load', setup, false);
+	</script>
+</head>
+<body>
+	<div id="container">
 
-			<div>
-				<h1>schackmatt.net</h1>
-			</div>
-
-			<div id="game">
-			
-				<canvas id="board" width="640" height="640">canvas</canvas>
-
-				<div id="game_data">
-					
-				</div>
-
-			</div>
+		<div>
+			<h1>schackmatt.net</h1>
 		</div>
-	</body>
+
+		<div id="game">
+			
+			<canvas id="board" width="640" height="640">canvas</canvas>
+
+			<div id="game_data">
+				
+			</div>
+
+		</div>
+	</div>
+</body>
 </html>
