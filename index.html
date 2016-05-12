@@ -20,7 +20,7 @@
 		var board_context;
 		var SQ_DIM = 80;
 		var board_img = new Image();
-		board_img.src = "./img/board_640x640.png";
+		board_img.src = "./img/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 
 		var moveSrc, moveDest;
 		var mouse_over_board = false;
@@ -33,10 +33,12 @@
 
 			board_canvas.addEventListener('mousedown',function(events){
 				var mousePos = getMousePos(board_canvas,events);
+				moveSrc = mousePos;
 				console.log("mousedown at (" + mousePos.x + "," + mousePos.y + ")");
 			});
 			board_canvas.addEventListener('mouseup',function(events){
 				var mousePos = getMousePos(board_canvas,events);
+				moveDest = mousePos;
 				console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
 			});
 			board_canvas.addEventListener('mouseenter',function(events){
@@ -104,7 +106,7 @@
 			<canvas id="board" width="640" height="640">canvas</canvas>
 
 			<div id="game_data">
-				
+
 			</div>
 
 		</div>
