@@ -14,7 +14,17 @@
 	<title>schackmatt.net</title>
 	<link rel="stylesheet" href="style.css">
 
+	<script type="text/javascript" src="./js/board.js"></script>
 	<script type="text/javascript">
+
+		var board = [];
+		for (var i = 0; i < 8; i++) {
+			board[i] = [];
+			for (var j = 0; j < 8; j++) {
+				board[i][j] = BOARD_STANDARD[i][j];
+			}
+		}
+		printBoard();
 
 		var board_canvas;
 		var board_context;
@@ -45,6 +55,7 @@
 					var moveSrc = getSquareFromMousePos(click_data.src);
 					var moveDest = getSquareFromMousePos(click_data.dest);
 					isMoveValid = checkMove(moveSrc,moveDest);
+					console.log("moveSrc = " + moveSrc.x + "," + moveSrc.y + "  moveDest = " + moveDest.x + "," + moveDest.y + "  isMoveValid = " + isMoveValid);
 					if (isMoveValid) {
 						makeMove(moveSrc,moveDest);
 					}
@@ -75,6 +86,13 @@
 			});
 		}
 
+		function printBoard() {
+			for (var i = 0; i < 8; i++) {
+				console.log(board[i][0] + board[i][1] + board[i][2] + board[i][3] + 
+					board[i][4] + board[i][5] + board[i][6] + board[i][7]);
+			}
+		}
+
 		function getMousePos(canvas,events) {
 			var obj = canvas;
 			var top = 0, left = 0;
@@ -101,11 +119,15 @@
 
 		function checkMove(src,dest) {
 			if (!(src.x == dest.x && src.y == dest.y)) {
-				console.log("!(src.x == dest.x && src.y == dest.y) == true");
+				// console.log("!(src.x == dest.x && src.y == dest.y) == true");
 				return true;
 			}
-			console.log("!(src.x == dest.x && src.y == dest.y) == false");
+			// console.log("!(src.x == dest.x && src.y == dest.y) == false");
 			return false;
+		}
+
+		function makeMove(src,dest) {
+
 		}
 
 		function drawBoard() {
