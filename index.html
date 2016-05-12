@@ -23,6 +23,9 @@
 				board_canvas.addEventListener('mousedown',function(events){
 					var mousePos = getMousePos(board_canvas,events);
 				});
+				board_canvas.addEventListener('mouseup',function(events){
+					var mousePos = getMousePos(board_canvas,events);
+				});
 			}
 
 			function getMousePos(canvas,events){
@@ -36,7 +39,7 @@
         		}
         		mX = events.clientX - left + window.pageXOffset;
         		mY = events.clientY - top + window.pageYOffset;
-        		// console.log("mouse at (" + mX + "," + mY + ")");
+        		console.log("mouse at (" + mX + "," + mY + ")");
         		return { x: mX, y: mY };
     		}
 
