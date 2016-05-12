@@ -16,9 +16,20 @@
 
 		<script type="text/javascript">
 
+			var board_canvas;
+			var board_context;
+			var SQ_DIM = 80;
+			var board_img = new Image();
+			board_img.src = "./img/board_640x640.png";
+
+			var moveSrc, moveDest;
+
 			function setup() {
-				var board_canvas = document.getElementById("board");
-				var board_context = board_canvas.getContext("2d");
+				board_canvas = document.getElementById("board");
+				board_context = board_canvas.getContext("2d");
+
+				drawBoard();
+				
 
 				board_canvas.addEventListener('mousedown',function(events){
 					var mousePos = getMousePos(board_canvas,events);
@@ -28,7 +39,7 @@
 				});
 			}
 
-			function getMousePos(canvas,events){
+			function getMousePos(canvas,events) {
         		var obj = canvas;
         		var top = 0, left = 0;
         		var mX = 0, mY = 0;
@@ -43,16 +54,24 @@
         		return { x: mX, y: mY };
     		}
 
+    		function drawBoard() {
+    			board_context.drawImage(board_img,0,0);
+    		}
+
 
 			window.addEventListener('load', setup, false);
 		</script>
 	</head>
 	<body>
 		<div id="container">
+
+			<div>
+				<h1>schackmatt.net</h1>
+			</div>
+
 			<div id="game">
 			
-				<canvas id="board">canvas</canvas>
-
+				<canvas id="board" width="640" height="640">canvas</canvas>
 
 			</div>
 		</div>
