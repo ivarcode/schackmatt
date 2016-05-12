@@ -15,39 +15,30 @@
 		<link rel="stylesheet" href="style.css">
 
 		<script type="text/javascript">
-			
 
 			function setup() {
-				/*console.log("window loaded, calling setup() function");
-				var table = document.getElementById("board");
-				var rows = table.getElementsByTagName("tr");
-				//generating squares array
-				var squares = [];
-				for (var i = 0; i < rows.length; i++) {
-					squares[i] = rows[i].getElementsByTagName("td");
-					console.log(squares[i].length + " squares in row " + i);
-				}
-				console.log(squares.length + " rows");
-				//generating a board out of the canvas elements within the table
-				var board = [];
-				for (var a = 0; a < 8; a++) {
-					board[a] = [];
-				}
-				for (var j = 0; j < squares.length; j++) {
-					for (var k = 0; k < squares[j].length; k++) {
-						var temp = squares[j][k].getElementsByTagName("canvas");
-						board[j][k] = temp[0];
-					}
-				}
-				for (var m = 0; m < board.length; m++) {
-					for (var n = 0; n < board[m].length; n++) {
+				var board_canvas = document.getElementById("board");
+				var board_context = board_canvas.getContext("2d");
 
-						board[m][n].addEventListener('dragstart', dragged);
-						board[m][n].addEventListener('dragend', ending);
-					}
-				}
-				console.log(board[0][0]);*/
+				board_canvas.addEventListener('mousedown',function(events){
+					var mousePos = getMousePos(board_canvas,events);
+				});
 			}
+
+			function getMousePos(canvas,events){
+        		var obj = canvas;
+        		var top = 0, left = 0;
+        		var mX = 0, mY = 0;
+        		while (obj && obj.tagName != 'BODY') {
+        		    top += obj.offsetTop;
+        		    left += obj.offsetLeft;
+        		    obj = obj.offsetParent;
+        		}
+        		mX = events.clientX - left + window.pageXOffset;
+        		mY = events.clientY - top + window.pageYOffset;
+        		// console.log("mouse at (" + mX + "," + mY + ")");
+        		return { x: mX, y: mY };
+    		}
 
 
 			window.addEventListener('load', setup, false);
@@ -60,25 +51,6 @@
 				<canvas id="board">canvas</canvas>
 
 
-
-
-				<!-- <tr id="0">
-					<td class="sq_bound">
-						<canvas class="sq_i dropzone" width="100" height="100"></canvas>
-					</td>
-					<td class="sq_bound">
-						<canvas id="" class="sq_j dropzone" width="100" height="100"></canvas>
-					</td>
-				</tr>
-				<tr id="1">
-					<td class="sq_bound">
-						<canvas id="canv" class="sq_i draggable drag-drop" width="100" height="100"></canvas>
-					</td>
-					<td class="sq_bound">
-						<canvas class="sq_j" width="100" height="100"></canvas>
-					</td>
-				</tr> 
-				</table>-->
 			</div>
 		</div>
 	</body>
