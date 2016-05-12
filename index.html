@@ -13,7 +13,12 @@
 	<head>
 		<title>schackmatt.net</title>
 		<link rel="stylesheet" href="style.css">
+		<script type="text/javascript" src="./js/interact.js"></script>
 		<script type="text/javascript">
+			// initialization of canvas game grid
+			//var innerhtml = "<table id=\"table\" class=\"board_table\" cellpadding=\"0\" cellspacing=\"0\"><br \>";
+
+
 			function setup() {
 				console.log("window loaded, calling setup() function");
 				var table = document.getElementById("board");
@@ -32,41 +37,61 @@
 				}
 				for (var j = 0; j < squares.length; j++) {
 					for (var k = 0; k < squares[j].length; k++) {
-						board[j][k] = squares[j][k].getElementsByTagName("canvas");
+						var temp = squares[j][k].getElementsByTagName("canvas");
+						board[j][k] = temp[0];
 					}
 				}
 				for (var m = 0; m < board.length; m++) {
 					for (var n = 0; n < board[m].length; n++) {
-						board[m][n].addEventListener('dragstart', dragged);
+
+						/*board[m][n].addEventListener('dragstart', dragged);
+						board[m][n].addEventListener('dragend', ending);*/
 					}
 				}
+				console.log(board[0][0]);
 			}
-			function dragged(e) {
+
+
+
+			/*function dragged(e) {
 				console.log("dragged()");
 			}
+			function ending(e){
+				//e.target.style.visibility='hidden'; // make the source invisible once dropped
+			}*/
 			window.addEventListener('load', setup, false);
 		</script>
 	</head>
 	<body>
 		<div id="container">
-			<table id="board" class="board_table" cellpadding="0" cellspacing="0">
-				<tr id="0">
+			<div id="board">
+			
+				<div id="piece" class="draggable drag-drop">
+					
+
+				</div>
+
+
+
+
+				<!-- <tr id="0">
 					<td class="sq_bound">
-						<canvas class="sq_i" width="100" height="100"></canvas>
+						<canvas class="sq_i dropzone" width="100" height="100"></canvas>
 					</td>
 					<td class="sq_bound">
-						<canvas class="sq_j" width="100" height="100"></canvas>
+						<canvas id="" class="sq_j dropzone" width="100" height="100"></canvas>
 					</td>
 				</tr>
 				<tr id="1">
 					<td class="sq_bound">
-						<canvas class="sq_i" width="100" height="100"></canvas>
+						<canvas id="canv" class="sq_i draggable drag-drop" width="100" height="100"></canvas>
 					</td>
 					<td class="sq_bound">
 						<canvas class="sq_j" width="100" height="100"></canvas>
 					</td>
-				</tr>
+				</tr> -->
 			</table>
+			</div>
 		</div>
 	</body>
 </html>
