@@ -1,0 +1,37 @@
+/*
+	style.css
+	Camden I. Wagner
+	5/11/2016
+*/
+
+body {
+	margin: 0px;
+}
+
+table#board {
+    border-collapse: collapse;
+}
+
+.board_table * {
+    border: none;
+    border-collapse: collapse;
+    padding: 0;
+    margin: 0;
+}
+
+canvas {
+	display: block;
+}
+
+.sq_bound {
+	width: 100px;
+	height: 100px;
+}
+
+.sq_i {
+	background-color: #C1C1C1;
+}
+
+.sq_j {
+	background-color: #323232;
+}
