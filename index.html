@@ -23,19 +23,42 @@
 			board_img.src = "./img/board_640x640.png";
 
 			var moveSrc, moveDest;
+			var mouse_over_board = false;
 
 			function setup() {
 				board_canvas = document.getElementById("board");
 				board_context = board_canvas.getContext("2d");
 
-				drawBoard();
-				
+				drawBoard();				
 
 				board_canvas.addEventListener('mousedown',function(events){
 					var mousePos = getMousePos(board_canvas,events);
+					console.log("mousedown at (" + mousePos.x + "," + mousePos.y + ")");
 				});
 				board_canvas.addEventListener('mouseup',function(events){
 					var mousePos = getMousePos(board_canvas,events);
+					console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
+				});
+				board_canvas.addEventListener('mouseenter',function(events){
+					mouse_over_board = true;
+				});
+				board_canvas.addEventListener('mouseleave',function(events){
+					mouse_over_board = false;
+					for (var i = 0; i < 10; i++) { drawBoard(); }
+				});
+				board_canvas.addEventListener('mousemove',function(events){
+					var mousePos = getMousePos(board_canvas,events);
+					var x = mousePos.x;
+					var y = mousePos.y;
+					x -= x%SQ_DIM;
+					y -= y%SQ_DIM;
+					// console.log("mousePos on canvas : " + x + " " + y);
+					x /= 80;
+					y /= 80;
+					// console.log("mousePos on canvas / SQ_DIM : " + x + " " + y);
+					tintSq(x,y);
+					// console.log("mousemove");
+					drawBoard();
 				});
 			}
 
@@ -50,12 +73,17 @@
         		}
         		mX = events.clientX - left + window.pageXOffset;
         		mY = events.clientY - top + window.pageYOffset;
-        		console.log("mouse at (" + mX + "," + mY + ")");
         		return { x: mX, y: mY };
     		}
 
     		function drawBoard() {
     			board_context.drawImage(board_img,0,0);
+    		}
+
+    		function tintSq(x,y) {
+    			board_context.fillStyle = "yellow";
+    			board_context.globalAlpha = 0.5;
+    			board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
     		}
 
 
@@ -72,6 +100,10 @@
 			<div id="game">
 			
 				<canvas id="board" width="640" height="640">canvas</canvas>
+
+				<div id="game_data">
+					
+				</div>
 
 			</div>
 		</div>

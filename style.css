@@ -13,3 +13,16 @@ body {
 	margin-right: auto;
 	margin-left: auto;
 }
+
+#game {
+	position: absolute;
+}
+
+#game_data {
+	float:right;
+	margin-left: 30px;
+	margin-top: 200px;
+	width: 100px;
+	height: 200px;
+	background-color: #939393;
+}
