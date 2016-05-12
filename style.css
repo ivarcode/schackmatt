@@ -8,7 +8,15 @@ body {
 	margin: 0px;
 }
 
-table#board {
+canvas#board {
+	width: 800px;
+	height: 800px;
+}
+
+
+
+
+/*table#board {
     border-collapse: collapse;
 }
 
@@ -35,3 +43,4 @@ canvas {
 .sq_j {
 	background-color: #323232;
 }
+*/
