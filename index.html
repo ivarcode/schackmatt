@@ -22,7 +22,8 @@
 		var board_img = new Image();
 		board_img.src = "./img/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 
-		var moveSrc, moveDest;
+		var isMoveValid = false;
+		var click_data = {src: null, dest: null};
 		var mouse_over_board = false;
 
 		function setup() {
@@ -33,13 +34,21 @@
 
 			board_canvas.addEventListener('mousedown',function(events){
 				var mousePos = getMousePos(board_canvas,events);
-				moveSrc = mousePos;
+				click_data.src = mousePos;
 				console.log("mousedown at (" + mousePos.x + "," + mousePos.y + ")");
 			});
 			board_canvas.addEventListener('mouseup',function(events){
 				var mousePos = getMousePos(board_canvas,events);
-				moveDest = mousePos;
+				click_data.dest = mousePos;
 				console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
+				if (!(click_data.src.x == click_data.dest.x && click_data.src.y == click_data.dest.y)) {
+					var moveSrc = getSquareFromMousePos(click_data.src);
+					var moveDest = getSquareFromMousePos(click_data.dest);
+					isMoveValid = checkMove(moveSrc,moveDest);
+					if (isMoveValid) {
+						makeMove(moveSrc,moveDest);
+					}
+				}
 			});
 			board_canvas.addEventListener('mouseenter',function(events){
 				mouse_over_board = true;
@@ -56,8 +65,8 @@
 					x -= x%SQ_DIM;
 					y -= y%SQ_DIM;
 					// console.log("mousePos on canvas : " + x + " " + y);
-					x /= 80;
-					y /= 80;
+					x /= SQ_DIM;
+					y /= SQ_DIM;
 					// console.log("mousePos on canvas / SQ_DIM : " + x + " " + y);
 					tintSq(x,y);
 					// console.log("mousemove");
@@ -78,6 +87,25 @@
 			mX = events.clientX - left + window.pageXOffset;
 			mY = events.clientY - top + window.pageYOffset;
 			return { x: mX, y: mY };
+		}
+
+		function getSquareFromMousePos(loc) {
+			var x = loc.x;
+			var y = loc.y;
+			x -= x%SQ_DIM;
+			y -= y%SQ_DIM;
+			x /= SQ_DIM;
+			y /= SQ_DIM;
+			return { x: x, y: y };
+		}
+
+		function checkMove(src,dest) {
+			if (!(src.x == dest.x && src.y == dest.y)) {
+				console.log("!(src.x == dest.x && src.y == dest.y) == true");
+				return true;
+			}
+			console.log("!(src.x == dest.x && src.y == dest.y) == false");
+			return false;
 		}
 
 		function drawBoard() {
