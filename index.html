@@ -35,7 +35,14 @@
 						board[j][k] = squares[j][k].getElementsByTagName("canvas");
 					}
 				}
-				console.log(board[0][0]);
+				for (var m = 0; m < board.length; m++) {
+					for (var n = 0; n < board[m].length; n++) {
+						board[m][n].addEventListener('dragstart', dragged);
+					}
+				}
+			}
+			function dragged(e) {
+				console.log("dragged()");
 			}
 			window.addEventListener('load', setup, false);
 		</script>
