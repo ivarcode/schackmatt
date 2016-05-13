@@ -33,6 +33,8 @@
 		board_img.src = "./img/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 
 		var isMoveValid = false;
+		var sq_is_selected = false;
+		var selected_square;
 		var click_data = {src: null, dest: null};
 		var mouse_over_board = false;
 
@@ -51,15 +53,22 @@
 				var mousePos = getMousePos(board_canvas,events);
 				click_data.dest = mousePos;
 				console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
+				var moveSrc = getSquareFromMousePos(click_data.src);
+				var moveDest = getSquareFromMousePos(click_data.dest);
 				if (!(click_data.src.x == click_data.dest.x && click_data.src.y == click_data.dest.y)) {
-					var moveSrc = getSquareFromMousePos(click_data.src);
-					var moveDest = getSquareFromMousePos(click_data.dest);
 					isMoveValid = checkMove(moveSrc,moveDest);
 					console.log("moveSrc = " + moveSrc.x + "," + moveSrc.y + "  moveDest = " + moveDest.x + "," + moveDest.y + "  isMoveValid = " + isMoveValid);
 					if (isMoveValid) {
 						makeMove(moveSrc,moveDest);
 						console.log("board state after move " + moveSrc.x + "," + moveSrc.y + " --> " + moveDest.x + "," + moveDest.y);
 						printBoard();
+					}
+				} else {
+					if (sq_is_selected) {
+						//set to sq_is_selected to false
+					} else {
+						sq_is_selected = true;
+						selected_square = {x:moveSrc.x, y:moveSrc.y};
 					}
 				}
 			});
@@ -137,10 +146,23 @@
 
 		function drawBoard() {
 			board_context.drawImage(board_img,0,0);
+			if (sq_is_selected) {
+				selSq(selected_square.x,selected_square.y);
+			}
 		}
 
 		function tintSq(x,y) {
-			board_context.fillStyle = "yellow";
+			if (sq_is_selected) {
+				if (!(selected_square.x == x && selected_square.y == y)) {
+					board_context.fillStyle = "yellow";
+					board_context.globalAlpha = 0.5;
+					board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
+				}
+			}
+		}
+
+		function selSq(x,y) {
+			board_context.fillStyle = "blue";
 			board_context.globalAlpha = 0.5;
 			board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
 		}
