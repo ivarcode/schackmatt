@@ -65,7 +65,9 @@
 					}
 				} else {
 					if (sq_is_selected) {
-						//set to sq_is_selected to false
+						if (!(selected_square.x == moveSrc.x && selected_square.y == moveSrc.y)) {
+							sq_is_selected = false;
+						}
 					} else {
 						sq_is_selected = true;
 						selected_square = {x:moveSrc.x, y:moveSrc.y};
