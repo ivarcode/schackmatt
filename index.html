@@ -37,6 +37,7 @@
 		var isMoveValid = false;
 		var sq_is_selected = false;
 		var selected_square;
+		var tintSquare;
 		var click_data = {src: null, dest: null};
 		var mouse_over_board = false;
 
@@ -64,14 +65,14 @@
 						makeMove(moveSrc,moveDest);
 						console.log("board state after move " + moveSrc.x + "," + moveSrc.y + " --> " + moveDest.x + "," + moveDest.y);
 						printBoard();
-						console.log("drag");
+						// console.log("drag");
 					}
 				} else {
 					if (sq_is_selected) {
 						if (!(selected_square.x == moveSrc.x && selected_square.y == moveSrc.y)) {
 							sq_is_selected = false;
 						} else {
-							// TODO fix this
+							// TODO fix this for two click moving
 							/*if (checkMove(selected_square,moveSrc)) {
 								makeMove(selected_square,moveSrc);
 								printBoard();
@@ -93,6 +94,7 @@
 			});
 			board_canvas.addEventListener('mousemove',function(events){
 				if (mouse_over_board) {
+					// console.log("mousemove mouse_over_board");
 					var mousePos = getMousePos(board_canvas,events);
 					var x = mousePos.x;
 					var y = mousePos.y;
@@ -102,7 +104,7 @@
 					x /= SQ_DIM;
 					y /= SQ_DIM;
 					// console.log("mousePos on canvas / SQ_DIM : " + x + " " + y);
-					tintSq(x,y);
+					tintSquare = {x:x, y:y};
 					// console.log("mousemove");
 					drawBoard();
 				}
@@ -155,6 +157,12 @@
 		}
 
 		function makeMove(src,dest) {
+			if (turn == "WHITE") {
+				turn = "BLACK";
+			} else {
+				turn = "WHITE";
+			}
+			console.log("turn = " + turn);
 			var piece = board[src.y][src.x];
 			// console.log(piece);
 			board[src.y][src.x] = NULL_PIECE;
@@ -164,6 +172,9 @@
 		function drawBoard() {
 			board_context.globalAlpha = 1;
 			board_context.drawImage(board_img,0,0);
+			if (mouse_over_board) {
+				tintSq(tintSquare.x,tintSquare.y);
+			}
 			if (sq_is_selected) {
 				selSq(selected_square.x,selected_square.y);
 			}
@@ -187,6 +198,7 @@
 		}
 
 		function tintSq(x,y) {
+			// console.log("tintSq " + x + "," + y);
 			board_context.fillStyle = "yellow";
 			board_context.globalAlpha = 0.5;
 			if (sq_is_selected) {
