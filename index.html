@@ -32,6 +32,8 @@
 		var board_img = new Image();
 		board_img.src = "./img/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 
+		var turn = "WHITE";
+
 		var isMoveValid = false;
 		var sq_is_selected = false;
 		var selected_square;
@@ -62,11 +64,19 @@
 						makeMove(moveSrc,moveDest);
 						console.log("board state after move " + moveSrc.x + "," + moveSrc.y + " --> " + moveDest.x + "," + moveDest.y);
 						printBoard();
+						console.log("drag");
 					}
 				} else {
 					if (sq_is_selected) {
 						if (!(selected_square.x == moveSrc.x && selected_square.y == moveSrc.y)) {
 							sq_is_selected = false;
+						} else {
+							// TODO fix this
+							/*if (checkMove(selected_square,moveSrc)) {
+								makeMove(selected_square,moveSrc);
+								printBoard();
+								console.log("two click");
+							}*/
 						}
 					} else {
 						sq_is_selected = true;
@@ -133,10 +143,15 @@
 		function checkMove(src,dest) {
 			if (!(src.x == dest.x && src.y == dest.y)) {
 				// console.log("!(src.x == dest.x && src.y == dest.y) == true");
-				return true;
+				return isLegalMove(src,dest);
 			}
 			// console.log("!(src.x == dest.x && src.y == dest.y) == false");
 			return false;
+		}
+
+		function isLegalMove(src,dest) {
+			console.log(src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
+			return true;
 		}
 
 		function makeMove(src,dest) {
@@ -147,6 +162,7 @@
 		}
 
 		function drawBoard() {
+			board_context.globalAlpha = 1;
 			board_context.drawImage(board_img,0,0);
 			if (sq_is_selected) {
 				selSq(selected_square.x,selected_square.y);
@@ -171,12 +187,14 @@
 		}
 
 		function tintSq(x,y) {
+			board_context.fillStyle = "yellow";
+			board_context.globalAlpha = 0.5;
 			if (sq_is_selected) {
 				if (!(selected_square.x == x && selected_square.y == y)) {
-					board_context.fillStyle = "yellow";
-					board_context.globalAlpha = 0.5;
 					board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
 				}
+			} else {
+				board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
 			}
 		}
 
