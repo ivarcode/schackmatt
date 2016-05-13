@@ -69,8 +69,9 @@
 					}
 				} else {
 					if (sq_is_selected) {
+						sq_is_selected = false;
 						if (!(selected_square.x == moveSrc.x && selected_square.y == moveSrc.y)) {
-							sq_is_selected = false;
+							//do nothing
 						} else {
 							// TODO fix this for two click moving
 							/*if (checkMove(selected_square,moveSrc)) {
@@ -153,6 +154,50 @@
 
 		function isLegalMove(src,dest) {
 			console.log(src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
+			var piece = board[src.y][src.x];
+			var dest_piece = board[dest.y][dest.x];
+			if ((piece == WHITE_PIECES.king || piece == WHITE_PIECES.queen || piece == WHITE_PIECES.bishop || piece == WHITE_PIECES.knight || piece == WHITE_PIECES.rook || piece == WHITE_PIECES.pawn) && turn == "WHITE") {
+				if (piece == WHITE_PIECES.king) {
+
+				} else if (piece == WHITE_PIECES.queen) {
+					
+				} else if (piece == WHITE_PIECES.bishop) {
+					
+				} else if (piece == WHITE_PIECES.knight) {
+					
+				} else if (piece == WHITE_PIECES.rook) {
+					
+				} else if (piece == WHITE_PIECES.pawn) {
+					
+				}
+				// temp
+				return isNotFriendly(dest_piece);
+			} else if ((piece == BLACK_PIECES.king || piece == BLACK_PIECES.queen || piece == BLACK_PIECES.bishop || piece == BLACK_PIECES.knight || piece == BLACK_PIECES.rook || piece == BLACK_PIECES.pawn) && turn == "BLACK") {
+				if (piece == WHITE_PIECES.king) {
+
+				} else if (piece == WHITE_PIECES.queen) {
+					
+				} else if (piece == WHITE_PIECES.bishop) {
+					
+				} else if (piece == WHITE_PIECES.knight) {
+					
+				} else if (piece == WHITE_PIECES.rook) {
+					
+				} else if (piece == WHITE_PIECES.pawn) {
+					
+				}
+				// temp
+				return isNotFriendly(dest_piece);
+			}
+			// else
+			return false;
+		}
+
+		function isNotFriendly(piece) {
+			if (((piece == BLACK_PIECES.king || piece == BLACK_PIECES.queen || piece == BLACK_PIECES.bishop || piece == BLACK_PIECES.knight || piece == BLACK_PIECES.rook || piece == BLACK_PIECES.pawn) && turn == "BLACK") || ((piece == WHITE_PIECES.king || piece == WHITE_PIECES.queen || piece == WHITE_PIECES.bishop || piece == WHITE_PIECES.knight || piece == WHITE_PIECES.rook || piece == WHITE_PIECES.pawn) && turn == "WHITE")) {
+				console.log("friendly dest_piece");
+				return false;
+			}
 			return true;
 		}
 
