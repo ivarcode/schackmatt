@@ -149,6 +149,23 @@
 			if (sq_is_selected) {
 				selSq(selected_square.x,selected_square.y);
 			}
+			board_context.globalAlpha = 1;
+			for (var i = 0; i < 8; i++) {
+				for (var j = 0; j < 8; j++) {
+					if (board[i][j] == WHITE_PIECES.pawn) { board_context.drawImage(IMAGES.wPawn,j*SQ_DIM,i*SQ_DIM); }
+					else if (board[i][j] == WHITE_PIECES.rook) { board_context.drawImage(IMAGES.wRook,j*SQ_DIM,i*SQ_DIM); }
+					else if (board[i][j] == WHITE_PIECES.knight) { board_context.drawImage(IMAGES.wKnight,j*SQ_DIM,i*SQ_DIM); }
+					else if (board[i][j] == WHITE_PIECES.bishop) { board_context.drawImage(IMAGES.wBishop,j*SQ_DIM,i*SQ_DIM); }
+					else if (board[i][j] == WHITE_PIECES.queen) { board_context.drawImage(IMAGES.wQueen,j*SQ_DIM,i*SQ_DIM); }
+					else if (board[i][j] == WHITE_PIECES.king) { board_context.drawImage(IMAGES.wKing,j*SQ_DIM,i*SQ_DIM); }
+					else if (board[i][j] == BLACK_PIECES.pawn) { board_context.drawImage(IMAGES.bPawn,j*SQ_DIM,i*SQ_DIM); }
+					else if (board[i][j] == BLACK_PIECES.rook) { board_context.drawImage(IMAGES.bRook,j*SQ_DIM,i*SQ_DIM); }
+					else if (board[i][j] == BLACK_PIECES.knight) { board_context.drawImage(IMAGES.bKnight,j*SQ_DIM,i*SQ_DIM); }
+					else if (board[i][j] == BLACK_PIECES.bishop) { board_context.drawImage(IMAGES.bBishop,j*SQ_DIM,i*SQ_DIM); }
+					else if (board[i][j] == BLACK_PIECES.queen) { board_context.drawImage(IMAGES.bQueen,j*SQ_DIM,i*SQ_DIM); }
+					else if (board[i][j] == BLACK_PIECES.king) { board_context.drawImage(IMAGES.bKing,j*SQ_DIM,i*SQ_DIM); }
+				}
+			}
 		}
 
 		function tintSq(x,y) {
