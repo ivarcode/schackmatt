@@ -58,6 +58,8 @@
 					console.log("moveSrc = " + moveSrc.x + "," + moveSrc.y + "  moveDest = " + moveDest.x + "," + moveDest.y + "  isMoveValid = " + isMoveValid);
 					if (isMoveValid) {
 						makeMove(moveSrc,moveDest);
+						console.log("board state after move " + moveSrc.x + "," + moveSrc.y + " --> " + moveDest.x + "," + moveDest.y);
+						printBoard();
 					}
 				}
 			});
@@ -127,7 +129,10 @@
 		}
 
 		function makeMove(src,dest) {
-
+			var piece = board[src.y][src.x];
+			// console.log(piece);
+			board[src.y][src.x] = NULL_PIECE;
+			board[dest.y][dest.x] = piece;
 		}
 
 		function drawBoard() {
