@@ -156,7 +156,7 @@
 			console.log(src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
 			var piece = board[src.y][src.x];
 			var dest_piece = board[dest.y][dest.x];
-			if ((piece == WHITE_PIECES.king || piece == WHITE_PIECES.queen || piece == WHITE_PIECES.bishop || piece == WHITE_PIECES.knight || piece == WHITE_PIECES.rook || piece == WHITE_PIECES.pawn) && turn == "WHITE") {
+			if ((piece == WHITE_PIECES.king || piece == WHITE_PIECES.queen || piece == WHITE_PIECES.bishop || piece == WHITE_PIECES.knight || piece == WHITE_PIECES.rook || piece == WHITE_PIECES.pawn) && turn == "WHITE" && isNotFriendly(dest_piece)) {
 				if (piece == WHITE_PIECES.king) {
 
 				} else if (piece == WHITE_PIECES.queen) {
@@ -171,26 +171,50 @@
 					
 				}
 				// temp
-				return isNotFriendly(dest_piece);
-			} else if ((piece == BLACK_PIECES.king || piece == BLACK_PIECES.queen || piece == BLACK_PIECES.bishop || piece == BLACK_PIECES.knight || piece == BLACK_PIECES.rook || piece == BLACK_PIECES.pawn) && turn == "BLACK") {
-				if (piece == WHITE_PIECES.king) {
+				return true;
+			} else if ((piece == BLACK_PIECES.king || piece == BLACK_PIECES.queen || piece == BLACK_PIECES.bishop || piece == BLACK_PIECES.knight || piece == BLACK_PIECES.rook || piece == BLACK_PIECES.pawn) && turn == "BLACK" && isNotFriendly(dest_piece)) {
+				if (piece == BLACK_PIECES.king) {
 
-				} else if (piece == WHITE_PIECES.queen) {
+				} else if (piece == BLACK_PIECES.queen) {
 					
-				} else if (piece == WHITE_PIECES.bishop) {
+				} else if (piece == BLACK_PIECES.bishop) {
 					
-				} else if (piece == WHITE_PIECES.knight) {
+				} else if (piece == BLACK_PIECES.knight) {
 					
-				} else if (piece == WHITE_PIECES.rook) {
+				} else if (piece == BLACK_PIECES.rook) {
 					
-				} else if (piece == WHITE_PIECES.pawn) {
+				} else if (piece == BLACK_PIECES.pawn) {
 					
 				}
 				// temp
-				return isNotFriendly(dest_piece);
+				return true;
 			}
 			// else
 			return false;
+		}
+
+		function getKingMoves(src) {
+
+		}
+
+		function getQueenMoves(src) {
+
+		}
+
+		function getBishopMoves(src) {
+
+		}
+
+		function getKnightMoves(src) {
+
+		}
+
+		function getRookMoves(src) {
+
+		}
+
+		function getPawnMoves(src) {
+
 		}
 
 		function isNotFriendly(piece) {
