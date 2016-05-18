@@ -4,14 +4,14 @@
 	Currently a work-in-progress
 	Until there is some real work done, there will be very limited documentation. It will come though.
 
-	index.html
+	analysis.php
 	Camden I. Wagner
 	5/11/2016
 -->
 
 <html>
 <head>
-	<title>schackmatt.net</title>
+	<title>Analysis Board</title>
 	<link rel="stylesheet" href="style.css">
 
 	<script type="text/javascript" src="./js/board.js"></script>
