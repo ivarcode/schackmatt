@@ -168,10 +168,13 @@
 				} else if (piece == WHITE_PIECES.rook) {
 					
 				} else if (piece == WHITE_PIECES.pawn) {
-					
+					moves = getPawnMoves(src,turn);
+					for (var i = 0; i < moves.tree.length; i++) {
+						if (moves.tree[i].x == dest.x && moves.tree[i].y == dest.y) {
+							return true;
+						}
+					}
 				}
-				// temp
-				return true;
 			} else if ((piece == BLACK_PIECES.king || piece == BLACK_PIECES.queen || piece == BLACK_PIECES.bishop || piece == BLACK_PIECES.knight || piece == BLACK_PIECES.rook || piece == BLACK_PIECES.pawn) && turn == "BLACK" && isNotFriendly(dest_piece)) {
 				if (piece == BLACK_PIECES.king) {
 
@@ -184,37 +187,50 @@
 				} else if (piece == BLACK_PIECES.rook) {
 					
 				} else if (piece == BLACK_PIECES.pawn) {
-					
+					moves = getPawnMoves(src,turn);
+					for (var i = 0; i < moves.tree.length; i++) {
+						if (moves.tree[i].x == dest.x && moves.tree[i].y == dest.y) {
+							return true;
+						}
+					}
 				}
-				// temp
-				return true;
 			}
 			// else
 			return false;
 		}
 
-		function getKingMoves(src) {
+		function getKingMoves(src, color) {
 
 		}
 
-		function getQueenMoves(src) {
+		function getQueenMoves(src, color) {
+			if (color == "WHITE") {
+
+			} else /*black*/ {
+
+			}
+		}
+
+		function getBishopMoves(src, color) {
 
 		}
 
-		function getBishopMoves(src) {
+		function getKnightMoves(src, color) {
 
 		}
 
-		function getKnightMoves(src) {
+		function getRookMoves(src, color) {
 
 		}
 
-		function getRookMoves(src) {
-
-		}
-
-		function getPawnMoves(src) {
-
+		function getPawnMoves(src, color) {
+			moves = {material_balance:null, tree:[]};
+			if (color == "WHITE") {
+				moves.tree[0] = {x:src.x,y:src.y-1};
+			} else /*black*/ {
+				moves.tree[0] = {x:src.x,y:src.y+1};
+			}
+			return moves;
 		}
 
 		function isNotFriendly(piece) {
