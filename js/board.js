@@ -42,8 +42,9 @@ function getKingMoves(brd, src, color) {
 
 function getQueenMoves(brd, src, color) {
 	moves = {material_balance:null, branches:[]};
+	// console.log("entered getQueenMoves");
 	if (color == "WHITE") {
-		var tx = src.x;
+		var tx = src.x+1;
 		var ty = src.y;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
@@ -56,7 +57,7 @@ function getQueenMoves(brd, src, color) {
 			}
 			tx += 1;
 		}
-		tx = src.x;
+		tx = src.x-1;
 		ty = src.y;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
@@ -70,7 +71,7 @@ function getQueenMoves(brd, src, color) {
 			tx -= 1;
 		}
 		tx = src.x;
-		ty = src.y;
+		ty = src.y+1;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
 				moves.branches[moves.branches.length] = {x:tx,y:ty};
@@ -83,7 +84,7 @@ function getQueenMoves(brd, src, color) {
 			ty += 1;
 		}
 		tx = src.x;
-		ty = src.y;
+		ty = src.y-1;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
 				moves.branches[moves.branches.length] = {x:tx,y:ty};
@@ -93,10 +94,10 @@ function getQueenMoves(brd, src, color) {
 			} else {
 				break;
 			}
-			tx -= 1;
+			ty -= 1;
 		}
-		tx = src.x;
-		ty = src.y;
+		tx = src.x+1;
+		ty = src.y+1;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
 				moves.branches[moves.branches.length] = {x:tx,y:ty};
@@ -109,8 +110,8 @@ function getQueenMoves(brd, src, color) {
 			tx += 1;
 			ty += 1;
 		}
-		tx = src.x;
-		ty = src.y;
+		tx = src.x+1;
+		ty = src.y-1;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
 				moves.branches[moves.branches.length] = {x:tx,y:ty};
@@ -123,8 +124,8 @@ function getQueenMoves(brd, src, color) {
 			tx += 1;
 			ty -= 1;
 		}
-		tx = src.x;
-		ty = src.y;
+		tx = src.x-1;
+		ty = src.y+1;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
 				moves.branches[moves.branches.length] = {x:tx,y:ty};
@@ -137,8 +138,8 @@ function getQueenMoves(brd, src, color) {
 			tx -= 1;
 			ty += 1;
 		}
-		tx = src.x;
-		ty = src.y;
+		tx = src.x-1;
+		ty = src.y-1;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
 				moves.branches[moves.branches.length] = {x:tx,y:ty};
@@ -152,7 +153,7 @@ function getQueenMoves(brd, src, color) {
 			ty -= 1;
 		}
 	} else /*black*/ {
-		var tx = src.x;
+		var tx = src.x+1;
 		var ty = src.y;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
@@ -165,7 +166,7 @@ function getQueenMoves(brd, src, color) {
 			}
 			tx += 1;
 		}
-		tx = src.x;
+		tx = src.x-1;
 		ty = src.y;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
@@ -179,7 +180,7 @@ function getQueenMoves(brd, src, color) {
 			tx -= 1;
 		}
 		tx = src.x;
-		ty = src.y;
+		ty = src.y+1;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
 				moves.branches[moves.branches.length] = {x:tx,y:ty};
@@ -192,7 +193,7 @@ function getQueenMoves(brd, src, color) {
 			ty += 1;
 		}
 		tx = src.x;
-		ty = src.y;
+		ty = src.y-1;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
 				moves.branches[moves.branches.length] = {x:tx,y:ty};
@@ -202,10 +203,10 @@ function getQueenMoves(brd, src, color) {
 			} else {
 				break;
 			}
-			tx -= 1;
+			ty -= 1;
 		}
-		tx = src.x;
-		ty = src.y;
+		tx = src.x+1;
+		ty = src.y+1;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
 				moves.branches[moves.branches.length] = {x:tx,y:ty};
@@ -218,8 +219,8 @@ function getQueenMoves(brd, src, color) {
 			tx += 1;
 			ty += 1;
 		}
-		tx = src.x;
-		ty = src.y;
+		tx = src.x+1;
+		ty = src.y-1;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
 				moves.branches[moves.branches.length] = {x:tx,y:ty};
@@ -232,8 +233,8 @@ function getQueenMoves(brd, src, color) {
 			tx += 1;
 			ty -= 1;
 		}
-		tx = src.x;
-		ty = src.y;
+		tx = src.x-1;
+		ty = src.y+1;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
 				moves.branches[moves.branches.length] = {x:tx,y:ty};
@@ -246,8 +247,8 @@ function getQueenMoves(brd, src, color) {
 			tx -= 1;
 			ty += 1;
 		}
-		tx = src.x;
-		ty = src.y;
+		tx = src.x-1;
+		ty = src.y-1;
 		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
 			if (brd[tx][ty] == NULL_PIECE) {
 				moves.branches[moves.branches.length] = {x:tx,y:ty};
@@ -261,11 +262,127 @@ function getQueenMoves(brd, src, color) {
 			ty -= 1;
 		}
 	}
+	return moves;
 }
 
 function getBishopMoves(brd, src, color) {
 	moves = {material_balance:null, branches:[]};
-
+	if (color == "WHITE") {
+		var tx = src.x+1;
+		var ty = src.y+1;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"WHITE")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			tx += 1;
+			ty += 1;
+		}
+		tx = src.x+1;
+		ty = src.y-1;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"WHITE")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			tx += 1;
+			ty -= 1;
+		}
+		tx = src.x-1;
+		ty = src.y+1;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"WHITE")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			tx -= 1;
+			ty += 1;
+		}
+		tx = src.x-1;
+		ty = src.y-1;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"WHITE")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			tx -= 1;
+			ty -= 1;
+		}
+	} else /*black*/ {
+		var tx = src.x+1;
+		var ty = src.y+1;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"BLACK")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			tx += 1;
+			ty += 1;
+		}
+		tx = src.x+1;
+		ty = src.y-1;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"BLACK")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			tx += 1;
+			ty -= 1;
+		}
+		tx = src.x-1;
+		ty = src.y+1;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"BLACK")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			tx -= 1;
+			ty += 1;
+		}
+		tx = src.x-1;
+		ty = src.y-1;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"BLACK")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			tx -= 1;
+			ty -= 1;
+		}
+	}
+	return moves;
 }
 
 function getKnightMoves(brd, src, color) {
@@ -275,12 +392,119 @@ function getKnightMoves(brd, src, color) {
 
 function getRookMoves(brd, src, color) {
 	moves = {material_balance:null, branches:[]};
-
+	if (color == "WHITE") {
+		var tx = src.x+1;
+		var ty = src.y;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"WHITE")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			tx += 1;
+		}
+		tx = src.x-1;
+		ty = src.y;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"WHITE")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			tx -= 1;
+		}
+		tx = src.x;
+		ty = src.y+1;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"WHITE")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			ty += 1;
+		}
+		tx = src.x;
+		ty = src.y-1;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"WHITE")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			ty -= 1;
+		}
+	} else /*black*/ {
+		var tx = src.x+1;
+		var ty = src.y;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"BLACK")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			tx += 1;
+		}
+		tx = src.x-1;
+		ty = src.y;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"BLACK")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			tx -= 1;
+		}
+		tx = src.x;
+		ty = src.y+1;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"BLACK")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			ty += 1;
+		}
+		tx = src.x;
+		ty = src.y-1;
+		while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+			if (brd[tx][ty] == NULL_PIECE) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+			} else if (isEnemy(brd[tx][ty],"BLACK")) {
+				moves.branches[moves.branches.length] = {x:tx,y:ty};
+				break;
+			} else {
+				break;
+			}
+			ty -= 1;
+		}
+	}
+	return moves;
 }
 
 function getPawnMoves(brd, src, color) {
 	moves = {material_balance:null, branches:[]};
-	// console.log(color);
+	// console.log("entered pawn moves");
 	if (color == "WHITE") {
 		if (src.x < 8 && src.x > -1 && src.y < 7 && src.y > 0) {
 			if (!sq_is_occupied(brd, src.x,src.y-1)) {

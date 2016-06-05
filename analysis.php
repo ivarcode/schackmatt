@@ -153,26 +153,43 @@
 		}
 
 		function isLegalMove(src,dest) {
-			console.log("isLegalMove " + src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
+			// console.log("isLegalMove " + src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
 			var piece = board[src.x][src.y];
 			var dest_piece = board[dest.x][dest.y];
 			if ((piece == WHITE_PIECES.king || piece == WHITE_PIECES.queen || piece == WHITE_PIECES.bishop || piece == WHITE_PIECES.knight || piece == WHITE_PIECES.rook || piece == WHITE_PIECES.pawn) && turn == "WHITE" && isNotFriendly(dest_piece)) {
 				if (piece == WHITE_PIECES.king) {
 
 				} else if (piece == WHITE_PIECES.queen) {
-					
+					moves = getQueenMoves(board,src,turn);
+					console.log(moves.branches.length);
+					for (var i = 0; i < moves.branches.length; i++) {
+						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
+							return true;
+						}
+					}
 				} else if (piece == WHITE_PIECES.bishop) {
-					
+					moves = getBishopMoves(board,src,turn);
+					console.log(moves.branches.length);
+					for (var i = 0; i < moves.branches.length; i++) {
+						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
+							return true;
+						}
+					}
 				} else if (piece == WHITE_PIECES.knight) {
 					
 				} else if (piece == WHITE_PIECES.rook) {
-					
+					moves = getRookMoves(board,src,turn);
+					console.log(moves.branches.length);
+					for (var i = 0; i < moves.branches.length; i++) {
+						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
+							return true;
+						}
+					}
 				} else if (piece == WHITE_PIECES.pawn) {
 					moves = getPawnMoves(board,src,turn);
 					console.log(moves.branches.length);
 					for (var i = 0; i < moves.branches.length; i++) {
 						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
-							console.log("TRUEx");
 							return true;
 						}
 					}
@@ -181,13 +198,32 @@
 				if (piece == BLACK_PIECES.king) {
 
 				} else if (piece == BLACK_PIECES.queen) {
+					moves = getQueenMoves(board,src,turn);
+					console.log(moves.branches.length);
+					for (var i = 0; i < moves.branches.length; i++) {
+						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
+							return true;
+						}
+					}
 					
 				} else if (piece == BLACK_PIECES.bishop) {
-					
+					moves = getBishopMoves(board,src,turn);
+					console.log(moves.branches.length);
+					for (var i = 0; i < moves.branches.length; i++) {
+						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
+							return true;
+						}
+					}
 				} else if (piece == BLACK_PIECES.knight) {
 					
 				} else if (piece == BLACK_PIECES.rook) {
-					
+					moves = getRookMoves(board,src,turn);
+					console.log(moves.branches.length);
+					for (var i = 0; i < moves.branches.length; i++) {
+						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
+							return true;
+						}
+					}
 				} else if (piece == BLACK_PIECES.pawn) {
 					moves = getPawnMoves(board,src,turn);
 					console.log(moves.branches.length);
