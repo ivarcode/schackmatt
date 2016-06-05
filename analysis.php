@@ -308,6 +308,7 @@
 		}
 
 		function drawBoard() {
+			updateGameInfo();
 			board_context.globalAlpha = 1;
 			board_context.drawImage(board_img,0,0);
 			if (mouse_over_board) {
@@ -354,6 +355,25 @@
 			board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
 		}
 
+		function updateGameInfo() {
+			var materialBalance = 0;
+			for (var i = 0; i < 8; i++) {
+				for (var j = 0; j < 8; j++) {
+					if (board[i][j] == WHITE_PIECES.pawn) { materialBalance += 1; }
+					else if (board[i][j] == WHITE_PIECES.rook) { materialBalance += 5; }
+					else if (board[i][j] == WHITE_PIECES.knight) { materialBalance += 3; }
+					else if (board[i][j] == WHITE_PIECES.bishop) { materialBalance += 3; }
+					else if (board[i][j] == WHITE_PIECES.queen) { materialBalance += 9; }
+					else if (board[i][j] == BLACK_PIECES.pawn) { materialBalance -= 1; }
+					else if (board[i][j] == BLACK_PIECES.rook) { materialBalance -= 5; }
+					else if (board[i][j] == BLACK_PIECES.knight) { materialBalance -= 3; }
+					else if (board[i][j] == BLACK_PIECES.bishop) { materialBalance -= 3; }
+					else if (board[i][j] == BLACK_PIECES.queen) { materialBalance -= 9; }
+				}
+			}
+			document.getElementById('materialBalance').innerHTML = materialBalance;
+		}
+
 
 		window.addEventListener('load', setup, false);
 	</script>
@@ -372,7 +392,7 @@
 			<canvas id="board" width="640" height="640">canvas</canvas>
 
 			<div id="game_data">
-
+				<h3 id="materialBalance">null</h3>
 			</div>
 
 		</div>
