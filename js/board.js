@@ -37,7 +37,64 @@ IMAGES.bKing.src = "./img/pieces/b_King.png";
 
 function getKingMoves(brd, src, color) {
 	moves = {material_balance:null, branches:[]};
-
+	var tx = src.x;
+	var ty = src.y;
+	if (tx+1 < 8) {
+		if (isNotFriendly(brd[tx+1][ty],color)) {
+			moves.branches[moves.branches.length] = {x:tx+1,y:ty};
+		}
+	}
+	if (tx-1 > -1) {
+		if (isNotFriendly(brd[tx-1][ty],color)) {
+			moves.branches[moves.branches.length] = {x:tx-1,y:ty};
+		}
+	}
+	if (ty+1 < 8) {
+		if (isNotFriendly(brd[tx][ty+1],color)) {
+			moves.branches[moves.branches.length] = {x:tx,y:ty+1};
+		}
+	}
+	if (ty-1 > -1) {
+		if (isNotFriendly(brd[tx][ty-1],color)) {
+			moves.branches[moves.branches.length] = {x:tx,y:ty-1};
+		}
+	}
+	if (tx+1 < 8 && ty+1 < 8) {
+		if (isNotFriendly(brd[tx+1][ty+1],color)) {
+			moves.branches[moves.branches.length] = {x:tx+1,y:ty+1};
+		}
+	}
+	if (tx+1 < 8 && ty-1 > -1) {
+		if (isNotFriendly(brd[tx+1][ty-1],color)) {
+			moves.branches[moves.branches.length] = {x:tx+1,y:ty-1};
+		}
+	}
+	if (tx+1 < 8 && ty+1 < 8) {
+		if (isNotFriendly(brd[tx-1][ty+1],color)) {
+			moves.branches[moves.branches.length] = {x:tx-1,y:ty+1};
+		}
+	}
+	if (tx+1 < 8 && ty-1 > -1) {
+		if (isNotFriendly(brd[tx-1][ty-1],color)) {
+			moves.branches[moves.branches.length] = {x:tx-1,y:ty-1};
+		}
+	}
+	// for (var i = 0; i < moves.branches.length; i++) {
+	// 	if (moves.branches[i].x > 7 || moves.branches[i].x < 0 || moves.branches[i].y > 7 || moves.branches[i].y < 0) {
+	// 		var array = [];
+	// 		for (var j = 0; j < moves.branches.length-1; j++) {
+	// 			if (j != i) {
+	// 				array[array.length] = moves.branches[j];
+	// 			}
+	// 		}
+	// 		moves.branches = array;
+	// 	}
+	// }
+	// console.log("moves generated");
+	// for (var i = 0; i < moves.branches.length; i++) {
+	// 	console.log("	" + i + "th move " + moves.branches[i].x + "," + moves.branches[i].y);
+	// }
+	return moves;
 }
 
 function getQueenMoves(brd, src, color) {
@@ -387,7 +444,50 @@ function getBishopMoves(brd, src, color) {
 
 function getKnightMoves(brd, src, color) {
 	moves = {material_balance:null, branches:[]};
-
+	moves = {material_balance:null, branches:[]};
+	var tx = src.x;
+	var ty = src.y;
+	if (tx+1 < 8 && ty+2 < 8) {
+		if (isNotFriendly(brd[tx+1][ty+2],color)) {
+			moves.branches[moves.branches.length] = {x:tx+1,y:ty+2};
+		}
+	}
+	if (tx+1 < 8 && ty-2 > -1) {
+		if (isNotFriendly(brd[tx+1][ty-2],color)) {
+			moves.branches[moves.branches.length] = {x:tx+1,y:ty-2};
+		}
+	}
+	if (tx-1 > -1 && ty+2 < 8) {
+		if (isNotFriendly(brd[tx-1][ty+2],color)) {
+			moves.branches[moves.branches.length] = {x:tx-1,y:ty+2};
+		}
+	}
+	if (tx-1 > -1 && ty-2 > -1) {
+		if (isNotFriendly(brd[tx-1][ty-2],color)) {
+			moves.branches[moves.branches.length] = {x:tx-1,y:ty-2};
+		}
+	}
+	if (tx+2 < 8 && ty+1 < 8) {
+		if (isNotFriendly(brd[tx+2][ty+1],color)) {
+			moves.branches[moves.branches.length] = {x:tx+2,y:ty+1};
+		}
+	}
+	if (tx+2 < 8 && ty-1 > -1) {
+		if (isNotFriendly(brd[tx+2][ty-1],color)) {
+			moves.branches[moves.branches.length] = {x:tx+2,y:ty-1};
+		}
+	}
+	if (tx-2 > -1 && ty+1 < 8) {
+		if (isNotFriendly(brd[tx-2][ty+1],color)) {
+			moves.branches[moves.branches.length] = {x:tx-2,y:ty+1};
+		}
+	}
+	if (tx-2 > -1 && ty-1 > -1) {
+		if (isNotFriendly(brd[tx-2][ty-1],color)) {
+			moves.branches[moves.branches.length] = {x:tx-2,y:ty-1};
+		}
+	}
+	return moves;
 }
 
 function getRookMoves(brd, src, color) {
@@ -580,4 +680,11 @@ function isEnemy(piece,color) {
 		} else { return false; }
 	}
 	return false;
+}
+
+function convert_to_square(sq) {
+	square = "";
+	square += String.fromCharCode(97+sq.x);
+	square += (7-sq.y)+1;
+	return square;
 }

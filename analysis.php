@@ -24,7 +24,7 @@
 				board[i][j] = BOARD_STANDARD[j][i]; //flipping board axis
 			}
 		}
-		printBoard();
+		// printBoard();
 
 		var board_canvas;
 		var board_context;
@@ -50,22 +50,21 @@
 			board_canvas.addEventListener('mousedown',function(events){
 				var mousePos = getMousePos(board_canvas,events);
 				click_data.src = mousePos;
-				console.log("mousedown at (" + mousePos.x + "," + mousePos.y + ")");
+				// console.log("mousedown at (" + mousePos.x + "," + mousePos.y + ")");
 			});
 			board_canvas.addEventListener('mouseup',function(events){
 				var mousePos = getMousePos(board_canvas,events);
 				click_data.dest = mousePos;
-				console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
+				// console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
 				var moveSrc = getSquareFromMousePos(click_data.src);
 				var moveDest = getSquareFromMousePos(click_data.dest);
 				if (!(click_data.src.x == click_data.dest.x && click_data.src.y == click_data.dest.y)) {
 					isMoveValid = checkMove(moveSrc,moveDest);
-					console.log("moveSrc = " + moveSrc.x + "," + moveSrc.y + "  moveDest = " + moveDest.x + "," + moveDest.y + "  isMoveValid = " + isMoveValid);
+					// console.log("moveSrc = " + moveSrc.x + "," + moveSrc.y + "  moveDest = " + moveDest.x + "," + moveDest.y + "  isMoveValid = " + isMoveValid);
 					if (isMoveValid) {
 						makeMove(moveSrc,moveDest);
-						console.log("board state after move " + moveSrc.x + "," + moveSrc.y + " --> " + moveDest.x + "," + moveDest.y);
-						printBoard();
-						// console.log("drag");
+						// console.log("board state after move " + moveSrc.x + "," + moveSrc.y + " --> " + moveDest.x + "," + moveDest.y);
+						// printBoard();
 					}
 				} else {
 					if (sq_is_selected) {
@@ -158,7 +157,13 @@
 			var dest_piece = board[dest.x][dest.y];
 			if ((piece == WHITE_PIECES.king || piece == WHITE_PIECES.queen || piece == WHITE_PIECES.bishop || piece == WHITE_PIECES.knight || piece == WHITE_PIECES.rook || piece == WHITE_PIECES.pawn) && turn == "WHITE" && isNotFriendly(dest_piece)) {
 				if (piece == WHITE_PIECES.king) {
-
+					moves = getKingMoves(board,src,turn);
+					console.log(moves.branches.length);
+					for (var i = 0; i < moves.branches.length; i++) {
+						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
+							return true;
+						}
+					}
 				} else if (piece == WHITE_PIECES.queen) {
 					moves = getQueenMoves(board,src,turn);
 					console.log(moves.branches.length);
@@ -176,7 +181,13 @@
 						}
 					}
 				} else if (piece == WHITE_PIECES.knight) {
-					
+					moves = getKnightMoves(board,src,turn);
+					console.log(moves.branches.length);
+					for (var i = 0; i < moves.branches.length; i++) {
+						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
+							return true;
+						}
+					}
 				} else if (piece == WHITE_PIECES.rook) {
 					moves = getRookMoves(board,src,turn);
 					console.log(moves.branches.length);
@@ -196,7 +207,13 @@
 				}
 			} else if ((piece == BLACK_PIECES.king || piece == BLACK_PIECES.queen || piece == BLACK_PIECES.bishop || piece == BLACK_PIECES.knight || piece == BLACK_PIECES.rook || piece == BLACK_PIECES.pawn) && turn == "BLACK" && isNotFriendly(dest_piece)) {
 				if (piece == BLACK_PIECES.king) {
-
+					moves = getKingMoves(board,src,turn);
+					console.log(moves.branches.length);
+					for (var i = 0; i < moves.branches.length; i++) {
+						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
+							return true;
+						}
+					}
 				} else if (piece == BLACK_PIECES.queen) {
 					moves = getQueenMoves(board,src,turn);
 					console.log(moves.branches.length);
@@ -215,7 +232,13 @@
 						}
 					}
 				} else if (piece == BLACK_PIECES.knight) {
-					
+					moves = getKnightMoves(board,src,turn);
+					console.log(moves.branches.length);
+					for (var i = 0; i < moves.branches.length; i++) {
+						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
+							return true;
+						}
+					}
 				} else if (piece == BLACK_PIECES.rook) {
 					moves = getRookMoves(board,src,turn);
 					console.log(moves.branches.length);
@@ -246,9 +269,19 @@
 			}
 			console.log("turn = " + turn);
 			var piece = board[src.x][src.y];
-			// console.log(piece);
+			printMove(piece,src,dest);
 			board[src.x][src.y] = NULL_PIECE;
 			board[dest.x][dest.y] = piece;
+		}
+
+		function getMove(piece,src,dest) {
+			var move = "" 
+			move += piece + convert_to_square(dest);
+			return move;
+		}
+
+		function printMove(piece,src,dest) {
+			console.log(getMove(piece,src,dest));
 		}
 
 		function drawBoard() {
