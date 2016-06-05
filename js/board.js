@@ -17,6 +17,17 @@ var BOARD_STANDARD = [
 [WHITE_PIECES.rook,WHITE_PIECES.knight,WHITE_PIECES.bishop,WHITE_PIECES.queen,WHITE_PIECES.king,WHITE_PIECES.bishop,WHITE_PIECES.knight,WHITE_PIECES.rook]
 ];
 
+var CHECK_TEST = [
+[WHITE_PIECES.king,WHITE_PIECES.queen,NULL_PIECE,WHITE_PIECES.queen,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE],
+[NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE],
+[NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE],
+[NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE],
+[NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE],
+[NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE],
+[NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE],
+[NULL_PIECE,NULL_PIECE,BLACK_PIECES.king,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE,NULL_PIECE]
+];
+
 var IMAGES = {wPawn:new Image(),wRook:new Image(),wKnight:new Image(),wBishop:new Image(),wQueen:new Image(),wKing:new Image(),bPawn:new Image(),bRook:new Image(),bKnight:new Image(),bBishop:new Image(),bQueen:new Image(),bKing:new Image()};
 
 IMAGES.wPawn.src = "./img/pieces/w_Pawn.png";
@@ -36,7 +47,7 @@ IMAGES.bKing.src = "./img/pieces/b_King.png";
 
 
 function getKingMoves(brd, src, color) {
-	moves = {material_balance:null, branches:[]};
+	moves = {src:src, branches:[]};
 	var tx = src.x;
 	var ty = src.y;
 	if (tx+1 < 8) {
@@ -98,7 +109,7 @@ function getKingMoves(brd, src, color) {
 }
 
 function getQueenMoves(brd, src, color) {
-	moves = {material_balance:null, branches:[]};
+	moves = {src:src, branches:[]};
 	// console.log("entered getQueenMoves");
 	if (color == "WHITE") {
 		var tx = src.x+1;
@@ -323,7 +334,7 @@ function getQueenMoves(brd, src, color) {
 }
 
 function getBishopMoves(brd, src, color) {
-	moves = {material_balance:null, branches:[]};
+	moves = {src:src, branches:[]};
 	if (color == "WHITE") {
 		var tx = src.x+1;
 		var ty = src.y+1;
@@ -443,8 +454,7 @@ function getBishopMoves(brd, src, color) {
 }
 
 function getKnightMoves(brd, src, color) {
-	moves = {material_balance:null, branches:[]};
-	moves = {material_balance:null, branches:[]};
+	moves = {src:src, branches:[]};
 	var tx = src.x;
 	var ty = src.y;
 	if (tx+1 < 8 && ty+2 < 8) {
@@ -491,7 +501,8 @@ function getKnightMoves(brd, src, color) {
 }
 
 function getRookMoves(brd, src, color) {
-	moves = {material_balance:null, branches:[]};
+	// console.log("entered rookmoves");
+	moves = {src:src, branches:[]};
 	if (color == "WHITE") {
 		var tx = src.x+1;
 		var ty = src.y;
@@ -603,7 +614,7 @@ function getRookMoves(brd, src, color) {
 }
 
 function getPawnMoves(brd, src, color) {
-	moves = {material_balance:null, branches:[]};
+	moves = {src:src, branches:[]};
 	// console.log("entered pawn moves");
 	if (color == "WHITE") {
 		if (src.x < 8 && src.x > -1 && src.y < 7 && src.y > 0) {
@@ -687,4 +698,23 @@ function convert_to_square(sq) {
 	square += String.fromCharCode(97+sq.x);
 	square += (7-sq.y)+1;
 	return square;
+}
+
+function capitalize(piece) {
+	if (piece == BLACK_PIECES.king) {
+		return WHITE_PIECES.king;
+	} else if (piece == BLACK_PIECES.queen) {
+		return WHITE_PIECES.queen;
+	} else if (piece == BLACK_PIECES.bishop) {
+		return WHITE_PIECES.bishop;
+	} else if (piece == BLACK_PIECES.knight) {
+		return WHITE_PIECES.knight;
+	} else if (piece == BLACK_PIECES.rook) {
+		return WHITE_PIECES.rook;
+	} else if (piece == BLACK_PIECES.pawn) {
+		return "";
+	} else if (piece == WHITE_PIECES.pawn) {
+		return "";
+	}
+	return piece;
 }

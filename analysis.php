@@ -161,7 +161,7 @@
 					console.log(moves.branches.length);
 					for (var i = 0; i < moves.branches.length; i++) {
 						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
-							return true;
+							return !isCheckFor(src,dest,turn);
 						}
 					}
 				} else if (piece == WHITE_PIECES.queen) {
@@ -169,7 +169,7 @@
 					console.log(moves.branches.length);
 					for (var i = 0; i < moves.branches.length; i++) {
 						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
-							return true;
+							return !isCheckFor(src,dest,turn);
 						}
 					}
 				} else if (piece == WHITE_PIECES.bishop) {
@@ -177,7 +177,7 @@
 					console.log(moves.branches.length);
 					for (var i = 0; i < moves.branches.length; i++) {
 						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
-							return true;
+							return !isCheckFor(src,dest,turn);
 						}
 					}
 				} else if (piece == WHITE_PIECES.knight) {
@@ -185,7 +185,7 @@
 					console.log(moves.branches.length);
 					for (var i = 0; i < moves.branches.length; i++) {
 						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
-							return true;
+							return !isCheckFor(src,dest,turn);
 						}
 					}
 				} else if (piece == WHITE_PIECES.rook) {
@@ -193,7 +193,7 @@
 					console.log(moves.branches.length);
 					for (var i = 0; i < moves.branches.length; i++) {
 						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
-							return true;
+							return !isCheckFor(src,dest,turn);
 						}
 					}
 				} else if (piece == WHITE_PIECES.pawn) {
@@ -201,7 +201,7 @@
 					console.log(moves.branches.length);
 					for (var i = 0; i < moves.branches.length; i++) {
 						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
-							return true;
+							return !isCheckFor(src,dest,turn);
 						}
 					}
 				}
@@ -211,7 +211,7 @@
 					console.log(moves.branches.length);
 					for (var i = 0; i < moves.branches.length; i++) {
 						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
-							return true;
+							return !isCheckFor(src,dest,turn);
 						}
 					}
 				} else if (piece == BLACK_PIECES.queen) {
@@ -219,7 +219,7 @@
 					console.log(moves.branches.length);
 					for (var i = 0; i < moves.branches.length; i++) {
 						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
-							return true;
+							return !isCheckFor(src,dest,turn);
 						}
 					}
 					
@@ -228,7 +228,7 @@
 					console.log(moves.branches.length);
 					for (var i = 0; i < moves.branches.length; i++) {
 						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
-							return true;
+							return !isCheckFor(src,dest,turn);
 						}
 					}
 				} else if (piece == BLACK_PIECES.knight) {
@@ -236,7 +236,7 @@
 					console.log(moves.branches.length);
 					for (var i = 0; i < moves.branches.length; i++) {
 						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
-							return true;
+							return !isCheckFor(src,dest,turn);
 						}
 					}
 				} else if (piece == BLACK_PIECES.rook) {
@@ -244,21 +244,106 @@
 					console.log(moves.branches.length);
 					for (var i = 0; i < moves.branches.length; i++) {
 						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
-							return true;
+							return !isCheckFor(src,dest,turn);
 						}
 					}
 				} else if (piece == BLACK_PIECES.pawn) {
 					moves = getPawnMoves(board,src,turn);
+					moves = removeChecks(src,moves,turn);
 					console.log(moves.branches.length);
 					for (var i = 0; i < moves.branches.length; i++) {
 						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
-							return true;
+							return !isCheckFor(src,dest,turn);
 						}
 					}
 				}
 			}
 			// else
 			return false;
+		}
+
+		function removeChecks(src,moves,turn) {
+			var legalMoves = {src:src, branches:[]};
+			for (var i = 0; i < moves.branches.length; i++) {
+				if (!isCheckFor(src,moves.branches[i],turn)) {
+					legalMoves.branches[legalMoves.branches.length] = moves.branches[i];
+				}
+			}
+			return legalMoves;
+		}
+
+		function isCheckFor(src,dest,color) {
+			var tempBrd = [];
+			for (var i = 0; i < 8; i++) {
+				tempBrd[i] = [];
+				for (var j = 0; j < 8; j++) {
+					tempBrd[i][j] = board[i][j];
+				}
+			}
+			var tempPiece = tempBrd[src.x][src.y];
+			console.log(tempPiece);
+			tempBrd[src.x][src.y] = NULL_PIECE;
+			tempBrd[dest.x][dest.y] = tempPiece;
+			var all_moves = [];
+			var kingSrc;
+			if (color == "BLACK") {
+				for (var i = 0; i < 8; i++) {
+					for (var j = 0; j < 8; j++) {
+						if (tempBrd[i][j] == WHITE_PIECES.king) {
+							all_moves = concatMoves(all_moves,getKingMoves(tempBrd,{x:i,y:j},"WHITE").branches);
+						} else if (tempBrd[i][j] == WHITE_PIECES.queen) {
+							all_moves = concatMoves(all_moves,getQueenMoves(tempBrd,{x:i,y:j},"WHITE").branches);
+						} else if (tempBrd[i][j] == WHITE_PIECES.bishop) {
+							all_moves = concatMoves(all_moves,getBishopMoves(tempBrd,{x:i,y:j},"WHITE").branches);
+						} else if (tempBrd[i][j] == WHITE_PIECES.rook) {
+							all_moves = concatMoves(all_moves,getRookMoves(tempBrd,{x:i,y:j},"WHITE").branches);
+						} else if (tempBrd[i][j] == WHITE_PIECES.knight) {
+							all_moves = concatMoves(all_moves,getKnightMoves(tempBrd,{x:i,y:j},"WHITE").branches);
+						} else if (tempBrd[i][j] == WHITE_PIECES.pawn) {
+							all_moves = concatMoves(all_moves,getPawnMoves(tempBrd,{x:i,y:j},"WHITE").branches);
+						} else if (tempBrd[i][j] == BLACK_PIECES.king) {
+							kingSrc = {x:i,y:j};
+						}
+					}
+				}
+			} else /*WHITE*/ {
+				for (var i = 0; i < 8; i++) {
+					for (var j = 0; j < 8; j++) {
+						if (tempBrd[i][j] == BLACK_PIECES.king) {
+							all_moves = concatMoves(all_moves,getKingMoves(tempBrd,{x:i,y:j},"BLACK").branches);
+						} else if (tempBrd[i][j] == BLACK_PIECES.queen) {
+							all_moves = concatMoves(all_moves,getQueenMoves(tempBrd,{x:i,y:j},"BLACK").branches);
+						} else if (tempBrd[i][j] == BLACK_PIECES.bishop) {
+							all_moves = concatMoves(all_moves,getBishopMoves(tempBrd,{x:i,y:j},"BLACK").branches);
+						} else if (tempBrd[i][j] == BLACK_PIECES.rook) {
+							all_moves = concatMoves(all_moves,getRookMoves(tempBrd,{x:i,y:j},"BLACK").branches);
+						} else if (tempBrd[i][j] == BLACK_PIECES.knight) {
+							all_moves = concatMoves(all_moves,getKnightMoves(tempBrd,{x:i,y:j},"BLACK").branches);
+						} else if (tempBrd[i][j] == BLACK_PIECES.pawn) {
+							all_moves = concatMoves(all_moves,getPawnMoves(tempBrd,{x:i,y:j},"BLACK").branches);
+						} else if (tempBrd[i][j] == WHITE_PIECES.king) {
+							kingSrc = {x:i,y:j};
+						}
+					}
+				}
+			}
+			// console.log("all_moves.length = " + all_moves.length);
+			// console.log(all_moves);
+			console.log("" + color + " king at " + kingSrc.x + "," + kingSrc.y);
+			for (var a = 0; a < all_moves.length; a++) {
+				if (all_moves[a].x == kingSrc.x && all_moves[a].y == kingSrc.y) {
+					console.log("" + kingSrc.x + "," + kingSrc.y + " is under threat");
+					return true;
+				}
+			}
+			return false;
+		}
+
+		function concatMoves(a,b) {
+			for (var i = 0; i < b.length; i++) {
+				a[a.length] = b[i];
+			}
+			return a;
 		}
 
 		function makeMove(src,dest) {
@@ -275,8 +360,12 @@
 		}
 
 		function getMove(piece,src,dest) {
-			var move = "" 
-			move += piece + convert_to_square(dest);
+			var move = "";
+			move += capitalize(piece);
+			if (sq_is_occupied(board,dest.x,dest.y)) {
+				move += "x";
+			}
+			move += convert_to_square(dest);
 			return move;
 		}
 
