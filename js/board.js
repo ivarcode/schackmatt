@@ -90,6 +90,13 @@ function getKingMoves(brd, src, color) {
 			moves.branches[moves.branches.length] = {x:tx-1,y:ty-1};
 		}
 	}
+	if (color == "WHITE" && !whiteKing_has_moved) {
+		if (src.x == 4 && src.y == 7) {
+			
+		}
+	} else /*BLACK*/ {
+
+	}
 	// for (var i = 0; i < moves.branches.length; i++) {
 	// 	if (moves.branches[i].x > 7 || moves.branches[i].x < 0 || moves.branches[i].y > 7 || moves.branches[i].y < 0) {
 	// 		var array = [];
@@ -717,4 +724,78 @@ function capitalize(piece) {
 		return "";
 	}
 	return piece;
+}
+
+function isCheckFor(brd,src,dest,color) {
+	var tempBrd = [];
+	for (var i = 0; i < 8; i++) {
+		tempBrd[i] = [];
+		for (var j = 0; j < 8; j++) {
+			tempBrd[i][j] = brd[i][j];
+		}
+	}
+	var tempPiece = tempBrd[src.x][src.y];
+	console.log(tempPiece);
+	tempBrd[src.x][src.y] = NULL_PIECE;
+	tempBrd[dest.x][dest.y] = tempPiece;
+	var all_moves = [];
+	var kingSrc;
+	if (color == "BLACK") {
+		for (var i = 0; i < 8; i++) {
+			for (var j = 0; j < 8; j++) {
+				if (tempBrd[i][j] == WHITE_PIECES.king) {
+					all_moves = concatMoves(all_moves,getKingMoves(tempBrd,{x:i,y:j},"WHITE").branches);
+				} else if (tempBrd[i][j] == WHITE_PIECES.queen) {
+					all_moves = concatMoves(all_moves,getQueenMoves(tempBrd,{x:i,y:j},"WHITE").branches);
+				} else if (tempBrd[i][j] == WHITE_PIECES.bishop) {
+					all_moves = concatMoves(all_moves,getBishopMoves(tempBrd,{x:i,y:j},"WHITE").branches);
+				} else if (tempBrd[i][j] == WHITE_PIECES.rook) {
+					all_moves = concatMoves(all_moves,getRookMoves(tempBrd,{x:i,y:j},"WHITE").branches);
+				} else if (tempBrd[i][j] == WHITE_PIECES.knight) {
+					all_moves = concatMoves(all_moves,getKnightMoves(tempBrd,{x:i,y:j},"WHITE").branches);
+				} else if (tempBrd[i][j] == WHITE_PIECES.pawn) {
+					all_moves = concatMoves(all_moves,getPawnMoves(tempBrd,{x:i,y:j},"WHITE").branches);
+				} else if (tempBrd[i][j] == BLACK_PIECES.king) {
+					kingSrc = {x:i,y:j};
+				}
+			}
+		}
+	} else /*WHITE*/ {
+		for (var i = 0; i < 8; i++) {
+			for (var j = 0; j < 8; j++) {
+				if (tempBrd[i][j] == BLACK_PIECES.king) {
+					all_moves = concatMoves(all_moves,getKingMoves(tempBrd,{x:i,y:j},"BLACK").branches);
+				} else if (tempBrd[i][j] == BLACK_PIECES.queen) {
+					all_moves = concatMoves(all_moves,getQueenMoves(tempBrd,{x:i,y:j},"BLACK").branches);
+				} else if (tempBrd[i][j] == BLACK_PIECES.bishop) {
+					all_moves = concatMoves(all_moves,getBishopMoves(tempBrd,{x:i,y:j},"BLACK").branches);
+				} else if (tempBrd[i][j] == BLACK_PIECES.rook) {
+					all_moves = concatMoves(all_moves,getRookMoves(tempBrd,{x:i,y:j},"BLACK").branches);
+				} else if (tempBrd[i][j] == BLACK_PIECES.knight) {
+					all_moves = concatMoves(all_moves,getKnightMoves(tempBrd,{x:i,y:j},"BLACK").branches);
+				} else if (tempBrd[i][j] == BLACK_PIECES.pawn) {
+					all_moves = concatMoves(all_moves,getPawnMoves(tempBrd,{x:i,y:j},"BLACK").branches);
+				} else if (tempBrd[i][j] == WHITE_PIECES.king) {
+					kingSrc = {x:i,y:j};
+				}
+			}
+		}
+	}
+	// console.log("all_moves.length = " + all_moves.length);
+	// console.log(all_moves);
+	console.log("" + color + " king at " + kingSrc.x + "," + kingSrc.y);
+	for (var a = 0; a < all_moves.length; a++) {
+		if (all_moves[a].x == kingSrc.x && all_moves[a].y == kingSrc.y) {
+			console.log("" + kingSrc.x + "," + kingSrc.y + " is under threat");
+			return true;
+		}
+	}
+	return false;
+}
+
+function concatMoves(a,b) {
+	for (var i = 0; i < b.length; i++) {
+		a[a.length] = b[i];
+	}
+	return a;
 }
