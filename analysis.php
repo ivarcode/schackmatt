@@ -21,7 +21,7 @@
 		for (var i = 0; i < 8; i++) {
 			board[i] = [];
 			for (var j = 0; j < 8; j++) {
-				board[i][j] = BOARD_STANDARD[i][j];
+				board[i][j] = BOARD_STANDARD[j][i]; //flipping board axis
 			}
 		}
 		printBoard();
@@ -114,8 +114,8 @@
 
 		function printBoard() {
 			for (var i = 0; i < 8; i++) {
-				console.log(board[i][0] + board[i][1] + board[i][2] + board[i][3] + 
-					board[i][4] + board[i][5] + board[i][6] + board[i][7]);
+				console.log(board[0][i] + board[1][i] + board[2][i] + board[3][i] + 
+					board[4][i] + board[5][i] + board[6][i] + board[7][i]);
 			}
 		}
 
@@ -153,9 +153,9 @@
 		}
 
 		function isLegalMove(src,dest) {
-			console.log(src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
-			var piece = board[src.y][src.x];
-			var dest_piece = board[dest.y][dest.x];
+			console.log("isLegalMove " + src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
+			var piece = board[src.x][src.y];
+			var dest_piece = board[dest.x][dest.y];
 			if ((piece == WHITE_PIECES.king || piece == WHITE_PIECES.queen || piece == WHITE_PIECES.bishop || piece == WHITE_PIECES.knight || piece == WHITE_PIECES.rook || piece == WHITE_PIECES.pawn) && turn == "WHITE" && isNotFriendly(dest_piece)) {
 				if (piece == WHITE_PIECES.king) {
 
@@ -169,8 +169,10 @@
 					
 				} else if (piece == WHITE_PIECES.pawn) {
 					moves = getPawnMoves(src,turn);
-					for (var i = 0; i < moves.tree.length; i++) {
-						if (moves.tree[i].x == dest.x && moves.tree[i].y == dest.y) {
+					console.log(moves.branches.length);
+					for (var i = 0; i < moves.branches.length; i++) {
+						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
+							console.log("TRUEx");
 							return true;
 						}
 					}
@@ -188,8 +190,9 @@
 					
 				} else if (piece == BLACK_PIECES.pawn) {
 					moves = getPawnMoves(src,turn);
-					for (var i = 0; i < moves.tree.length; i++) {
-						if (moves.tree[i].x == dest.x && moves.tree[i].y == dest.y) {
+					console.log(moves.branches.length);
+					for (var i = 0; i < moves.branches.length; i++) {
+						if (moves.branches[i].x == dest.x && moves.branches[i].y == dest.y) {
 							return true;
 						}
 					}
@@ -200,45 +203,326 @@
 		}
 
 		function getKingMoves(src, color) {
+			moves = {material_balance:null, branches:[]};
 
 		}
 
 		function getQueenMoves(src, color) {
+			moves = {material_balance:null, branches:[]};
 			if (color == "WHITE") {
-
+				var tx = src.x;
+				var ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"WHITE")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					tx += 1;
+				}
+				tx = src.x;
+				ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"WHITE")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					tx -= 1;
+				}
+				tx = src.x;
+				ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"WHITE")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					ty += 1;
+				}
+				tx = src.x;
+				ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"WHITE")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					tx -= 1;
+				}
+				tx = src.x;
+				ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"WHITE")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					tx += 1;
+					ty += 1;
+				}
+				tx = src.x;
+				ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"WHITE")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					tx += 1;
+					ty -= 1;
+				}
+				tx = src.x;
+				ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"WHITE")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					tx -= 1;
+					ty += 1;
+				}
+				tx = src.x;
+				ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"WHITE")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					tx -= 1;
+					ty -= 1;
+				}
 			} else /*black*/ {
-
+				var tx = src.x;
+				var ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"BLACK")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					tx += 1;
+				}
+				tx = src.x;
+				ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"BLACK")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					tx -= 1;
+				}
+				tx = src.x;
+				ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"BLACK")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					ty += 1;
+				}
+				tx = src.x;
+				ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"BLACK")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					tx -= 1;
+				}
+				tx = src.x;
+				ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"BLACK")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					tx += 1;
+					ty += 1;
+				}
+				tx = src.x;
+				ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"BLACK")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					tx += 1;
+					ty -= 1;
+				}
+				tx = src.x;
+				ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"BLACK")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					tx -= 1;
+					ty += 1;
+				}
+				tx = src.x;
+				ty = src.y;
+				while (tx < 8 && tx > -1 && ty < 8 && ty > -1) {
+					if (board[tx][ty] == NULL_PIECE) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+					} else if (isEnemy(board[tx][ty],"BLACK")) {
+						moves.branches[moves.branches.length] = {x:tx,y:ty};
+						break;
+					} else {
+						break;
+					}
+					tx -= 1;
+					ty -= 1;
+				}
 			}
 		}
 
 		function getBishopMoves(src, color) {
+			moves = {material_balance:null, branches:[]};
 
 		}
 
 		function getKnightMoves(src, color) {
+			moves = {material_balance:null, branches:[]};
 
 		}
 
 		function getRookMoves(src, color) {
+			moves = {material_balance:null, branches:[]};
 
 		}
 
 		function getPawnMoves(src, color) {
-			moves = {material_balance:null, tree:[]};
+			moves = {material_balance:null, branches:[]};
+			// console.log(color);
 			if (color == "WHITE") {
-				moves.tree[0] = {x:src.x,y:src.y-1};
+				if (src.x < 8 && src.x > -1 && src.y < 7 && src.y > 0) {
+					if (!sq_is_occupied(src.x,src.y-1)) {
+						moves.branches[moves.branches.length] = {x:src.x,y:src.y-1};
+					}
+				}
+				if (src.y == 6) {
+					if (!sq_is_occupied(src.x,src.y-2)  && !sq_is_occupied(src.x,src.y-1)) {
+						moves.branches[moves.branches.length] = {x:src.x,y:src.y-2};
+					}
+				}
+				if (src.x < 7 && src.y > 0) {
+					if (isEnemy(board[src.x+1][src.y-1],color)) {
+						moves.branches[moves.branches.length] = {x:src.x+1,y:src.y-1};
+					}
+				}
+				if (src.x > 0 && src.y > 0) {
+					if (isEnemy(board[src.x-1][src.y-1],color)) {
+						moves.branches[moves.branches.length] = {x:src.x-1,y:src.y-1};
+					}
+				}
 			} else /*black*/ {
-				moves.tree[0] = {x:src.x,y:src.y+1};
+				if (src.x < 8 && src.x > -1 && src.y < 7 && src.y > 0) {
+					if (!sq_is_occupied(src.x,src.y+1)) {
+						moves.branches[moves.branches.length] = {x:src.x,y:src.y+1};
+					}
+				}
+				if (src.y == 1) {
+					if (!sq_is_occupied(src.x,src.y+2) && !sq_is_occupied(src.x,src.y+1)) {
+						moves.branches[moves.branches.length] = {x:src.x,y:src.y+2};
+					}
+				}
+				if (src.x < 7 && src.y > 0) {
+					if (isEnemy(board[src.x+1][src.y+1],color)) {
+						moves.branches[moves.branches.length] = {x:src.x+1,y:src.y+1};
+					}
+				}
+				if (src.x > 0 && src.y > 0) {
+					if (isEnemy(board[src.x-1][src.y+1],color)) {
+						moves.branches[moves.branches.length] = {x:src.x-1,y:src.y+1};
+					}
+				}
 			}
+			/*console.log("moves generated");
+			for (var i = 0; i < moves.branches.length; i++) {
+				console.log("	" + i + "th move " + moves.branches[i].x + "," + moves.branches[i].y);
+			}*/
 			return moves;
 		}
 
-		function isNotFriendly(piece) {
-			if (((piece == BLACK_PIECES.king || piece == BLACK_PIECES.queen || piece == BLACK_PIECES.bishop || piece == BLACK_PIECES.knight || piece == BLACK_PIECES.rook || piece == BLACK_PIECES.pawn) && turn == "BLACK") || ((piece == WHITE_PIECES.king || piece == WHITE_PIECES.queen || piece == WHITE_PIECES.bishop || piece == WHITE_PIECES.knight || piece == WHITE_PIECES.rook || piece == WHITE_PIECES.pawn) && turn == "WHITE")) {
-				console.log("friendly dest_piece");
+		function sq_is_occupied(x,y) {
+			if (board[x][y] == NULL_PIECE) {
+				return false;
+			}
+			// console.log("square is occupied");
+			return true;
+		}
+
+		function isNotFriendly(piece,color) {
+			if (((piece == BLACK_PIECES.king || piece == BLACK_PIECES.queen || piece == BLACK_PIECES.bishop || piece == BLACK_PIECES.knight || piece == BLACK_PIECES.rook || piece == BLACK_PIECES.pawn) && color == "BLACK") || ((piece == WHITE_PIECES.king || piece == WHITE_PIECES.queen || piece == WHITE_PIECES.bishop || piece == WHITE_PIECES.knight || piece == WHITE_PIECES.rook || piece == WHITE_PIECES.pawn) && color == "WHITE")) {
+				// console.log("non enemy dest_piece");
 				return false;
 			}
 			return true;
+		}
+
+		function isEnemy(piece,color) {
+			if (piece != NULL_PIECE) {
+				if (((piece == BLACK_PIECES.king) || (piece == BLACK_PIECES.queen) || (piece == BLACK_PIECES.bishop) || (piece == BLACK_PIECES.knight) || (piece == BLACK_PIECES.rook) || (piece == BLACK_PIECES.pawn)) && color == "WHITE") {
+					return true;
+				} else if (((piece == WHITE_PIECES.king) || (piece == WHITE_PIECES.queen) || (piece == WHITE_PIECES.bishop) || (piece == WHITE_PIECES.knight) || (piece == WHITE_PIECES.rook) || (piece == WHITE_PIECES.pawn)) && color == "BLACK") {
+					return true;
+				} else { return false; }
+			}
+			return false;
 		}
 
 		function makeMove(src,dest) {
@@ -248,10 +532,10 @@
 				turn = "WHITE";
 			}
 			console.log("turn = " + turn);
-			var piece = board[src.y][src.x];
+			var piece = board[src.x][src.y];
 			// console.log(piece);
-			board[src.y][src.x] = NULL_PIECE;
-			board[dest.y][dest.x] = piece;
+			board[src.x][src.y] = NULL_PIECE;
+			board[dest.x][dest.y] = piece;
 		}
 
 		function drawBoard() {
@@ -266,18 +550,18 @@
 			board_context.globalAlpha = 1;
 			for (var i = 0; i < 8; i++) {
 				for (var j = 0; j < 8; j++) {
-					if (board[i][j] == WHITE_PIECES.pawn) { board_context.drawImage(IMAGES.wPawn,j*SQ_DIM,i*SQ_DIM); }
-					else if (board[i][j] == WHITE_PIECES.rook) { board_context.drawImage(IMAGES.wRook,j*SQ_DIM,i*SQ_DIM); }
-					else if (board[i][j] == WHITE_PIECES.knight) { board_context.drawImage(IMAGES.wKnight,j*SQ_DIM,i*SQ_DIM); }
-					else if (board[i][j] == WHITE_PIECES.bishop) { board_context.drawImage(IMAGES.wBishop,j*SQ_DIM,i*SQ_DIM); }
-					else if (board[i][j] == WHITE_PIECES.queen) { board_context.drawImage(IMAGES.wQueen,j*SQ_DIM,i*SQ_DIM); }
-					else if (board[i][j] == WHITE_PIECES.king) { board_context.drawImage(IMAGES.wKing,j*SQ_DIM,i*SQ_DIM); }
-					else if (board[i][j] == BLACK_PIECES.pawn) { board_context.drawImage(IMAGES.bPawn,j*SQ_DIM,i*SQ_DIM); }
-					else if (board[i][j] == BLACK_PIECES.rook) { board_context.drawImage(IMAGES.bRook,j*SQ_DIM,i*SQ_DIM); }
-					else if (board[i][j] == BLACK_PIECES.knight) { board_context.drawImage(IMAGES.bKnight,j*SQ_DIM,i*SQ_DIM); }
-					else if (board[i][j] == BLACK_PIECES.bishop) { board_context.drawImage(IMAGES.bBishop,j*SQ_DIM,i*SQ_DIM); }
-					else if (board[i][j] == BLACK_PIECES.queen) { board_context.drawImage(IMAGES.bQueen,j*SQ_DIM,i*SQ_DIM); }
-					else if (board[i][j] == BLACK_PIECES.king) { board_context.drawImage(IMAGES.bKing,j*SQ_DIM,i*SQ_DIM); }
+					if (board[i][j] == WHITE_PIECES.pawn) { board_context.drawImage(IMAGES.wPawn,i*SQ_DIM,j*SQ_DIM); }
+					else if (board[i][j] == WHITE_PIECES.rook) { board_context.drawImage(IMAGES.wRook,i*SQ_DIM,j*SQ_DIM); }
+					else if (board[i][j] == WHITE_PIECES.knight) { board_context.drawImage(IMAGES.wKnight,i*SQ_DIM,j*SQ_DIM); }
+					else if (board[i][j] == WHITE_PIECES.bishop) { board_context.drawImage(IMAGES.wBishop,i*SQ_DIM,j*SQ_DIM); }
+					else if (board[i][j] == WHITE_PIECES.queen) { board_context.drawImage(IMAGES.wQueen,i*SQ_DIM,j*SQ_DIM); }
+					else if (board[i][j] == WHITE_PIECES.king) { board_context.drawImage(IMAGES.wKing,i*SQ_DIM,j*SQ_DIM); }
+					else if (board[i][j] == BLACK_PIECES.pawn) { board_context.drawImage(IMAGES.bPawn,i*SQ_DIM,j*SQ_DIM); }
+					else if (board[i][j] == BLACK_PIECES.rook) { board_context.drawImage(IMAGES.bRook,i*SQ_DIM,j*SQ_DIM); }
+					else if (board[i][j] == BLACK_PIECES.knight) { board_context.drawImage(IMAGES.bKnight,i*SQ_DIM,j*SQ_DIM); }
+					else if (board[i][j] == BLACK_PIECES.bishop) { board_context.drawImage(IMAGES.bBishop,i*SQ_DIM,j*SQ_DIM); }
+					else if (board[i][j] == BLACK_PIECES.queen) { board_context.drawImage(IMAGES.bQueen,i*SQ_DIM,j*SQ_DIM); }
+					else if (board[i][j] == BLACK_PIECES.king) { board_context.drawImage(IMAGES.bKing,i*SQ_DIM,j*SQ_DIM); }
 				}
 			}
 		}
