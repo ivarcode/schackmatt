@@ -47,7 +47,9 @@
 				console.log("mousedown at (" + mousePos.x + "," + mousePos.y + ")");
 			});
 			board_canvas.addEventListener('mouseup',function(events){
-				
+				var mousePos = getMousePos(board_canvas,events);
+				click_data.dest = mousePos;
+				console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
 			});
 			board_canvas.addEventListener('mouseenter',function(events){
 				mouse_over_board = true;

@@ -9,8 +9,11 @@ function game(p1, p2, board) {
 	this.turn = "WHITE";
 }
 
-
-
+function move(src, dest) {
+	this.src = src;
+	this.dest = dest;
+	this.notation = null; //TODO
+}
 
 function piece(type, color) {
 	this.type = type;
