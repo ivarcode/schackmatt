@@ -51,12 +51,19 @@
 				console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
 				var src = {x:click_data.src.x/SQ_DIM,y:click_data.src.y/SQ_DIM};
 				var dest = {x:click_data.dest.x/SQ_DIM,y:click_data.dest.y/SQ_DIM};
-				
+				src = {x:src.x-(src.x%1),y:src.y-(src.y%1)};
+				dest = {x:dest.x-(dest.x%1),y:dest.y-(dest.y%1)};
+				console.log("src " + src.x + "," + src.y);
+				console.log("dest " + dest.x + "," + dest.y);
 
-
+				if (src.x == dest.x && src.y == dest.y) {
+					console.log("selected_square");
+				} else {
+					console.log("makeMove")
+				}
 
 				// var move = new move(src,dest,null);
-				
+
 			});
 			board_canvas.addEventListener('mouseenter',function(events){
 				mouse_over_board = true;
