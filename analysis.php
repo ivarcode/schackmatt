@@ -40,8 +40,7 @@
 			board_context = board_canvas.getContext("2d");
 
 			drawBoard();
-			printBoard();
-
+			
 			board_canvas.addEventListener('mousedown',function(events){
 				var mousePos = getMousePos(board_canvas,events);
 				click_data.src = mousePos;
