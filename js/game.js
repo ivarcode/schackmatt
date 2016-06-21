@@ -7,12 +7,13 @@ function game(p1, p2, board) {
 	this.p2 = p2;
 	this.board = BOARD_STANDARD;
 	this.turn = "WHITE";
+	this.record = [];
 }
 
-function move(src, dest) {
+function move(src, dest, notation) {
 	this.src = src;
 	this.dest = dest;
-	this.notation = null; //TODO
+	this.notation = notation;
 }
 
 function piece(type, color) {

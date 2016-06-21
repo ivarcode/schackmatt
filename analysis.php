@@ -21,7 +21,6 @@
 
 		console.log(game);
 
-
 		var board_canvas;
 		var board_context;
 		var SQ_DIM = 80;
@@ -50,6 +49,14 @@
 				var mousePos = getMousePos(board_canvas,events);
 				click_data.dest = mousePos;
 				console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
+				var src = {x:click_data.src.x/SQ_DIM,y:click_data.src.y/SQ_DIM};
+				var dest = {x:click_data.dest.x/SQ_DIM,y:click_data.dest.y/SQ_DIM};
+				
+
+
+
+				// var move = new move(src,dest,null);
+				
 			});
 			board_canvas.addEventListener('mouseenter',function(events){
 				mouse_over_board = true;
