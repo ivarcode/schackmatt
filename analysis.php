@@ -95,6 +95,61 @@
 		function makeMove(src, dest) {
 			game.board[7-dest.y][dest.x] = game.board[7-src.y][src.x];
 			game.board[7-src.y][src.x] = nullpiece;
+			if (game.turn == "WHITE") {
+				game.turn = "BLACK";
+			} else {
+				game.turn = "WHITE";
+			}
+			console.log(game.turn + " turn");
+			updatePGN(src,dest);
+		}
+
+		function updatePGN(src, dest) {
+			// console.log(game.record.length);
+			var notation = "";//TODO
+			var piece = game.board[7-dest.y][dest.x];
+			// console.log(piece.color + " " + piece.type);
+			if (piece.type == "KING") {
+				notation += "K";
+			} else if (piece.type == "QUEEN") {
+				notation += "Q";
+			} else if (piece.type == "BISHOP") {
+				notation += "B";
+			} else if (piece.type == "KNIGHT") {
+				notation += "N";
+			} else if (piece.type == "ROOK") {
+				notation += "R";
+			} else {
+				//add nothing
+			}
+			notation += pairToSq(dest);
+			game.record[game.record.length] = {src:src,dest:dest,notation:notation};
+			printPGN();
+		}
+
+		function pairToSq(sq) {
+			var square = "";
+			switch (sq.x) {
+				case 0: square += "a"; break;
+				case 1: square += "b"; break;
+				case 2: square += "c"; break;
+				case 3: square += "d"; break;
+				case 4: square += "e"; break;
+				case 5: square += "f"; break;
+				case 6: square += "g"; break;
+				case 7: square += "h"; break;
+				default: console.log("sq out of range error");
+			}
+			square += 8-sq.y;
+			return square;
+		}
+
+		function printPGN() {
+			var pgn = "";
+			for (var i = 0; i < game.record.length; i++) {
+				pgn += game.record[i].notation + " ";
+			}
+			console.log("PGN :: " + pgn);
 		}
 
 		function getMousePos(canvas,events) {
