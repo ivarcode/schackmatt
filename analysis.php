@@ -59,7 +59,8 @@
 				if (src.x == dest.x && src.y == dest.y) {
 					console.log("selected_square");
 				} else {
-					console.log("makeMove")
+					makeMove(src,dest);
+					console.log("makeMove");
 				}
 
 				// var move = new move(src,dest,null);
@@ -89,6 +90,11 @@
 					drawBoard();
 				}
 			});
+		}
+
+		function makeMove(src, dest) {
+			game.board[7-dest.y][dest.x] = game.board[7-src.y][src.x];
+			game.board[7-src.y][src.x] = nullpiece;
 		}
 
 		function getMousePos(canvas,events) {
