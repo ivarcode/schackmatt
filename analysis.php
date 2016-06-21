@@ -40,51 +40,22 @@
 			board_context = board_canvas.getContext("2d");
 
 			drawBoard();
+			printBoard();
 
 			board_canvas.addEventListener('mousedown',function(events){
 				var mousePos = getMousePos(board_canvas,events);
 				click_data.src = mousePos;
-				// console.log("mousedown at (" + mousePos.x + "," + mousePos.y + ")");
+				console.log("mousedown at (" + mousePos.x + "," + mousePos.y + ")");
 			});
 			board_canvas.addEventListener('mouseup',function(events){
-				var mousePos = getMousePos(board_canvas,events);
-				click_data.dest = mousePos;
-				// console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
-				var moveSrc = getSquareFromMousePos(click_data.src);
-				var moveDest = getSquareFromMousePos(click_data.dest);
-				if (!(click_data.src.x == click_data.dest.x && click_data.src.y == click_data.dest.y)) {
-					isMoveValid = checkMove(moveSrc,moveDest);
-					// console.log("moveSrc = " + moveSrc.x + "," + moveSrc.y + "  moveDest = " + moveDest.x + "," + moveDest.y + "  isMoveValid = " + isMoveValid);
-					if (isMoveValid) {
-						makeMove(moveSrc,moveDest);
-						// console.log("board state after move " + moveSrc.x + "," + moveSrc.y + " --> " + moveDest.x + "," + moveDest.y);
-						// printBoard();
-					}
-				} else {
-					if (sq_is_selected) {
-						sq_is_selected = false;
-						if (!(selected_square.x == moveSrc.x && selected_square.y == moveSrc.y)) {
-							//do nothing
-						} else {
-							// TODO fix this for two click moving
-							/*if (checkMove(selected_square,moveSrc)) {
-								makeMove(selected_square,moveSrc);
-								printBoard();
-								console.log("two click");
-							}*/
-						}
-					} else {
-						sq_is_selected = true;
-						selected_square = {x:moveSrc.x, y:moveSrc.y};
-					}
-				}
+				
 			});
 			board_canvas.addEventListener('mouseenter',function(events){
 				mouse_over_board = true;
 			});
 			board_canvas.addEventListener('mouseleave',function(events){
 				mouse_over_board = false;
-				for (var i = 0; i < 10; i++) { drawBoard(); }
+				for (var i = 0; i < 10; i++) { drawBoard(); /*looping drawBoard() to clear all tinting*/}
 			});
 			board_canvas.addEventListener('mousemove',function(events){
 				if (mouse_over_board) {
