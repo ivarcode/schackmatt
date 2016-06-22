@@ -78,3 +78,33 @@ IMAGES.bQueen.src = "./img/pieces/b_Queen.png";
 IMAGES.bKing.src = "./img/pieces/b_King.png";
 
 
+function makeMove(src, dest, game) {
+	if (isLegalMove(game,src,dest)) {
+		game.board[7-dest.y][dest.x] = game.board[7-src.y][src.x];
+		game.board[7-src.y][src.x] = nullpiece;
+		if (game.turn == "WHITE") {
+			game.turn = "BLACK";
+		} else {
+			game.turn = "WHITE";
+		}
+		console.log(game.turn + " turn");
+		updatePGN(src,dest,game);
+	} else {
+		console.log("move is not valid");
+	}
+}
+
+function updatePGN(src, dest, game) {
+	// console.log(game.record.length);
+	var notation = getNotation(src,dest,game);
+	game.record[game.record.length] = new move(src,dest,notation);
+	printPGN(game);
+}
+
+function printPGN(game) {
+	var pgn = "";
+	for (var i = 0; i < game.record.length; i++) {
+		pgn += game.record[i].notation + " ";
+	}
+	console.log("PGN :: " + pgn);
+}

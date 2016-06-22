@@ -45,24 +45,24 @@
 			board_canvas.addEventListener('mousedown',function(events){
 				var mousePos = getMousePos(board_canvas,events);
 				click_data.src = mousePos;
-				console.log("mousedown at (" + mousePos.x + "," + mousePos.y + ")");
+				// console.log("mousedown at (" + mousePos.x + "," + mousePos.y + ")");
 			});
 			board_canvas.addEventListener('mouseup',function(events){
 				var mousePos = getMousePos(board_canvas,events);
 				click_data.dest = mousePos;
-				console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
+				// console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
 				var src = {x:click_data.src.x/SQ_DIM,y:click_data.src.y/SQ_DIM};
 				var dest = {x:click_data.dest.x/SQ_DIM,y:click_data.dest.y/SQ_DIM};
 				src = {x:src.x-(src.x%1),y:src.y-(src.y%1)};
 				dest = {x:dest.x-(dest.x%1),y:dest.y-(dest.y%1)};
-				console.log("src " + src.x + "," + src.y);
-				console.log("dest " + dest.x + "," + dest.y);
+				// console.log("src " + src.x + "," + src.y);
+				// console.log("dest " + dest.x + "," + dest.y);
 
 				if (src.x == dest.x && src.y == dest.y) {
-					console.log("selected_square");
+					// console.log("selected_square");
 				} else {
-					makeMove(src,dest);
-					console.log("makeMove");
+					makeMove(src,dest,game);
+					// console.log("makeMove");
 				}
 
 				// var move = new move(src,dest,null);
@@ -92,70 +92,6 @@
 					drawBoard();
 				}
 			});
-		}
-
-		function makeMove(src, dest) {
-			if (isLegalMove(game,src,dest)) {
-				game.board[7-dest.y][dest.x] = game.board[7-src.y][src.x];
-				game.board[7-src.y][src.x] = nullpiece;
-				if (game.turn == "WHITE") {
-					game.turn = "BLACK";
-				} else {
-					game.turn = "WHITE";
-				}
-				console.log(game.turn + " turn");
-				updatePGN(src,dest);
-			} else {
-				console.log("move is not valid");
-			}
-		}
-
-		function updatePGN(src, dest) {
-			// console.log(game.record.length);
-			var notation = "";//TODO
-			var piece = game.board[7-dest.y][dest.x];
-			// console.log(piece.color + " " + piece.type);
-			if (piece.type == "KING") {
-				notation += "K";
-			} else if (piece.type == "QUEEN") {
-				notation += "Q";
-			} else if (piece.type == "BISHOP") {
-				notation += "B";
-			} else if (piece.type == "KNIGHT") {
-				notation += "N";
-			} else if (piece.type == "ROOK") {
-				notation += "R";
-			} else {
-				//add nothing
-			}
-			notation += pairToSq(dest);
-			game.record[game.record.length] = {src:src,dest:dest,notation:notation};
-			printPGN();
-		}
-
-		function pairToSq(sq) {
-			var square = "";
-			switch (sq.x) {
-				case 0: square += "a"; break;
-				case 1: square += "b"; break;
-				case 2: square += "c"; break;
-				case 3: square += "d"; break;
-				case 4: square += "e"; break;
-				case 5: square += "f"; break;
-				case 6: square += "g"; break;
-				case 7: square += "h"; break;
-				default: console.log("sq out of range error");
-			}
-			square += 8-sq.y;
-			return square;
-		}
-
-		function printPGN() {
-			var pgn = "";
-			for (var i = 0; i < game.record.length; i++) {
-				pgn += game.record[i].notation + " ";
-			}
-			console.log("PGN :: " + pgn);
 		}
 
 		function getMousePos(canvas,events) {
