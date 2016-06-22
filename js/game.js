@@ -92,7 +92,7 @@ var BOARD_STANDARD = [
 ];
 
 var BOARD_TEST = [
-[wKing,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
+[wKing,wQueen,wBishop,wKnight,nullpiece,nullpiece,nullpiece,nullpiece],
 [nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,wPawn,nullpiece],
 [nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
 [nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,bPawn],

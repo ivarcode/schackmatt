@@ -124,16 +124,6 @@ function isPieceThreatened(sq,game) {
 			}
 		}
 	}
-	moves = getKingMoves(sq,game);
-	for (var i = 0; i < moves.length; i++) {
-		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KING") {
-			// console.log(game.board[moves[i].dest.x][moves[i].dest.y].color + " == " + game.turn);
-			if (game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
-				// console.log("true");
-				return true;
-			}
-		}
-	}
 	if (game.turn == "WHITE") {
 		try {
 			if (game.board[sq.x+1][sq.y+1].type == "PAWN" && game.board[sq.x+1][sq.y+1].color != game.turn) {
@@ -151,18 +141,28 @@ function isPieceThreatened(sq,game) {
 		}
 	} else /*turn == BLACK*/{
 		try {
-			if (game.board[sq.x+1][sq.y+1].type == "PAWN" && game.board[sq.x+1][sq.y+1].color != game.turn) {
+			if (game.board[sq.x-1][sq.y+1].type == "PAWN" && game.board[sq.x-1][sq.y+1].color != game.turn) {
 				return true;
 			}
 		} catch(e) {
 			console.log("ERR :: " + e.message);
 		}
 		try {
-			if (game.board[sq.x+1][sq.y-1].type == "PAWN" && game.board[sq.x+1][sq.y-1].color != game.turn) {
+			if (game.board[sq.x-1][sq.y-1].type == "PAWN" && game.board[sq.x-1][sq.y-1].color != game.turn) {
 				return true;
 			}
 		} catch(e) {
 			console.log("ERR :: " + e.message);
+		}
+	}
+	moves = getKingMoves(sq,game);
+	for (var i = 0; i < moves.length; i++) {
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KING") {
+			// console.log(game.board[moves[i].dest.x][moves[i].dest.y].color + " == " + game.turn);
+			if (game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
+				// console.log("true");
+				return true;
+			}
 		}
 	}
 	// console.log("false");
