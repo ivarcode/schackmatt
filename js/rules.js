@@ -34,7 +34,39 @@ function getLegalMoves(game) {
 		}
 	}
 	// console.log("legal moves length = " + moves.length);
+	removeChecks(moves);
 	return moves;
+}
+
+/*function removes moves from the list that put the player in game in self-check
+edits moves object directly
+*/
+function removeChecks(moves, game) {
+	var sq = null;
+	for (var a = 0; a < 8; a++) {
+		for (var b = 0; b < 8; b++) {
+			if (game.board[a][b].type == "KING" && game.board[a][b].color == game.turn) {
+				sq = {}
+			}
+		}
+	}
+	if (sq == null) {
+		console.log("no king found on board for " + game.turn);
+	}
+	for (var i = 0; i < moves.length; i++) {
+
+	}
+}
+
+/*function detects whether the piece on sq is threatened by a piece on the opposing side*/
+function isPieceThreatened(sq,game) {
+	var moves = [];
+	moves = getKnightMoves(sq,game);
+	for (var i = 0; i < moves.length; i++) {
+		if (game.board[moves[i].dest.x][moves[i].dest.y].type == "KNIGHT" && game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
+			return true;
+		}
+	}
 }
 
 function getMovesFromSq(sq,game) {
