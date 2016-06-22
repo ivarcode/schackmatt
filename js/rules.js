@@ -4,7 +4,10 @@ rules.js
 
 function isLegalMove(game,src,dest) {
 	var moves = getLegalMoves(game);
+	console.log("move " + src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
+	console.log("number of legal moves = " + moves.length);
 	for (var i = 0; i < moves.length; i++) {
+		console.log(moves[i].src.x + "," + moves[i].src.y + " --> " + moves[i].dest.x + "," + moves[i].dest.y);
 		if (moves[i].src.x == src.x && moves[i].src.y == src.y &&
 			moves[i].dest.x == dest.x && moves[i].dest.y == dest.y) {
 			console.log("is legal move");
@@ -18,14 +21,15 @@ function getLegalMoves(game) {
 	var moves = [];
 	for (var i = 0; i < 8; i++) {
 		for (var j = 0; j < 8; j++) {
-			if (game.turn = "WHITE") {
-				if (game.board[i][j].color == "WHITE") {
-					moves.concat(getMovesFromSq({x:i,y:j},game));
+			try {
+				if (game.board[i][j].color == game.turn) {
+					var a = getMovesFromSq({x:i,y:j},game);
+					for (var b = 0; b < a.length; b++) {
+						moves[moves.length] = a[b];
+					}
 				}
-			} else /*black turn*/{
-				if (game.board[i][j].color == "BLACK") {
-					moves.concat(getMovesFromSq({x:i,y:j},game));
-				}
+			} catch(e) {
+				// console.log("ERR :: " + e.message);
 			}
 		}
 	}
@@ -34,12 +38,13 @@ function getLegalMoves(game) {
 }
 
 function getMovesFromSq(sq,game) {
-	console.log("getMovesFromSq " + sq.x + "," + sq.y);
+	// console.log("getMovesFromSq " + sq.x + "," + sq.y);
 	var piece = game.board[sq.x][sq.y];
-	console.log(piece.color + " " + piece.type);
+	// console.log(piece.color + " " + piece.type);
 	if (piece.type == "KING") {
 		return getKingMoves(sq,game);
 	}
+	return [];
 }
 
 function getKingMoves(sq,game) {
@@ -58,13 +63,13 @@ function getKingMoves(sq,game) {
 			moves[moves.length] = new move(sq,list[i],getNotation(sq,list[i],game));
 		}
 	}
-	console.log("king moves length = " + moves.length);
+	// console.log("king moves length = " + moves.length);
 	return moves;
 }
 
 function getNotation(src,dest,game) {
 	var notation = "";
-	var piece = game.board[7-dest.y][dest.x];
+	var piece = game.board[dest.x][dest.y];
 	// console.log(piece.color + " " + piece.type);
 	if (piece.type == "KING") {
 		notation += "K";
@@ -79,13 +84,14 @@ function getNotation(src,dest,game) {
 	} else {
 		//add nothing
 	}
+
 	notation += pairToSq(dest);
 	return notation;
 }
 
 function pairToSq(sq) {
 	var square = "";
-	switch (sq.x) {
+	switch (sq.y) {
 		case 0: square += "a"; break;
 		case 1: square += "b"; break;
 		case 2: square += "c"; break;
@@ -96,6 +102,6 @@ function pairToSq(sq) {
 		case 7: square += "h"; break;
 		default: console.log("sq out of range error");
 	}
-	square += 8-sq.y;
+	square += sq.x+1;
 	return square;
 }

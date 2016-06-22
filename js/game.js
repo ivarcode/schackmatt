@@ -17,7 +17,11 @@ function printGame(game) {
 	for (var i = 0; i < 8; i++) {
 		for (var j = 0; j < 8; j++) {
 			printedBoard += " ";
-			printedBoard += game.board[7-i][j].type;
+			try {
+				printedBoard += game.board[7-i][j].type;
+			} catch(e) {
+				// console.log("ERR :: " + e.message);
+			}			
 			printedBoard += " ";
 		}
 		printedBoard += "\n";
@@ -36,7 +40,7 @@ function piece(type, color) {
 	this.color = color;
 }
 
-var nullpiece = new piece(null,null);
+var nullpiece = null;
 var wPawn = new piece("PAWN", "WHITE");
 var wKnight = new piece("KNIGHT", "WHITE");
 var wBishop = new piece("BISHOP", "WHITE");
@@ -80,8 +84,8 @@ IMAGES.bKing.src = "./img/pieces/b_King.png";
 
 function makeMove(src, dest, game) {
 	if (isLegalMove(game,src,dest)) {
-		game.board[7-dest.y][dest.x] = game.board[7-src.y][src.x];
-		game.board[7-src.y][src.x] = nullpiece;
+		game.board[dest.x][dest.y] = game.board[src.x][src.y];
+		game.board[src.x][src.y] = nullpiece;
 		if (game.turn == "WHITE") {
 			game.turn = "BLACK";
 		} else {

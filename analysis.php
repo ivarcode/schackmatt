@@ -61,7 +61,10 @@
 				if (src.x == dest.x && src.y == dest.y) {
 					// console.log("selected_square");
 				} else {
-					makeMove(src,dest,game);
+					var s = {x:7-src.y,y:src.x};
+					var d = {x:7-dest.y,y:dest.x};
+					makeMove(s,d,game);
+					// printGame(game);
 					// console.log("makeMove");
 				}
 
