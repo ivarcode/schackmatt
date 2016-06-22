@@ -15,6 +15,7 @@
 	<link rel="stylesheet" href="style.css">
 
 	<script type="text/javascript" src="./js/game.js"></script>
+	<script type="text/javascript" src="./js/rules.js"></script>
 	<script type="text/javascript">
 
 		var game = new game("Player 1", "Player 2", "STANDARD");
@@ -93,15 +94,19 @@
 		}
 
 		function makeMove(src, dest) {
-			game.board[7-dest.y][dest.x] = game.board[7-src.y][src.x];
-			game.board[7-src.y][src.x] = nullpiece;
-			if (game.turn == "WHITE") {
-				game.turn = "BLACK";
+			if (isLegalMove(game,src,dest)) {
+				game.board[7-dest.y][dest.x] = game.board[7-src.y][src.x];
+				game.board[7-src.y][src.x] = nullpiece;
+				if (game.turn == "WHITE") {
+					game.turn = "BLACK";
+				} else {
+					game.turn = "WHITE";
+				}
+				console.log(game.turn + " turn");
+				updatePGN(src,dest);
 			} else {
-				game.turn = "WHITE";
+				console.log("move is not valid");
 			}
-			console.log(game.turn + " turn");
-			updatePGN(src,dest);
 		}
 
 		function updatePGN(src, dest) {
