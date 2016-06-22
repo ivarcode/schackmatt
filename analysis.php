@@ -21,6 +21,7 @@
 		var game = new game("Player 1", "Player 2", "STANDARD");
 
 		console.log(game);
+		printGame(game);
 
 		var board_canvas;
 		var board_context;

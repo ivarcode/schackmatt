@@ -10,6 +10,21 @@ function game(p1, p2, board) {
 	this.record = [];
 }
 
+function printGame(game) {
+	console.log(game.p1 + " vs " + game.p2);
+	console.log(game.turn + " turn");
+	var printedBoard = "";
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			printedBoard += " ";
+			printedBoard += game.board[7-i][j].type;
+			printedBoard += " ";
+		}
+		printedBoard += "\n";
+	}
+	console.log(printedBoard);
+}
+
 function move(src, dest, notation) {
 	this.src = src;
 	this.dest = dest;
