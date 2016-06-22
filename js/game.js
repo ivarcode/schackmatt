@@ -8,11 +8,14 @@ function game(p1, p2, board) {
 	this.board = BOARD_STANDARD;
 	this.turn = "WHITE";
 	this.record = [];
+	this.move_count = 0;
 }
 
 function printGame(game) {
 	console.log(game.p1 + " vs " + game.p2);
 	console.log(game.turn + " turn");
+	console.log(game.move_count + " moves");
+	console.log(game.record);
 	var printedBoard = "";
 	for (var i = 0; i < 8; i++) {
 		for (var j = 0; j < 8; j++) {
@@ -83,6 +86,7 @@ IMAGES.bKing.src = "./img/pieces/b_King.png";
 
 
 function makeMove(src, dest, game) {
+	console.log(game);
 	if (isLegalMove(game,src,dest)) {
 		game.board[dest.x][dest.y] = game.board[src.x][src.y];
 		game.board[src.x][src.y] = nullpiece;
@@ -91,7 +95,8 @@ function makeMove(src, dest, game) {
 		} else {
 			game.turn = "WHITE";
 		}
-		console.log(game.turn + " turn");
+		// console.log(game.turn + " turn");
+		game.move_count++;
 		updatePGN(src,dest,game);
 	} else {
 		console.log("move is not valid");

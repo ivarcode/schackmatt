@@ -65,7 +65,7 @@
 					var d = {x:7-dest.y,y:dest.x};
 					makeMove(s,d,game);
 					// printGame(game);
-					// console.log("makeMove");
+					// console.log("makeMove " + s.x + "," + s.y + " --> " + d.x + "," + d.y);
 				}
 
 				// var move = new move(src,dest,null);
