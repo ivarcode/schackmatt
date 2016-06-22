@@ -98,10 +98,71 @@ function isPieceThreatened(sq,game) {
 		}
 		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KNIGHT") {
 			// console.log(game.board[moves[i].dest.x][moves[i].dest.y].color + " == " + game.turn);
-			if(game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
+			if (game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
 				// console.log("true");
 				return true;
 			}
+		}
+	}
+	moves = getBishopMoves(sq,game);
+	for (var i = 0; i < moves.length; i++) {
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && ((game.board[moves[i].dest.x][moves[i].dest.y].type == "BISHOP") || (game.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN"))) {
+			// console.log(game.board[moves[i].dest.x][moves[i].dest.y].color + " == " + game.turn);
+			if (game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
+				// console.log("true");
+				return true;
+			}
+		}
+	}
+	moves = getRookMoves(sq,game);
+	for (var i = 0; i < moves.length; i++) {
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && ((game.board[moves[i].dest.x][moves[i].dest.y].type == "ROOK") || (game.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN"))) {
+			// console.log(game.board[moves[i].dest.x][moves[i].dest.y].color + " == " + game.turn);
+			if (game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
+				// console.log("true");
+				return true;
+			}
+		}
+	}
+	moves = getKingMoves(sq,game);
+	for (var i = 0; i < moves.length; i++) {
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KING") {
+			// console.log(game.board[moves[i].dest.x][moves[i].dest.y].color + " == " + game.turn);
+			if (game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
+				// console.log("true");
+				return true;
+			}
+		}
+	}
+	if (game.turn == "WHITE") {
+		try {
+			if (game.board[sq.x+1][sq.y+1].type == "PAWN" && game.board[sq.x+1][sq.y+1].color != game.turn) {
+				return true;
+			}
+		} catch(e) {
+			console.log("ERR :: " + e.message);
+		}
+		try {
+			if (game.board[sq.x+1][sq.y-1].type == "PAWN" && game.board[sq.x+1][sq.y-1].color != game.turn) {
+				return true;
+			}
+		} catch(e) {
+			console.log("ERR :: " + e.message);
+		}
+	} else /*turn == BLACK*/{
+		try {
+			if (game.board[sq.x+1][sq.y+1].type == "PAWN" && game.board[sq.x+1][sq.y+1].color != game.turn) {
+				return true;
+			}
+		} catch(e) {
+			console.log("ERR :: " + e.message);
+		}
+		try {
+			if (game.board[sq.x+1][sq.y-1].type == "PAWN" && game.board[sq.x+1][sq.y-1].color != game.turn) {
+				return true;
+			}
+		} catch(e) {
+			console.log("ERR :: " + e.message);
 		}
 	}
 	// console.log("false");
