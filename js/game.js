@@ -23,7 +23,7 @@ function printGame(game) {
 	var printedBoard = "";
 	for (var i = 0; i < 8; i++) {
 		for (var j = 0; j < 8; j++) {
-			printedBoard += " ";
+			printedBoard += "[";
 			try {
 				var piecetype = game.board[7-i][j].type;
 				if (piecetype == "KING") {
@@ -38,16 +38,16 @@ function printGame(game) {
 					printedBoard += "R";
 				} else if (piecetype == "PAWN") {
 					printedBoard += "P";
-				} else {
-					printedBoard += " ";//no piece
 				}
 			} catch(e) {
 				// console.log("ERR :: " + e.message);
 				if (game.enPassant_allowedAt != null && game.enPassant_allowedAt.x == 7-i && game.enPassant_allowedAt.y == j) {
 					printedBoard += "E";//en passant sq key
+				} else {
+					printedBoard += " ";//no piece
 				}
 			}			
-			printedBoard += " ";
+			printedBoard += "]";
 		}
 		printedBoard += "\n";
 	}
@@ -124,6 +124,7 @@ function makeMove(src, dest, game) {
 	if (isLegalMove(game,src,dest)) {
 		updatePGN(src,dest,game);
 		movePiece(src,dest,game);
+		printGame(game);
 		// if (game.turn == "WHITE") {
 		// 	game.turn = "BLACK";
 		// } else {
@@ -141,10 +142,11 @@ function movePiece(src, dest, game) {
 	if (game.enPassant_allowedAt != null && dest.x == game.enPassant_allowedAt.x && dest.y == game.enPassant_allowedAt.y && game.board[src.x][src.y].type == "PAWN") {
 		console.log(dest.x);
 		if (dest.x == 5) {
-			game.board[4][src.y] = nullpiece;
+			console.log("capping piece " + 4 + "," + dest.y);
+			game.board[4][dest.y] = nullpiece;
 			console.log("on rank 5");
 		} else if (dest.x == 2) {
-			game.board[3][src.y] = nullpiece;
+			game.board[3][dest.y] = nullpiece;
 			console.log("on rank 2");
 		} else {
 			console.log("not taking on ranks 5 or 2");
@@ -177,6 +179,7 @@ function movePiece(src, dest, game) {
 	} else {
 		game.turn = "WHITE";
 	}
+	// printGame(game);
 }
 
 function updatePGN(src, dest, game) {

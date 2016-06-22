@@ -199,9 +199,14 @@ function getPawnMoves(sq,game) {
 			// console.log("" + sq.x + "," + sq.y + " --> " + (sq.x+1) + "," + (sq.y-1));
 			moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y-1},notation:null};
 		}
+		if (game.enPassant_allowedAt != null) {
+			if (game.enPassant_allowedAt.x == sq.x+1 && game.enPassant_allowedAt.y == sq.y+1) {
+				moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y+1},notation:null};
+			} else if (game.enPassant_allowedAt.x == sq.x+1 && game.enPassant_allowedAt.y == sq.y-1) {
+				moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y-1},notation:null};
+			}
+		}
 	} else /*if turn == BLACK*/{
-		console.log("turn is black m8");
-		
 		if (game.board[sq.x-1][sq.y] == null) {
 			// console.log("" + sq.x + "," + sq.y + " --> " + (sq.x+1) + "," + sq.y);
 			moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y},notation:null};
@@ -215,6 +220,13 @@ function getPawnMoves(sq,game) {
 		if (sq.x-1 < 8 && sq.y-1 > -1 && game.board[sq.x-1][sq.y-1] != null && game.board[sq.x-1][sq.y-1].color != game.turn) {
 			// console.log("" + sq.x + "," + sq.y + " --> " + (sq.x+1) + "," + (sq.y-1));
 			moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y-1},notation:null};
+		}
+		if (game.enPassant_allowedAt != null) {
+			if (game.enPassant_allowedAt.x == sq.x-1 && game.enPassant_allowedAt.y == sq.y+1) {
+				moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y+1},notation:null};
+			} else if (game.enPassant_allowedAt.x == sq.x-1 && game.enPassant_allowedAt.y == sq.y-1) {
+				moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y-1},notation:null};
+			}
 		}
 	}
 	console.log("getPawnMoves length " + moves.length);
