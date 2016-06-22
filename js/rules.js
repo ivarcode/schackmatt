@@ -3,11 +3,15 @@ rules.js
 */
 
 function isLegalMove(game,src,dest) {
-	var legalMoves = getLegalMoves(game);
-	for (var i = 0; i < legalMoves.length; i++) {
-
+	var moves = getLegalMoves(game);
+	for (var i = 0; i < moves.length; i++) {
+		if (moves[i].src.x == src.x && moves[i].src.y == src.y &&
+			moves[i].dest.x == dest.x && moves[i].dest.y == dest.y) {
+			console.log("is legal move");
+			return true;
+		}
 	}
-	return true;
+	return false;
 }
 
 function getLegalMoves(game) {
@@ -25,6 +29,7 @@ function getLegalMoves(game) {
 			}
 		}
 	}
+	console.log("legal moves length = " + moves.length);
 	return moves;
 }
 
@@ -39,7 +44,21 @@ function getMovesFromSq(sq,game) {
 
 function getKingMoves(sq,game) {
 	var moves = [];
-	
+	var list = [];
+	list[list.length] = {x:sq.x+1,y:sq.y};
+	list[list.length] = {x:sq.x+1,y:sq.y+1};
+	list[list.length] = {x:sq.x+1,y:sq.y-1};
+	list[list.length] = {x:sq.x-1,y:sq.y};
+	list[list.length] = {x:sq.x-1,y:sq.y+1};
+	list[list.length] = {x:sq.x-1,y:sq.y-1};
+	list[list.length] = {x:sq.x,y:sq.y+1};
+	list[list.length] = {x:sq.x,y:sq.y-1};
+	for (var i = 0; i < list.length; i++) {
+		if (list[i].x > -1 && list[i].x < 8 && list[i].y > -1 && list[i].y < 8) {
+			moves[moves.length] = new move(sq,list[i],getNotation(sq,list[i],game));
+		}
+	}
+	console.log("king moves length = " + moves.length);
 	return moves;
 }
 
