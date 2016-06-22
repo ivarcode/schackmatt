@@ -43,7 +43,7 @@ edits moves object directly
 */
 function removeChecks(moves, game) {
 	for (var i = 0; i < moves.length; i++) {
-		var g = {p1:null,p2:null,board:null,turn:null,record:null,move_count:null};
+		var g = {p1:null,p2:null,board:null,turn:game.turn,record:null,move_count:null};
 		g.board = [];
 		for (var x = 0; x < 8; x++) {
 			g.board[x] = [];
@@ -53,11 +53,17 @@ function removeChecks(moves, game) {
 				g.board[a][b] = game.board[a][b];
 			}
 		}
+		// console.log("turn is copying " + game.turn);
+		/*if (game.turn == "WHITE") {
+			g.turn == "WHITE";
+		} else { g.turn == "BLACK" }*/
+		// printGame(g);
 		movePiece(moves[i].src,moves[i].dest,g);
+		// printGame(g);
 		var sq = null;
 		for (var a = 0; a < 8; a++) {
 			for (var b = 0; b < 8; b++) {
-				if (game.board[a][b] != null && game.board[a][b].type == "KING" && game.board[a][b].color == game.turn) {
+				if (g.board[a][b] != null && g.board[a][b].type == "KING" && g.board[a][b].color == g.turn) {
 					sq = {x:a,y:b};
 					break;
 				}
@@ -66,9 +72,11 @@ function removeChecks(moves, game) {
 		if (sq == null) {
 			console.log("no king found on board for " + game.turn);
 		}
+		// console.log("sq == " + sq.x + "," + sq.y);
 		// printGame(g);
 		// removing move
 		if (isPieceThreatened(sq,g)) { 
+			// console.log("splicing " + sq.x + "," + sq.y);
 			moves.splice(i,1);
 			i--;
 		}
@@ -77,14 +85,26 @@ function removeChecks(moves, game) {
 
 /*function detects whether the piece on sq is threatened by a piece on the opposing side*/
 function isPieceThreatened(sq,game) {
-	console.log("isPieceThreatened(sq = " + sq.x + "," + sq.y + " , game)");
+	// console.log("isPieceThreatened(sq = " + sq.x + "," + sq.y + " , game)");
+	// printGame(game);
 	var moves = [];
 	moves = getKnightMoves(sq,game);
 	for (var i = 0; i < moves.length; i++) {
-		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KNIGHT" && game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
-			return true;
+		try {
+			// console.log("trying move " + moves[i].src.x + "," + moves[i].src.y + " --> " + moves[i].dest.x + "," + moves[i].dest.y);
+			// console.log(game.board[moves[i].dest.x][moves[i].dest.y].type + game.board[moves[i].dest.x][moves[i].dest.y].color);
+		} catch(e) {
+			console.log("ERR :: " + e.message);
+		}
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KNIGHT") {
+			// console.log(game.board[moves[i].dest.x][moves[i].dest.y].color + " == " + game.turn);
+			if(game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
+				// console.log("true");
+				return true;
+			}
 		}
 	}
+	// console.log("false");
 	return false;
 }
 
