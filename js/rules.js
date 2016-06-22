@@ -43,7 +43,7 @@ edits moves object directly
 */
 function removeChecks(moves, game) {
 	for (var i = 0; i < moves.length; i++) {
-		var g = {p1:null,p2:null,board:null,turn:game.turn,record:null,move_count:null};
+		var g = {p1:null,p2:null,board:null,turn:game.turn,record:null,move_count:null,enPassant_allowedAt:game.enPassant_allowedAt};
 		g.board = [];
 		for (var x = 0; x < 8; x++) {
 			g.board[x] = [];
@@ -182,6 +182,7 @@ function getKnightMoves(sq,game) {
 }
 
 function getPawnMoves(sq,game) {
+	console.log("getPawnMoves...");
 	var moves = [];
 	if (game.turn == "WHITE") {
 		if (game.board[sq.x+1][sq.y] == null) {
@@ -199,20 +200,24 @@ function getPawnMoves(sq,game) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y-1},notation:null};
 		}
 	} else /*if turn == BLACK*/{
+		console.log("turn is black m8");
+		
 		if (game.board[sq.x-1][sq.y] == null) {
+			// console.log("" + sq.x + "," + sq.y + " --> " + (sq.x+1) + "," + sq.y);
 			moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y},notation:null};
 		}
 		if (sq.x == 6 && game.board[sq.x-2][sq.y] == null && game.board[sq.x-1][sq.y] == null) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x-2,y:sq.y},notation:null};
 		}
-		if (sq.x-1 > -1 && sq.y+1 < 8 && game.board[sq.x-1][sq.y+1] != null && game.board[sq.x-1][sq.y+1].color != game.turn) {
+		if (sq.x-1 < 8 && sq.y+1 < 8 && game.board[sq.x-1][sq.y+1] != null && game.board[sq.x-1][sq.y+1].color != game.turn) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y+1},notation:null};
 		}
-		if (sq.x-1 > -1 && sq.y-1 > -1 && game.board[sq.x-1][sq.y-1] != null && game.board[sq.x-1][sq.y-1].color != game.turn) {
+		if (sq.x-1 < 8 && sq.y-1 > -1 && game.board[sq.x-1][sq.y-1] != null && game.board[sq.x-1][sq.y-1].color != game.turn) {
+			// console.log("" + sq.x + "," + sq.y + " --> " + (sq.x+1) + "," + (sq.y-1));
 			moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y-1},notation:null};
 		}
 	}
-	// console.log(moves.length);
+	console.log("getPawnMoves length " + moves.length);
 	return moves;
 }
 
@@ -449,7 +454,7 @@ function getBishopMoves(sq,game) {
 
 function getNotation(src,dest,game) {
 	var notation = "";
-	var piece = game.board[dest.x][dest.y];
+	var piece = game.board[src.x][src.y];
 	if (piece == null) {
 		return null;
 	}
@@ -467,7 +472,9 @@ function getNotation(src,dest,game) {
 	} else {
 		//add nothing
 	}
-
+	if (game.board[dest.x][dest.y] != null) {
+		notation += "x";
+	}
 	notation += pairToSq(dest);
 	// console.log("NOTATION = " + notation);
 	return notation;

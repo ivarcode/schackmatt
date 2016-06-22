@@ -5,10 +5,11 @@ game.js
 function game(p1, p2, board, turn, record, move_count) {
 	this.p1 = p1;
 	this.p2 = p2;
-	this.board = BOARD_STANDARD;
+	this.board = BOARD_TEST;
 	this.turn = turn;
 	this.record = record;
 	this.move_count = move_count;
+	this.enPassant_allowedAt = null;
 }
 
 function printGame(game) {
@@ -16,14 +17,35 @@ function printGame(game) {
 	console.log(game.turn + " turn");
 	console.log(game.move_count + " moves");
 	console.log(game.record);
+	if (game.enPassant_allowedAt != null) {
+		console.log("enPassant_allowedAt " + game.enPassant_allowedAt.x + "," + game.enPassant_allowedAt.y);
+	} 
 	var printedBoard = "";
 	for (var i = 0; i < 8; i++) {
 		for (var j = 0; j < 8; j++) {
 			printedBoard += " ";
 			try {
-				printedBoard += game.board[7-i][j].type;
+				var piecetype = game.board[7-i][j].type;
+				if (piecetype == "KING") {
+					printedBoard += "K";
+				} else if (piecetype == "QUEEN") {
+					printedBoard += "Q";
+				} else if (piecetype == "BISHOP") {
+					printedBoard += "B";
+				} else if (piecetype == "KNIGHT") {
+					printedBoard += "N";
+				} else if (piecetype == "ROOK") {
+					printedBoard += "R";
+				} else if (piecetype == "PAWN") {
+					printedBoard += "P";
+				} else {
+					printedBoard += " ";//no piece
+				}
 			} catch(e) {
 				// console.log("ERR :: " + e.message);
+				if (game.enPassant_allowedAt != null && game.enPassant_allowedAt.x == 7-i && game.enPassant_allowedAt.y == j) {
+					printedBoard += "E";//en passant sq key
+				}
 			}			
 			printedBoard += " ";
 		}
@@ -69,6 +91,17 @@ var BOARD_STANDARD = [
 [bRook,bKnight,bBishop,bQueen,bKing,bBishop,bKnight,bRook]
 ];
 
+var BOARD_TEST = [
+[wKing,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
+[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,wPawn,nullpiece],
+[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
+[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,bPawn],
+[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,wPawn,nullpiece,nullpiece],
+[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
+[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,bPawn,nullpiece],
+[bKing,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece]
+];
+
 var IMAGES = {wPawn:new Image(),wRook:new Image(),wKnight:new Image(),wBishop:new Image(),wQueen:new Image(),wKing:new Image(),bPawn:new Image(),bRook:new Image(),bKnight:new Image(),bBishop:new Image(),bQueen:new Image(),bKing:new Image()};
 
 IMAGES.wPawn.src = "./img/pieces/w_Pawn.png";
@@ -87,24 +120,63 @@ IMAGES.bKing.src = "./img/pieces/b_King.png";
 
 function makeMove(src, dest, game) {
 	// console.log(game);
+	console.log("moving piece " + game.board[src.x][src.y].color + " " + game.board[src.x][src.y].type);
 	if (isLegalMove(game,src,dest)) {
+		updatePGN(src,dest,game);
 		movePiece(src,dest,game);
-		if (game.turn == "WHITE") {
-			game.turn = "BLACK";
-		} else {
-			game.turn = "WHITE";
-		}
+		// if (game.turn == "WHITE") {
+		// 	game.turn = "BLACK";
+		// } else {
+		// 	game.turn = "WHITE";
+		// }
 		// console.log(game.turn + " turn");
 		game.move_count++;
-		updatePGN(src,dest,game);
 	} else {
 		console.log("move is not valid");
 	}
 }
 
 function movePiece(src, dest, game) {
-	game.board[dest.x][dest.y] = game.board[src.x][src.y];
-	game.board[src.x][src.y] = nullpiece;
+	console.log("movePiece(src = " + src.x + "," + src.y + " dest = " + dest.x + "," + dest.y + ")");
+	if (game.enPassant_allowedAt != null && dest.x == game.enPassant_allowedAt.x && dest.y == game.enPassant_allowedAt.y && game.board[src.x][src.y].type == "PAWN") {
+		console.log(dest.x);
+		if (dest.x == 5) {
+			game.board[4][src.y] = nullpiece;
+			console.log("on rank 5");
+		} else if (dest.x == 2) {
+			game.board[3][src.y] = nullpiece;
+			console.log("on rank 2");
+		} else {
+			console.log("not taking on ranks 5 or 2");
+		}
+		if (game.turn == "WHITE") {
+			game.board[dest.x][dest.y] = wPawn;
+		} else {
+			game.board[dest.x][dest.y] = bPawn;
+		}
+		game.board[src.x][src.y] = nullpiece;
+		game.enPassant_allowedAt = null;
+	} else {
+		console.log(" - movePiece(src = " + src.x + "," + src.y + " dest = " + dest.x + "," + dest.y + ")");
+		console.log(game.board[src.x][src.y]);
+		console.log(game.board[dest.x][dest.y]);
+		// printGame(game);
+		game.enPassant_allowedAt = null;
+		if (game.board[src.x][src.y].type == "PAWN" && Math.abs(dest.x-src.x) == 2) {
+			console.log(":: " + src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
+			game.enPassant_allowedAt = {x:(src.x+dest.x)/2,y:src.y};
+		}
+		// console.log("game before move");
+		// printGame(game);
+		game.board[dest.x][dest.y] = game.board[src.x][src.y];
+		game.board[src.x][src.y] = nullpiece;
+		// printGame(game);
+	}
+	if (game.turn == "WHITE") {
+		game.turn = "BLACK";
+	} else {
+		game.turn = "WHITE";
+	}
 }
 
 function updatePGN(src, dest, game) {
