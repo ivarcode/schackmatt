@@ -4,7 +4,7 @@ rules.js
 
 function isLegalMove(game,src,dest) {
 	var moves = getLegalMoves(game);
-	// console.log("move " + src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
+	console.log("move " + src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
 	console.log("number of legal moves = " + moves.length);
 	for (var i = 0; i < moves.length; i++) {
 		// console.log(moves[i].src.x + "," + moves[i].src.y + " --> " + moves[i].dest.x + "," + moves[i].dest.y);
@@ -34,7 +34,7 @@ function getLegalMoves(game) {
 		}
 	}
 	// console.log("legal moves length = " + moves.length);
-	removeChecks(moves);
+	removeChecks(moves,game);
 	return moves;
 }
 
@@ -42,36 +42,58 @@ function getLegalMoves(game) {
 edits moves object directly
 */
 function removeChecks(moves, game) {
-	var sq = null;
-	for (var a = 0; a < 8; a++) {
-		for (var b = 0; b < 8; b++) {
-			if (game.board[a][b].type == "KING" && game.board[a][b].color == game.turn) {
-				sq = {}
+	for (var i = 0; i < moves.length; i++) {
+		var g = {p1:null,p2:null,board:null,turn:null,record:null,move_count:null};
+		g.board = [];
+		for (var x = 0; x < 8; x++) {
+			g.board[x] = [];
+		}
+		for (var a = 0; a < 8; a++) {
+			for (var b = 0; b < 8; b++) {
+				g.board[a][b] = game.board[a][b];
 			}
 		}
-	}
-	if (sq == null) {
-		console.log("no king found on board for " + game.turn);
-	}
-	for (var i = 0; i < moves.length; i++) {
-
+		movePiece(moves[i].src,moves[i].dest,g);
+		var sq = null;
+		for (var a = 0; a < 8; a++) {
+			for (var b = 0; b < 8; b++) {
+				if (game.board[a][b] != null && game.board[a][b].type == "KING" && game.board[a][b].color == game.turn) {
+					sq = {x:a,y:b};
+					break;
+				}
+			}
+		}
+		if (sq == null) {
+			console.log("no king found on board for " + game.turn);
+		}
+		// printGame(g);
+		// removing move
+		if (isPieceThreatened(sq,g)) { 
+			moves.splice(i,1);
+			i--;
+		}
 	}
 }
 
 /*function detects whether the piece on sq is threatened by a piece on the opposing side*/
 function isPieceThreatened(sq,game) {
+	console.log("isPieceThreatened(sq = " + sq.x + "," + sq.y + " , game)");
 	var moves = [];
 	moves = getKnightMoves(sq,game);
 	for (var i = 0; i < moves.length; i++) {
-		if (game.board[moves[i].dest.x][moves[i].dest.y].type == "KNIGHT" && game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KNIGHT" && game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
 			return true;
 		}
 	}
+	return false;
 }
 
 function getMovesFromSq(sq,game) {
 	// console.log("getMovesFromSq " + sq.x + "," + sq.y);
 	var piece = game.board[sq.x][sq.y];
+	if (piece == null) {
+		return [];
+	}
 	// console.log(piece.color + " " + piece.type);
 	if (piece.type == "KING") {
 		return getKingMoves(sq,game);
@@ -408,6 +430,9 @@ function getBishopMoves(sq,game) {
 function getNotation(src,dest,game) {
 	var notation = "";
 	var piece = game.board[dest.x][dest.y];
+	if (piece == null) {
+		return null;
+	}
 	// console.log(piece.color + " " + piece.type);
 	if (piece.type == "KING") {
 		notation += "K";

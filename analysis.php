@@ -18,7 +18,7 @@
 	<script type="text/javascript" src="./js/rules.js"></script>
 	<script type="text/javascript">
 
-		var game = new game("Player 1", "Player 2", "STANDARD");
+		var game = new game("Player 1", "Player 2", "STANDARD","WHITE",[],0);
 
 		console.log(game);
 		printGame(game);

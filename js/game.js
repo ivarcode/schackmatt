@@ -2,13 +2,13 @@
 game.js
 */
 
-function game(p1, p2, board) {
+function game(p1, p2, board, turn, record, move_count) {
 	this.p1 = p1;
 	this.p2 = p2;
 	this.board = BOARD_STANDARD;
-	this.turn = "WHITE";
-	this.record = [];
-	this.move_count = 0;
+	this.turn = turn;
+	this.record = record;
+	this.move_count = move_count;
 }
 
 function printGame(game) {
@@ -86,10 +86,9 @@ IMAGES.bKing.src = "./img/pieces/b_King.png";
 
 
 function makeMove(src, dest, game) {
-	console.log(game);
+	// console.log(game);
 	if (isLegalMove(game,src,dest)) {
-		game.board[dest.x][dest.y] = game.board[src.x][src.y];
-		game.board[src.x][src.y] = nullpiece;
+		movePiece(src,dest,game);
 		if (game.turn == "WHITE") {
 			game.turn = "BLACK";
 		} else {
@@ -101,6 +100,11 @@ function makeMove(src, dest, game) {
 	} else {
 		console.log("move is not valid");
 	}
+}
+
+function movePiece(src, dest, game) {
+	game.board[dest.x][dest.y] = game.board[src.x][src.y];
+	game.board[src.x][src.y] = nullpiece;
 }
 
 function updatePGN(src, dest, game) {
