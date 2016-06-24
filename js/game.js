@@ -142,7 +142,7 @@ function printGame(game) {
 	if (inCheck(game)) {
 		console.log("\t" + game.turn + " KING in check");
 	} else {
-		console.log("\t" + game.turn + " KING safe");
+		console.log("\t" + game.turn + " KING is safe");
 	}
 	printPGN(game);
 	if (game.enPassant_allowedAt != null) {

@@ -2,7 +2,23 @@
 rules.js
 */
 
-function inCheck() {
+function inCheck(game) {
+	var sq = null;
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			if (game.board[i][j] != null && game.board[i][j].type == "KING" && game.board[i][j].color == game.turn) {
+				sq = {x:i,y:j};
+				break;
+			}
+		}
+	}
+	if (sq == null) {
+		if (game.turn == "WHITE") {
+			console.log("no BLACK king found on board");
+		} else {
+			console.log("no WHITE king found on board");
+		}
+	}
 	
 }
 
@@ -86,7 +102,7 @@ function removeChecks(moves,game) {
 function isPieceThreatened(sq,game) {
 	// console.log("isPieceThreatened(sq = " + sq.x + "," + sq.y + " , game)");
 	var moves = [];
-	moves = getKnightMoves(sq,game);
+	moves = getKnightThreats(sq,game);
 	for (var i = 0; i < moves.length; i++) {
 		try {
 			// console.log("trying move " + moves[i].src.x + "," + moves[i].src.y + " --> " + moves[i].dest.x + "," + moves[i].dest.y);
@@ -99,14 +115,14 @@ function isPieceThreatened(sq,game) {
 		}
 	}
 	// console.log("moves.length " + moves.length);
-	moves = getBishopMoves(sq,game);
+	moves = getBishopThreats(sq,game);
 	for (var i = 0; i < moves.length; i++) {
 		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && ((game.board[moves[i].dest.x][moves[i].dest.y].type == "BISHOP") || (game.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN")) && game.board[moves[i].dest.x][moves[i].dest.y].color == game.turn) {
 			return true;
 		}
 	}
 	// console.log("moves.length " + moves.length);
-	moves = getRookMoves(sq,game);
+	moves = getRookThreats(sq,game);
 	for (var i = 0; i < moves.length; i++) {
 		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && ((game.board[moves[i].dest.x][moves[i].dest.y].type == "ROOK") || (game.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN")) && game.board[moves[i].dest.x][moves[i].dest.y].color == game.turn) {
 			return true;
@@ -145,7 +161,7 @@ function isPieceThreatened(sq,game) {
 		}
 	}
 	// console.log("moves.length " + moves.length);
-	moves = getKingMoves(sq,game);
+	moves = getKingThreats(sq,game);
 	for (var i = 0; i < moves.length; i++) {
 		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KING" && game.board[moves[i].dest.x][moves[i].dest.y].color == game.turn) {
 			return true;
