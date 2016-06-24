@@ -8,6 +8,7 @@ function game(p1, p2, board, turn, record, move_count) {
 	this.board = BOARD_STANDARD;
 	this.turn = turn;
 	this.record = record;
+	this.fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 	this.move_count = move_count;
 	this.enPassant_allowedAt = null;
 }
@@ -85,6 +86,7 @@ function makeMove(src,dest,game) {
 	if (isLegalMove(src,dest,game)) {
 		updatePGN(src,dest,game);
 		movePiece(src,dest,game);
+		updateFEN(game);
 		game.move_count++;
 		printGame(game);
 	} else {
@@ -130,6 +132,11 @@ function updatePGN(src,dest,game) {
 	game.record[game.record.length] = new move(src,dest,notation);
 }
 
+function updateFEN(game) {
+	//TODO
+	document.getElementById('FEN').innerHTML = game.fen;
+}
+
 function printPGN(game) {
 	var pgn = "";
 	for (var i = 0; i < game.record.length; i++) {
@@ -142,7 +149,7 @@ function printGame(game) {
 	console.log("printGame()");
 	console.log("\t" + game.p1 + " vs " + game.p2);
 	console.log("\t" + game.turn + " turn");
-	console.log("\t" + game.move_count + " moves");
+	console.log("\t" + getLegalMoves(game).length + " moves");
 	if (inCheck(game)) {
 		console.log("\t" + game.turn + " KING in check");
 	} else {

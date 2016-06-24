@@ -18,6 +18,11 @@
 	<script type="text/javascript" src="./js/rules.js"></script>
 	<script type="text/javascript">
 
+		//write position testing code here
+
+
+
+
 		var game = new game("Player 1", "Player 2", "STANDARD","WHITE",[],0);
 
 		console.log(game);
@@ -63,7 +68,7 @@
 				} else {
 					var s = {x:7-src.y,y:src.x};
 					var d = {x:7-dest.y,y:dest.x};
-					console.log("makeMove(" + s.x + "," + s.y + " --> " + d.x + "," + d.y + ")");
+					// console.log("makeMove(" + s.x + "," + s.y + " --> " + d.x + "," + d.y + ")");
 					makeMove(s,d,game);
 					// printGame(game);
 				}
@@ -205,6 +210,10 @@
 				<h3 id="materialBalance">null</h3>
 			</div>
 
+		</div>
+
+		<div>
+			<h4 id="FEN"></h4>
 		</div>
 	</div>
 </body>

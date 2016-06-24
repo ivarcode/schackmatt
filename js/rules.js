@@ -31,7 +31,7 @@ function inCheck(game) {
 function isLegalMove(src,dest,game) {
 	// console.log("isLegalMove(" + src.x + "," + src.y + " --> " + dest.x + "," + dest.y + ")");
 	var moves = getLegalMoves(game);
-	console.log(moves.length + " legal moves");
+	// console.log(moves.length + " legal moves");
 	for (var i = 0; i < moves.length; i++) {
 		if (moves[i].src.x == src.x && moves[i].src.y == src.y &&
 			moves[i].dest.x == dest.x && moves[i].dest.y == dest.y) {
@@ -68,7 +68,7 @@ edits moves object directly
 */
 function removeChecks(moves,game) {
 	for (var i = 0; i < moves.length; i++) {
-		var g = {p1:game.p1,p2:game.p2,board:null,turn:game.turn,record:game.record,move_count:game.move_count,enPassant_allowedAt:game.enPassant_allowedAt};
+		var g = {p1:game.p1,p2:game.p2,board:null,turn:game.turn,record:game.record,fen:game.fen,move_count:game.move_count,enPassant_allowedAt:game.enPassant_allowedAt};
 		g.board = [];
 		for (var x = 0; x < 8; x++) {
 			g.board[x] = [];
