@@ -5,7 +5,7 @@ game.js
 function game(p1, p2, board, turn, record, move_count) {
 	this.p1 = p1;
 	this.p2 = p2;
-	this.board = BOARD_TEST;
+	this.board = BOARD_STANDARD;
 	this.turn = turn;
 	this.record = record;
 	this.move_count = move_count;
@@ -78,9 +78,9 @@ IMAGES.bKing.src = "./img/pieces/b_King.png";
 
 function makeMove(src,dest,game) {
 	try {
-		console.log("moving piece " + game.board[src.x][src.y].color + " " + game.board[src.x][src.y].type);
+		// console.log("moving piece " + game.board[src.x][src.y].color + " " + game.board[src.x][src.y].type);
 	} catch(e) {
-		console.log("ERR :: " + e.message);
+		// console.log("ERR :: " + e.message);
 	}
 	if (isLegalMove(src,dest,game)) {
 		updatePGN(src,dest,game);
@@ -139,9 +139,14 @@ function printGame(game) {
 	console.log("\t" + game.p1 + " vs " + game.p2);
 	console.log("\t" + game.turn + " turn");
 	console.log("\t" + game.move_count + " moves");
+	if (inCheck(game)) {
+		console.log("\t" + game.turn + " KING in check");
+	} else {
+		console.log("\t" + game.turn + " KING safe");
+	}
 	printPGN(game);
 	if (game.enPassant_allowedAt != null) {
-		console.log("enPassant_allowedAt " + game.enPassant_allowedAt.x + "," + game.enPassant_allowedAt.y);
+		console.log("\tenPassant_allowedAt " + game.enPassant_allowedAt.x + "," + game.enPassant_allowedAt.y);
 	} 
 	/*var printedBoard = "";
 	for (var i = 0; i < 8; i++) {
