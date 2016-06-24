@@ -3,18 +3,17 @@ rules.js
 */
 
 function isLegalMove(src,dest,game) {
-	console.log()
+	console.log("isLegalMove(" + src.x + "," + src.y + " --> " + dest.x + "," + dest.y + ")");
 	var moves = getLegalMoves(game);
-	// console.log("move " + src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
-	// console.log("number of legal moves = " + moves.length);
+	console.log(moves.length + " legal moves");
 	for (var i = 0; i < moves.length; i++) {
-		// console.log(moves[i].src.x + "," + moves[i].src.y + " --> " + moves[i].dest.x + "," + moves[i].dest.y);
 		if (moves[i].src.x == src.x && moves[i].src.y == src.y &&
 			moves[i].dest.x == dest.x && moves[i].dest.y == dest.y) {
-			// console.log("is legal move");
+			console.log("is legal move");
 			return true;
 		}
 	}
+	console.log("illegal move");
 	return false;
 }
 
@@ -34,7 +33,6 @@ function getLegalMoves(game) {
 			}
 		}
 	}
-	// console.log("legal moves length = " + moves.length);
 	removeChecks(moves,game);
 	return moves;
 }
@@ -44,7 +42,7 @@ edits moves object directly
 */
 function removeChecks(moves,game) {
 	for (var i = 0; i < moves.length; i++) {
-		var g = {p1:null,p2:null,board:null,turn:game.turn,record:null,move_count:null,enPassant_allowedAt:game.enPassant_allowedAt};
+		var g = {p1:game.p1,p2:game.p2,board:null,turn:game.turn,record:game.record,move_count:game.move_count,enPassant_allowedAt:game.enPassant_allowedAt};
 		g.board = [];
 		for (var x = 0; x < 8; x++) {
 			g.board[x] = [];
@@ -54,30 +52,26 @@ function removeChecks(moves,game) {
 				g.board[a][b] = game.board[a][b];
 			}
 		}
-		// console.log("turn is copying " + game.turn);
-		/*if (game.turn == "WHITE") {
-			g.turn == "WHITE";
-		} else { g.turn == "BLACK" }*/
-		// printGame(g);
 		movePiece(moves[i].src,moves[i].dest,g);
-		// printGame(g);
 		var sq = null;
 		for (var a = 0; a < 8; a++) {
 			for (var b = 0; b < 8; b++) {
 				if (g.board[a][b] != null && g.board[a][b].type == "KING" && g.board[a][b].color != g.turn) {
+					console.log("removing checks from " + g.board[a][b].color + " " + g.board[a][b].type + " on " + a + "," + b);
 					sq = {x:a,y:b};
 					break;
 				}
 			}
 		}
 		if (sq == null) {
-			console.log("no king found on board for " + game.turn);
+			if (game.turn == "WHITE") {
+				console.log("no BLACK king found on board");
+			} else {
+				console.log("no WHITE king found on board");
+			}
 		}
-		// console.log("sq == " + sq.x + "," + sq.y);
-		// printGame(g);
-		// removing move
 		if (isPieceThreatened(sq,g)) { 
-			// console.log("splicing " + sq.x + "," + sq.y);
+			console.log("splicing " + moves[i].src.x + "," + moves[i].src.y + " --> " + moves[i].dest.x + "," + moves[i].dest.y);
 			moves.splice(i,1);
 			i--;
 		}
@@ -86,8 +80,7 @@ function removeChecks(moves,game) {
 
 /*function detects whether the piece on sq is threatened by a piece on the opposing side*/
 function isPieceThreatened(sq,game) {
-	// console.log("isPieceThreatened(sq = " + sq.x + "," + sq.y + " , game)");
-	// printGame(game);
+	console.log("isPieceThreatened(sq = " + sq.x + "," + sq.y + " , game)");
 	var moves = [];
 	moves = getKnightMoves(sq,game);
 	for (var i = 0; i < moves.length; i++) {
@@ -97,86 +90,72 @@ function isPieceThreatened(sq,game) {
 		} catch(e) {
 			console.log("ERR :: " + e.message);
 		}
-		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KNIGHT") {
-			// console.log(game.board[moves[i].dest.x][moves[i].dest.y].color + " == " + game.turn);
-			if (game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
-				// console.log("true");
-				return true;
-			}
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KNIGHT" && game.board[moves[i].dest.x][moves[i].dest.y].color == game.turn) {
+			return true;
 		}
 	}
+	console.log("moves.length " + moves.length);
 	moves = getBishopMoves(sq,game);
 	for (var i = 0; i < moves.length; i++) {
-		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && ((game.board[moves[i].dest.x][moves[i].dest.y].type == "BISHOP") || (game.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN"))) {
-			// console.log(game.board[moves[i].dest.x][moves[i].dest.y].color + " == " + game.turn);
-			if (game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
-				// console.log("true");
-				return true;
-			}
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && ((game.board[moves[i].dest.x][moves[i].dest.y].type == "BISHOP") || (game.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN")) && game.board[moves[i].dest.x][moves[i].dest.y].color == game.turn) {
+			return true;
 		}
 	}
+	console.log("moves.length " + moves.length);
 	moves = getRookMoves(sq,game);
 	for (var i = 0; i < moves.length; i++) {
-		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && ((game.board[moves[i].dest.x][moves[i].dest.y].type == "ROOK") || (game.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN"))) {
-			// console.log(game.board[moves[i].dest.x][moves[i].dest.y].color + " == " + game.turn);
-			if (game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
-				// console.log("true");
-				return true;
-			}
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && ((game.board[moves[i].dest.x][moves[i].dest.y].type == "ROOK") || (game.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN")) && game.board[moves[i].dest.x][moves[i].dest.y].color == game.turn) {
+			return true;
 		}
 	}
-	if (game.turn == "WHITE") {
+	console.log("moves.length " + moves.length);
+	if (game.turn == "BLACK") {
 		try {
-			if (game.board[sq.x+1][sq.y+1].type == "PAWN" && game.board[sq.x+1][sq.y+1].color != game.turn) {
+			if (game.board[sq.x+1][sq.y+1].type == "PAWN" && game.board[sq.x+1][sq.y+1].color == game.turn) {
 				return true;
 			}
 		} catch(e) {
 			console.log("ERR :: " + e.message);
 		}
 		try {
-			if (game.board[sq.x+1][sq.y-1].type == "PAWN" && game.board[sq.x+1][sq.y-1].color != game.turn) {
+			if (game.board[sq.x+1][sq.y-1].type == "PAWN" && game.board[sq.x+1][sq.y-1].color == game.turn) {
 				return true;
 			}
 		} catch(e) {
 			console.log("ERR :: " + e.message);
 		}
-	} else /*turn == BLACK*/{
+	} else /*turn == WHITE*/{
 		try {
-			if (game.board[sq.x-1][sq.y+1].type == "PAWN" && game.board[sq.x-1][sq.y+1].color != game.turn) {
+			if (game.board[sq.x-1][sq.y+1].type == "PAWN" && game.board[sq.x-1][sq.y+1].color == game.turn) {
 				return true;
 			}
 		} catch(e) {
 			console.log("ERR :: " + e.message);
 		}
 		try {
-			if (game.board[sq.x-1][sq.y-1].type == "PAWN" && game.board[sq.x-1][sq.y-1].color != game.turn) {
+			if (game.board[sq.x-1][sq.y-1].type == "PAWN" && game.board[sq.x-1][sq.y-1].color == game.turn) {
 				return true;
 			}
 		} catch(e) {
 			console.log("ERR :: " + e.message);
 		}
 	}
+	console.log("moves.length " + moves.length);
 	moves = getKingMoves(sq,game);
 	for (var i = 0; i < moves.length; i++) {
-		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KING") {
-			// console.log(game.board[moves[i].dest.x][moves[i].dest.y].color + " == " + game.turn);
-			if (game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
-				// console.log("true");
-				return true;
-			}
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KING" && game.board[moves[i].dest.x][moves[i].dest.y].color == game.turn) {
+			return true;
 		}
 	}
-	// console.log("false");
+	console.log("moves.length " + moves.length);
 	return false;
 }
 
 function getMovesFromSq(sq,game) {
-	// console.log("getMovesFromSq " + sq.x + "," + sq.y);
 	var piece = game.board[sq.x][sq.y];
 	if (piece == null) {
 		return [];
 	}
-	// console.log(piece.color + " " + piece.type);
 	if (piece.type == "KING") {
 		return getKingMoves(sq,game);
 	} else if (piece.type == "QUEEN") {
@@ -194,7 +173,6 @@ function getMovesFromSq(sq,game) {
 }
 
 function getKingMoves(sq,game) {
-	// console.log("getKingMoves sq = " + sq.x + "," + sq.y);
 	var moves = [];
 	var list = [];
 	list[list.length] = {x:sq.x+1,y:sq.y};
@@ -205,20 +183,34 @@ function getKingMoves(sq,game) {
 	list[list.length] = {x:sq.x-1,y:sq.y-1};
 	list[list.length] = {x:sq.x,y:sq.y+1};
 	list[list.length] = {x:sq.x,y:sq.y-1};
-	// console.log(moves.length + " moves length");
-	// console.log(list.length + " list length");
 	for (var i = 0; i < list.length; i++) {
 		if (list[i].x > -1 && list[i].x < 8 && list[i].y > -1 && list[i].y < 8) {
-			// console.log("adding new move to the moves [] ");
-			// console.log(moves.length);
 			if (game.board[list[i].x][list[i].y] == null || game.board[list[i].x][list[i].y].color != game.turn) {
 				moves[moves.length] = {src:sq,dest:list[i],notation:null};
 			}
-			// console.log(moves.length);
 		}
 	}
-	// moves[moves.length] = new move(sq,sq,getNotation(sq,sq,game));
-	// console.log("king moves length = " + moves.length);
+	return moves;
+}
+
+function getKingThreats(sq,game) {
+	var moves = [];
+	var list = [];
+	list[list.length] = {x:sq.x+1,y:sq.y};
+	list[list.length] = {x:sq.x+1,y:sq.y+1};
+	list[list.length] = {x:sq.x+1,y:sq.y-1};
+	list[list.length] = {x:sq.x-1,y:sq.y};
+	list[list.length] = {x:sq.x-1,y:sq.y+1};
+	list[list.length] = {x:sq.x-1,y:sq.y-1};
+	list[list.length] = {x:sq.x,y:sq.y+1};
+	list[list.length] = {x:sq.x,y:sq.y-1};
+	for (var i = 0; i < list.length; i++) {
+		if (list[i].x > -1 && list[i].x < 8 && list[i].y > -1 && list[i].y < 8) {
+			if (game.board[list[i].x][list[i].y] == null || game.board[list[i].x][list[i].y].color == game.turn) {
+				moves[moves.length] = {src:sq,dest:list[i],notation:null};
+			}
+		}
+	}
 	return moves;
 }
 
@@ -243,12 +235,31 @@ function getKnightMoves(sq,game) {
 	return moves;
 }
 
+function getKnightThreats(sq,game) {
+	var moves = [];
+	var list = [];
+	list[list.length] = {x:sq.x+1,y:sq.y+2};
+	list[list.length] = {x:sq.x+1,y:sq.y-2};
+	list[list.length] = {x:sq.x+2,y:sq.y+1};
+	list[list.length] = {x:sq.x+2,y:sq.y-1};
+	list[list.length] = {x:sq.x-1,y:sq.y+2};
+	list[list.length] = {x:sq.x-1,y:sq.y-2};
+	list[list.length] = {x:sq.x-2,y:sq.y+1};
+	list[list.length] = {x:sq.x-2,y:sq.y-1};
+	for (var i = 0; i < list.length; i++) {
+		if (list[i].x > -1 && list[i].x < 8 && list[i].y > -1 && list[i].y < 8) {
+			if (game.board[list[i].x][list[i].y] == null || game.board[list[i].x][list[i].y].color == game.turn) {
+				moves[moves.length] = {src:sq,dest:list[i],notation:null};
+			}
+		}
+	}
+	return moves;
+}
+
 function getPawnMoves(sq,game) {
-	console.log("getPawnMoves...");
 	var moves = [];
 	if (game.turn == "WHITE") {
 		if (game.board[sq.x+1][sq.y] == null) {
-			// console.log("" + sq.x + "," + sq.y + " --> " + (sq.x+1) + "," + sq.y);
 			moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y},notation:null};
 		}
 		if (sq.x == 1 && game.board[sq.x+2][sq.y] == null && game.board[sq.x+1][sq.y] == null) {
@@ -258,7 +269,6 @@ function getPawnMoves(sq,game) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y+1},notation:null};
 		}
 		if (sq.x+1 < 8 && sq.y-1 > -1 && game.board[sq.x+1][sq.y-1] != null && game.board[sq.x+1][sq.y-1].color != game.turn) {
-			// console.log("" + sq.x + "," + sq.y + " --> " + (sq.x+1) + "," + (sq.y-1));
 			moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y-1},notation:null};
 		}
 		if (game.enPassant_allowedAt != null) {
@@ -270,7 +280,6 @@ function getPawnMoves(sq,game) {
 		}
 	} else /*if turn == BLACK*/{
 		if (game.board[sq.x-1][sq.y] == null) {
-			// console.log("" + sq.x + "," + sq.y + " --> " + (sq.x+1) + "," + sq.y);
 			moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y},notation:null};
 		}
 		if (sq.x == 6 && game.board[sq.x-2][sq.y] == null && game.board[sq.x-1][sq.y] == null) {
@@ -280,7 +289,6 @@ function getPawnMoves(sq,game) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y+1},notation:null};
 		}
 		if (sq.x-1 < 8 && sq.y-1 > -1 && game.board[sq.x-1][sq.y-1] != null && game.board[sq.x-1][sq.y-1].color != game.turn) {
-			// console.log("" + sq.x + "," + sq.y + " --> " + (sq.x+1) + "," + (sq.y-1));
 			moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y-1},notation:null};
 		}
 		if (game.enPassant_allowedAt != null) {
@@ -291,7 +299,6 @@ function getPawnMoves(sq,game) {
 			}
 		}
 	}
-	console.log("getPawnMoves length " + moves.length);
 	return moves;
 }
 
@@ -532,7 +539,6 @@ function getNotation(src,dest,game) {
 	if (piece == null) {
 		return null;
 	}
-	// console.log(piece.color + " " + piece.type);
 	if (piece.type == "KING") {
 		notation += "K";
 	} else if (piece.type == "QUEEN") {

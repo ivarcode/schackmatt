@@ -50,13 +50,13 @@ var BOARD_STANDARD = [
 ];
 
 var BOARD_TEST = [
-[wKing,wQueen,wBishop,wKnight,nullpiece,nullpiece,nullpiece,nullpiece],
-[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,wPawn,nullpiece],
+[wKing,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
 [nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
-[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,bPawn],
-[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,wPawn,nullpiece,nullpiece],
 [nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
-[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,bPawn,nullpiece],
+[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
+[nullpiece,wPawn,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
+[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
+[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
 [bKing,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece]
 ];
 
@@ -77,37 +77,27 @@ IMAGES.bKing.src = "./img/pieces/b_King.png";
 
 
 function makeMove(src,dest,game) {
-	// console.log(game);
-	console.log("moving piece " + game.board[src.x][src.y].color + " " + game.board[src.x][src.y].type);
+	try {
+		console.log("moving piece " + game.board[src.x][src.y].color + " " + game.board[src.x][src.y].type);
+	} catch(e) {
+		console.log("ERR :: " + e.message);
+	}
 	if (isLegalMove(src,dest,game)) {
 		updatePGN(src,dest,game);
 		movePiece(src,dest,game);
 		game.move_count++;
 		printGame(game);
-		// if (game.turn == "WHITE") {
-		// 	game.turn = "BLACK";
-		// } else {
-		// 	game.turn = "WHITE";
-		// }
-		// console.log(game.turn + " turn");
 	} else {
-		console.log("move is not valid");
+		// console.log("move is not valid");
 	}
 }
 
 function movePiece(src,dest,game) {
-	// console.log("movePiece(src = " + src.x + "," + src.y + " dest = " + dest.x + "," + dest.y + ")");
 	if (game.enPassant_allowedAt != null && dest.x == game.enPassant_allowedAt.x && dest.y == game.enPassant_allowedAt.y && game.board[src.x][src.y].type == "PAWN") {
-		// console.log(dest.x);
 		if (dest.x == 5) {
-			// console.log("capping piece " + 4 + "," + dest.y);
 			game.board[4][dest.y] = nullpiece;
-			// console.log("on rank 5");
 		} else if (dest.x == 2) {
 			game.board[3][dest.y] = nullpiece;
-			// console.log("on rank 2");
-		} else {
-			// console.log("not taking on ranks 5 or 2");
 		}
 		if (game.turn == "WHITE") {
 			game.board[dest.x][dest.y] = wPawn;
@@ -117,34 +107,23 @@ function movePiece(src,dest,game) {
 		game.board[src.x][src.y] = nullpiece;
 		game.enPassant_allowedAt = null;
 	} else {
-		// console.log(" - movePiece(src = " + src.x + "," + src.y + " dest = " + dest.x + "," + dest.y + ")");
-		// console.log(game.board[src.x][src.y]);
-		// console.log(game.board[dest.x][dest.y]);
-		// printGame(game);
 		game.enPassant_allowedAt = null;
 		if (game.board[src.x][src.y].type == "PAWN" && Math.abs(dest.x-src.x) == 2) {
-			// console.log(":: " + src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
 			game.enPassant_allowedAt = {x:(src.x+dest.x)/2,y:src.y};
 		}
-		// console.log("game before move");
-		// printGame(game);
 		game.board[dest.x][dest.y] = game.board[src.x][src.y];
 		game.board[src.x][src.y] = nullpiece;
-		// printGame(game);
 	}
 	if (game.turn == "WHITE") {
 		game.turn = "BLACK";
 	} else {
 		game.turn = "WHITE";
 	}
-	// printGame(game);
 }
 
 function updatePGN(src,dest,game) {
-	// console.log(game.record.length);
 	var notation = getNotation(src,dest,game);
 	game.record[game.record.length] = new move(src,dest,notation);
-	//printPGN(game);
 }
 
 function printPGN(game) {
