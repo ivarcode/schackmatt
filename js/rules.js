@@ -415,6 +415,119 @@ function getQueenMoves(sq,game) {
 	return moves;
 }
 
+function getQueenThreats(sq,game) {
+	var moves = [];
+	var a = sq.x;
+	var b = sq.y;
+	while (a+1 < 8) {
+		a++;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a-1 > -1) {
+		a--;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (b+1 < 8) {
+		b++;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (b-1 > -1) {
+		b--;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a+1 < 8 && b+1 < 8) {
+		a++;
+		b++;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a+1 < 8 && b-1 > -1) {
+		a++;
+		b--;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a-1 > -1 && b+1 < 8) {
+		a--;
+		b++;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a-1 > -1 && b-1 > -1) {
+		a--;
+		b--;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	return moves;
+}
+
 function getRookMoves(sq,game) {
 	var moves = [];
 	var a = sq.x;
@@ -461,6 +574,63 @@ function getRookMoves(sq,game) {
 	while (b-1 > -1) {
 		b--;
 		if (game.board[a][b] == null || game.board[a][b].color != game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	return moves;
+}
+
+function getRookThreats(sq,game) {
+	var moves = [];
+	var a = sq.x;
+	var b = sq.y;
+	while (a+1 < 8) {
+		a++;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a-1 > -1) {
+		a--;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (b+1 < 8) {
+		b++;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (b-1 > -1) {
+		b--;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
 			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
 			if (game.board[a][b] != null) {
 				break;
@@ -522,6 +692,67 @@ function getBishopMoves(sq,game) {
 		a--;
 		b--;
 		if (game.board[a][b] == null || game.board[a][b].color != game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	return moves;
+}
+
+function getBishopThreats(sq,game) {
+	var moves = [];
+	var a = sq.x;
+	var b = sq.y;
+	while (a+1 < 8 && b+1 < 8) {
+		a++;
+		b++;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a+1 < 8 && b-1 > -1) {
+		a++;
+		b--;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a-1 > -1 && b+1 < 8) {
+		a--;
+		b++;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
+			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
+			if (game.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a-1 > -1 && b-1 > -1) {
+		a--;
+		b--;
+		if (game.board[a][b] == null || game.board[a][b].color == game.turn) {
 			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
 			if (game.board[a][b] != null) {
 				break;
