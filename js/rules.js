@@ -2,10 +2,11 @@
 rules.js
 */
 
-function isLegalMove(game,src,dest) {
+function isLegalMove(src,dest,game) {
+	console.log()
 	var moves = getLegalMoves(game);
-	console.log("move " + src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
-	console.log("number of legal moves = " + moves.length);
+	// console.log("move " + src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
+	// console.log("number of legal moves = " + moves.length);
 	for (var i = 0; i < moves.length; i++) {
 		// console.log(moves[i].src.x + "," + moves[i].src.y + " --> " + moves[i].dest.x + "," + moves[i].dest.y);
 		if (moves[i].src.x == src.x && moves[i].src.y == src.y &&
@@ -41,7 +42,7 @@ function getLegalMoves(game) {
 /*function removes moves from the list that put the player in game in self-check
 edits moves object directly
 */
-function removeChecks(moves, game) {
+function removeChecks(moves,game) {
 	for (var i = 0; i < moves.length; i++) {
 		var g = {p1:null,p2:null,board:null,turn:game.turn,record:null,move_count:null,enPassant_allowedAt:game.enPassant_allowedAt};
 		g.board = [];
@@ -63,7 +64,7 @@ function removeChecks(moves, game) {
 		var sq = null;
 		for (var a = 0; a < 8; a++) {
 			for (var b = 0; b < 8; b++) {
-				if (g.board[a][b] != null && g.board[a][b].type == "KING" && g.board[a][b].color == g.turn) {
+				if (g.board[a][b] != null && g.board[a][b].type == "KING" && g.board[a][b].color != g.turn) {
 					sq = {x:a,y:b};
 					break;
 				}

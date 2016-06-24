@@ -12,48 +12,6 @@ function game(p1, p2, board, turn, record, move_count) {
 	this.enPassant_allowedAt = null;
 }
 
-function printGame(game) {
-	console.log(game.p1 + " vs " + game.p2);
-	console.log(game.turn + " turn");
-	console.log(game.move_count + " moves");
-	console.log(game.record);
-	if (game.enPassant_allowedAt != null) {
-		console.log("enPassant_allowedAt " + game.enPassant_allowedAt.x + "," + game.enPassant_allowedAt.y);
-	} 
-	var printedBoard = "";
-	for (var i = 0; i < 8; i++) {
-		for (var j = 0; j < 8; j++) {
-			printedBoard += "[";
-			try {
-				var piecetype = game.board[7-i][j].type;
-				if (piecetype == "KING") {
-					printedBoard += "K";
-				} else if (piecetype == "QUEEN") {
-					printedBoard += "Q";
-				} else if (piecetype == "BISHOP") {
-					printedBoard += "B";
-				} else if (piecetype == "KNIGHT") {
-					printedBoard += "N";
-				} else if (piecetype == "ROOK") {
-					printedBoard += "R";
-				} else if (piecetype == "PAWN") {
-					printedBoard += "P";
-				}
-			} catch(e) {
-				// console.log("ERR :: " + e.message);
-				if (game.enPassant_allowedAt != null && game.enPassant_allowedAt.x == 7-i && game.enPassant_allowedAt.y == j) {
-					printedBoard += "E";//en passant sq key
-				} else {
-					printedBoard += " ";//no piece
-				}
-			}			
-			printedBoard += "]";
-		}
-		printedBoard += "\n";
-	}
-	console.log(printedBoard);
-}
-
 function move(src, dest, notation) {
 	this.src = src;
 	this.dest = dest;
@@ -118,12 +76,13 @@ IMAGES.bQueen.src = "./img/pieces/b_Queen.png";
 IMAGES.bKing.src = "./img/pieces/b_King.png";
 
 
-function makeMove(src, dest, game) {
+function makeMove(src,dest,game) {
 	// console.log(game);
 	console.log("moving piece " + game.board[src.x][src.y].color + " " + game.board[src.x][src.y].type);
-	if (isLegalMove(game,src,dest)) {
+	if (isLegalMove(src,dest,game)) {
 		updatePGN(src,dest,game);
 		movePiece(src,dest,game);
+		game.move_count++;
 		printGame(game);
 		// if (game.turn == "WHITE") {
 		// 	game.turn = "BLACK";
@@ -131,25 +90,24 @@ function makeMove(src, dest, game) {
 		// 	game.turn = "WHITE";
 		// }
 		// console.log(game.turn + " turn");
-		game.move_count++;
 	} else {
 		console.log("move is not valid");
 	}
 }
 
-function movePiece(src, dest, game) {
-	console.log("movePiece(src = " + src.x + "," + src.y + " dest = " + dest.x + "," + dest.y + ")");
+function movePiece(src,dest,game) {
+	// console.log("movePiece(src = " + src.x + "," + src.y + " dest = " + dest.x + "," + dest.y + ")");
 	if (game.enPassant_allowedAt != null && dest.x == game.enPassant_allowedAt.x && dest.y == game.enPassant_allowedAt.y && game.board[src.x][src.y].type == "PAWN") {
-		console.log(dest.x);
+		// console.log(dest.x);
 		if (dest.x == 5) {
-			console.log("capping piece " + 4 + "," + dest.y);
+			// console.log("capping piece " + 4 + "," + dest.y);
 			game.board[4][dest.y] = nullpiece;
-			console.log("on rank 5");
+			// console.log("on rank 5");
 		} else if (dest.x == 2) {
 			game.board[3][dest.y] = nullpiece;
-			console.log("on rank 2");
+			// console.log("on rank 2");
 		} else {
-			console.log("not taking on ranks 5 or 2");
+			// console.log("not taking on ranks 5 or 2");
 		}
 		if (game.turn == "WHITE") {
 			game.board[dest.x][dest.y] = wPawn;
@@ -159,13 +117,13 @@ function movePiece(src, dest, game) {
 		game.board[src.x][src.y] = nullpiece;
 		game.enPassant_allowedAt = null;
 	} else {
-		console.log(" - movePiece(src = " + src.x + "," + src.y + " dest = " + dest.x + "," + dest.y + ")");
-		console.log(game.board[src.x][src.y]);
-		console.log(game.board[dest.x][dest.y]);
+		// console.log(" - movePiece(src = " + src.x + "," + src.y + " dest = " + dest.x + "," + dest.y + ")");
+		// console.log(game.board[src.x][src.y]);
+		// console.log(game.board[dest.x][dest.y]);
 		// printGame(game);
 		game.enPassant_allowedAt = null;
 		if (game.board[src.x][src.y].type == "PAWN" && Math.abs(dest.x-src.x) == 2) {
-			console.log(":: " + src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
+			// console.log(":: " + src.x + "," + src.y + " --> " + dest.x + "," + dest.y);
 			game.enPassant_allowedAt = {x:(src.x+dest.x)/2,y:src.y};
 		}
 		// console.log("game before move");
@@ -182,11 +140,11 @@ function movePiece(src, dest, game) {
 	// printGame(game);
 }
 
-function updatePGN(src, dest, game) {
+function updatePGN(src,dest,game) {
 	// console.log(game.record.length);
 	var notation = getNotation(src,dest,game);
 	game.record[game.record.length] = new move(src,dest,notation);
-	printPGN(game);
+	//printPGN(game);
 }
 
 function printPGN(game) {
@@ -194,5 +152,48 @@ function printPGN(game) {
 	for (var i = 0; i < game.record.length; i++) {
 		pgn += game.record[i].notation + " ";
 	}
-	console.log("PGN :: " + pgn);
+	console.log("\tPGN :: " + pgn);
+}
+
+function printGame(game) {
+	console.log("printGame()");
+	console.log("\t" + game.p1 + " vs " + game.p2);
+	console.log("\t" + game.turn + " turn");
+	console.log("\t" + game.move_count + " moves");
+	printPGN(game);
+	if (game.enPassant_allowedAt != null) {
+		console.log("enPassant_allowedAt " + game.enPassant_allowedAt.x + "," + game.enPassant_allowedAt.y);
+	} 
+	/*var printedBoard = "";
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			printedBoard += "[";
+			try {
+				var piecetype = game.board[7-i][j].type;
+				if (piecetype == "KING") {
+					printedBoard += "K";
+				} else if (piecetype == "QUEEN") {
+					printedBoard += "Q";
+				} else if (piecetype == "BISHOP") {
+					printedBoard += "B";
+				} else if (piecetype == "KNIGHT") {
+					printedBoard += "N";
+				} else if (piecetype == "ROOK") {
+					printedBoard += "R";
+				} else if (piecetype == "PAWN") {
+					printedBoard += "P";
+				}
+			} catch(e) {
+				// console.log("ERR :: " + e.message);
+				if (game.enPassant_allowedAt != null && game.enPassant_allowedAt.x == 7-i && game.enPassant_allowedAt.y == j) {
+					printedBoard += "E";//en passant sq key
+				} else {
+					printedBoard += " ";//no piece
+				}
+			}			
+			printedBoard += "]";
+		}
+		printedBoard += "\n";
+	}
+	console.log(printedBoard);*/
 }
