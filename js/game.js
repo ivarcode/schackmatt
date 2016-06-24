@@ -114,6 +114,10 @@ function movePiece(src,dest,game) {
 		game.board[dest.x][dest.y] = game.board[src.x][src.y];
 		game.board[src.x][src.y] = nullpiece;
 	}
+	switchTurn(game);
+}
+
+function switchTurn(game) {
 	if (game.turn == "WHITE") {
 		game.turn = "BLACK";
 	} else {

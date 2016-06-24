@@ -19,7 +19,13 @@ function inCheck(game) {
 			console.log("no WHITE king found on board");
 		}
 	}
-	
+	switchTurn(game);
+	if (isPieceThreatened(sq,game)) {
+		switchTurn(game);
+		return true;
+	}
+	switchTurn(game);
+	return false;
 }
 
 function isLegalMove(src,dest,game) {
