@@ -133,7 +133,65 @@ function updatePGN(src,dest,game) {
 }
 
 function updateFEN(game) {
-	//TODO
+	var newFEN = "";
+	var inc = 0;
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			if (game.board[7-i][j] == null) {
+				inc++;
+			} else {
+				if (inc > 0) {
+					newFEN += inc;
+					inc = 0;
+				}
+				if (game.board[7-i][j].color == "WHITE") {
+					if (game.board[7-i][j].type == "KING") {
+						newFEN += "K";
+					} else if (game.board[7-i][j].type == "QUEEN") {
+						newFEN += "Q";
+					} else if (game.board[7-i][j].type == "BISHOP") {
+						newFEN += "B";
+					} else if (game.board[7-i][j].type == "KNIGHT") {
+						newFEN += "N";
+					} else if (game.board[7-i][j].type == "ROOK") {
+						newFEN += "R";
+					} else if (game.board[7-i][j].type == "PAWN") {
+						newFEN += "P";
+					}
+				} else {
+					if (game.board[7-i][j].type == "KING") {
+						newFEN += "k";
+					} else if (game.board[7-i][j].type == "QUEEN") {
+						newFEN += "q";
+					} else if (game.board[7-i][j].type == "BISHOP") {
+						newFEN += "b";
+					} else if (game.board[7-i][j].type == "KNIGHT") {
+						newFEN += "n";
+					} else if (game.board[7-i][j].type == "ROOK") {
+						newFEN += "r";
+					} else if (game.board[7-i][j].type == "PAWN") {
+						newFEN += "p";
+					}
+				}
+			}
+		}
+		if (inc > 0) {
+			newFEN += inc;
+			inc = 0;
+		}
+		if (i != 7) {
+			newFEN += "/";
+		}
+	}
+	newFEN += " ";
+	if (game.turn == "WHITE") {
+		newFEN += "w";
+	} else {
+		newFEN += "b";
+	}
+	newFEN += " ";
+
+	game.fen = newFEN;
 	document.getElementById('FEN').innerHTML = game.fen;
 }
 
