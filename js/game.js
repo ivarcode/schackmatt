@@ -102,6 +102,53 @@ function makeMove(src,dest,game) {
 }
 
 function movePiece(src,dest,game) {
+	if (game.board[src.x][src.y].type == "KING") {
+		if (game.turn == "WHITE") {
+			if (game.castling[0] || game.castling[1]) {
+				game.castling[0] = false;
+				game.castling[1] = false;
+				if (src.x == dest.x && src.y == dest.y+2) {
+					game.board[src.x][5] = game.board[src.x][7];
+					game.board[src.x][7] = null;
+				} else if (src.x == dest.x && src.y == dest.y-2) {
+					game.board[src.x][3] = game.board[src.x][0];
+					game.board[src.x][0] = null;
+				}
+			}
+		} else {
+			if (game.castling[2] || game.castling[3]) {
+				game.castling[2] = false;
+				game.castling[3] = false;
+				if (src.x == dest.x && src.y == dest.y+2) {
+					game.board[src.x][5] = game.board[src.x][7];
+					game.board[src.x][7] = null;
+				} else if (src.x == dest.x && src.y == dest.y-2) {
+					game.board[src.x][3] = game.board[src.x][0];
+					game.board[src.x][0] = null;
+				}
+			}
+		}
+	}
+	if ((src.x == 0 && src.y == 0) || (dest.x == 0 && dest.y == 0)) {
+		if (game.castling[1]) {
+			game.castling[1] = false;
+		}
+	}
+	if ((src.x == 0 && src.y == 7) || (dest.x == 0 && dest.y == 7)) {
+		if (game.castling[0]) {
+			game.castling[0] = false;
+		}
+	}
+	if ((src.x == 7 && src.y == 0) || (dest.x == 7 && dest.y == 0)) {
+		if (game.castling[3]) {
+			game.castling[3] = false;
+		}
+	}
+	if ((src.x == 7 && src.y == 7) || (dest.x == 7 && dest.y == 7)) {
+		if (game.castling[2]) {
+			game.castling[2] = false;
+		}
+	}
 	if (game.enPassant_allowedAt != null && dest.x == game.enPassant_allowedAt.x && dest.y == game.enPassant_allowedAt.y && game.board[src.x][src.y].type == "PAWN") {
 		if (dest.x == 5) {
 			game.board[4][dest.y] = nullpiece;
@@ -122,9 +169,6 @@ function movePiece(src,dest,game) {
 		}
 		game.board[dest.x][dest.y] = game.board[src.x][src.y];
 		game.board[src.x][src.y] = nullpiece;
-	}
-	if (game.board[src.x][src.y].type == "KING") {
-		
 	}
 	switchTurn(game);
 }
