@@ -2,14 +2,19 @@
 game.js
 */
 
-function game(p1, p2, board, turn, record, move_count) {
+function game(p1, p2, board, record) {
 	this.p1 = p1;
 	this.p2 = p2;
 	this.board = BOARD_STANDARD;
-	this.turn = turn;
+	this.turn = "WHITE";
 	this.record = record;
 	this.fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-	this.move_count = move_count;
+	this.castling = [];
+	for (var i = 0; i < 4; i++) {
+		this.castling[i] = 1;
+	}
+	this.halfmove = 0;
+	this.move_count = 1;
 	this.enPassant_allowedAt = null;
 }
 
@@ -86,8 +91,10 @@ function makeMove(src,dest,game) {
 	if (isLegalMove(src,dest,game)) {
 		updatePGN(src,dest,game);
 		movePiece(src,dest,game);
+		if (game.turn == "WHITE") {
+			game.move_count++;
+		}
 		updateFEN(game);
-		game.move_count++;
 		printGame(game);
 	} else {
 		// console.log("move is not valid");
@@ -190,6 +197,32 @@ function updateFEN(game) {
 		newFEN += "b";
 	}
 	newFEN += " ";
+	if (game.castling[0] == 1) {
+		newFEN += "K";
+	}
+	if (game.castling[1] == 1) {
+		newFEN += "Q";
+	}
+	if (game.castling[2] == 1) {
+		newFEN += "k";
+	}
+	if (game.castling[3] == 1) {
+		newFEN += "q";
+	} else {
+		if (game.castling[0] == 0 && game.castling[1] == 0 && game.castling[2] == 0 && game.castling[3] == 0) {
+			newFEN += "-";
+		}
+	}
+	newFEN += " ";
+	if (game.enPassant_allowedAt != null) {
+		newFEN += pairToSq(game.enPassant_allowedAt);
+	} else {
+		newFEN += "-";
+	}
+	newFEN += " ";
+	newFEN += game.halfmove;
+	newFEN += " ";
+	newFEN += game.move_count;
 
 	game.fen = newFEN;
 	document.getElementById('FEN').innerHTML = game.fen;

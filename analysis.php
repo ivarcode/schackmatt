@@ -23,7 +23,7 @@
 
 
 
-		var game = new game("Player 1", "Player 2", "STANDARD","WHITE",[],0);
+		var game = new game("Player 1", "Player 2", "STANDARD",[]);
 
 		console.log(game);
 		printGame(game);

@@ -68,7 +68,7 @@ edits moves object directly
 */
 function removeChecks(moves,game) {
 	for (var i = 0; i < moves.length; i++) {
-		var g = {p1:game.p1,p2:game.p2,board:null,turn:game.turn,record:game.record,fen:game.fen,move_count:game.move_count,enPassant_allowedAt:game.enPassant_allowedAt};
+		var g = {p1:game.p1,p2:game.p2,board:null,turn:game.turn,record:game.record,fen:game.fen,move_count:game.move_count,enPassant_allowedAt:game.enPassant_allowedAt,halfmove:game.halfmove,castling:game.castling};
 		g.board = [];
 		for (var x = 0; x < 8; x++) {
 			g.board[x] = [];
