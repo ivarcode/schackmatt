@@ -20,7 +20,7 @@ function inCheck(game) {
 		}
 	}
 	switchTurn(game);
-	if (isPieceThreatened(sq,game)) {
+	if (isSqThreatened(sq,game)) {
 		switchTurn(game);
 		return true;
 	}
@@ -39,7 +39,7 @@ function isLegalMove(src,dest,game) {
 			return true;
 		}
 	}
-	console.log(src.x + "," + src.y + " --> " + dest.x + "," + dest.y + " is an illegal move");
+	console.log(getNotation(src,dest,game) + " is an illegal move");
 	return false;
 }
 
@@ -96,7 +96,7 @@ function removeChecks(moves,game) {
 				console.log("no WHITE king found on board");
 			}
 		}
-		if (isPieceThreatened(sq,g)) { 
+		if (isSqThreatened(sq,g)) { 
 			// console.log("splicing " + moves[i].src.x + "," + moves[i].src.y + " --> " + moves[i].dest.x + "," + moves[i].dest.y);
 			moves.splice(i,1);
 			i--;
@@ -105,8 +105,8 @@ function removeChecks(moves,game) {
 }
 
 /*function detects whether the piece on sq is threatened by a piece on the opposing side*/
-function isPieceThreatened(sq,game) {
-	// console.log("isPieceThreatened(sq = " + sq.x + "," + sq.y + " , game)");
+function isSqThreatened(sq,game) {
+	// console.log("isSqThreatened(sq = " + sq.x + "," + sq.y + " , game)");
 	var moves = [];
 	moves = getKnightThreats(sq,game);
 	for (var i = 0; i < moves.length; i++) {
@@ -177,6 +177,78 @@ function isPieceThreatened(sq,game) {
 	return false;
 }
 
+function isSqThreatened2(sq,game) {
+	// console.log("isSqThreatened(sq = " + sq.x + "," + sq.y + " , game)");
+	var moves = [];
+	moves = getKnightThreats(sq,game);
+	for (var i = 0; i < moves.length; i++) {
+		try {
+			// console.log("trying move " + moves[i].src.x + "," + moves[i].src.y + " --> " + moves[i].dest.x + "," + moves[i].dest.y);
+			// console.log(game.board[moves[i].dest.x][moves[i].dest.y].type + game.board[moves[i].dest.x][moves[i].dest.y].color);
+		} catch(e) {
+			console.log("ERR :: " + e.message);
+		}
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KNIGHT" && game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
+			return true;
+		}
+	}
+	// console.log("moves.length " + moves.length);
+	moves = getBishopThreats(sq,game);
+	for (var i = 0; i < moves.length; i++) {
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && ((game.board[moves[i].dest.x][moves[i].dest.y].type == "BISHOP") || (game.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN")) && game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
+			return true;
+		}
+	}
+	// console.log("moves.length " + moves.length);
+	moves = getRookThreats(sq,game);
+	for (var i = 0; i < moves.length; i++) {
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && ((game.board[moves[i].dest.x][moves[i].dest.y].type == "ROOK") || (game.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN")) && game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
+			return true;
+		}
+	}
+	// console.log("moves.length " + moves.length);
+	if (game.turn == "BLACK") {
+		try {
+			if (game.board[sq.x+1][sq.y+1].type == "PAWN" && game.board[sq.x+1][sq.y+1].color != game.turn) {
+				return true;
+			}
+		} catch(e) {
+			// console.log("ERR :: " + e.message);
+		}
+		try {
+			if (game.board[sq.x+1][sq.y-1].type == "PAWN" && game.board[sq.x+1][sq.y-1].color != game.turn) {
+				return true;
+			}
+		} catch(e) {
+			// console.log("ERR :: " + e.message);
+		}
+	} else /*turn == WHITE*/{
+		try {
+			if (game.board[sq.x-1][sq.y+1].type == "PAWN" && game.board[sq.x-1][sq.y+1].color != game.turn) {
+				return true;
+			}
+		} catch(e) {
+			// console.log("ERR :: " + e.message);
+		}
+		try {
+			if (game.board[sq.x-1][sq.y-1].type == "PAWN" && game.board[sq.x-1][sq.y-1].color != game.turn) {
+				return true;
+			}
+		} catch(e) {
+			// console.log("ERR :: " + e.message);
+		}
+	}
+	// console.log("moves.length " + moves.length);
+	moves = getKingThreats(sq,game);
+	for (var i = 0; i < moves.length; i++) {
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KING" && game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
+			return true;
+		}
+	}
+	// console.log("moves.length " + moves.length);
+	return false;
+}
+
 function getMovesFromSq(sq,game) {
 	var piece = game.board[sq.x][sq.y];
 	if (piece == null) {
@@ -215,6 +287,22 @@ function getKingMoves(sq,game) {
 				moves[moves.length] = {src:sq,dest:list[i],notation:null};
 			}
 		}
+	}
+	if (sq.x == 0 && sq.y == 4 && game.turn == "WHITE" && game.castling[0] && game.board[sq.x][sq.y+1] == null && !isSqThreatened2({x:sq.x,y:sq.y+1},game) && game.board[sq.x][sq.y+2] == null && !isSqThreatened2({x:sq.x,y:sq.y+2},game)) {
+		moves[moves.length] = {src:sq,dest:{x:sq.x,y:sq.y+2},notation:null};
+		console.log("kingside castling allowed for white");
+	}
+	if (sq.x == 0 && sq.y == 4 && game.turn == "WHITE" && game.castling[1] && game.board[sq.x][sq.y-1] == null && !isSqThreatened2({x:sq.x,y:sq.y-1},game) && game.board[sq.x][sq.y-2] == null && !isSqThreatened2({x:sq.x,y:sq.y-2},game) && game.board[sq.x][sq.y-3] == null) {
+		moves[moves.length] = {src:sq,dest:{x:sq.x,y:sq.y-2},notation:null};
+		console.log("queenside castling allowed for white");
+	}
+	if (sq.x == 7 && sq.y == 4 && game.turn == "BLACK" && game.castling[2] && game.board[sq.x][sq.y+1] == null && !isSqThreatened2({x:sq.x,y:sq.y+1},game) && game.board[sq.x][sq.y+2] == null && !isSqThreatened2({x:sq.x,y:sq.y+2},game)) {
+		moves[moves.length] = {src:sq,dest:{x:sq.x,y:sq.y+2},notation:null};
+		console.log("kingside castling allowed for black");
+	}
+	if (sq.x == 7 && sq.y == 4 && game.turn == "BLACK" && game.castling[3] && game.board[sq.x][sq.y-1] == null && !isSqThreatened2({x:sq.x,y:sq.y-1},game) && game.board[sq.x][sq.y-2] == null && !isSqThreatened2({x:sq.x,y:sq.y-2},game) && game.board[sq.x][sq.y-3] == null) {
+		moves[moves.length] = {src:sq,dest:{x:sq.x,y:sq.y-2},notation:null};
+		console.log("queenside castling allowed for black");
 	}
 	return moves;
 }

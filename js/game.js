@@ -11,7 +11,7 @@ function game(p1, p2, board, record) {
 	this.fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 	this.castling = [];
 	for (var i = 0; i < 4; i++) {
-		this.castling[i] = 1;
+		this.castling[i] = true;
 	}
 	this.halfmove = 0;
 	this.move_count = 1;
@@ -197,19 +197,19 @@ function updateFEN(game) {
 		newFEN += "b";
 	}
 	newFEN += " ";
-	if (game.castling[0] == 1) {
+	if (game.castling[0]) {
 		newFEN += "K";
 	}
-	if (game.castling[1] == 1) {
+	if (game.castling[1]) {
 		newFEN += "Q";
 	}
-	if (game.castling[2] == 1) {
+	if (game.castling[2]) {
 		newFEN += "k";
 	}
-	if (game.castling[3] == 1) {
+	if (game.castling[3]) {
 		newFEN += "q";
 	} else {
-		if (game.castling[0] == 0 && game.castling[1] == 0 && game.castling[2] == 0 && game.castling[3] == 0) {
+		if (game.castling[0] && game.castling[1] && game.castling[2] && game.castling[3]) {
 			newFEN += "-";
 		}
 	}
