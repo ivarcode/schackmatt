@@ -107,10 +107,12 @@ function movePiece(src,dest,game) {
 			if (game.castling[0] || game.castling[1]) {
 				game.castling[0] = false;
 				game.castling[1] = false;
-				if (src.x == dest.x && src.y == dest.y+2) {
+				if (src.x == dest.x && src.y == dest.y-2) {
+					// console.log("kingside");
 					game.board[src.x][5] = game.board[src.x][7];
 					game.board[src.x][7] = null;
-				} else if (src.x == dest.x && src.y == dest.y-2) {
+				} else if (src.x == dest.x && src.y == dest.y+2) {
+					// console.log("queenside");
 					game.board[src.x][3] = game.board[src.x][0];
 					game.board[src.x][0] = null;
 				}
@@ -119,10 +121,10 @@ function movePiece(src,dest,game) {
 			if (game.castling[2] || game.castling[3]) {
 				game.castling[2] = false;
 				game.castling[3] = false;
-				if (src.x == dest.x && src.y == dest.y+2) {
+				if (src.x == dest.x && src.y == dest.y-2) {
 					game.board[src.x][5] = game.board[src.x][7];
 					game.board[src.x][7] = null;
-				} else if (src.x == dest.x && src.y == dest.y-2) {
+				} else if (src.x == dest.x && src.y == dest.y+2) {
 					game.board[src.x][3] = game.board[src.x][0];
 					game.board[src.x][0] = null;
 				}
@@ -256,7 +258,7 @@ function updateFEN(game) {
 	if (game.castling[3]) {
 		newFEN += "q";
 	} else {
-		if (game.castling[0] && game.castling[1] && game.castling[2] && game.castling[3]) {
+		if (!game.castling[0] && !game.castling[1] && !game.castling[2] && !game.castling[3]) {
 			newFEN += "-";
 		}
 	}
@@ -288,6 +290,20 @@ function printGame(game) {
 	console.log("\t" + game.p1 + " vs " + game.p2);
 	console.log("\t" + game.turn + " turn");
 	console.log("\t" + getLegalMoves(game).length + " moves");
+	var n = "\t";
+	if (game.castling[0]) {
+		n += "K";
+	}
+	if (game.castling[1]) {
+		n += "Q";
+	}
+	if (game.castling[2]) {
+		n += "k";
+	}
+	if (game.castling[3]) {
+		n += "q";
+	}
+	console.log(n);
 	if (inCheck(game)) {
 		console.log("\t" + game.turn + " KING in check");
 	} else {

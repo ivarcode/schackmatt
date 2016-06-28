@@ -68,7 +68,7 @@ edits moves object directly
 */
 function removeChecks(moves,game) {
 	for (var i = 0; i < moves.length; i++) {
-		var g = {p1:game.p1,p2:game.p2,board:null,turn:game.turn,record:game.record,fen:game.fen,move_count:game.move_count,enPassant_allowedAt:game.enPassant_allowedAt,halfmove:game.halfmove,castling:game.castling};
+		var g = {p1:game.p1,p2:game.p2,board:null,turn:game.turn,record:game.record,fen:game.fen,move_count:game.move_count,enPassant_allowedAt:game.enPassant_allowedAt,halfmove:game.halfmove,castling:null};
 		g.board = [];
 		for (var x = 0; x < 8; x++) {
 			g.board[x] = [];
@@ -78,6 +78,11 @@ function removeChecks(moves,game) {
 				g.board[a][b] = game.board[a][b];
 			}
 		}
+		g.castling = [];
+		g.castling[0] = game.castling[0];
+		g.castling[1] = game.castling[1];
+		g.castling[2] = game.castling[2];
+		g.castling[3] = game.castling[3];
 		movePiece(moves[i].src,moves[i].dest,g);
 		var sq = null;
 		for (var a = 0; a < 8; a++) {
@@ -242,11 +247,12 @@ function isSqThreatened2(sq,game) {
 	moves = getKingThreats(sq,game);
 	for (var i = 0; i < moves.length; i++) {
 		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KING" && game.board[moves[i].dest.x][moves[i].dest.y].color != game.turn) {
-			console.log(game.turn + " king");
+			// console.log(game.turn + " king");
 			return true;
 		}
 	}
 	// console.log("moves.length " + moves.length);
+	// console.log("ret 0");
 	return false;
 }
 
@@ -292,19 +298,19 @@ function getKingMoves(sq,game) {
 	if (!isSqThreatened2(sq,game)) {
 		if (sq.x == 0 && sq.y == 4 && game.turn == "WHITE" && game.castling[0] && game.board[sq.x][sq.y+1] == null && !isSqThreatened2({x:sq.x,y:sq.y+1},game) && game.board[sq.x][sq.y+2] == null && !isSqThreatened2({x:sq.x,y:sq.y+2},game)) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x,y:sq.y+2},notation:null};
-			// console.log("kingside castling allowed for white");
+			console.log("kingside castling allowed for white");
 		}
 		if (sq.x == 0 && sq.y == 4 && game.turn == "WHITE" && game.castling[1] && game.board[sq.x][sq.y-1] == null && !isSqThreatened2({x:sq.x,y:sq.y-1},game) && game.board[sq.x][sq.y-2] == null && !isSqThreatened2({x:sq.x,y:sq.y-2},game) && game.board[sq.x][sq.y-3] == null) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x,y:sq.y-2},notation:null};
-			// console.log("queenside castling allowed for white");
+			console.log("queenside castling allowed for white");
 		}
 		if (sq.x == 7 && sq.y == 4 && game.turn == "BLACK" && game.castling[2] && game.board[sq.x][sq.y+1] == null && !isSqThreatened2({x:sq.x,y:sq.y+1},game) && game.board[sq.x][sq.y+2] == null && !isSqThreatened2({x:sq.x,y:sq.y+2},game)) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x,y:sq.y+2},notation:null};
-			// console.log("kingside castling allowed for black");
+			console.log("kingside castling allowed for black");
 		}
 		if (sq.x == 7 && sq.y == 4 && game.turn == "BLACK" && game.castling[3] && game.board[sq.x][sq.y-1] == null && !isSqThreatened2({x:sq.x,y:sq.y-1},game) && game.board[sq.x][sq.y-2] == null && !isSqThreatened2({x:sq.x,y:sq.y-2},game) && game.board[sq.x][sq.y-3] == null) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x,y:sq.y-2},notation:null};
-			// console.log("queenside castling allowed for black");
+			console.log("queenside castling allowed for black");
 		}
 	}
 	return moves;
