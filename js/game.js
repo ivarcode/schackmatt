@@ -123,6 +123,9 @@ function movePiece(src,dest,game) {
 		game.board[dest.x][dest.y] = game.board[src.x][src.y];
 		game.board[src.x][src.y] = nullpiece;
 	}
+	if (game.board[src.x][src.y].type == "KING") {
+		
+	}
 	switchTurn(game);
 }
 
