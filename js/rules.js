@@ -183,7 +183,7 @@ function isSqThreatened(sq,game) {
 }
 
 function isSqThreatened2(sq,game) {
-	// console.log("isSqThreatened2(sq = " + sq.x + "," + sq.y + " , game) " + game.turn + " turn");
+	console.log("isSqThreatened2(sq = " + sq.x + "," + sq.y + " , game) " + game.turn + " turn");
 	var moves = [];
 	moves = getKnightThreats(sq,game);
 	for (var i = 0; i < moves.length; i++) {
