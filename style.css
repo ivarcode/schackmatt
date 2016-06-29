@@ -8,30 +8,25 @@ body {
 	margin: 0px;
 }
 
-table#board {
-    border-collapse: collapse;
+#container {
+	width: 60%;
+	margin-right: auto;
+	margin-left: auto;
 }
 
-.board_table * {
-    border: none;
-    border-collapse: collapse;
-    padding: 0;
-    margin: 0;
+#game {
+	position: absolute;
 }
 
-canvas {
-	display: block;
-}
-
-.sq_bound {
+#game_data {
+	float:right;
+	margin-left: 30px;
+	margin-top: 200px;
 	width: 100px;
-	height: 100px;
+	height: 200px;
+	background-color: #939393;
 }
 
-.sq_i {
-	background-color: #C1C1C1;
-}
-
-.sq_j {
-	background-color: #323232;
+#FEN {
+	margin-top: 700px;
 }
