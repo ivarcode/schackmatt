@@ -135,6 +135,7 @@ Game.prototype.get_PGN = function() {
 	return this.pgn;
 };
 Game.prototype.make_move = function(src, dest, piece) {
+	/*if the move is legal, make it and update the proper data in Game*/
 	
 };
 
