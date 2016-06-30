@@ -30,7 +30,49 @@ function pairToSq(sq) {
 	square += sq.x+1;
 	return square;
 }
+function getNotation(move,game) {
+	/*returns a string containing the notation of the move in game*/
+	var notation = "";
+	var piece = game.get_piece(move.src);
+	if (piece == null) {
+		return null;
+	}
+	if (piece.type == "KING") {
+		notation += "K";
+	} else if (piece.type == "QUEEN") {
+		notation += "Q";
+	} else if (piece.type == "BISHOP") {
+		notation += "B";
+	} else if (piece.type == "KNIGHT") {
+		notation += "N";
+	} else if (piece.type == "ROOK") {
+		notation += "R";
+	} else {
+		//add nothing
+	}
+	if (game.get_piece(move.dest) != null) {
+		notation += "x";
+	}
+	notation += pairToSq(move.dest);
+	if (gameAfterMove(game,move).is_checkmate()) {
+		notation += "#";
+	} else if (gameAfterMove(game,move).is_check()) {
+		notation += "+";
+	}
+	return notation;
+}
 
+function isLegalMove(move,game) {
+	/*returns whether or not the move from src -> dest is a legal move in game*/
+	var moves = game.get_legal_moves();
+	for (var i = 0; i < moves.length; i++) {
+		if (moves[i].src.x == move.src.x && moves[i].src.y == move.src.y &&
+			moves[i].dest.x == move.dest.x && moves[i].dest.y == move.dest.y) {
+			return true;
+		}
+	}
+	return false;
+}
 function isSqThreatenedBy(sq,color,game) {
 	/*returns a boolean if the sq on Game is threatened by color*/
 	var moves = [];

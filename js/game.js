@@ -134,13 +134,28 @@ Game.prototype.get_PGN = function() {
 	/*returns the PGN [] of the Game*/
 	return this.pgn;
 };
+Game.prototype.add_move_to_PGN = function(move) {
+	/*adds move to pgn of Game*/
+	if (move.notation == null) {
+		move.notation = getNotation(move,this);
+	}
+	this.pgn[this.pgn.length] = move;
+};
 Game.prototype.get_piece = function(sq) {
 	/*returns the piece at sq on Game.board*/
 	return this.board[sq.x][sq.y];
 };
 Game.prototype.make_move = function(src, dest, notation) {
-	/*if the move is legal, make it and update the proper data in Game*/
-	
+	/*if the move is legal, call move_piece and update the proper data in Game*/
+	var move = {src:src,dest:dest};
+	if (isLegalMove(move,this)) {
+		
+	}
+};
+Game.prototype.move_piece = function(src,dest,piece) {
+	/*places piece on dest and sets the src to null*/
+	this.set_piece(dest,piece);
+	this.set_piece(src,null);
 };
 Game.prototype.get_legal_moves = function() {
 	/*returns an array of legal moves from the position in Game*/

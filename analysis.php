@@ -23,7 +23,6 @@
 
 		var game = new Game("player 1","player 2","STANDARD");
 		console.log(game.get_players().p1 + " and " + game.get_players().p2);
-		var moves = game.get_legal_moves();
 
 
 
@@ -41,11 +40,6 @@
 		IMAGES.bBishop.src = "./img/pieces/b_Bishop.png";
 		IMAGES.bQueen.src = "./img/pieces/b_Queen.png";
 		IMAGES.bKing.src = "./img/pieces/b_King.png";
-
-		var game = new game("Player 1", "Player 2", "STANDARD",[]);
-
-		console.log(game);
-		printGame(game);
 
 		var board_canvas;
 		var board_context;
