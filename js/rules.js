@@ -54,9 +54,9 @@ function getNotation(move,game) {
 		notation += "x";
 	}
 	notation += pairToSq(move.dest);
-	if (gameAfterMove(game,move).is_checkmate()) {
+	if (game.game_after_move(move).is_checkmate()) {
 		notation += "#";
-	} else if (gameAfterMove(game,move).is_check()) {
+	} else if (game.game_after_move(move).is_check()) {
 		notation += "+";
 	}
 	return notation;

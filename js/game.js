@@ -33,6 +33,10 @@ function Piece(type, color) {
 	this.color = color;
 }
 
+Game.prototype.change_turn = function() {
+	/*changes the turn of Game*/
+	this.turn = getOppColor(this.turn);
+};
 Game.prototype.get_players = function() {
 	/*returns an object {p1,p2} which returns the respective players in Game*/
 	return {p1:this.p1,p2:this.p2};
@@ -145,17 +149,40 @@ Game.prototype.get_piece = function(sq) {
 	/*returns the piece at sq on Game.board*/
 	return this.board[sq.x][sq.y];
 };
+Game.prototype.is_check = function() {
+	/*returns whether or not the position in game is currently check*/
+	//TODO
+	return true;
+};
+Game.prototype.is_checkmate = function() {
+	/*returns whether or not the position in game is currently checkmate*/
+	//TODO
+	return true;
+};
+Game.prototype.is_stalemate = function() {
+	/*returns whether or not the position in game is currently stalemate*/
+	//TODO
+	return true;
+};
+Game.prototype.game_after_move = function(move) {
+	/*returns Game object after move has been made*/
+	//TODO
+};
 Game.prototype.make_move = function(src, dest, notation) {
 	/*if the move is legal, call move_piece and update the proper data in Game*/
 	var move = {src:src,dest:dest};
 	if (isLegalMove(move,this)) {
-		
+		this.add_move_to_PGN(move);
+
+		this.move_piece(move,this.get_piece(dest));
+		this.change_turn();
+		this.set_FEN();
 	}
 };
-Game.prototype.move_piece = function(src,dest,piece) {
+Game.prototype.move_piece = function(move,piece) {
 	/*places piece on dest and sets the src to null*/
-	this.set_piece(dest,piece);
-	this.set_piece(src,null);
+	this.set_piece(move.dest,piece);
+	this.set_piece(move.src,null);
 };
 Game.prototype.get_legal_moves = function() {
 	/*returns an array of legal moves from the position in Game*/

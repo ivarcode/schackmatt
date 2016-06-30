@@ -82,7 +82,7 @@
 					var s = {x:7-src.y,y:src.x};
 					var d = {x:7-dest.y,y:dest.x};
 					// console.log("makeMove(" + s.x + "," + s.y + " --> " + d.x + "," + d.y + ")");
-					game.make_move(s,d,notation);
+					game.make_move(s,d,null);
 					// printGame(game);
 				}
 
