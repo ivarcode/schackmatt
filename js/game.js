@@ -134,9 +134,54 @@ Game.prototype.get_PGN = function() {
 	/*returns the PGN [] of the Game*/
 	return this.pgn;
 };
+Game.prototype.get_piece = function(sq) {
+	/*returns the piece at sq on Game.board*/
+	return this.board[sq.x][sq.y];
+};
 Game.prototype.make_move = function(src, dest, piece) {
 	/*if the move is legal, make it and update the proper data in Game*/
-	
+	if ()
+};
+Game.prototype.get_legal_moves = function() {
+	/*returns an array of legal moves from the position in Game*/
+	var moves = [];
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			try {
+				if (this.board[i][j].color == this.turn) {
+					var a = getMovesFromSq({x:i,y:j},this);
+					for (var b = 0; b < a.length; b++) {
+						moves[moves.length] = a[b];
+					}
+				}
+			} catch(e) {
+				// console.log("ERR :: " + e.message);
+			}
+		}
+	}
+	return moves;
+};
+Game.prototype.get_moves_from_sq = function(sq) {
+	/*gets the piece on the board and calculates its possible moves
+		returns an array of moves*/
+	var piece = this.get_piece(sq);
+	if (piece == null) {
+		return [];
+	}
+	if (piece.type == "KING") {
+		return getKingMoves(sq,piece.color,this);
+	} else if (piece.type == "QUEEN") {
+		return getQueenMoves(sq,piece.color,this);
+	} else if (piece.type == "BISHOP") {
+		return getBishopMoves(sq,piece.color,this);
+	} else if (piece.type == "KNIGHT") {
+		return getKnightMoves(sq,piece.color,this);
+	} else if (piece.type == "ROOK") {
+		return getRookMoves(sq,piece.color,this);
+	} else if (piece.type == "PAWN") {
+		return getPawnMoves(sq,piece.color,this);
+	}
+	return [];
 };
 
 
