@@ -2,13 +2,17 @@
 game.js
 */
 
-function game(p1, p2, board, record) {
+function Game(p1, p2, gametype) {
 	this.p1 = p1;
 	this.p2 = p2;
-	this.board = BOARD_STANDARD;
+	if (gametype == "STANDARD") {
+		this.board = BOARD_STANDARD;
+		this.fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+	} else if (gametype == "TEST") {
+		this.board = BOARD_TEST;
+	}
 	this.turn = "WHITE";
-	this.record = record;
-	this.fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+	this.pgn = [];
 	this.castling = [];
 	for (var i = 0; i < 4; i++) {
 		this.castling[i] = true;
@@ -18,177 +22,27 @@ function game(p1, p2, board, record) {
 	this.enPassant_allowedAt = null;
 }
 
-function move(src, dest, notation) {
+function Move(src, dest, notation) {
 	this.src = src;
 	this.dest = dest;
 	this.notation = notation;
 }
 
-function piece(type, color) {
+function Piece(type, color) {
 	this.type = type;
 	this.color = color;
 }
 
-var nullpiece = null;
-var wPawn = new piece("PAWN", "WHITE");
-var wKnight = new piece("KNIGHT", "WHITE");
-var wBishop = new piece("BISHOP", "WHITE");
-var wRook = new piece("ROOK", "WHITE");
-var wQueen = new piece("QUEEN", "WHITE");
-var wKing = new piece("KING", "WHITE");
-var bPawn = new piece("PAWN", "BLACK");
-var bKnight = new piece("KNIGHT", "BLACK");
-var bBishop = new piece("BISHOP", "BLACK");
-var bRook = new piece("ROOK", "BLACK");
-var bQueen = new piece("QUEEN", "BLACK");
-var bKing = new piece("KING", "BLACK");
-
-
-var BOARD_STANDARD = [
-[wRook,wKnight,wBishop,wQueen,wKing,wBishop,wKnight,wRook],
-[wPawn,wPawn,wPawn,wPawn,wPawn,wPawn,wPawn,wPawn],
-[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
-[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
-[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
-[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
-[bPawn,bPawn,bPawn,bPawn,bPawn,bPawn,bPawn,bPawn],
-[bRook,bKnight,bBishop,bQueen,bKing,bBishop,bKnight,bRook]
-];
-
-var BOARD_TEST = [
-[wKing,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
-[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
-[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
-[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
-[nullpiece,wPawn,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
-[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
-[nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece],
-[bKing,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece,nullpiece]
-];
-
-var IMAGES = {wPawn:new Image(),wRook:new Image(),wKnight:new Image(),wBishop:new Image(),wQueen:new Image(),wKing:new Image(),bPawn:new Image(),bRook:new Image(),bKnight:new Image(),bBishop:new Image(),bQueen:new Image(),bKing:new Image()};
-
-IMAGES.wPawn.src = "./img/pieces/w_Pawn.png";
-IMAGES.wRook.src = "./img/pieces/w_Rook.png";
-IMAGES.wKnight.src = "./img/pieces/w_Knight.png";
-IMAGES.wBishop.src = "./img/pieces/w_Bishop.png";
-IMAGES.wQueen.src = "./img/pieces/w_Queen.png";
-IMAGES.wKing.src = "./img/pieces/w_King.png";
-IMAGES.bPawn.src = "./img/pieces/b_Pawn.png";
-IMAGES.bRook.src = "./img/pieces/b_Rook.png";
-IMAGES.bKnight.src = "./img/pieces/b_Knight.png";
-IMAGES.bBishop.src = "./img/pieces/b_Bishop.png";
-IMAGES.bQueen.src = "./img/pieces/b_Queen.png";
-IMAGES.bKing.src = "./img/pieces/b_King.png";
-
-
-function makeMove(src,dest,game) {
-	try {
-		// console.log("moving piece " + game.board[src.x][src.y].color + " " + game.board[src.x][src.y].type);
-	} catch(e) {
-		// console.log("ERR :: " + e.message);
-	}
-	if (isLegalMove(src,dest,game)) {
-		updatePGN(src,dest,game);
-		movePiece(src,dest,game);
-		if (game.turn == "WHITE") {
-			game.move_count++;
-		}
-		updateFEN(game);
-		printGame(game);
-	} else {
-		// console.log("move is not valid");
-	}
-}
-
-function movePiece(src,dest,game) {
-	if (game.board[src.x][src.y].type == "KING") {
-		if (game.turn == "WHITE") {
-			if (game.castling[0] || game.castling[1]) {
-				game.castling[0] = false;
-				game.castling[1] = false;
-				if (src.x == dest.x && src.y == dest.y-2) {
-					// console.log("kingside");
-					game.board[src.x][5] = game.board[src.x][7];
-					game.board[src.x][7] = null;
-				} else if (src.x == dest.x && src.y == dest.y+2) {
-					// console.log("queenside");
-					game.board[src.x][3] = game.board[src.x][0];
-					game.board[src.x][0] = null;
-				}
-			}
-		} else {
-			if (game.castling[2] || game.castling[3]) {
-				game.castling[2] = false;
-				game.castling[3] = false;
-				if (src.x == dest.x && src.y == dest.y-2) {
-					game.board[src.x][5] = game.board[src.x][7];
-					game.board[src.x][7] = null;
-				} else if (src.x == dest.x && src.y == dest.y+2) {
-					game.board[src.x][3] = game.board[src.x][0];
-					game.board[src.x][0] = null;
-				}
-			}
-		}
-	}
-	if ((src.x == 0 && src.y == 0) || (dest.x == 0 && dest.y == 0)) {
-		if (game.castling[1]) {
-			game.castling[1] = false;
-		}
-	}
-	if ((src.x == 0 && src.y == 7) || (dest.x == 0 && dest.y == 7)) {
-		if (game.castling[0]) {
-			game.castling[0] = false;
-		}
-	}
-	if ((src.x == 7 && src.y == 0) || (dest.x == 7 && dest.y == 0)) {
-		if (game.castling[3]) {
-			game.castling[3] = false;
-		}
-	}
-	if ((src.x == 7 && src.y == 7) || (dest.x == 7 && dest.y == 7)) {
-		if (game.castling[2]) {
-			game.castling[2] = false;
-		}
-	}
-	if (game.enPassant_allowedAt != null && dest.x == game.enPassant_allowedAt.x && dest.y == game.enPassant_allowedAt.y && game.board[src.x][src.y].type == "PAWN") {
-		if (dest.x == 5) {
-			game.board[4][dest.y] = nullpiece;
-		} else if (dest.x == 2) {
-			game.board[3][dest.y] = nullpiece;
-		}
-		if (game.turn == "WHITE") {
-			game.board[dest.x][dest.y] = wPawn;
-		} else {
-			game.board[dest.x][dest.y] = bPawn;
-		}
-		game.board[src.x][src.y] = nullpiece;
-		game.enPassant_allowedAt = null;
-	} else {
-		game.enPassant_allowedAt = null;
-		if (game.board[src.x][src.y].type == "PAWN" && Math.abs(dest.x-src.x) == 2) {
-			game.enPassant_allowedAt = {x:(src.x+dest.x)/2,y:src.y};
-		}
-		game.board[dest.x][dest.y] = game.board[src.x][src.y];
-		game.board[src.x][src.y] = nullpiece;
-	}
-	switchTurn(game);
-}
-
-function switchTurn(game) {
-	if (game.turn == "WHITE") {
-		game.turn = "BLACK";
-	} else {
-		game.turn = "WHITE";
-	}
-}
-
-function updatePGN(src,dest,game) {
-	var notation = getNotation(src,dest,game);
-	game.record[game.record.length] = new move(src,dest,notation);
-}
-
-function updateFEN(game) {
+Game.prototype.get_players = function() {
+	/*returns an object {p1,p2} which returns the respective players in Game*/
+	return {p1:this.p1,p2:this.p2};
+};
+Game.prototype.get_FEN = function() {
+	/*returns the FEN string of the Game*/
+	return this.fen;
+};
+Game.prototype.set_FEN = function() {
+	/*sets the fen property of Game to refect the current state of Game*/
 	var newFEN = "";
 	var inc = 0;
 	for (var i = 0; i < 8; i++) {
@@ -275,74 +129,50 @@ function updateFEN(game) {
 
 	game.fen = newFEN;
 	document.getElementById('FEN').innerHTML = game.fen;
-}
+};
+Game.prototype.get_PGN = function() {
+	/*returns the PGN [] of the Game*/
+	return this.pgn;
+};
+Game.prototype.make_move = function(src, dest, piece) {
+	
+};
 
-function printPGN(game) {
-	var pgn = "";
-	for (var i = 0; i < game.record.length; i++) {
-		pgn += game.record[i].notation + " ";
-	}
-	console.log("\tPGN :: " + pgn);
-}
 
-function printGame(game) {
-	console.log("printGame()");
-	console.log("\t" + game.p1 + " vs " + game.p2);
-	console.log("\t" + game.turn + " turn");
-	console.log("\t" + getLegalMoves(game).length + " moves");
-	var n = "\t";
-	if (game.castling[0]) {
-		n += "K";
-	}
-	if (game.castling[1]) {
-		n += "Q";
-	}
-	if (game.castling[2]) {
-		n += "k";
-	}
-	if (game.castling[3]) {
-		n += "q";
-	}
-	console.log(n);
-	if (inCheck(game)) {
-		console.log("\t" + game.turn + " KING in check");
-	} else {
-		console.log("\t" + game.turn + " KING is safe");
-	}
-	printPGN(game);
-	if (game.enPassant_allowedAt != null) {
-		console.log("\tenPassant_allowedAt " + game.enPassant_allowedAt.x + "," + game.enPassant_allowedAt.y);
-	} 
-	/*var printedBoard = "";
-	for (var i = 0; i < 8; i++) {
-		for (var j = 0; j < 8; j++) {
-			printedBoard += "[";
-			try {
-				var piecetype = game.board[7-i][j].type;
-				if (piecetype == "KING") {
-					printedBoard += "K";
-				} else if (piecetype == "QUEEN") {
-					printedBoard += "Q";
-				} else if (piecetype == "BISHOP") {
-					printedBoard += "B";
-				} else if (piecetype == "KNIGHT") {
-					printedBoard += "N";
-				} else if (piecetype == "ROOK") {
-					printedBoard += "R";
-				} else if (piecetype == "PAWN") {
-					printedBoard += "P";
-				}
-			} catch(e) {
-				// console.log("ERR :: " + e.message);
-				if (game.enPassant_allowedAt != null && game.enPassant_allowedAt.x == 7-i && game.enPassant_allowedAt.y == j) {
-					printedBoard += "E";//en passant sq key
-				} else {
-					printedBoard += " ";//no piece
-				}
-			}			
-			printedBoard += "]";
-		}
-		printedBoard += "\n";
-	}
-	console.log(printedBoard);*/
-}
+var wPawn = new Piece("PAWN", "WHITE");
+var wKnight = new Piece("KNIGHT", "WHITE");
+var wBishop = new Piece("BISHOP", "WHITE");
+var wRook = new Piece("ROOK", "WHITE");
+var wQueen = new Piece("QUEEN", "WHITE");
+var wKing = new Piece("KING", "WHITE");
+var bPawn = new Piece("PAWN", "BLACK");
+var bKnight = new Piece("KNIGHT", "BLACK");
+var bBishop = new Piece("BISHOP", "BLACK");
+var bRook = new Piece("ROOK", "BLACK");
+var bQueen = new Piece("QUEEN", "BLACK");
+var bKing = new Piece("KING", "BLACK");
+
+
+var BOARD_STANDARD = [
+[wRook,wKnight,wBishop,wQueen,wKing,wBishop,wKnight,wRook],
+[wPawn,wPawn,wPawn,wPawn,wPawn,wPawn,wPawn,wPawn],
+[null,null,null,null,null,null,null,null],
+[null,null,null,null,null,null,null,null],
+[null,null,null,null,null,null,null,null],
+[null,null,null,null,null,null,null,null],
+[bPawn,bPawn,bPawn,bPawn,bPawn,bPawn,bPawn,bPawn],
+[bRook,bKnight,bBishop,bQueen,bKing,bBishop,bKnight,bRook]
+];
+
+var BOARD_TEST = [
+[wKing,null,null,null,null,null,null,null],
+[null,null,null,null,null,null,null,null],
+[null,null,null,null,null,null,null,null],
+[null,null,null,null,null,null,null,null],
+[null,wPawn,null,null,null,null,null,null],
+[null,null,null,null,null,null,null,null],
+[null,null,null,null,null,null,null,null],
+[bKing,null,null,null,null,null,null,null]
+];
+
+
