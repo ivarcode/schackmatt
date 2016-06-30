@@ -138,9 +138,9 @@ Game.prototype.get_piece = function(sq) {
 	/*returns the piece at sq on Game.board*/
 	return this.board[sq.x][sq.y];
 };
-Game.prototype.make_move = function(src, dest, piece) {
+Game.prototype.make_move = function(src, dest, notation) {
 	/*if the move is legal, make it and update the proper data in Game*/
-	if ()
+	
 };
 Game.prototype.get_legal_moves = function() {
 	/*returns an array of legal moves from the position in Game*/
@@ -149,7 +149,7 @@ Game.prototype.get_legal_moves = function() {
 		for (var j = 0; j < 8; j++) {
 			try {
 				if (this.board[i][j].color == this.turn) {
-					var a = getMovesFromSq({x:i,y:j},this);
+					var a = this.get_moves_from_sq({x:i,y:j});
 					for (var b = 0; b < a.length; b++) {
 						moves[moves.length] = a[b];
 					}
@@ -159,6 +159,7 @@ Game.prototype.get_legal_moves = function() {
 			}
 		}
 	}
+	console.log("get_legal_moves() length = "+moves.length);
 	return moves;
 };
 Game.prototype.get_moves_from_sq = function(sq) {

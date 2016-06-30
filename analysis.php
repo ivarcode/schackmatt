@@ -23,6 +23,7 @@
 
 		var game = new Game("player 1","player 2","STANDARD");
 		console.log(game.get_players().p1 + " and " + game.get_players().p2);
+		var moves = game.get_legal_moves();
 
 
 
@@ -87,7 +88,7 @@
 					var s = {x:7-src.y,y:src.x};
 					var d = {x:7-dest.y,y:dest.x};
 					// console.log("makeMove(" + s.x + "," + s.y + " --> " + d.x + "," + d.y + ")");
-					makeMove(s,d,game);
+					game.make_move(s,d,notation);
 					// printGame(game);
 				}
 
