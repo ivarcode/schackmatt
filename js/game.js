@@ -44,6 +44,7 @@ Game.prototype.copy = function() {
 	g.move_count = this.move_count;
 	g.enPassant_allowedAt = this.enPassant_allowedAt;
 	g.set_FEN();
+	console.log("game.copy() :: successful");
 	return g;
 };
 Game.prototype.change_turn = function() {
@@ -190,19 +191,24 @@ Game.prototype.is_stalemate = function() {
 Game.prototype.game_after_move = function(move) {
 	/*returns Game object after move has been made*/
 	var g = game.copy();
-	g.make_move(move.src,move.dest,null);
+	g.make_move(move);
 	return g;
 };
-Game.prototype.make_move = function(src, dest, notation) {
-	/*if the move is legal, call move_piece and update the proper data in Game*/
-	var move = {src:src,dest:dest};
+Game.prototype.make_move_if_legal = function(move) {
+	/*if the move is legal, call make_move*/
 	if (isLegalMove(move,this)) {
-		this.add_move_to_PGN(move);
-
-		this.move_piece(move,this.get_piece(dest));
-		this.change_turn();
-		this.set_FEN();
+		this.make_move(move);
+	} else {
+		console.log(".make_move_if_legal(move) :: move is not valid");
 	}
+};
+Game.prototype.make_move = function(move) {
+	/*call move_piece and update the proper data in Game*/
+	this.add_move_to_PGN(move);
+
+	this.move_piece(move,this.get_piece(dest));
+	this.change_turn();
+	this.set_FEN();
 };
 Game.prototype.move_piece = function(move,piece) {
 	/*places piece on dest and sets the src to null*/
