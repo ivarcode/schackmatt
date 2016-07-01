@@ -5,6 +5,7 @@ game.js
 function Game(p1, p2, gametype) {
 	this.p1 = p1;
 	this.p2 = p2;
+	this.gametype = gametype;
 	if (gametype == "STANDARD") {
 		this.board = BOARD_STANDARD;
 		this.fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -33,6 +34,18 @@ function Piece(type, color) {
 	this.color = color;
 }
 
+Game.prototype.copy = function() {
+	/*copies Game into a new game object and returns that object*/
+	var g = new Game(this.p1,this.p2,this.gametype);
+	g.pgn = this.pgn;
+	g.turn = this.turn;
+	g.castling = this.castling;
+	g.halfmove = this.halfmove;
+	g.move_count = this.move_count;
+	g.enPassant_allowedAt = this.enPassant_allowedAt;
+	g.set_FEN();
+	return g;
+};
 Game.prototype.change_turn = function() {
 	/*changes the turn of Game*/
 	this.turn = getOppColor(this.turn);
@@ -151,22 +164,34 @@ Game.prototype.get_piece = function(sq) {
 };
 Game.prototype.is_check = function() {
 	/*returns whether or not the position in game is currently check*/
-	//TODO
-	return true;
+	var sq = locateKing(game.turn,this);
+	if (isSqThreatenedBy(sq,getOppColor(game.turn),this)) {
+		return true;
+	}
+	console.log("CHECK");
+	return false;
 };
 Game.prototype.is_checkmate = function() {
 	/*returns whether or not the position in game is currently checkmate*/
-	//TODO
-	return true;
+	if (this.get_legal_moves().length == 0 && this.is_check()) {
+		return true;
+	}
+	console.log("CHECKMATE");
+	return false;
 };
 Game.prototype.is_stalemate = function() {
 	/*returns whether or not the position in game is currently stalemate*/
-	//TODO
-	return true;
+	if (this.get_legal_moves().length == 0 && !this.is_check()) {
+		return true;
+	}
+	console.log("STALEMATE");
+	return false;
 };
 Game.prototype.game_after_move = function(move) {
 	/*returns Game object after move has been made*/
-	//TODO
+	var g = game.copy();
+	g.make_move(move.src,move.dest,null);
+	return g;
 };
 Game.prototype.make_move = function(src, dest, notation) {
 	/*if the move is legal, call move_piece and update the proper data in Game*/

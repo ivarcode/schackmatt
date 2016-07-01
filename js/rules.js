@@ -62,6 +62,18 @@ function getNotation(move,game) {
 	return notation;
 }
 
+function locateKing(color,game) {
+	/*finds the king of color in game*/
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			if (game.get_piece({x:i,y:j}) != null && game.get_piece({x:i,y:j}).type == "KING" && game.get_piece({x:i,y:j}),color == color) {
+				return {x:i,y:j};
+			}
+		}
+	}
+	console.log("locateKing() :: no king of color "+color+" found on board");
+	return null;
+}
 function isLegalMove(move,game) {
 	/*returns whether or not the move from src -> dest is a legal move in game*/
 	var moves = game.get_legal_moves();
