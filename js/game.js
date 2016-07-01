@@ -86,9 +86,9 @@ Game.prototype.print = function() {
 Game.prototype.print_PGN = function() {
 	var out = "";
 	for (var i = 0; i < this.pgn.length; i++) {
-		out += this.pgn[i].notation;
+		out += this.pgn[i].notation+" ";
 	}
-	console.log("\tPGN :: "+this.pgn);
+	console.log("\tPGN :: "+out);
 };
 Game.prototype.change_turn = function() {
 	/*changes the turn of Game*/
@@ -237,26 +237,24 @@ Game.prototype.game_after_move = function(move) {
 	g.make_move(move);
 	return g;
 };
-Game.prototype.make_move_if_legal = function(move) {
+Game.prototype.make_move_if_legal = function(move,piece) {
 	/*if the move is legal, call make_move*/
 	if (isLegalMove(move,this)) {
 		this.add_move_to_PGN(move);
-		this.make_move(move);
+		this.make_move(move,piece);
 	} else {
 		console.log(".make_move_if_legal(move) :: move is not valid");
 	}
 };
-Game.prototype.make_move = function(move) {
+Game.prototype.make_move = function(move,piece) {
 	/*call move_piece and update the proper data in Game*/
-	console.log("make_move() on this piece "+this.get_piece(move.src));
-	this.move_piece(move,this.get_piece(move.src));
+	this.move_piece(move,piece);
 	this.change_turn();
 	this.set_FEN();
 	this.print();
 };
 Game.prototype.move_piece = function(move,piece) {
 	/*places piece on dest and sets the src to null*/
-	console.log(piece);
 	this.set_piece(move.dest,piece);
 	this.set_piece(move.src,null);
 };
