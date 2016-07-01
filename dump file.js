@@ -294,7 +294,7 @@ function printPGN(game) {
 }
 
 function printGame(game) {
-	console.log("printGame()");
+	console.log("print()");
 	console.log("\t" + game.p1 + " vs " + game.p2);
 	console.log("\t" + game.turn + " turn");
 	console.log("\t" + getLegalMoves(game).length + " moves");

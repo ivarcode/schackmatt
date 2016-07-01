@@ -37,6 +37,12 @@ function Piece(type, color) {
 Game.prototype.copy = function() {
 	/*copies Game into a new game object and returns that object*/
 	var g = new Game(this.p1,this.p2,this.gametype);
+	for (var a = 0; a < 8; a++) {
+		for (var b = 0; b < 8; b++) {
+			console.log("copy piece "+this.get_piece({x:a,y:b}));
+			g.set_piece({x:a,y:b},this.get_piece({x:a,y:b}));
+		}
+	}
 	g.pgn = this.pgn;
 	g.turn = this.turn;
 	g.castling = this.castling;
@@ -46,6 +52,43 @@ Game.prototype.copy = function() {
 	g.set_FEN();
 	console.log("game.copy() :: successful");
 	return g;
+};
+Game.prototype.print = function() {
+	/*prints information about Game to the console*/
+	console.log("print()");
+	console.log("\t" + game.p1 + " vs " + game.p2);
+	console.log("\t" + game.turn + " turn");
+	console.log("\t" + this.get_legal_moves().length + " moves");
+	var n = "\t";
+	if (game.castling[0]) {
+		n += "K";
+	}
+	if (game.castling[1]) {
+		n += "Q";
+	}
+	if (game.castling[2]) {
+		n += "k";
+	}
+	if (game.castling[3]) {
+		n += "q";
+	}
+	console.log(n);
+	if (this.is_check()) {
+		console.log("\t" + game.turn + " KING in check");
+	} else {
+		console.log("\t" + game.turn + " KING is safe");
+	}
+	this.print_PGN();
+	if (game.enPassant_allowedAt != null) {
+		console.log("\tenPassant_allowedAt " + game.enPassant_allowedAt.x + "," + game.enPassant_allowedAt.y);
+	}
+};
+Game.prototype.print_PGN = function() {
+	var out = "";
+	for (var i = 0; i < this.pgn.length; i++) {
+		out += this.pgn[i].notation;
+	}
+	console.log("\tPGN :: "+this.pgn);
 };
 Game.prototype.change_turn = function() {
 	/*changes the turn of Game*/
@@ -167,25 +210,25 @@ Game.prototype.is_check = function() {
 	/*returns whether or not the position in game is currently check*/
 	var sq = locateKing(game.turn,this);
 	if (isSqThreatenedBy(sq,getOppColor(game.turn),this)) {
+		console.log("CHECK");
 		return true;
 	}
-	console.log("CHECK");
 	return false;
 };
 Game.prototype.is_checkmate = function() {
 	/*returns whether or not the position in game is currently checkmate*/
 	if (this.get_legal_moves().length == 0 && this.is_check()) {
+		console.log("CHECKMATE");
 		return true;
 	}
-	console.log("CHECKMATE");
 	return false;
 };
 Game.prototype.is_stalemate = function() {
 	/*returns whether or not the position in game is currently stalemate*/
 	if (this.get_legal_moves().length == 0 && !this.is_check()) {
+		console.log("STALEMATE");
 		return true;
 	}
-	console.log("STALEMATE");
 	return false;
 };
 Game.prototype.game_after_move = function(move) {
@@ -197,6 +240,7 @@ Game.prototype.game_after_move = function(move) {
 Game.prototype.make_move_if_legal = function(move) {
 	/*if the move is legal, call make_move*/
 	if (isLegalMove(move,this)) {
+		this.add_move_to_PGN(move);
 		this.make_move(move);
 	} else {
 		console.log(".make_move_if_legal(move) :: move is not valid");
@@ -204,16 +248,21 @@ Game.prototype.make_move_if_legal = function(move) {
 };
 Game.prototype.make_move = function(move) {
 	/*call move_piece and update the proper data in Game*/
-	this.add_move_to_PGN(move);
-
-	this.move_piece(move,this.get_piece(dest));
+	console.log("make_move() on this piece "+this.get_piece(move.src));
+	this.move_piece(move,this.get_piece(move.src));
 	this.change_turn();
 	this.set_FEN();
+	this.print();
 };
 Game.prototype.move_piece = function(move,piece) {
 	/*places piece on dest and sets the src to null*/
+	console.log(piece);
 	this.set_piece(move.dest,piece);
 	this.set_piece(move.src,null);
+};
+Game.prototype.set_piece = function(sq,piece) {
+	/*sets the sq on board equal to piece*/
+	this.board[sq.x][sq.y] = piece;
 };
 Game.prototype.get_legal_moves = function() {
 	/*returns an array of legal moves from the position in Game*/

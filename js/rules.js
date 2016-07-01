@@ -80,6 +80,7 @@ function isLegalMove(move,game) {
 	for (var i = 0; i < moves.length; i++) {
 		if (moves[i].src.x == move.src.x && moves[i].src.y == move.src.y &&
 			moves[i].dest.x == move.dest.x && moves[i].dest.y == move.dest.y) {
+			console.log("isLegalMove() true");
 			return true;
 		}
 	}
@@ -92,18 +93,21 @@ function isSqThreatenedBy(sq,color,game) {
 	moves = getKnightMoves(sq,c,game);
 	for (var i = 0; i < moves.length; i++) {
 		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KNIGHT" && game.board[moves[i].dest.x][moves[i].dest.y].color == color) {
+			console.log("knight threatens "+color+" king");
 			return true;
 		}
 	}
 	moves = getBishopMoves(sq,c,game);
 	for (var i = 0; i < moves.length; i++) {
 		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && ((game.board[moves[i].dest.x][moves[i].dest.y].type == "BISHOP") || (game.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN")) && game.board[moves[i].dest.x][moves[i].dest.y].color == color) {
+			console.log("bishop or queen threatens "+color+" king");
 			return true;
 		}
 	}
 	moves = getRookMoves(sq,c,game);
 	for (var i = 0; i < moves.length; i++) {
 		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && ((game.board[moves[i].dest.x][moves[i].dest.y].type == "ROOK") || (game.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN")) && game.board[moves[i].dest.x][moves[i].dest.y].color == color) {
+			console.log("rook or queen threatens "+color+" king");
 			return true;
 		}
 	}
@@ -138,9 +142,10 @@ function isSqThreatenedBy(sq,color,game) {
 			// console.log("ERR :: " + e.message);
 		}
 	}
-	moves = getKingMoves(sq,c,game);
+	moves = getKingMovesWithoutCastles(sq,c,game);
 	for (var i = 0; i < moves.length; i++) {
 		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KING" && game.board[moves[i].dest.x][moves[i].dest.y].color == color) {
+			console.log("king threatens "+color+" king");
 			return true;
 		}
 	}
@@ -184,6 +189,27 @@ function getKingMoves(sq,color,game) {
 		if (sq.x == 7 && sq.y == 4 && color == "BLACK" && game.castling[3] && game.board[sq.x][sq.y-1] == null && !isSqThreatenedBy({x:sq.x,y:sq.y-1},c,game) && game.board[sq.x][sq.y-2] == null && !isSqThreatenedBy({x:sq.x,y:sq.y-2},c,game) && game.board[sq.x][sq.y-3] == null) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x,y:sq.y-2},notation:"0-0-0"};
 			console.log("queenside castling allowed for black");
+		}
+	}
+	return moves;
+}
+function getKingMovesWithoutCastles(sq,color,game) {
+	/*gets all moves from sq in game for the arg color king but doesn't check for castling (avoids loops)*/
+	var moves = [];
+	var list = [];
+	list[list.length] = {x:sq.x+1,y:sq.y};
+	list[list.length] = {x:sq.x+1,y:sq.y+1};
+	list[list.length] = {x:sq.x+1,y:sq.y-1};
+	list[list.length] = {x:sq.x-1,y:sq.y};
+	list[list.length] = {x:sq.x-1,y:sq.y+1};
+	list[list.length] = {x:sq.x-1,y:sq.y-1};
+	list[list.length] = {x:sq.x,y:sq.y+1};
+	list[list.length] = {x:sq.x,y:sq.y-1};
+	for (var i = 0; i < list.length; i++) {
+		if (list[i].x > -1 && list[i].x < 8 && list[i].y > -1 && list[i].y < 8) {
+			if (game.board[list[i].x][list[i].y] == null || game.board[list[i].x][list[i].y].color != color) {
+				moves[moves.length] = {src:sq,dest:list[i],notation:null};
+			}
 		}
 	}
 	return moves;
