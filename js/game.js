@@ -234,13 +234,12 @@ Game.prototype.is_stalemate = function() {
 Game.prototype.game_after_move = function(move) {
 	/*returns Game object after move has been made*/
 	var g = game.copy();
-	g.make_move(move);
+	g.make_move(move,g.get_piece(move.src));
 	return g;
 };
 Game.prototype.make_move_if_legal = function(move,piece) {
 	/*if the move is legal, call make_move*/
 	if (isLegalMove(move,this)) {
-		this.add_move_to_PGN(move);
 		this.make_move(move,piece);
 	} else {
 		console.log(".make_move_if_legal(move) :: move is not valid");
@@ -248,6 +247,45 @@ Game.prototype.make_move_if_legal = function(move,piece) {
 };
 Game.prototype.make_move = function(move,piece) {
 	/*call move_piece and update the proper data in Game*/
+	// castling conditions
+	if (piece.type == "KING") {
+		if (this.turn == "WHITE") {
+			
+		} else {
+			
+		}
+	}
+	// rook movement conditions
+	if ((src.x == 0 && src.y == 0) || (dest.x == 0 && dest.y == 0)) {
+		if (game.castling[1]) {
+			game.castling[1] = false;
+		}
+	}
+	// en passant conditions
+	if (game.enPassant_allowedAt != null && dest.x == game.enPassant_allowedAt.x && dest.y == game.enPassant_allowedAt.y && game.board[src.x][src.y].type == "PAWN") {
+		if (dest.x == 5) {
+			game.board[4][dest.y] = nullpiece;
+		} else if (dest.x == 2) {
+			game.board[3][dest.y] = nullpiece;
+		}
+		if (game.turn == "WHITE") {
+			game.board[dest.x][dest.y] = wPawn;
+		} else {
+			game.board[dest.x][dest.y] = bPawn;
+		}
+		game.board[src.x][src.y] = nullpiece;
+		game.enPassant_allowedAt = null;
+	} else {
+		game.enPassant_allowedAt = null;
+		if (game.board[src.x][src.y].type == "PAWN" && Math.abs(dest.x-src.x) == 2) {
+			game.enPassant_allowedAt = {x:(src.x+dest.x)/2,y:src.y};
+		}
+		game.board[dest.x][dest.y] = game.board[src.x][src.y];
+		game.board[src.x][src.y] = nullpiece;
+	}
+	
+
+	this.add_move_to_PGN(move);
 	this.move_piece(move,piece);
 	this.change_turn();
 	this.set_FEN();

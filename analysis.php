@@ -24,6 +24,14 @@
 		var game = new Game("player 1","player 2","STANDARD");
 		console.log(game.get_players().p1 + " and " + game.get_players().p2);
 
+		/*
+			var s = {x:7-src.y,y:src.x};
+					var d = {x:7-dest.y,y:dest.x};
+					// console.log("makeMove(" + s.x + "," + s.y + " --> " + d.x + "," + d.y + ")");
+					game.make_move_if_legal({src:s,dest:d,notation:null},game.get_piece(s));
+					// printGame(game);
+		*/
+
 
 
 		var IMAGES = {wPawn:new Image(),wRook:new Image(),wKnight:new Image(),wBishop:new Image(),wQueen:new Image(),wKing:new Image(),bPawn:new Image(),bRook:new Image(),bKnight:new Image(),bBishop:new Image(),bQueen:new Image(),bKing:new Image()};
@@ -68,25 +76,7 @@
 			board_canvas.addEventListener('mouseup',function(events){
 				var mousePos = getMousePos(board_canvas,events);
 				click_data.dest = mousePos;
-				// console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
-				var src = {x:click_data.src.x/SQ_DIM,y:click_data.src.y/SQ_DIM};
-				var dest = {x:click_data.dest.x/SQ_DIM,y:click_data.dest.y/SQ_DIM};
-				src = {x:src.x-(src.x%1),y:src.y-(src.y%1)};
-				dest = {x:dest.x-(dest.x%1),y:dest.y-(dest.y%1)};
-				// console.log("src " + src.x + "," + src.y);
-				// console.log("dest " + dest.x + "," + dest.y);
-
-				if (src.x == dest.x && src.y == dest.y) {
-					// console.log("selected_square");
-				} else {
-					var s = {x:7-src.y,y:src.x};
-					var d = {x:7-dest.y,y:dest.x};
-					// console.log("makeMove(" + s.x + "," + s.y + " --> " + d.x + "," + d.y + ")");
-					game.make_move_if_legal({src:s,dest:d,notation:null},game.get_piece(s));
-					// printGame(game);
-				}
-
-				// var move = new move(src,dest,null);
+				
 
 			});
 			board_canvas.addEventListener('mouseenter',function(events){
@@ -116,6 +106,7 @@
 		}
 
 		function getMousePos(canvas,events) {
+			/*returns an object {x,y} that contain the mousePos data from events on the canvas*/
 			var obj = canvas;
 			var top = 0, left = 0;
 			var mX = 0, mY = 0;
@@ -130,6 +121,7 @@
 		}
 
 		function getSquareFromMousePos(loc) {
+			/*this function converts the mousePos data to a square on the chessboard*/
 			var x = loc.x;
 			var y = loc.y;
 			x -= x%SQ_DIM;
@@ -140,6 +132,7 @@
 		}
 
 		function drawBoard() {
+			/*function that loops through the board and draws the pieces, as well as highlights proper squares and handles dragged pieces*/
 			board_context.globalALpha = 1;
 			board_context.drawImage(board_img,0,0);
 			if (mouse_over_board) {
@@ -184,7 +177,7 @@
 		}
 
 		function tintSq(x,y) {
-			// console.log("tintSq " + x + "," + y);
+			/*function responsible for tinting squares yellow*/
 			board_context.fillStyle = "yellow";
 			board_context.globalAlpha = 0.5;
 			if (sq_is_selected) {
