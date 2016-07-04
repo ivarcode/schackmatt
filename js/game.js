@@ -317,7 +317,7 @@ Game.prototype.get_legal_moves = function() {
 			}
 		}
 	}
-	console.log("get_legal_moves() length = "+moves.length);
+	// console.log("get_legal_moves() length = "+moves.length);
 	return moves;
 };
 Game.prototype.get_moves_from_sq = function(sq) {

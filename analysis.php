@@ -56,7 +56,7 @@
 		var sq_is_selected = false;
 		var selected_square;
 		var tintSquare;
-		var click_data = {src: null, dest: null};
+		var click_data = {src: null, dest: null, mSrc: null, mDest: null};
 		var mouse_over_board = false;
 
 		var board_img = new Image();
@@ -66,18 +66,37 @@
 			board_canvas = document.getElementById("board");
 			board_context = board_canvas.getContext("2d");
 
+			game.print();
 			drawBoard();
 			
 			board_canvas.addEventListener('mousedown',function(events){
-				var mousePos = getMousePos(board_canvas,events);
-				click_data.src = mousePos;
-				// console.log("mousedown at (" + mousePos.x + "," + mousePos.y + ")");
+				click_data.mSrc = getMousePos(board_canvas,events);
+				var s = getSquareFromMousePos(click_data.mSrc);
+				// console.log("mousedown "+click_data.src.x+","+click_data.src.y);
+				if (game.get_piece(s) != null && game.get_piece(s).color == game.turn) {
+					// console.log("mousedown on a "+game.turn+ " piece");
+					click_data.src = s;
+				} else {
+					click_data.src = null;
+					click_data.dest = null;
+				}
 			});
 			board_canvas.addEventListener('mouseup',function(events){
-				var mousePos = getMousePos(board_canvas,events);
-				click_data.dest = mousePos;
+				click_data.mDest = getMousePos(board_canvas,events);
+				var d = getSquareFromMousePos(click_data.mDest);
+				if (click_data.src != null) {
+					click_data.dest = d;
+					if (click_data.src.x == click_data.dest.x && click_data.src.y == click_data.dest.y) {
+						if (sq_is_selected) {
+							sq_is_selected = false;
+							selected_square = null;
+						} else {
+							sq_is_selected = true;
+							selected_square = {x:click_data.src.x,y:click_data.src.y};
+						}
+					}
+				}
 				
-
 			});
 			board_canvas.addEventListener('mouseenter',function(events){
 				mouse_over_board = true;
@@ -88,7 +107,6 @@
 			});
 			board_canvas.addEventListener('mousemove',function(events){
 				if (mouse_over_board) {
-					// console.log("mousemove mouse_over_board");
 					var mousePos = getMousePos(board_canvas,events);
 					var x = mousePos.x;
 					var y = mousePos.y;
@@ -128,7 +146,7 @@
 			y -= y%SQ_DIM;
 			x /= SQ_DIM;
 			y /= SQ_DIM;
-			return { x: x, y: y };
+			return { x: 7-y, y: x };
 		}
 
 		function drawBoard() {
@@ -144,7 +162,7 @@
 			board_context.globalAlpha = 1;
 			for (var i = 0; i < 8; i++) {
 				for (var j = 0; j < 8; j++) {
-					// console.log(game.board[j][i]);
+					
 					if (game.board[j][i] == wPawn) { 
 						board_context.drawImage(IMAGES.wPawn,i*SQ_DIM,(7-j)*SQ_DIM);
 					} else if (game.board[j][i] == wKnight) { 
@@ -190,6 +208,7 @@
 		}
 
 		function selSq(x,y) {
+			/*function responsible for tinting sqs blue*/
 			board_context.fillStyle = "blue";
 			board_context.globalAlpha = 0.5;
 			board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);

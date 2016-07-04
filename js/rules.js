@@ -80,7 +80,7 @@ function isLegalMove(move,game) {
 	for (var i = 0; i < moves.length; i++) {
 		if (moves[i].src.x == move.src.x && moves[i].src.y == move.src.y &&
 			moves[i].dest.x == move.dest.x && moves[i].dest.y == move.dest.y) {
-			console.log("isLegalMove() true");
+			// console.log("isLegalMove() true");
 			return true;
 		}
 	}
