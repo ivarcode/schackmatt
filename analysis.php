@@ -58,6 +58,7 @@
 		var tintSquare;
 		var click_data = {src: null, dest: null, mSrc: null, mDest: null};
 		var mouse_over_board = false;
+		var mousedown = false;
 
 		var board_img = new Image();
 		board_img.src = "./img/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
@@ -76,10 +77,13 @@
 				if (game.get_piece(s) != null && game.get_piece(s).color == game.turn) {
 					// console.log("mousedown on a "+game.turn+ " piece");
 					click_data.src = s;
+					sq_is_selected = true;
+					selected_square = {x:click_data.src.y,y:7-click_data.src.x};
 				} else {
 					click_data.src = null;
 					click_data.dest = null;
 				}
+				mousedown = true;
 			});
 			board_canvas.addEventListener('mouseup',function(events){
 				click_data.mDest = getMousePos(board_canvas,events);
@@ -87,16 +91,16 @@
 				if (click_data.src != null) {
 					click_data.dest = d;
 					if (click_data.src.x == click_data.dest.x && click_data.src.y == click_data.dest.y) {
-						if (sq_is_selected) {
-							sq_is_selected = false;
-							selected_square = null;
-						} else {
-							sq_is_selected = true;
-							selected_square = {x:click_data.src.x,y:click_data.src.y};
-						}
+						
+					} else {
+						/*handle pawn promotion here*/
+						// move piece
+
 					}
+				} else {
+					sq_is_selected = false;
 				}
-				
+				mousedown = false;	
 			});
 			board_canvas.addEventListener('mouseenter',function(events){
 				mouse_over_board = true;
@@ -162,7 +166,10 @@
 			board_context.globalAlpha = 1;
 			for (var i = 0; i < 8; i++) {
 				for (var j = 0; j < 8; j++) {
-					
+					if (sq_is_selected && mousedown) {
+						board_context.drawImage()
+						// set data of selected piece here and break loop
+					}
 					if (game.board[j][i] == wPawn) { 
 						board_context.drawImage(IMAGES.wPawn,i*SQ_DIM,(7-j)*SQ_DIM);
 					} else if (game.board[j][i] == wKnight) { 
@@ -192,6 +199,7 @@
 					}
 				}
 			}
+			// draw selected piece here
 		}
 
 		function tintSq(x,y) {
