@@ -58,6 +58,7 @@
 		var tintSquare;
 		var click_data = {src: null, dest: null, mSrc: null, mDest: null};
 		var mouse_over_board = false;
+		var current_mousePos = null;
 		var mousedown = false;
 
 		var board_img = new Image();
@@ -111,9 +112,9 @@
 			});
 			board_canvas.addEventListener('mousemove',function(events){
 				if (mouse_over_board) {
-					var mousePos = getMousePos(board_canvas,events);
-					var x = mousePos.x;
-					var y = mousePos.y;
+					current_mousePos = getMousePos(board_canvas,events);
+					var x = current_mousePos.x;
+					var y = current_mousePos.y;
 					x -= x%SQ_DIM;
 					y -= y%SQ_DIM;
 					// console.log("mousePos on canvas : " + x + " " + y);
@@ -167,39 +168,54 @@
 			for (var i = 0; i < 8; i++) {
 				for (var j = 0; j < 8; j++) {
 					if (sq_is_selected && mousedown) {
-						board_context.drawImage()
-						// set data of selected piece here and break loop
+						if (i == click_data.src.y && j == click_data.src.x) {
+							
+							break;
+						}
 					}
-					if (game.board[j][i] == wPawn) { 
-						board_context.drawImage(IMAGES.wPawn,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == wKnight) { 
-						board_context.drawImage(IMAGES.wKnight,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == wBishop) { 
-						board_context.drawImage(IMAGES.wBishop,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == wRook) { 
-						board_context.drawImage(IMAGES.wRook,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == wQueen) { 
-						board_context.drawImage(IMAGES.wQueen,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == wKing) { 
-						board_context.drawImage(IMAGES.wKing,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == bPawn) { 
-						board_context.drawImage(IMAGES.bPawn,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == bKnight) { 
-						board_context.drawImage(IMAGES.bKnight,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == bBishop) { 
-						board_context.drawImage(IMAGES.bBishop,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == bRook) { 
-						board_context.drawImage(IMAGES.bRook,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == bQueen) { 
-						board_context.drawImage(IMAGES.bQueen,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == bKing) { 
-						board_context.drawImage(IMAGES.bKing,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else {
-						//draw nothing
+					try {
+						drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,game.board[j][i]);
+					} catch(e) {
+						console.log("ERR :: "+e.message)
 					}
 				}
 			}
+			if (sq_is_selected && mousedown) {
+				drawPiece(current_mousePos.x-40,current_mousePos.y-40,game.board[click_data.src.x][click_data.src.y]);
+			}
 			// draw selected piece here
+		}
+
+		function drawPiece(x,y,piece) {
+			/*draws one piece in the board at the coordinates given*/
+			console.log("drawPiece("+x+","+y+","+piece.type+")");
+			if (piece == wPawn) { 
+				board_context.drawImage(IMAGES.wPawn,x,y);
+			} else if (piece == wKnight) { 
+				board_context.drawImage(IMAGES.wKnight,x,y);
+			} else if (piece == wBishop) { 
+				board_context.drawImage(IMAGES.wBishop,x,y);
+			} else if (piece == wRook) { 
+				board_context.drawImage(IMAGES.wRook,x,y);
+			} else if (piece == wQueen) { 
+				board_context.drawImage(IMAGES.wQueen,x,y);
+			} else if (piece == wKing) { 
+				board_context.drawImage(IMAGES.wKing,x,y);
+			} else if (piece == bPawn) { 
+				board_context.drawImage(IMAGES.bPawn,x,y);
+			} else if (piece == bKnight) { 
+				board_context.drawImage(IMAGES.bKnight,x,y);
+			} else if (piece == bBishop) { 
+				board_context.drawImage(IMAGES.bBishop,x,y);
+			} else if (piece == bRook) { 
+				board_context.drawImage(IMAGES.bRook,x,y);
+			} else if (piece == bQueen) { 
+				board_context.drawImage(IMAGES.bQueen,x,y);
+			} else if (piece == bKing) { 
+				board_context.drawImage(IMAGES.bKing,x,y);
+			} else {
+				//draw nothing
+			}
 		}
 
 		function tintSq(x,y) {
