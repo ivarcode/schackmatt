@@ -54,6 +54,8 @@
 		var SQ_DIM = 80;
 
 		var sq_is_selected = false;
+		var piece_is_selected = false;
+		var selected_piece;
 		var selected_square;
 		var tintSquare;
 		var click_data = {src: null, dest: null, mSrc: null, mDest: null};
@@ -85,6 +87,7 @@
 					click_data.dest = null;
 				}
 				mousedown = true;
+				drawBoard();
 			});
 			board_canvas.addEventListener('mouseup',function(events){
 				click_data.mDest = getMousePos(board_canvas,events);
@@ -92,7 +95,14 @@
 				if (click_data.src != null) {
 					click_data.dest = d;
 					if (click_data.src.x == click_data.dest.x && click_data.src.y == click_data.dest.y) {
-						
+						if (piece_is_selected) {
+							piece_is_selected = false;
+							selected_piece = null;
+						} else {
+							piece_is_selected = true;
+							selected_piece = game.get_piece(getSquareFromMousePos(click_data.src));
+							console.log(selected_piece.color+" piece selected");
+						}
 					} else {
 						/*handle pawn promotion here*/
 						// move piece
@@ -169,7 +179,6 @@
 				for (var j = 0; j < 8; j++) {
 					if (sq_is_selected && mousedown) {
 						if (i == click_data.src.y && j == click_data.src.x) {
-							
 							break;
 						}
 					}
@@ -188,7 +197,7 @@
 
 		function drawPiece(x,y,piece) {
 			/*draws one piece in the board at the coordinates given*/
-			console.log("drawPiece("+x+","+y+","+piece.type+")");
+			// console.log("drawPiece("+x+","+y+","+piece.type+")");
 			if (piece == wPawn) { 
 				board_context.drawImage(IMAGES.wPawn,x,y);
 			} else if (piece == wKnight) { 
