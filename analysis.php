@@ -17,17 +17,6 @@
 	<script type="text/javascript" src="./js/game.js"></script>
 	<script type="text/javascript" src="./js/rules.js"></script>
 	<script type="text/javascript">
-		
-
-		/*
-			var s = {x:7-src.y,y:src.x};
-					var d = {x:7-dest.y,y:dest.x};
-					// console.log("makeMove(" + s.x + "," + s.y + " --> " + d.x + "," + d.y + ")");
-					game.make_move_if_legal({src:s,dest:d,notation:null},game.get_piece(s));
-					// printGame(game);
-		*/
-
-
 
 		var IMAGES = {wPawn:new Image(),wRook:new Image(),wKnight:new Image(),wBishop:new Image(),wQueen:new Image(),wKing:new Image(),bPawn:new Image(),bRook:new Image(),bKnight:new Image(),bBishop:new Image(),bQueen:new Image(),bKing:new Image()};
 
@@ -91,6 +80,7 @@
 				var s = getSquareFromMousePos(click_data.mSrc);
 				
 				if (selected_piece == null) {
+					selected_square = s;
 					selected_piece = game.get_piece(s);
 				} else {
 					if (selected_piece.type == "PAWN") {
@@ -105,22 +95,13 @@
 							}
 						}
 					}
-
+					console.log(pairToSq(selected_square)+" --> "+pairToSq(s));
+					game.make_move(new Move(selected_square,s,selected_piece));
+					selected_piece = null;
+					selected_square = null;
 				}
 
 
-
-
-				// console.log("mousedown "+click_data.src.x+","+click_data.src.y);
-				console.log(s.x+","+s.y);
-				if (game.get_piece(s) != null && game.get_piece(s).color == game.turn) {
-					// console.log("mousedown on a "+game.turn+ " piece");
-					click_data.src = s;
-					selected_square = {x:click_data.src.y,y:7-click_data.src.x};
-				} else {
-					click_data.src = null;
-					click_data.dest = null;
-				}
 				mousedown = true;
 				drawBoard();
 			});
@@ -131,34 +112,9 @@
 
 
 				/*mouseup*/
+				mousedown = false;
+				drawBoard();
 
-
-
-
-
-				
-				click_data.mDest = getMousePos(board_canvas,events);
-				var d = getSquareFromMousePos(click_data.mDest);
-				if (click_data.src != null) {
-					click_data.dest = d;
-					if (click_data.src.x == click_data.dest.x && click_data.src.y == click_data.dest.y) {
-						if (piece_is_selected) {
-							piece_is_selected = false;
-							selected_piece = null;
-						} else {
-							piece_is_selected = true;
-							selected_piece = game.get_piece(getSquareFromMousePos(click_data.src));
-							console.log(selected_piece.color+" piece selected");
-						}
-					} else {
-						/*handle pawn promotion here*/
-						// move piece
-
-					}
-				} else {
-					sq_is_selected = false;
-				}
-				mousedown = false;	
 			});
 			board_canvas.addEventListener('mouseenter',function(events){
 				mouse_over_board = true;
@@ -225,21 +181,27 @@
 			for (var i = 0; i < 8; i++) {
 				for (var j = 0; j < 8; j++) {
 					if (selected_square != null && mousedown) {
-						if (i == click_data.src.y && j == click_data.src.x) {
-							break;
+						if (i == selected_square.y && j == selected_square.x) {
+							//dont draw, draw later
+						} else {
+							try {
+								drawPiece((7-i)*SQ_DIM,j*SQ_DIM,game.board[j][i]);
+							} catch(e) {
+								console.log("ERR :: "+e.message)
+							}
 						}
-					}
-					try {
-						drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,game.board[j][i]);
-					} catch(e) {
-						console.log("ERR :: "+e.message)
+					} else {
+						try {
+							drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,game.board[j][i]);
+						} catch(e) {
+							console.log("ERR :: "+e.message)
+						}
 					}
 				}
 			}
 			if (selected_square != null && mousedown) {
-				drawPiece(current_mousePos.x-40,current_mousePos.y-40,game.board[click_data.src.x][click_data.src.y]);
+				drawPiece(current_mousePos.x-40,current_mousePos.y-40,selected_piece);
 			}
-			// draw selected piece here
 		}
 
 		function drawPiece(x,y,piece) {
