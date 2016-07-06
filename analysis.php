@@ -48,7 +48,7 @@
 		var board_context;
 		var SQ_DIM = 80;
 
-		var selected_piece;
+		var dragged_piece;
 		var selected_square;
 		var tintSquare;
 		var click_data = {src: null, dest: null, mSrc: null, mDest: null};
@@ -65,13 +65,10 @@
 		console.log(game.get_players().p1 + " and " + game.get_players().p2);
 
 		var move = new Move({x:1,y:1},{x:3,y:1},null);
-
-		game.make_move_if_legal(move,game.get_piece(move.src));
-
 		game.print(true);
 
-
-
+		game.make_move(move,game.get_piece(move.src));
+		game.print(true);
 
 
 
@@ -79,10 +76,17 @@
 			board_canvas = document.getElementById("board");
 			board_context = board_canvas.getContext("2d");
 
-			game.print(true);
 			drawBoard();
 			
 			board_canvas.addEventListener('mousedown',function(events){
+				
+
+
+
+
+
+
+
 				click_data.mSrc = getMousePos(board_canvas,events);
 				var s = getSquareFromMousePos(click_data.mSrc);
 				// console.log("mousedown "+click_data.src.x+","+click_data.src.y);
@@ -99,6 +103,18 @@
 				drawBoard();
 			});
 			board_canvas.addEventListener('mouseup',function(events){
+
+
+
+
+
+
+
+
+
+
+
+				
 				click_data.mDest = getMousePos(board_canvas,events);
 				var d = getSquareFromMousePos(click_data.mDest);
 				if (click_data.src != null) {

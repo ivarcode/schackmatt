@@ -30,10 +30,9 @@ function pairToSq(sq) {
 	square += sq.x+1;
 	return square;
 }
-function getNotation(move,game) {
+function getNotation(move,piece) {
 	/*returns a string containing the notation of the move in game*/
 	var notation = "";
-	var piece = game.get_piece(move.src);
 	if (piece == null) {
 		return null;
 	}

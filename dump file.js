@@ -354,3 +354,62 @@ function printGame(game) {
 	}
 	console.log(printedBoard);*/
 }
+
+
+
+
+
+move.print();
+	var src = move.src;
+	var dest = move.dest;
+	// castling conditions
+	if (piece.type == "KING") {
+		if (this.turn == "WHITE") {
+			
+		} else {
+			
+		}
+	}
+	// rook movement conditions
+	if ((src.x == 0 && src.y == 0) || (dest.x == 0 && dest.y == 0)) {
+		if (game.castling[1]) {
+			game.castling[1] = false;
+		}
+	}
+	if ((src.x == 0 && src.y == 7) || (dest.x == 0 && dest.y == 7)) {
+		if (game.castling[0]) {
+			game.castling[0] = false;
+		}
+	}
+	if ((src.x == 7 && src.y == 0) || (dest.x == 7 && dest.y == 0)) {
+		if (game.castling[3]) {
+			game.castling[3] = false;
+		}
+	}
+	if ((src.x == 7 && src.y == 7) || (dest.x == 7 && dest.y == 7)) {
+		if (game.castling[2]) {
+			game.castling[2] = false;
+		}
+	}
+	// en passant conditions
+	if (game.enPassant_allowedAt != null && dest.x == game.enPassant_allowedAt.x && dest.y == game.enPassant_allowedAt.y && game.board[src.x][src.y].type == "PAWN") {
+		if (dest.x == 5) {
+			game.board[4][dest.y] = null;
+		} else if (dest.x == 2) {
+			game.board[3][dest.y] = null;
+		}
+		if (game.turn == "WHITE") {
+			game.board[dest.x][dest.y] = wPawn;
+		} else {
+			game.board[dest.x][dest.y] = bPawn;
+		}
+		game.board[src.x][src.y] = null;
+		game.enPassant_allowedAt = null;
+	} else {
+		game.enPassant_allowedAt = null;
+		if (game.board[src.x][src.y].type == "PAWN" && Math.abs(dest.x-src.x) == 2) {
+			game.enPassant_allowedAt = {x:(src.x+dest.x)/2,y:src.y};
+		}
+		game.board[dest.x][dest.y] = game.board[src.x][src.y];
+		game.board[src.x][src.y] = null;
+	}
