@@ -81,7 +81,7 @@
 			board_canvas.addEventListener('mousedown',function(events){
 				
 
-
+				/*mousedown*/
 
 
 
@@ -108,7 +108,7 @@
 
 
 
-
+				/*mouseup*/
 
 
 
