@@ -278,25 +278,23 @@ Game.prototype.game_after_move = function(move) {
 	g.make_move(move,g.get_piece(move.src));
 	return g;
 };
-Game.prototype.make_move = function(move,piece) {
+Game.prototype.make_move = function(move) {
 	/*attempts to make move of piece but checks move legality first*/
 	if (isLegalMove(move,this)) {
-		console.log("moving piece "+piece.color+" "+piece.type);
+		// console.log("moving piece "+move.piece.color+" "+move.piece.type);
 		move.print();
-
+		this.add_move_to_PGN(move);
+		this.move_piece(move);
+		this.change_turn();
 	} else {
 		console.log(".make_move :: move is not valid");
 	}
-
-	this.add_move_to_PGN(move,piece);
-	this.move_piece(move,piece);
-	this.change_turn();
 	// this.set_FEN();
 	// this.print();
 };
-Game.prototype.move_piece = function(move,piece) {
+Game.prototype.move_piece = function(move) {
 	/*places piece on dest and sets the src to null*/
-	this.set_piece(move.dest,piece);
+	this.set_piece(move.dest,move.piece);
 	this.set_piece(move.src,null);
 };
 Game.prototype.set_piece = function(sq,piece) {
@@ -348,7 +346,7 @@ Game.prototype.get_moves_from_sq = function(sq) {
 
 
 Move.prototype.print = function() {
-	console.log(this.src.x+","+this.src.y+" --> "+this.dest.x+","+this.dest.y);
+	console.log(this.piece.color+" "+this.piece.type+"   "+this.src.x+","+this.src.y+" --> "+this.dest.x+","+this.dest.y);
 };
 
 

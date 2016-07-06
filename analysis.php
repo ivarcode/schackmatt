@@ -48,13 +48,14 @@
 		var board_context;
 		var SQ_DIM = 80;
 
-		var dragged_piece;
+		var selected_piece;
 		var selected_square;
 		var tintSquare;
 		var click_data = {src: null, dest: null, mSrc: null, mDest: null};
 		var mouse_over_board = false;
 		var current_mousePos = null;
 		var mousedown = false;
+		var queening = null;
 
 		var board_img = new Image();
 		board_img.src = "./img/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
@@ -65,9 +66,10 @@
 		console.log(game.get_players().p1 + " and " + game.get_players().p2);
 
 		var move = new Move({x:1,y:1},{x:3,y:1},null);
+		move.piece = game.get_piece(move.src);
 		game.print(true);
 
-		game.make_move(move,game.get_piece(move.src));
+		game.make_move(move);
 		game.print(true);
 
 
@@ -87,6 +89,28 @@
 
 				click_data.mSrc = getMousePos(board_canvas,events);
 				var s = getSquareFromMousePos(click_data.mSrc);
+				
+				if (selected_piece == null) {
+					selected_piece = game.get_piece(s);
+				} else {
+					if (selected_piece.type == "PAWN") {
+						console.log(s);
+						if (selected_piece.color == "WHITE") {
+							if (s.x == 6) {
+								queening = "WHITE";
+							}
+						} else {
+							if (s.x == 1) {
+								queening = "BLACK";
+							}
+						}
+					}
+
+				}
+
+
+
+
 				// console.log("mousedown "+click_data.src.x+","+click_data.src.y);
 				console.log(s.x+","+s.y);
 				if (game.get_piece(s) != null && game.get_piece(s).color == game.turn) {
@@ -194,13 +218,13 @@
 			if (mouse_over_board) {
 				tintSq(tintSquare.x,tintSquare.y);
 			}
-			if (sq_is_selected) {
+			if (selected_square != null) {
 				selSq(selected_square.x,selected_square.y);
 			}
 			board_context.globalAlpha = 1;
 			for (var i = 0; i < 8; i++) {
 				for (var j = 0; j < 8; j++) {
-					if (sq_is_selected && mousedown) {
+					if (selected_square != null && mousedown) {
 						if (i == click_data.src.y && j == click_data.src.x) {
 							break;
 						}
@@ -212,7 +236,7 @@
 					}
 				}
 			}
-			if (sq_is_selected && mousedown) {
+			if (selected_square != null && mousedown) {
 				drawPiece(current_mousePos.x-40,current_mousePos.y-40,game.board[click_data.src.x][click_data.src.y]);
 			}
 			// draw selected piece here
@@ -254,7 +278,7 @@
 			/*function responsible for tinting squares yellow*/
 			board_context.fillStyle = "yellow";
 			board_context.globalAlpha = 0.5;
-			if (sq_is_selected) {
+			if (selected_square != null) {
 				if (!(selected_square.x == x && selected_square.y == y)) {
 					board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
 				}
