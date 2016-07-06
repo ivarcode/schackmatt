@@ -53,9 +53,9 @@ Game.prototype.copy = function() {
 	console.log("game.copy() :: successful");
 	return g;
 };
-Game.prototype.print = function() {
-	/*prints information about Game to the console*/
-	console.log("print()");
+Game.prototype.print = function(print_board) {
+	/*prints information about Game to the console and prints out char based board graphic if print_board == true*/
+	console.log("print("+print_board+")");
 	console.log("\t" + game.p1 + " vs " + game.p2);
 	console.log("\t" + game.turn + " turn");
 	console.log("\t" + this.get_legal_moves().length + " moves");
@@ -81,6 +81,48 @@ Game.prototype.print = function() {
 	this.print_PGN();
 	if (game.enPassant_allowedAt != null) {
 		console.log("\tenPassant_allowedAt " + game.enPassant_allowedAt.x + "," + game.enPassant_allowedAt.y);
+	}
+	if (print_board) {
+		var s = "";
+		for (var a = 7; a > -1; a--) {
+			for (var b = 0; b < 8; b++) {
+				try {
+					if (this.get_piece({x:a,y:b}).color == "WHITE") {
+						if (this.get_piece({x:a,y:b}).type == "KING") {
+							s += "K";
+						} else if (this.get_piece({x:a,y:b}).type == "QUEEN") {
+							s += "Q";
+						} else if (this.get_piece({x:a,y:b}).type == "BISHOP") {
+							s += "B";
+						} else if (this.get_piece({x:a,y:b}).type == "KNIGHT") {
+							s += "N";
+						} else if (this.get_piece({x:a,y:b}).type == "ROOK") {
+							s += "R";
+						} else if (this.get_piece({x:a,y:b}).type == "PAWN") {
+							s += "P";
+						}
+					} else {
+						if (this.get_piece({x:a,y:b}).type == "KING") {
+							s += "k";
+						} else if (this.get_piece({x:a,y:b}).type == "QUEEN") {
+							s += "q";
+						} else if (this.get_piece({x:a,y:b}).type == "BISHOP") {
+							s += "b";
+						} else if (this.get_piece({x:a,y:b}).type == "KNIGHT") {
+							s += "n";
+						} else if (this.get_piece({x:a,y:b}).type == "ROOK") {
+							s += "r";
+						} else if (this.get_piece({x:a,y:b}).type == "PAWN") {
+							s += "p";
+						}
+					}
+				} catch(e) {
+					// console.log(e.message);
+				}
+			}
+			s += "\n";
+		}
+		console.log(s);
 	}
 };
 Game.prototype.print_PGN = function() {
@@ -197,9 +239,6 @@ Game.prototype.get_PGN = function() {
 };
 Game.prototype.add_move_to_PGN = function(move) {
 	/*adds move to pgn of Game*/
-	if (move.notation == null) {
-		move.notation = getNotation(move,this);
-	}
 	this.pgn[this.pgn.length] = move;
 };
 Game.prototype.get_piece = function(sq) {
@@ -246,6 +285,9 @@ Game.prototype.make_move_if_legal = function(move,piece) {
 	}
 };
 Game.prototype.make_move = function(move,piece) {
+	move.print();
+	var src = move.src;
+	var dest = move.dest;
 	/*call move_piece and update the proper data in Game*/
 	// castling conditions
 	if (piece.type == "KING") {
@@ -261,19 +303,34 @@ Game.prototype.make_move = function(move,piece) {
 			game.castling[1] = false;
 		}
 	}
+	if ((src.x == 0 && src.y == 7) || (dest.x == 0 && dest.y == 7)) {
+		if (game.castling[0]) {
+			game.castling[0] = false;
+		}
+	}
+	if ((src.x == 7 && src.y == 0) || (dest.x == 7 && dest.y == 0)) {
+		if (game.castling[3]) {
+			game.castling[3] = false;
+		}
+	}
+	if ((src.x == 7 && src.y == 7) || (dest.x == 7 && dest.y == 7)) {
+		if (game.castling[2]) {
+			game.castling[2] = false;
+		}
+	}
 	// en passant conditions
 	if (game.enPassant_allowedAt != null && dest.x == game.enPassant_allowedAt.x && dest.y == game.enPassant_allowedAt.y && game.board[src.x][src.y].type == "PAWN") {
 		if (dest.x == 5) {
-			game.board[4][dest.y] = nullpiece;
+			game.board[4][dest.y] = null;
 		} else if (dest.x == 2) {
-			game.board[3][dest.y] = nullpiece;
+			game.board[3][dest.y] = null;
 		}
 		if (game.turn == "WHITE") {
 			game.board[dest.x][dest.y] = wPawn;
 		} else {
 			game.board[dest.x][dest.y] = bPawn;
 		}
-		game.board[src.x][src.y] = nullpiece;
+		game.board[src.x][src.y] = null;
 		game.enPassant_allowedAt = null;
 	} else {
 		game.enPassant_allowedAt = null;
@@ -281,7 +338,7 @@ Game.prototype.make_move = function(move,piece) {
 			game.enPassant_allowedAt = {x:(src.x+dest.x)/2,y:src.y};
 		}
 		game.board[dest.x][dest.y] = game.board[src.x][src.y];
-		game.board[src.x][src.y] = nullpiece;
+		game.board[src.x][src.y] = null;
 	}
 	
 
@@ -341,6 +398,11 @@ Game.prototype.get_moves_from_sq = function(sq) {
 		return getPawnMoves(sq,piece.color,this);
 	}
 	return [];
+};
+
+
+Move.prototype.print = function() {
+	console.log(this.src.x+","+this.src.y+" --> "+this.dest.x+","+this.dest.y);
 };
 
 

@@ -17,12 +17,7 @@
 	<script type="text/javascript" src="./js/game.js"></script>
 	<script type="text/javascript" src="./js/rules.js"></script>
 	<script type="text/javascript">
-
-		//write position testing code here
-
-
-		var game = new Game("player 1","player 2","STANDARD");
-		console.log(game.get_players().p1 + " and " + game.get_players().p2);
+		
 
 		/*
 			var s = {x:7-src.y,y:src.x};
@@ -53,8 +48,6 @@
 		var board_context;
 		var SQ_DIM = 80;
 
-		var sq_is_selected = false;
-		var piece_is_selected = false;
 		var selected_piece;
 		var selected_square;
 		var tintSquare;
@@ -66,21 +59,37 @@
 		var board_img = new Image();
 		board_img.src = "./img/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 
+
+
+		var game = new Game("player 1","player 2","STANDARD");
+		console.log(game.get_players().p1 + " and " + game.get_players().p2);
+
+		var move = new Move({x:1,y:1},{x:3,y:1},null);
+
+		game.make_move_if_legal(move,game.get_piece(move.src));
+
+		game.print(true);
+
+
+
+
+
+
 		function setup() {
 			board_canvas = document.getElementById("board");
 			board_context = board_canvas.getContext("2d");
 
-			game.print();
+			game.print(true);
 			drawBoard();
 			
 			board_canvas.addEventListener('mousedown',function(events){
 				click_data.mSrc = getMousePos(board_canvas,events);
 				var s = getSquareFromMousePos(click_data.mSrc);
 				// console.log("mousedown "+click_data.src.x+","+click_data.src.y);
+				console.log(s.x+","+s.y);
 				if (game.get_piece(s) != null && game.get_piece(s).color == game.turn) {
 					// console.log("mousedown on a "+game.turn+ " piece");
 					click_data.src = s;
-					sq_is_selected = true;
 					selected_square = {x:click_data.src.y,y:7-click_data.src.x};
 				} else {
 					click_data.src = null;
