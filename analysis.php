@@ -85,8 +85,6 @@
 
 
 
-
-
 				click_data.mSrc = getMousePos(board_canvas,events);
 				var s = getSquareFromMousePos(click_data.mSrc);
 				// console.log("mousedown "+click_data.src.x+","+click_data.src.y);
