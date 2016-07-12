@@ -37,14 +37,13 @@
 		var board_context;
 		var SQ_DIM = 80;
 
-		var selected_piece;
 		var selected_square;
 		var tintSquare;
 		var click_data = {src: null, dest: null, mSrc: null, mDest: null};
 		var mouse_over_board = false;
 		var current_mousePos = null;
 		var mousedown = false;
-		var queening = null;
+		var queening = false;
 
 		var board_img = new Image();
 		board_img.src = "./img/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
@@ -52,14 +51,14 @@
 
 
 		var game = new Game("player 1","player 2","STANDARD");
-		console.log(game.get_players().p1 + " and " + game.get_players().p2);
+		// console.log(game.get_players().p1 + " and " + game.get_players().p2);
+		game.print(true);
 
-		var move = new Move({x:1,y:1},{x:3,y:1},null);
+		/*var move = new Move({x:1,y:1},{x:3,y:1},null);
 		move.piece = game.get_piece(move.src);
-		game.print(true);
+		game.print(true);*/
 
-		game.make_move(move);
-		game.print(true);
+		// game.make_move(move);
 
 
 
@@ -79,27 +78,18 @@
 				click_data.mSrc = getMousePos(board_canvas,events);
 				var s = getSquareFromMousePos(click_data.mSrc);
 				
-				if (selected_piece == null) {
-					selected_square = s;
-					selected_piece = game.get_piece(s);
+				if (queening) {
+
 				} else {
-					if (selected_piece.type == "PAWN") {
-						console.log(s);
-						if (selected_piece.color == "WHITE") {
-							if (s.x == 6) {
-								queening = "WHITE";
-							}
+					if (selected_square == null) {
+						if (game.get_piece(s) != null && game.get_piece(s).color == game.turn) {
+							selected_square = s;
 						} else {
-							if (s.x == 1) {
-								queening = "BLACK";
-							}
+							selected_square = null;
 						}
 					}
-					console.log(pairToSq(selected_square)+" --> "+pairToSq(s));
-					game.make_move(new Move(selected_square,s,selected_piece));
-					selected_piece = null;
-					selected_square = null;
 				}
+
 
 
 				mousedown = true;
@@ -108,10 +98,20 @@
 			board_canvas.addEventListener('mouseup',function(events){
 
 
+				if (selected_square != null) {
+					click_data.mDest = getMousePos(board_canvas,events);
+					var d = getSquareFromMousePos(click_data.mDest);
+					if (selected_square.x == d.x && selected_square.y == d.y) {
+						selected_square = null;
+					} else {
+						var move = new Move({x:selected_square.x,y:selected_square.y},{x:d.x,y:d.y},game.get_piece(selected_square));
+						console.log("making move "+move.src.x+" "+move.src.y+" "+move.dest.x+" "+move.dest.y);
+						game.make_move(move);
+
+					}
+				}
 
 
-
-				/*mouseup*/
 				mousedown = false;
 				drawBoard();
 
@@ -174,9 +174,6 @@
 			if (mouse_over_board) {
 				tintSq(tintSquare.x,tintSquare.y);
 			}
-			if (selected_square != null) {
-				selSq(selected_square.x,selected_square.y);
-			}
 			board_context.globalAlpha = 1;
 			for (var i = 0; i < 8; i++) {
 				for (var j = 0; j < 8; j++) {
@@ -185,7 +182,7 @@
 							//dont draw, draw later
 						} else {
 							try {
-								drawPiece((7-i)*SQ_DIM,j*SQ_DIM,game.board[j][i]);
+								drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,game.board[j][i]);
 							} catch(e) {
 								console.log("ERR :: "+e.message)
 							}
@@ -200,7 +197,7 @@
 				}
 			}
 			if (selected_square != null && mousedown) {
-				drawPiece(current_mousePos.x-40,current_mousePos.y-40,selected_piece);
+				drawPiece(current_mousePos.x-40,current_mousePos.y-40,game.get_piece(selected_square));
 			}
 		}
 

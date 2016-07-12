@@ -85,6 +85,7 @@ Game.prototype.print = function(print_board) {
 	if (print_board) {
 		var s = "";
 		for (var a = 7; a > -1; a--) {
+			s += "\t";
 			for (var b = 0; b < 8; b++) {
 				try {
 					if (this.get_piece({x:a,y:b}).color == "WHITE") {
