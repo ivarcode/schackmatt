@@ -84,6 +84,7 @@
 				} else {
 					if (selected_square == null) {
 						if (game.get_piece(s) != null && game.get_piece(s).color == game.turn) {
+							console.log("setting selected_square to "+s.x+","+s.y);
 							selected_square = s;
 						} else {
 							selected_square = null;
@@ -108,6 +109,7 @@
 						var move = new Move({x:selected_square.x,y:selected_square.y},{x:d.x,y:d.y},game.get_piece(selected_square));
 						game.make_move(move);
 						game.print(true);
+						selected_square = null;
 					}
 				}
 
