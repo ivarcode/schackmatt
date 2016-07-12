@@ -265,7 +265,7 @@
 		<div id="header">
 			<h1>schackmatt.net</h1>
 			<h3>WIP</h3>
-			<h5>Coded by Camden I. Wagner<br>camden.i.wagner@ivarcode.net</h5>
+			<h5 id="me">Coded by Camden I. Wagner<br>camden.i.wagner@ivarcode.net</h5>
 		</div>
 
 		<div id="game">
