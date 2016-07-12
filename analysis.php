@@ -77,6 +77,7 @@
 
 				click_data.mSrc = getMousePos(board_canvas,events);
 				var s = getSquareFromMousePos(click_data.mSrc);
+				console.log(s);
 				
 				if (queening) {
 
@@ -105,9 +106,8 @@
 						selected_square = null;
 					} else {
 						var move = new Move({x:selected_square.x,y:selected_square.y},{x:d.x,y:d.y},game.get_piece(selected_square));
-						console.log("making move "+move.src.x+" "+move.src.y+" "+move.dest.x+" "+move.dest.y);
 						game.make_move(move);
-
+						game.print(true);
 					}
 				}
 
