@@ -251,7 +251,7 @@ Game.prototype.get_piece = function(sq) {
 Game.prototype.is_check = function(color) {
 	/*returns whether or not the position in game is currently check*/
 	var sq = locateKing(color,this);
-	if (isSqThreatenedBy(sq,getOppColor(color,this))) {
+	if (this.isSqThreatenedBy(sq,getOppColor(color,this))) {
 		console.log("CHECK");
 		return true;
 	}
@@ -416,7 +416,7 @@ Game.prototype.get_moves_from_sq = function(sq) {
 	}
 	return [];
 };
-function getKingMoves(sq,color) {
+Game.prototype.getKingMoves = function(sq,color) {
 	/*gets all moves from sq for the arg color king*/
 	var moves = [];
 	var list = [];
@@ -438,25 +438,25 @@ function getKingMoves(sq,color) {
 	var c = getOppColor(color);
 	if (!this.isSqThreatenedBy(sq,c)) {
 		if (sq.x == 0 && sq.y == 4 && color == "WHITE" && this.castling[0] && this.board[sq.x][sq.y+1] == null && !this.isSqThreatenedBy({x:sq.x,y:sq.y+1},c) && this.board[sq.x][sq.y+2] == null && !this.isSqThreatenedBy({x:sq.x,y:sq.y+2},c)) {
-			moves[moves.length] = {src:sq,dest:{x:sq.x,y:sq.y+2},notation:"0-0"};
+			moves[moves.length] = new Move(sq,{x:sq.x,y:sq.y+2},this.get_piece(sq));
 			console.log("kingside castling allowed for white");
 		}
 		if (sq.x == 0 && sq.y == 4 && color == "WHITE" && this.castling[1] && this.board[sq.x][sq.y-1] == null && !this.isSqThreatenedBy({x:sq.x,y:sq.y-1},c) && this.board[sq.x][sq.y-2] == null && !this.isSqThreatenedBy({x:sq.x,y:sq.y-2},c) && this.board[sq.x][sq.y-3] == null) {
-			moves[moves.length] = {src:sq,dest:{x:sq.x,y:sq.y-2},notation:"0-0-0"};
+			moves[moves.length] = new Move(sq,{x:sq.x,y:sq.y-2},this.get_piece(sq));
 			console.log("queenside castling allowed for white");
 		}
 		if (sq.x == 7 && sq.y == 4 && color == "BLACK" && this.castling[2] && this.board[sq.x][sq.y+1] == null && !this.isSqThreatenedBy({x:sq.x,y:sq.y+1},c) && this.board[sq.x][sq.y+2] == null && !this.isSqThreatenedBy({x:sq.x,y:sq.y+2},c)) {
-			moves[moves.length] = {src:sq,dest:{x:sq.x,y:sq.y+2},notation:"0-0"};
+			moves[moves.length] = new Move(sq,{x:sq.x,y:sq.y+2},this.get_piece(sq));
 			console.log("kingside castling allowed for black");
 		}
 		if (sq.x == 7 && sq.y == 4 && color == "BLACK" && this.castling[3] && this.board[sq.x][sq.y-1] == null && !this.isSqThreatenedBy({x:sq.x,y:sq.y-1},c) && this.board[sq.x][sq.y-2] == null && !this.isSqThreatenedBy({x:sq.x,y:sq.y-2},c) && this.board[sq.x][sq.y-3] == null) {
-			moves[moves.length] = {src:sq,dest:{x:sq.x,y:sq.y-2},notation:"0-0-0"};
+			moves[moves.length] = new Move(sq,{x:sq.x,y:sq.y-2},this.get_piece(sq));
 			console.log("queenside castling allowed for black");
 		}
 	}
 	return moves;
 }
-function getKingMovesWithoutCastles(sq,color) {
+Game.prototype.getKingMovesWithoutCastles = function(sq,color) {
 	/*gets all moves from sq in game for the arg color king but doesn't check for castling (avoids loops)*/
 	var moves = [];
 	var list = [];
@@ -477,7 +477,7 @@ function getKingMovesWithoutCastles(sq,color) {
 	}
 	return moves;
 }
-function getKnightMoves(sq,color,game) {
+Game.prototype.getKnightMoves = function(sq,color) {
 	/*gets all moves from sq in game for the arg color knight*/
 	var moves = [];
 	var list = [];
@@ -491,30 +491,31 @@ function getKnightMoves(sq,color,game) {
 	list[list.length] = {x:sq.x-2,y:sq.y-1};
 	for (var i = 0; i < list.length; i++) {
 		if (list[i].x > -1 && list[i].x < 8 && list[i].y > -1 && list[i].y < 8) {
-			if (game.board[list[i].x][list[i].y] == null || game.board[list[i].x][list[i].y].color != color) {
-				moves[moves.length] = {src:sq,dest:list[i],notation:null};
+			if (this.board[list[i].x][list[i].y] == null || this.board[list[i].x][list[i].y].color != color) {
+				moves[moves.length] = new Move(sq,list[i],this.get_piece(sq));
+
 			}
 		}
 	}
 	return moves;
 }
-function getQueenMoves(sq,color,game) {
+Game.prototype.getQueenMoves = function(sq,color) {
 	/*gets all moves from sq in game for the arg color queen*/
-	var a = getRookMoves(sq,color,game);
-	var b = getBishopMoves(sq,color,game);
+	var a = this.getRookMoves(sq,color);
+	var b = this.getBishopMoves(sq,color);
 	var moves = a.concat(b);
 	return moves;
 }
-function getRookMoves(sq,color,game) {
+Game.prototype.getRookMoves = function(sq,color) {
 	/*gets all moves from sq in game for the arg color rook*/
 	var moves = [];
 	var a = sq.x;
 	var b = sq.y;
 	while (a+1 < 8) {
 		a++;
-		if (game.board[a][b] == null || game.board[a][b].color != color) {
-			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
-			if (game.board[a][b] != null) {
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
 				break;
 			}
 		} else {
@@ -525,9 +526,9 @@ function getRookMoves(sq,color,game) {
 	b = sq.y;
 	while (a-1 > -1) {
 		a--;
-		if (game.board[a][b] == null || game.board[a][b].color != color) {
-			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
-			if (game.board[a][b] != null) {
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
 				break;
 			}
 		} else {
@@ -538,9 +539,9 @@ function getRookMoves(sq,color,game) {
 	b = sq.y;
 	while (b+1 < 8) {
 		b++;
-		if (game.board[a][b] == null || game.board[a][b].color != color) {
-			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
-			if (game.board[a][b] != null) {
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
 				break;
 			}
 		} else {
@@ -551,9 +552,9 @@ function getRookMoves(sq,color,game) {
 	b = sq.y;
 	while (b-1 > -1) {
 		b--;
-		if (game.board[a][b] == null || game.board[a][b].color != color) {
-			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
-			if (game.board[a][b] != null) {
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
 				break;
 			}
 		} else {
@@ -562,7 +563,7 @@ function getRookMoves(sq,color,game) {
 	}
 	return moves;
 }
-function getBishopMoves(sq,color,game) {
+Game.prototype.getBishopMoves = function(sq,color) {
 	/*gets all moves from sq in game for the arg color bishop*/
 	var moves = [];
 	var a = sq.x;
@@ -570,9 +571,9 @@ function getBishopMoves(sq,color,game) {
 	while (a+1 < 8 && b+1 < 8) {
 		a++;
 		b++;
-		if (game.board[a][b] == null || game.board[a][b].color != color) {
-			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
-			if (game.board[a][b] != null) {
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
 				break;
 			}
 		} else {
@@ -584,9 +585,9 @@ function getBishopMoves(sq,color,game) {
 	while (a+1 < 8 && b-1 > -1) {
 		a++;
 		b--;
-		if (game.board[a][b] == null || game.board[a][b].color != color) {
-			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
-			if (game.board[a][b] != null) {
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
 				break;
 			}
 		} else {
@@ -598,9 +599,9 @@ function getBishopMoves(sq,color,game) {
 	while (a-1 > -1 && b+1 < 8) {
 		a--;
 		b++;
-		if (game.board[a][b] == null || game.board[a][b].color != color) {
-			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
-			if (game.board[a][b] != null) {
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
 				break;
 			}
 		} else {
@@ -612,9 +613,9 @@ function getBishopMoves(sq,color,game) {
 	while (a-1 > -1 && b-1 > -1) {
 		a--;
 		b--;
-		if (game.board[a][b] == null || game.board[a][b].color != color) {
-			moves[moves.length] = {src:sq,dest:{x:a,y:b},notation:null};
-			if (game.board[a][b] != null) {
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
 				break;
 			}
 		} else {
@@ -623,46 +624,46 @@ function getBishopMoves(sq,color,game) {
 	}
 	return moves;
 }
-function getPawnMoves(sq,color,game) {
+Game.prototype.getPawnMoves = function(sq,color) {
 	/*gets all moves from sq in game for the arg color pawn*/
 	var moves = [];
 	if (color == "WHITE") {
-		if (game.board[sq.x+1][sq.y] == null) {
+		if (this.board[sq.x+1][sq.y] == null) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y},notation:null};
 		}
-		if (sq.x == 1 && game.board[sq.x+2][sq.y] == null && game.board[sq.x+1][sq.y] == null) {
+		if (sq.x == 1 && this.board[sq.x+2][sq.y] == null && this.board[sq.x+1][sq.y] == null) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x+2,y:sq.y},notation:null};
 		}
-		if (sq.x+1 < 8 && sq.y+1 < 8 && game.board[sq.x+1][sq.y+1] != null && game.board[sq.x+1][sq.y+1].color != color) {
+		if (sq.x+1 < 8 && sq.y+1 < 8 && this.board[sq.x+1][sq.y+1] != null && this.board[sq.x+1][sq.y+1].color != color) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y+1},notation:null};
 		}
-		if (sq.x+1 < 8 && sq.y-1 > -1 && game.board[sq.x+1][sq.y-1] != null && game.board[sq.x+1][sq.y-1].color != color) {
+		if (sq.x+1 < 8 && sq.y-1 > -1 && this.board[sq.x+1][sq.y-1] != null && this.board[sq.x+1][sq.y-1].color != color) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y-1},notation:null};
 		}
-		if (game.enPassant_allowedAt != null) {
-			if (game.enPassant_allowedAt.x == sq.x+1 && game.enPassant_allowedAt.y == sq.y+1) {
+		if (this.enPassant_allowedAt != null) {
+			if (this.enPassant_allowedAt.x == sq.x+1 && this.enPassant_allowedAt.y == sq.y+1) {
 				moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y+1},notation:null};
-			} else if (game.enPassant_allowedAt.x == sq.x+1 && game.enPassant_allowedAt.y == sq.y-1) {
+			} else if (this.enPassant_allowedAt.x == sq.x+1 && this.enPassant_allowedAt.y == sq.y-1) {
 				moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y-1},notation:null};
 			}
 		}
 	} else /*if turn == BLACK*/{
-		if (game.board[sq.x-1][sq.y] == null) {
+		if (this.board[sq.x-1][sq.y] == null) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y},notation:null};
 		}
-		if (sq.x == 6 && game.board[sq.x-2][sq.y] == null && game.board[sq.x-1][sq.y] == null) {
+		if (sq.x == 6 && this.board[sq.x-2][sq.y] == null && this.board[sq.x-1][sq.y] == null) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x-2,y:sq.y},notation:null};
 		}
-		if (sq.x-1 < 8 && sq.y+1 < 8 && game.board[sq.x-1][sq.y+1] != null && game.board[sq.x-1][sq.y+1].color != color) {
+		if (sq.x-1 < 8 && sq.y+1 < 8 && this.board[sq.x-1][sq.y+1] != null && this.board[sq.x-1][sq.y+1].color != color) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y+1},notation:null};
 		}
-		if (sq.x-1 < 8 && sq.y-1 > -1 && game.board[sq.x-1][sq.y-1] != null && game.board[sq.x-1][sq.y-1].color != color) {
+		if (sq.x-1 < 8 && sq.y-1 > -1 && this.board[sq.x-1][sq.y-1] != null && this.board[sq.x-1][sq.y-1].color != color) {
 			moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y-1},notation:null};
 		}
-		if (game.enPassant_allowedAt != null) {
-			if (game.enPassant_allowedAt.x == sq.x-1 && game.enPassant_allowedAt.y == sq.y+1) {
+		if (this.enPassant_allowedAt != null) {
+			if (this.enPassant_allowedAt.x == sq.x-1 && this.enPassant_allowedAt.y == sq.y+1) {
 				moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y+1},notation:null};
-			} else if (game.enPassant_allowedAt.x == sq.x-1 && game.enPassant_allowedAt.y == sq.y-1) {
+			} else if (this.enPassant_allowedAt.x == sq.x-1 && this.enPassant_allowedAt.y == sq.y-1) {
 				moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y-1},notation:null};
 			}
 		}
