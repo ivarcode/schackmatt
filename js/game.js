@@ -275,13 +275,26 @@ Game.prototype.is_stalemate = function() {
 };
 Game.prototype.game_after_move = function(move) {
 	/*returns Game object after move has been made*/
-	var g = game.copy();
+	var g = this.copy();
 	g.make_move(move,g.get_piece(move.src),true);
 	return g;
 };
+Game.prototype.isLegalMove = function(move) {
+	/*returns whether or not the move from src -> dest is a legal move*/
+	var moves = this.get_legal_moves();
+	for (var i = 0; i < moves.length; i++) {
+		if (moves[i].src.x == move.src.x && moves[i].src.y == move.src.y &&
+			moves[i].dest.x == move.dest.x && moves[i].dest.y == move.dest.y) {
+			// console.log("isLegalMove() true");
+			return true;
+		}
+	}
+	return false;
+}
 Game.prototype.make_move = function(move,force_move) {
 	/*attempts to make move of piece but checks move legality first*/
-	if (force_move || isLegalMove(move,this)) {
+	// move.print();
+	if (force_move || this.isLegalMove(move)) {
 		// console.log("moving piece "+move.piece.color+" "+move.piece.type);
 		// move.print();
 		this.add_move_to_PGN(move);
@@ -289,6 +302,7 @@ Game.prototype.make_move = function(move,force_move) {
 		this.change_turn();
 	} else {
 		console.log(".make_move :: move is not valid");
+		console.log(move);
 	}
 	// this.set_FEN();
 	// this.print();
@@ -319,9 +333,10 @@ Game.prototype.get_legal_moves = function() {
 			}
 		}
 	}
-	// console.log("get_legal_moves() length = "+moves.length);
+	console.log("get_legal_moves() length = "+moves.length);
 	for (var a = 0; a < moves.length; a++) {
 		var g = this.game_after_move(moves[a]);
+		g.print();
 		if (g.is_check(game.turn)) {
 			moves.remove(a);
 			a--;
@@ -402,17 +417,17 @@ Game.prototype.get_moves_from_sq = function(sq) {
 		return [];
 	}
 	if (piece.type == "KING") {
-		return getKingMoves(sq,piece.color,this);
+		return this.getKingMoves(sq,piece.color);
 	} else if (piece.type == "QUEEN") {
-		return getQueenMoves(sq,piece.color,this);
+		return this.getQueenMoves(sq,piece.color);
 	} else if (piece.type == "BISHOP") {
-		return getBishopMoves(sq,piece.color,this);
+		return this.getBishopMoves(sq,piece.color);
 	} else if (piece.type == "KNIGHT") {
-		return getKnightMoves(sq,piece.color,this);
+		return this.getKnightMoves(sq,piece.color);
 	} else if (piece.type == "ROOK") {
-		return getRookMoves(sq,piece.color,this);
+		return this.getRookMoves(sq,piece.color);
 	} else if (piece.type == "PAWN") {
-		return getPawnMoves(sq,piece.color,this);
+		return this.getPawnMoves(sq,piece.color);
 	}
 	return [];
 };

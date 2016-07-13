@@ -9,7 +9,7 @@ function getOppColor(color) {
 	} else if (color == "BLACK") {
 		return "WHITE";
 	} else {
-		console.log("getOppColor() :: not a valid color");
+		// console.log("getOppColor() :: not a valid color");
 	}
 }
 function pairToSq(sq) {

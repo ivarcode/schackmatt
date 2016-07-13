@@ -51,14 +51,7 @@
 
 
 		var game = new Game("player 1","player 2","STANDARD");
-		// console.log(game.get_players().p1 + " and " + game.get_players().p2);
 		game.print(true);
-
-		/*var move = new Move({x:1,y:1},{x:3,y:1},null);
-		move.piece = game.get_piece(move.src);
-		game.print(true);*/
-
-		// game.make_move(move);
 
 
 
@@ -110,7 +103,7 @@
 						selected_square = null;
 					} else {
 						var move = new Move({x:selected_square.x,y:selected_square.y},{x:d.x,y:d.y},game.get_piece(selected_square));
-						game.make_move(move);
+						game.make_move(move,false);
 						game.print(true);
 						selected_square = null;
 					}
