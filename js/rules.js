@@ -73,18 +73,7 @@ function locateKing(color,game) {
 	console.log("locateKing() :: no king of color "+color+" found on board");
 	return null;
 }
-function isLegalMove(move,game) {
-	/*returns whether or not the move from src -> dest is a legal move in game*/
-	var moves = game.get_legal_moves();
-	for (var i = 0; i < moves.length; i++) {
-		if (moves[i].src.x == move.src.x && moves[i].src.y == move.src.y &&
-			moves[i].dest.x == move.dest.x && moves[i].dest.y == move.dest.y) {
-			// console.log("isLegalMove() true");
-			return true;
-		}
-	}
-	return false;
-}
+
 
 
 
