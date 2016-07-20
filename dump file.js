@@ -139,14 +139,8 @@ Game.prototype.change_turn = function() {
 	/*changes the turn of Game*/
 	this.turn = getOppColor(this.turn);
 };
-Game.prototype.get_players = function() {
-	/*returns an object {p1,p2} which returns the respective players in Game*/
-	return {p1:this.p1,p2:this.p2};
-};
-Game.prototype.get_FEN = function() {
-	/*returns the FEN string of the Game*/
-	return this.fen;
-};
+
+
 Game.prototype.set_FEN = function() {
 	/*sets the fen property of Game to refect the current state of Game*/
 	var newFEN = "";
@@ -313,10 +307,6 @@ Game.prototype.move_piece = function(move) {
 	this.set_piece(move.dest,move.piece);
 	this.set_piece(move.src,null);
 };
-Game.prototype.set_piece = function(sq,piece) {
-	/*sets the sq on board equal to piece*/
-	this.board[sq.x][sq.y] = piece;
-};
 Game.prototype.get_legal_moves = function() {
 	/*returns an array of legal moves from the position in Game*/
 	var moves = [];
@@ -472,7 +462,7 @@ Game.prototype.getKingMoves = function(sq,color) {
 		}
 	}
 	return moves;
-}
+};
 Game.prototype.getKingMovesWithoutCastles = function(sq,color) {
 	/*gets all moves from sq in game for the arg color king but doesn't check for castling (avoids loops)*/
 	var moves = [];
@@ -493,7 +483,7 @@ Game.prototype.getKingMovesWithoutCastles = function(sq,color) {
 		}
 	}
 	return moves;
-}
+};
 Game.prototype.getKnightMoves = function(sq,color) {
 	/*gets all moves from sq in game for the arg color knight*/
 	var moves = [];
@@ -515,14 +505,14 @@ Game.prototype.getKnightMoves = function(sq,color) {
 		}
 	}
 	return moves;
-}
+};
 Game.prototype.getQueenMoves = function(sq,color) {
 	/*gets all moves from sq in game for the arg color queen*/
 	var a = this.getRookMoves(sq,color);
 	var b = this.getBishopMoves(sq,color);
 	var moves = a.concat(b);
 	return moves;
-}
+};
 Game.prototype.getRookMoves = function(sq,color) {
 	/*gets all moves from sq in game for the arg color rook*/
 	var moves = [];
@@ -579,7 +569,7 @@ Game.prototype.getRookMoves = function(sq,color) {
 		}
 	}
 	return moves;
-}
+};
 Game.prototype.getBishopMoves = function(sq,color) {
 	/*gets all moves from sq in game for the arg color bishop*/
 	var moves = [];
@@ -640,7 +630,7 @@ Game.prototype.getBishopMoves = function(sq,color) {
 		}
 	}
 	return moves;
-}
+};
 Game.prototype.getPawnMoves = function(sq,color) {
 	/*gets all moves from sq in game for the arg color pawn*/
 	var moves = [];
@@ -701,7 +691,7 @@ Game.prototype.getPawnMoves = function(sq,color) {
 	}
 	moves.concat(m);
 	return moves;
-}
+};
 
 
 Move.prototype.print = function() {
@@ -709,41 +699,7 @@ Move.prototype.print = function() {
 };
 
 
-var wPawn = new Piece("PAWN", "WHITE");
-var wKnight = new Piece("KNIGHT", "WHITE");
-var wBishop = new Piece("BISHOP", "WHITE");
-var wRook = new Piece("ROOK", "WHITE");
-var wQueen = new Piece("QUEEN", "WHITE");
-var wKing = new Piece("KING", "WHITE");
-var bPawn = new Piece("PAWN", "BLACK");
-var bKnight = new Piece("KNIGHT", "BLACK");
-var bBishop = new Piece("BISHOP", "BLACK");
-var bRook = new Piece("ROOK", "BLACK");
-var bQueen = new Piece("QUEEN", "BLACK");
-var bKing = new Piece("KING", "BLACK");
 
-
-var BOARD_STANDARD = [
-[wRook,wKnight,wBishop,wQueen,wKing,wBishop,wKnight,wRook],
-[wPawn,wPawn,wPawn,wPawn,wPawn,wPawn,wPawn,wPawn],
-[null,null,null,null,null,null,null,null],
-[null,null,null,null,null,null,null,null],
-[null,null,null,null,null,null,null,null],
-[null,null,null,null,null,null,null,null],
-[bPawn,bPawn,bPawn,bPawn,bPawn,bPawn,bPawn,bPawn],
-[bRook,bKnight,bBishop,bQueen,bKing,bBishop,bKnight,bRook]
-];
-
-var BOARD_TEST = [
-[wKing,null,null,null,null,null,null,null],
-[null,null,null,null,null,null,null,null],
-[null,null,null,null,null,null,null,null],
-[null,null,null,null,null,null,null,null],
-[null,wPawn,null,null,null,null,null,null],
-[null,null,null,null,null,null,null,null],
-[null,null,null,null,null,null,null,null],
-[bKing,null,null,null,null,null,null,null]
-];
 
 
 
@@ -771,24 +727,7 @@ function getOppColor(color) {
 		// console.log("getOppColor() :: not a valid color");
 	}
 }
-function pairToSq(sq) {
-	/*converts the square in the array to the square on the chessboard
-		ex: e4 */
-	var square = "";
-	switch (sq.y) {
-		case 0: square += "a"; break;
-		case 1: square += "b"; break;
-		case 2: square += "c"; break;
-		case 3: square += "d"; break;
-		case 4: square += "e"; break;
-		case 5: square += "f"; break;
-		case 6: square += "g"; break;
-		case 7: square += "h"; break;
-		default: console.log("ERR :: sq out of range");
-	}
-	square += sq.x+1;
-	return square;
-}
+
 function getNotation(move,piece) {
 	/*returns a string containing the notation of the move in game*/
 	var notation = "";
