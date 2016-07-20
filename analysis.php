@@ -49,9 +49,10 @@
 		board_img.src = "./img/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 
 
-
 		var game = new Game("player 1","player 2","STANDARD");
+		alert("ayy");
 		game.print(true);
+		alert("lol");
 
 
 
