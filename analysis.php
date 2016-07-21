@@ -50,7 +50,7 @@
 
 
 		var game = new Game("player 1","player 2","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
-		game.print(true);
+		// game.print(true);
 
 
 
