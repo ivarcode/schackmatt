@@ -115,6 +115,7 @@ function Game(p1, p2, gametype, pos, pgn) {
 		} else if (this.get_FEN().charAt(i) == 'b') {
 			this.turn = "BLACK";
 		} else {
+			console.log("charAt(i) = "+this.get_FEN().charAt(i));
 			throw "ERR :: invalid color";
 		}
 		i+=2;
@@ -169,8 +170,8 @@ Game.prototype.change_turn = function() {
 Game.prototype.is_check = function(color) {
 	/*returns whether or not the position in game is currently check*/
 	var sq = this.get_king(color,this);
-	console.log(sq);
-	console.log(color);
+	// console.log(sq);
+	// console.log(color);
 	if (this.is_sq_threatened_by(sq,this.get_opp_color(color))) {
 		console.log("CHECK");
 		return true;
@@ -243,7 +244,7 @@ Game.prototype.get_legal_moves = function() {
 			}
 		}
 	}
-	console.log("\tget_legal_moves() length = "+moves.length);
+	// console.log("\tget_legal_moves() length = "+moves.length);
 	for (var a = 0; a < moves.length; a++) {
 		var g = this.game_after_move(moves[a]);
 		// g.print();
@@ -548,43 +549,51 @@ Game.prototype.get_pawn_moves = function(sq,color) {
 	/*gets all moves from sq in game for the arg color pawn*/
 	var moves = [];
 	if (color == "WHITE") {
+		// single move
 		if (this.board[sq.x+1][sq.y] == null) {
 			moves[moves.length] = new Move(sq,{x:sq.x+1,y:sq.y},this.get_piece(sq));
 		}
+		// first move for pawn, two square move
 		if (sq.x == 1 && this.board[sq.x+2][sq.y] == null && this.board[sq.x+1][sq.y] == null) {
 			moves[moves.length] = new Move(sq,{x:sq.x+2,y:sq.y},this.get_piece(sq));
 		}
+		// capture
 		if (sq.x+1 < 8 && sq.y+1 < 8 && this.board[sq.x+1][sq.y+1] != null && this.board[sq.x+1][sq.y+1].color != color) {
-			moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y+1},notation:null};
+			moves[moves.length] = new Move(sq,{x:sq.x+1,y:sq.y+1},this.get_piece(sq));
 		}
 		if (sq.x+1 < 8 && sq.y-1 > -1 && this.board[sq.x+1][sq.y-1] != null && this.board[sq.x+1][sq.y-1].color != color) {
-			moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y-1},notation:null};
+			moves[moves.length] = new Move(sq,{x:sq.x+1,y:sq.y-1},this.get_piece(sq));
 		}
+		// en passant
 		if (this.enPassant_allowedAt != null) {
 			if (this.enPassant_allowedAt.x == sq.x+1 && this.enPassant_allowedAt.y == sq.y+1) {
-				moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y+1},notation:null};
+				moves[moves.length] = new Move(sq,{x:sq.x+1,y:sq.y+1},this.get_piece(sq));
 			} else if (this.enPassant_allowedAt.x == sq.x+1 && this.enPassant_allowedAt.y == sq.y-1) {
-				moves[moves.length] = {src:sq,dest:{x:sq.x+1,y:sq.y-1},notation:null};
+				moves[moves.length] = new Move(sq,{x:sq.x+1,y:sq.y-1},this.get_piece(sq));
 			}
 		}
 	} else /*if turn == BLACK*/{
+		// single move
 		if (this.board[sq.x-1][sq.y] == null) {
-			moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y},notation:null};
+			moves[moves.length] = new Move(sq,{x:sq.x+1,y:sq.y},this.get_piece(sq));
 		}
+		// first move for pawn, two square move
 		if (sq.x == 6 && this.board[sq.x-2][sq.y] == null && this.board[sq.x-1][sq.y] == null) {
-			moves[moves.length] = {src:sq,dest:{x:sq.x-2,y:sq.y},notation:null};
+			moves[moves.length] = new Move(sq,{x:sq.x-2,y:sq.y},this.get_piece(sq));
 		}
-		if (sq.x-1 < 8 && sq.y+1 < 8 && this.board[sq.x-1][sq.y+1] != null && this.board[sq.x-1][sq.y+1].color != color) {
-			moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y+1},notation:null};
+		// capture
+		if (sq.x-1 > -1 && sq.y+1 < 8 && this.board[sq.x-1][sq.y+1] != null && this.board[sq.x-1][sq.y+1].color != color) {
+			moves[moves.length] = new Move(sq,{x:sq.x-1,y:sq.y+1},this.get_piece(sq));
 		}
-		if (sq.x-1 < 8 && sq.y-1 > -1 && this.board[sq.x-1][sq.y-1] != null && this.board[sq.x-1][sq.y-1].color != color) {
-			moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y-1},notation:null};
+		if (sq.x-1 > -1 && sq.y-1 > -1 && this.board[sq.x-1][sq.y-1] != null && this.board[sq.x-1][sq.y-1].color != color) {
+			moves[moves.length] = new Move(sq,{x:sq.x-1,y:sq.y-1},this.get_piece(sq));
 		}
+		// en passant
 		if (this.enPassant_allowedAt != null) {
-			if (this.enPassant_allowedAt.x == sq.x-1 && this.enPassant_allowedAt.y == sq.y+1) {
-				moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y+1},notation:null};
+			if (this.enPassant_allowedAt.x == sq.x+1 && this.enPassant_allowedAt.y == sq.y+1) {
+				moves[moves.length] = new Move(sq,{x:sq.x-1,y:sq.y+1},this.get_piece(sq));
 			} else if (this.enPassant_allowedAt.x == sq.x-1 && this.enPassant_allowedAt.y == sq.y-1) {
-				moves[moves.length] = {src:sq,dest:{x:sq.x-1,y:sq.y-1},notation:null};
+				moves[moves.length] = new Move(sq,{x:sq.x-1,y:sq.y-1},this.get_piece(sq));
 			}
 		}
 	}
@@ -782,6 +791,13 @@ Game.prototype.pair_to_sq = function(sq) {
 	square += sq.x+1;
 	return square;
 };
+Game.prototype.print_PGN = function() {
+	var out = "";
+	for (var i = 0; i < this.pgn.length; i++) {
+		out += this.pgn[i].notation+" ";
+	}
+	console.log("\tPGN :: "+out);
+};
 Game.prototype.print = function(print_board) {
 	/*prints information about Game to the console and prints out char based board graphic if print_board == true*/
 	console.log("print("+print_board+")");
@@ -802,7 +818,7 @@ Game.prototype.print = function(print_board) {
 		n += "q";
 	}
 	console.log(n);
-	if (this.is_check()) {
+	if (this.is_check(game.turn)) {
 		console.log("\t" + game.turn + " KING in check");
 	} else {
 		console.log("\t" + game.turn + " KING is safe");
