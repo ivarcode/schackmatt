@@ -217,8 +217,10 @@ Game.prototype.get_turn = function() {
 	var turn = this.get_FEN().charAt(i+1);
 	// console.log("turn = "+turn);
 	if (turn == 'w') {
+		console.log("get_turn WHITE");
 		return "WHITE";
 	} else if (turn == 'b') {
+		console.log("get_turn BLACK");
 		return "BLACK";
 	}
 	return "ERR: invalid color in FEN";
@@ -229,18 +231,22 @@ Game.prototype.get_FEN = function() {
 };
 Game.prototype.get_legal_moves = function() {
 	/*returns an array of legal moves from the position in Game*/
+	console.log('get legal moves function happens');
 	var moves = [];
 	for (var i = 0; i < 8; i++) {
 		for (var j = 0; j < 8; j++) {
 			try {
 				if (this.get_piece({x:i,y:j}).color == this.get_turn()) {
+					console.log('kek');
 					var a = this.get_moves_from_sq({x:i,y:j});
+					console.log(a);
+					console.log("testing for moves from sq "+i+","+j);
 					for (var b = 0; b < a.length; b++) {
 						moves[moves.length] = a[b];
 					}
 				}
 			} catch(e) {
-				// console.log("ERR :: " + e.message);
+				console.log("ERR :: " + e.message);
 			}
 		}
 	}
@@ -575,7 +581,7 @@ Game.prototype.get_pawn_moves = function(sq,color) {
 	} else /*if turn == BLACK*/{
 		// single move
 		if (this.board[sq.x-1][sq.y] == null) {
-			moves[moves.length] = new Move(sq,{x:sq.x+1,y:sq.y},this.get_piece(sq));
+			moves[moves.length] = new Move(sq,{x:sq.x-1,y:sq.y},this.get_piece(sq));
 		}
 		// first move for pawn, two square move
 		if (sq.x == 6 && this.board[sq.x-2][sq.y] == null && this.board[sq.x-1][sq.y] == null) {
@@ -597,21 +603,19 @@ Game.prototype.get_pawn_moves = function(sq,color) {
 			}
 		}
 	}
-	var m = [];
 	for (var i = 0; i < moves.length; i++) {
-		if (moves[i].dest.x == 7 || moves[i].dest.x == 0) {
-			var n = "";
-			if (moves[i].src.y != moves[i].dest.y) {
-				n += "x";
-			}
-			n += pairToSq(moves[i].dest);
-			moves[i].notation = n+"=N";
-			m[m.length] = n+"=B";
-			m[m.length] = n+"=R";
-			m[m.length] = n+"=Q";
+		if (moves[i].dest.x == 7) {
+			moves[i].piece = wKnight;
+			moves[moves.length] = new Move(sq,moves[i].dest,wBishop);
+			moves[moves.length] = new Move(sq,moves[i].dest,wRook);
+			moves[moves.length] = new Move(sq,moves[i].dest,wQueen);
+		} else if (moves[i].dest.x == 0) {
+			moves[i].piece = bKnight;
+			moves[moves.length] = new Move(sq,moves[i].dest,bBishop);
+			moves[moves.length] = new Move(sq,moves[i].dest,bRook);
+			moves[moves.length] = new Move(sq,moves[i].dest,bQueen);
 		}
 	}
-	moves.concat(m);
 	return moves;
 };
 Game.prototype.is_sq_threatened_by = function(sq,color) {
