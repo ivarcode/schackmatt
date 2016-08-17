@@ -15,7 +15,7 @@
 	<link rel="stylesheet" href="style.css">
 
 	<script type="text/javascript" src="./js/game.js"></script>
-	<script type="text/javascript" src="./js/rules.js"></script>
+	
 	<script type="text/javascript">
 
 		var IMAGES = {wPawn:new Image(),wRook:new Image(),wKnight:new Image(),wBishop:new Image(),wQueen:new Image(),wKing:new Image(),bPawn:new Image(),bRook:new Image(),bKnight:new Image(),bBishop:new Image(),bQueen:new Image(),bKing:new Image()};
