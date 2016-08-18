@@ -14,17 +14,7 @@ Game.prototype.change_turn = function() {
 	/*changes the turn of Game*/
 	this.turn = this.get_opp_color(this.get_turn());
 };
-Game.prototype.is_check = function(color) {
-	/*returns whether or not the position in game is currently check*/
-	var sq = this.get_king(color,this);
-	// console.log(sq);
-	// console.log(color);
-	if (this.is_sq_threatened_by(sq,this.get_opp_color(color))) {
-		console.log("CHECK");
-		return true;
-	}
-	return false;
-};
+
 Game.prototype.is_checkmate = function() {
 	/*returns whether or not the position in game is currently checkmate*/
 	if (this.get_legal_moves().length == 0 && this.is_check()) {
@@ -45,54 +35,10 @@ Game.prototype.get_players = function() {
 	/*returns an object {p1,p2} which returns the respective players in Game*/
 	return {p1:this.p1,p2:this.p2};
 };
-Game.prototype.get_opp_color = function(color) {
-	/*returns the color that is not the input color, white -> black, black -> white*/
-	if (color == "WHITE") {
-		return "BLACK";
-	} else if (color == "BLACK") {
-		return "WHITE";
-	} else {
-		throw "ERR :: invalid color";
-	}
-};
 
 
-Game.prototype.get_legal_moves = function() {
-	/*returns an array of legal moves from the position in Game*/
-	console.log('get legal moves function happens');
-	var moves = [];
-	for (var i = 0; i < 8; i++) {
-		for (var j = 0; j < 8; j++) {
-			try {
-				if (this.get_piece({x:i,y:j}).color == this.get_turn()) {
-					console.log('kek');
-					var a = this.get_moves_from_sq({x:i,y:j});
-					console.log(a);
-					console.log("testing for moves from sq "+i+","+j);
-					for (var b = 0; b < a.length; b++) {
-						moves[moves.length] = a[b];
-					}
-				}
-			} catch(e) {
-				// console.log("ERR :: " + e.message);
-			}
-		}
-	}
-	// console.log("\tget_legal_moves() length = "+moves.length);
-	for (var a = 0; a < moves.length; a++) {
-		var g = this.game_after_move(moves[a]);
-		// g.print();
-		if (g.is_check(game.turn)) {
-			moves.remove(a);
-			a--;
-		}
-	}
-	
-	for (var d = 0; d < moves.length; d++) {
-		moves[d].print();
-	}
-	return moves;
-};
+
+
 Game.prototype.is_legal_move = function(move) {
 	console.log("lel");
 	/*returns whether or not the move from src -> dest is a legal move*/
@@ -155,22 +101,8 @@ Game.prototype.get_moves_from_sq = function(sq) {
 	}
 	return [];
 };
-Game.prototype.get_piece = function(sq) {
-	/*returns the piece at sq on Game.board*/
-	return this.board[sq.x][sq.y];
-};
-Game.prototype.get_king = function(color) {
-	/*finds the king of color in game*/
-	for (var i = 0; i < 8; i++) {
-		for (var j = 0; j < 8; j++) {
-			if (game.get_piece({x:i,y:j}) != null && game.get_piece({x:i,y:j}).type == "KING" && game.get_piece({x:i,y:j}),color == color) {
-				return {x:i,y:j};
-			}
-		}
-	}
-	console.log("locateKing() :: no king of color "+color+" found on board");
-	return null;
-};
+
+
 Game.prototype.get_king_moves = function(sq,color) {
 	/*gets all moves from sq for the arg color king*/
 	var moves = [];
@@ -446,71 +378,7 @@ Game.prototype.get_pawn_moves = function(sq,color) {
 	}
 	return moves;
 };
-Game.prototype.is_sq_threatened_by = function(sq,color) {
-	/*returns a boolean if the sq on Game is threatened by color*/
-	var moves = [];
-	var c = this.get_opp_color(color);
-	moves = this.get_knight_moves(sq,c);
-	for (var i = 0; i < moves.length; i++) {
-		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KNIGHT" && game.board[moves[i].dest.x][moves[i].dest.y].color == color) {
-			console.log("knight threatens "+color+" king");
-			return true;
-		}
-	}
-	moves = this.get_bishop_moves(sq,c);
-	for (var i = 0; i < moves.length; i++) {
-		if (this.board[moves[i].dest.x][moves[i].dest.y] != null && ((this.board[moves[i].dest.x][moves[i].dest.y].type == "BISHOP") || (this.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN")) && this.board[moves[i].dest.x][moves[i].dest.y].color == color) {
-			console.log("bishop or queen threatens "+color+" king");
-			return true;
-		}
-	}
-	moves = this.get_rook_moves(sq,c);
-	for (var i = 0; i < moves.length; i++) {
-		if (this.board[moves[i].dest.x][moves[i].dest.y] != null && ((this.board[moves[i].dest.x][moves[i].dest.y].type == "ROOK") || (this.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN")) && this.board[moves[i].dest.x][moves[i].dest.y].color == color) {
-			console.log("rook or queen threatens "+color+" king");
-			return true;
-		}
-	}
-	if (color == "BLACK") {
-		try {
-			if (this.board[sq.x+1][sq.y+1].type == "PAWN" && this.board[sq.x+1][sq.y+1].color == color) {
-				return true;
-			}
-		} catch(e) {
-			// console.log("ERR :: " + e.message);
-		}
-		try {
-			if (this.board[sq.x+1][sq.y-1].type == "PAWN" && this.board[sq.x+1][sq.y-1].color == color) {
-				return true;
-			}
-		} catch(e) {
-			// console.log("ERR :: " + e.message);
-		}
-	} else /*turn == WHITE*/{
-		try {
-			if (this.board[sq.x-1][sq.y+1].type == "PAWN" && this.board[sq.x-1][sq.y+1].color == color) {
-				return true;
-			}
-		} catch(e) {
-			// console.log("ERR :: " + e.message);
-		}
-		try {
-			if (this.board[sq.x-1][sq.y-1].type == "PAWN" && this.board[sq.x-1][sq.y-1].color == color) {
-				return true;
-			}
-		} catch(e) {
-			// console.log("ERR :: " + e.message);
-		}
-	}
-	moves = this.get_king_moves_without_castles(sq,c);
-	for (var i = 0; i < moves.length; i++) {
-		if (this.board[moves[i].dest.x][moves[i].dest.y] != null && this.board[moves[i].dest.x][moves[i].dest.y].type == "KING" && this.board[moves[i].dest.x][moves[i].dest.y].color == color) {
-			console.log("king threatens "+color+" king");
-			return true;
-		}
-	}
-	return false;
-}
+
 
 
 Game.prototype.set_piece = function(sq,piece) {

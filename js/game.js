@@ -338,7 +338,7 @@ Game.prototype.print = function(print_board) {
 		n += "q";
 	}
 	console.log(n);
-	/*if (this.is_check(game.turn)) {
+	if (this.is_check(game.turn)) {
 		console.log("\t" + game.turn + " KING in check");
 	} else {
 		console.log("\t" + game.turn + " KING is safe");
@@ -346,7 +346,7 @@ Game.prototype.print = function(print_board) {
 	this.print_PGN();
 	if (game.enPassant_allowedAt != null) {
 		console.log("\tenPassant_allowedAt " + game.enPassant_allowedAt.x + "," + game.enPassant_allowedAt.y);
-	}*/
+	}
 	if (print_board) {
 		var s = "";
 		for (var a = 7; a > -1; a--) {
