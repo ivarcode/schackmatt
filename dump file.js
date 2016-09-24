@@ -77,17 +77,7 @@ Game.prototype.get_piece = function(sq) {
 
 
 
-Game.prototype.is_check = function(color) {
-	/*returns whether or not the position in game is currently check*/
-	var sq = this.get_king(color,this);
-	// console.log(sq);
-	// console.log(color);
-	if (this.is_sq_threatened_by(sq,this.get_opp_color(color))) {
-		console.log("CHECK");
-		return true;
-	}
-	return false;
-};
+
 Game.prototype.is_sq_threatened_by = function(sq,color) {
 	/*returns a boolean if the sq on Game is threatened by color*/
 	var moves = [];
