@@ -49,16 +49,7 @@ Game.prototype.get_legal_moves = function() {
 	}
 	return moves;
 };
-Game.prototype.get_opp_color = function(color) {
-	/*returns the color that is not the input color, white -> black, black -> white*/
-	if (color == "WHITE") {
-		return "BLACK";
-	} else if (color == "BLACK") {
-		return "WHITE";
-	} else {
-		throw "ERR :: invalid color";
-	}
-};
+
 
 
 

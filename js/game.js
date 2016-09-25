@@ -156,6 +156,34 @@ Game.prototype.get_FEN = function() {
 	/*returns the FEN string of the Game*/
 	return this.fen;
 };
+Game.prototype.get_king = function(color) {
+	/*finds the king of color in game*/
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			if (game.get_piece({x:i,y:j}) != null && game.get_piece({x:i,y:j}).type == "KING" && game.get_piece({x:i,y:j}).color == color) {
+				console.log(i+" "+j);
+				console.log("get_king() :: "+color+" king found on board");
+				return {x:i,y:j};
+			}
+		}
+	}
+	console.log("get_king() :: no "+color+" king found on board");
+	return null;
+};
+Game.prototype.get_opp_color = function(color) {
+	/*returns the color that is not the input color, white -> black, black -> white*/
+	if (color == "WHITE") {
+		return "BLACK";
+	} else if (color == "BLACK") {
+		return "WHITE";
+	} else {
+		throw "ERR :: invalid color";
+	}
+};
+Game.prototype.get_piece = function(sq) {
+	/*returns the piece at sq on Game.board*/
+	return this.board[sq.x][sq.y];
+};
 Game.prototype.get_turn = function() {
 	/*returns the turn of game in the form of a string "WHITE" or "BLACK"*/
 	var i = 0;
@@ -172,24 +200,6 @@ Game.prototype.get_turn = function() {
 		return "BLACK";
 	}
 	return "ERR: invalid color in FEN";
-};
-Game.prototype.get_king = function(color) {
-	/*finds the king of color in game*/
-	for (var i = 0; i < 8; i++) {
-		for (var j = 0; j < 8; j++) {
-			if (game.get_piece({x:i,y:j}) != null && game.get_piece({x:i,y:j}).type == "KING" && game.get_piece({x:i,y:j}).color == color) {
-				console.log(i+" "+j);
-				console.log("get_king() :: "+color+" king found on board");
-				return {x:i,y:j};
-			}
-		}
-	}
-	console.log("get_king() :: no "+color+" king found on board");
-	return null;
-};
-Game.prototype.get_piece = function(sq) {
-	/*returns the piece at sq on Game.board*/
-	return this.board[sq.x][sq.y];
 };
 
 
