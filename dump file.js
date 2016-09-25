@@ -11,18 +11,7 @@ function Move(src, dest, piece) {
 
 
 
-Game.prototype.get_king = function(color) {
-	/*finds the king of color in game*/
-	for (var i = 0; i < 8; i++) {
-		for (var j = 0; j < 8; j++) {
-			if (game.get_piece({x:i,y:j}) != null && game.get_piece({x:i,y:j}).type == "KING" && game.get_piece({x:i,y:j}),color == color) {
-				return {x:i,y:j};
-			}
-		}
-	}
-	console.log("locateKing() :: no king of color "+color+" found on board");
-	return null;
-};
+
 Game.prototype.get_legal_moves = function() {
 	/*returns an array of legal moves from the position in Game*/
 	// console.log('get legal moves function happens');
@@ -70,10 +59,7 @@ Game.prototype.get_opp_color = function(color) {
 		throw "ERR :: invalid color";
 	}
 };
-Game.prototype.get_piece = function(sq) {
-	/*returns the piece at sq on Game.board*/
-	return this.board[sq.x][sq.y];
-};
+
 
 
 

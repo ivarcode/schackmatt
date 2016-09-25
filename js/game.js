@@ -173,15 +173,33 @@ Game.prototype.get_turn = function() {
 	}
 	return "ERR: invalid color in FEN";
 };
+Game.prototype.get_king = function(color) {
+	/*finds the king of color in game*/
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			if (game.get_piece({x:i,y:j}) != null && game.get_piece({x:i,y:j}).type == "KING" && game.get_piece({x:i,y:j}).color == color) {
+				console.log(i+" "+j);
+				console.log("get_king() :: "+color+" king found on board");
+				return {x:i,y:j};
+			}
+		}
+	}
+	console.log("get_king() :: no "+color+" king found on board");
+	return null;
+};
+Game.prototype.get_piece = function(sq) {
+	/*returns the piece at sq on Game.board*/
+	return this.board[sq.x][sq.y];
+};
 
 
 
 
 Game.prototype.is_check = function(color) {
 	/*returns whether or not the position in game is currently check*/
-	var sq = this.get_king(color,this);
-	// console.log(sq);
-	// console.log(color);
+	var sq = this.get_king(color);
+	console.log(sq);
+	console.log(color);
 	if (this.is_sq_threatened_by(sq,this.get_opp_color(color))) {
 		console.log("CHECK");
 		return true;
@@ -284,7 +302,7 @@ var bQueen = new Piece("QUEEN", "BLACK");
 var bKing = new Piece("KING", "BLACK");
 
 
-var BOARD_STANDARD = [
+/*var BOARD_STANDARD = [
 [wRook,wKnight,wBishop,wQueen,wKing,wBishop,wKnight,wRook],
 [wPawn,wPawn,wPawn,wPawn,wPawn,wPawn,wPawn,wPawn],
 [null,null,null,null,null,null,null,null],
@@ -294,7 +312,6 @@ var BOARD_STANDARD = [
 [bPawn,bPawn,bPawn,bPawn,bPawn,bPawn,bPawn,bPawn],
 [bRook,bKnight,bBishop,bQueen,bKing,bBishop,bKnight,bRook]
 ];
-
 var BOARD_TEST = [
 [wKing,null,null,null,null,null,null,null],
 [null,null,null,null,null,null,null,null],
@@ -304,4 +321,4 @@ var BOARD_TEST = [
 [null,null,null,null,null,null,null,null],
 [null,null,null,null,null,null,null,null],
 [bKing,null,null,null,null,null,null,null]
-];
+];*/
