@@ -28,7 +28,7 @@ function Game(p1, p2, gametype, pos, pgn) {
 		var b = 0;
 		var n = 1;
 		while (true) {
-			console.log(this.get_FEN().charAt(i));
+			// console.log(this.get_FEN().charAt(i));
 			if (this.get_FEN().charAt(i) == 'k') {
 				board[a][b] = bKing;
 				i++;
@@ -222,11 +222,11 @@ Game.prototype.is_check = function(color) {
 
 Game.prototype.print = function(print_board) {
 	/*prints information about Game to the console and prints out char based board graphic if print_board == true*/
-	console.log("print("+print_board+")");
+	console.log("Game.prototype.print("+print_board+")");
 	console.log("\t" + this.p1 + " vs " + this.p2);
 	console.log("\t" + this.get_turn() + " turn");
-	// console.log("\t" + this.get_legal_moves().length + " moves");
-	var n = "\t";
+	console.log("\t" + this.get_legal_moves().length + " moves");
+	var n = "";
 	if (game.castling[0]) {
 		n += "K";
 	}
@@ -239,16 +239,19 @@ Game.prototype.print = function(print_board) {
 	if (game.castling[3]) {
 		n += "q";
 	}
-	console.log(n);
-	if (this.is_check(game.turn)) {
-		console.log("\t" + game.turn + " KING in check");
-	} else {
-		console.log("\t" + game.turn + " KING is safe");
-	}
+	console.log("\tcastling availability :: "+n);
+	// if (this.is_check(game.turn)) {
+	// 	console.log("\t" + game.turn + " KING in check");
+	// } else {
+	// 	console.log("\t" + game.turn + " KING is safe");
+	// }
 	this.print_PGN();
 	if (game.enPassant_allowedAt != null) {
-		console.log("\tenPassant_allowedAt " + game.enPassant_allowedAt.x + "," + game.enPassant_allowedAt.y);
+		console.log("\tenPassant legal at " + game.enPassant_allowedAt.x + "," + game.enPassant_allowedAt.y);
+	} else {
+		console.log("\tenPassant not legal");
 	}
+	console.log("\tcurrent FEN = "+this.get_FEN());
 	if (print_board) {
 		var s = "";
 		for (var a = 7; a > -1; a--) {
@@ -293,6 +296,13 @@ Game.prototype.print = function(print_board) {
 		}
 		console.log(s);
 	}
+};
+Game.prototype.print_PGN = function() {
+	var out = "";
+	for (var i = 0; i < this.pgn.length; i++) {
+		out += this.pgn[i].notation+" ";
+	}
+	console.log("\tPGN :: "+out);
 };
 
 
