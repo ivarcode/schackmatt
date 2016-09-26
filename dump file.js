@@ -12,43 +12,7 @@ function Move(src, dest, piece) {
 
 
 
-Game.prototype.get_legal_moves = function() {
-	/*returns an array of legal moves from the position in Game*/
-	// console.log('get legal moves function happens');
-	var moves = [];
-	for (var i = 0; i < 8; i++) {
-		for (var j = 0; j < 8; j++) {
-			try {
-				console.log("trying");
-				if (this.get_piece({x:i,y:j}).color == this.get_turn()) {
-					console.log('kek');
-					var a = this.get_moves_from_sq({x:i,y:j});
-					console.log(a);
-					console.log("testing for moves from sq "+i+","+j);
-					for (var b = 0; b < a.length; b++) {
-						moves[moves.length] = a[b];
-					}
-				}
-			} catch(e) {
-				// console.log("ERR :: " + e.message);
-			}
-		}
-	}
-	// console.log("\tget_legal_moves() length = "+moves.length);
-	for (var a = 0; a < moves.length; a++) {
-		var g = this.game_after_move(moves[a]);
-		// g.print();
-		if (g.is_check(game.turn)) {
-			moves.remove(a);
-			a--;
-		}
-	}
-	
-	for (var d = 0; d < moves.length; d++) {
-		moves[d].print();
-	}
-	return moves;
-};
+
 
 
 
@@ -612,13 +576,7 @@ Game.prototype.pair_to_sq = function(sq) {
 	square += sq.x+1;
 	return square;
 };
-Game.prototype.print_PGN = function() {
-	var out = "";
-	for (var i = 0; i < this.pgn.length; i++) {
-		out += this.pgn[i].notation+" ";
-	}
-	console.log("\tPGN :: "+out);
-};
+
 
 
 
