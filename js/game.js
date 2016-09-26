@@ -161,13 +161,13 @@ Game.prototype.get_king = function(color) {
 	for (var i = 0; i < 8; i++) {
 		for (var j = 0; j < 8; j++) {
 			if (game.get_piece({x:i,y:j}) != null && game.get_piece({x:i,y:j}).type == "KING" && game.get_piece({x:i,y:j}).color == color) {
-				console.log(i+" "+j);
-				console.log("get_king() :: "+color+" king found on board");
+				// console.log("\t\t"+i+" "+j);
+				// console.log("\t\tget_king() :: "+color+" king found on board");
 				return {x:i,y:j};
 			}
 		}
 	}
-	console.log("get_king() :: no "+color+" king found on board");
+	// console.log("\t\tget_king() :: no "+color+" king found on board");
 	return null;
 };
 Game.prototype.get_opp_color = function(color) {
