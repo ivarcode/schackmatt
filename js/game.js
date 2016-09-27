@@ -197,7 +197,7 @@ Game.prototype.get_legal_moves = function() {
 			}
 		}
 	}
-	// console.log("\tget_legal_moves() length = "+moves.length);
+	console.log("\tget_legal_moves() before filtered checks length = "+moves.length);
 	for (var a = 0; a < moves.length; a++) {
 		var g = this.game_after_move(moves[a]);
 		// g.print();
@@ -273,6 +273,7 @@ Game.prototype.get_king_moves = function(sq,color) {
 	/*gets all moves from sq for the arg color king*/
 	var moves = [];
 	var list = [];
+	// building a list of sqs surrounding the source sq
 	list[list.length] = {x:sq.x+1,y:sq.y};
 	list[list.length] = {x:sq.x+1,y:sq.y+1};
 	list[list.length] = {x:sq.x+1,y:sq.y-1};
@@ -281,6 +282,7 @@ Game.prototype.get_king_moves = function(sq,color) {
 	list[list.length] = {x:sq.x-1,y:sq.y-1};
 	list[list.length] = {x:sq.x,y:sq.y+1};
 	list[list.length] = {x:sq.x,y:sq.y-1};
+	// for loop adds each move to the 'moves' array declared above if the sq is both in bounds of the board and is not occupied by a friendly piece
 	for (var i = 0; i < list.length; i++) {
 		if (list[i].x > -1 && list[i].x < 8 && list[i].y > -1 && list[i].y < 8) {
 			if (this.board[list[i].x][list[i].y] == null || this.board[list[i].x][list[i].y].color != color) {
@@ -288,7 +290,7 @@ Game.prototype.get_king_moves = function(sq,color) {
 			}
 		}
 	}
-	var c = getOppColor(color);
+	var c = this.get_opp_color(color);
 	if (!this.is_sq_threatened_by(sq,c)) {
 		if (sq.x == 0 && sq.y == 4 && color == "WHITE" && this.castling[0] && this.board[sq.x][sq.y+1] == null && !this.is_sq_threatened_by({x:sq.x,y:sq.y+1},c) && this.board[sq.x][sq.y+2] == null && !this.is_sq_threatened_by({x:sq.x,y:sq.y+2},c)) {
 			moves[moves.length] = new Move(sq,{x:sq.x,y:sq.y+2},this.get_piece(sq));
@@ -552,6 +554,71 @@ Game.prototype.get_pawn_moves = function(sq,color) {
 
 
 
+Game.prototype.is_sq_threatened_by = function(sq,color) {
+	/*returns a boolean if the sq on Game is threatened by color*/
+	var moves = [];
+	var c = this.get_opp_color(color);
+	moves = this.get_knight_moves(sq,c);
+	for (var i = 0; i < moves.length; i++) {
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KNIGHT" && game.board[moves[i].dest.x][moves[i].dest.y].color == color) {
+			console.log("knight threatens "+color+" king");
+			return true;
+		}
+	}
+	moves = this.get_bishop_moves(sq,c);
+	for (var i = 0; i < moves.length; i++) {
+		if (this.board[moves[i].dest.x][moves[i].dest.y] != null && ((this.board[moves[i].dest.x][moves[i].dest.y].type == "BISHOP") || (this.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN")) && this.board[moves[i].dest.x][moves[i].dest.y].color == color) {
+			console.log("bishop or queen threatens "+color+" king");
+			return true;
+		}
+	}
+	moves = this.get_rook_moves(sq,c);
+	for (var i = 0; i < moves.length; i++) {
+		if (this.board[moves[i].dest.x][moves[i].dest.y] != null && ((this.board[moves[i].dest.x][moves[i].dest.y].type == "ROOK") || (this.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN")) && this.board[moves[i].dest.x][moves[i].dest.y].color == color) {
+			console.log("rook or queen threatens "+color+" king");
+			return true;
+		}
+	}
+	if (color == "BLACK") {
+		try {
+			if (this.board[sq.x+1][sq.y+1].type == "PAWN" && this.board[sq.x+1][sq.y+1].color == color) {
+				return true;
+			}
+		} catch(e) {
+			// console.log("ERR :: " + e.message);
+		}
+		try {
+			if (this.board[sq.x+1][sq.y-1].type == "PAWN" && this.board[sq.x+1][sq.y-1].color == color) {
+				return true;
+			}
+		} catch(e) {
+			// console.log("ERR :: " + e.message);
+		}
+	} else /*turn == WHITE*/{
+		try {
+			if (this.board[sq.x-1][sq.y+1].type == "PAWN" && this.board[sq.x-1][sq.y+1].color == color) {
+				return true;
+			}
+		} catch(e) {
+			// console.log("ERR :: " + e.message);
+		}
+		try {
+			if (this.board[sq.x-1][sq.y-1].type == "PAWN" && this.board[sq.x-1][sq.y-1].color == color) {
+				return true;
+			}
+		} catch(e) {
+			// console.log("ERR :: " + e.message);
+		}
+	}
+	moves = this.get_king_moves_without_castles(sq,c);
+	for (var i = 0; i < moves.length; i++) {
+		if (this.board[moves[i].dest.x][moves[i].dest.y] != null && this.board[moves[i].dest.x][moves[i].dest.y].type == "KING" && this.board[moves[i].dest.x][moves[i].dest.y].color == color) {
+			console.log("king threatens "+color+" king");
+			return true;
+		}
+	}
+	return false;
+}
 
 
 Game.prototype.is_check = function(color) {
