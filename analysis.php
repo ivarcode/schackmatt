@@ -255,27 +255,22 @@
 	</script>
 </head>
 <body>
-	<div id="container">
 
-		<div id="header">
-			<h1>schackmatt.net</h1>
-			<h3>WIP</h3>
-			<h5 id="me">Coded by Camden I. Wagner<br>camden.i.wagner@ivarcode.net</h5>
-		</div>
-
+	<section id="cover" name="cover">
 		<div id="game">
 			
 			<canvas id="board" width="640" height="640">canvas</canvas>
 
-			<div id="game_data">
+			<!-- <div id="game_data">
 				<h3 id="materialBalance">null</h3>
-			</div>
+			</div> -->
 
 		</div>
 
 		<div>
 			<h4 id="FEN"></h4>
 		</div>
-	</div>
+	</section>
+
 </body>
 </html>
