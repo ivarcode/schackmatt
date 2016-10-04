@@ -231,6 +231,7 @@
 			} else {
 				//boolean to decide whether coordinate drawing is turned on
 				var draw_coordinates = true;
+				
 				if (draw_coordinates) {
 					//draw coordinate
 					var a = x/80;
