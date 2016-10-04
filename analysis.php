@@ -226,7 +226,27 @@
 			} else if (piece == bKing) { 
 				board_context.drawImage(IMAGES.bKing,x,y);
 			} else {
-				//draw nothing
+				//boolean to decide whether coordinate drawing is turned on
+				var draw_coordinates = true;
+				if (draw_coordinates) {
+					//draw coordinate
+					var a = x/80;
+					var b = y/80;
+					var coord = "";
+					switch (a) {
+						case 0: coord += "a";break;
+						case 1: coord += "b";break;
+						case 2: coord += "c";break;
+						case 3: coord += "d";break;
+						case 4: coord += "e";break;
+						case 5: coord += "f";break;
+						case 6: coord += "g";break;
+						case 7: coord += "h";break;
+					}
+					coord += 8-b;
+					board_context.font = "20px lucida console";
+					board_context.strokeText(coord,x+30,y+50);
+				}
 			}
 		}
 
