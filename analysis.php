@@ -53,9 +53,12 @@
 		game.print(true);
 
 
-
 		function setup() {
 			board_canvas = document.getElementById("board");
+			// disables default context menu on rightclick
+			board_canvas.oncontextmenu = function (e) {
+    			e.preventDefault();
+			};
 			board_context = board_canvas.getContext("2d");
 
 			drawBoard();
