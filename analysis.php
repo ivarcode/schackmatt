@@ -55,7 +55,7 @@
 
 		function setup() {
 			board_canvas = document.getElementById("board");
-			// disables default context menu on rightclick
+			// disables default context menu on rightclick on board
 			board_canvas.oncontextmenu = function (e) {
     			e.preventDefault();
 			};
