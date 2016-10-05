@@ -11,93 +11,6 @@ function Game(p1, p2, gametype, pos, pgn) {
 	this.gametype = gametype;
 	this.fen = pos;
 	// console.log("this.fen = "+this.fen);
-	this.board_from_FEN = function() {
-		/*sets the board array of the Game object to mirror the FEN*/
-		var board = [
-		[null,null,null,null,null,null,null,null],
-		[null,null,null,null,null,null,null,null],
-		[null,null,null,null,null,null,null,null],
-		[null,null,null,null,null,null,null,null],
-		[null,null,null,null,null,null,null,null],
-		[null,null,null,null,null,null,null,null],
-		[null,null,null,null,null,null,null,null],
-		[null,null,null,null,null,null,null,null]
-		];
-		var i = 0;
-		var a = 7;
-		var b = 0;
-		var n = 1;
-		while (true) {
-			// console.log(this.get_FEN().charAt(i));
-			if (this.get_FEN().charAt(i) == 'k') {
-				board[a][b] = bKing;
-				i++;
-				b++;
-			} else if (this.get_FEN().charAt(i) == 'q') {
-				board[a][b] = bQueen;
-				i++;
-				b++;
-			} else if (this.get_FEN().charAt(i) == 'b') {
-				board[a][b] = bBishop;
-				i++;
-				b++;
-			} else if (this.get_FEN().charAt(i) == 'n') {
-				board[a][b] = bKnight;
-				i++;
-				b++;
-			} else if (this.get_FEN().charAt(i) == 'r') {
-				board[a][b] = bRook;
-				i++;
-				b++;
-			} else if (this.get_FEN().charAt(i) == 'p') {
-				board[a][b] = bPawn;
-				i++;
-				b++;
-			} else if (this.get_FEN().charAt(i) == 'K') {
-				board[a][b] = wKing;
-				i++;
-				b++;
-			} else if (this.get_FEN().charAt(i) == 'Q') {
-				board[a][b] = wQueen;
-				i++;
-				b++;
-			} else if (this.get_FEN().charAt(i) == 'B') {
-				board[a][b] = wBishop;
-				i++;
-				b++;
-			} else if (this.get_FEN().charAt(i) == 'N') {
-				board[a][b] = wKnight;
-				i++;
-				b++;
-			} else if (this.get_FEN().charAt(i) == 'R') {
-				board[a][b] = wRook;
-				i++;
-				b++;
-			} else if (this.get_FEN().charAt(i) == 'P') {
-				board[a][b] = wPawn;
-				i++;
-				b++;
-			} else if (this.get_FEN().charAt(i) == '/') {
-				a--;
-				i++;
-				b = 0;
-			} else if (this.get_FEN().charAt(i) == ' ') {
-				break;
-			} else {
-				if (n == parseInt(this.get_FEN().charAt(i))) {
-					board[a][b] = null;
-					b++;
-					n = 1;
-					i++;
-				} else {
-					board[a][b] = null;
-					b++; n++;
-				}
-			}
-		}
-		return board;
-	};
-	this.board = this.board_from_FEN();
 	this.pgn = pgn;
 	this.turn = null;
 	this.castling = [];
@@ -121,27 +34,31 @@ function Game(p1, p2, gametype, pos, pgn) {
 		}
 		i+=2;
 		if (this.get_FEN().charAt(i++) == "K") {
-			this.castling[0] = true; }
-			if (this.get_FEN().charAt(i++) == "Q") {
-				this.castling[1] = true; }
-				if (this.get_FEN().charAt(i++) == "k") {
-					this.castling[2] = true; }
-					if (this.get_FEN().charAt(i++) == "q") {
-						this.castling[3] = true; }
-						i++;
-						if (this.get_FEN().charAt(i) == '-') {
-							if (this.enPassant_allowedAt)
-								this.enPassant_allowedAt = null;
-						} else {
-							this.enPassant_allowedAt = this.get_FEN().charAt(i);
-						}
-						i+=2;
-						this.halfmove = this.get_FEN().charAt(i);
-						i+=2;
-						this.move_count = this.get_FEN().charAt(i);
-					};
-					this.load_data_from_FEN();
-				}
+			this.castling[0] = true;
+		}
+		if (this.get_FEN().charAt(i++) == "Q") {
+			this.castling[1] = true;
+		}
+		if (this.get_FEN().charAt(i++) == "k") {
+			this.castling[2] = true;
+		}
+		if (this.get_FEN().charAt(i++) == "q") {
+			this.castling[3] = true;
+		}
+		i++;
+		if (this.get_FEN().charAt(i) == '-') {
+			if (this.enPassant_allowedAt)
+				this.enPassant_allowedAt = null;
+		} else {
+			this.enPassant_allowedAt = this.get_FEN().charAt(i);
+		}
+		i+=2;
+		this.halfmove = this.get_FEN().charAt(i);
+		i+=2;
+		this.move_count = this.get_FEN().charAt(i);
+	};
+	this.load_data_from_FEN();
+}
 /*Piece object constructor
 used as the object to store all the data associated with a 'piece' i.e. type, color*/
 function Piece(type, color) {
@@ -157,6 +74,17 @@ function Move(src, dest, piece) {
 }
 
 
+/*Game prototype getters*/
+Game.prototype.get_FEN = function() {
+	/*returns the FEN string (position) of the Game*/
+	return this.fen;
+};
+
+
+
+function function_name(argument) {
+	// body...
+}
 
 
 

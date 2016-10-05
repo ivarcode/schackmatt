@@ -55,11 +55,8 @@ Game.prototype.game_after_move = function(move) {
 };
 
 
-/*Game prototype getters*/
-Game.prototype.get_FEN = function() {
-	/*returns the FEN string of the Game*/
-	return this.fen;
-};
+
+
 Game.prototype.get_king = function(color) {
 	/*finds the king of color in game*/
 	for (var i = 0; i < 8; i++) {
@@ -789,4 +786,95 @@ Game.prototype.print_PGN = function() {
 		out += this.pgn[i].notation+" ";
 	}
 	console.log("\tPGN :: "+out);
+};
+
+
+
+
+
+this.board_from_FEN = function() {
+	/*sets the board array of the Game object to mirror the FEN*/
+	var board = [
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null]
+	];
+	var i = 0;
+	var a = 7;
+	var b = 0;
+	var n = 1;
+	while (true) {
+		// console.log(this.get_FEN().charAt(i));
+		if (this.get_FEN().charAt(i) == 'k') {
+			board[a][b] = bKing;
+			i++;
+			b++;
+		} else if (this.get_FEN().charAt(i) == 'q') {
+			board[a][b] = bQueen;
+			i++;
+			b++;
+		} else if (this.get_FEN().charAt(i) == 'b') {
+			board[a][b] = bBishop;
+			i++;
+			b++;
+		} else if (this.get_FEN().charAt(i) == 'n') {
+			board[a][b] = bKnight;
+			i++;
+			b++;
+		} else if (this.get_FEN().charAt(i) == 'r') {
+			board[a][b] = bRook;
+			i++;
+			b++;
+		} else if (this.get_FEN().charAt(i) == 'p') {
+			board[a][b] = bPawn;
+			i++;
+			b++;
+		} else if (this.get_FEN().charAt(i) == 'K') {
+			board[a][b] = wKing;
+			i++;
+			b++;
+		} else if (this.get_FEN().charAt(i) == 'Q') {
+			board[a][b] = wQueen;
+			i++;
+			b++;
+		} else if (this.get_FEN().charAt(i) == 'B') {
+			board[a][b] = wBishop;
+			i++;
+			b++;
+		} else if (this.get_FEN().charAt(i) == 'N') {
+			board[a][b] = wKnight;
+			i++;
+			b++;
+		} else if (this.get_FEN().charAt(i) == 'R') {
+			board[a][b] = wRook;
+			i++;
+			b++;
+		} else if (this.get_FEN().charAt(i) == 'P') {
+			board[a][b] = wPawn;
+			i++;
+			b++;
+		} else if (this.get_FEN().charAt(i) == '/') {
+			a--;
+			i++;
+			b = 0;
+		} else if (this.get_FEN().charAt(i) == ' ') {
+			break;
+		} else {
+			if (n == parseInt(this.get_FEN().charAt(i))) {
+				board[a][b] = null;
+				b++;
+				n = 1;
+				i++;
+			} else {
+				board[a][b] = null;
+				b++; n++;
+			}
+		}
+	}
+	return board;
 };
