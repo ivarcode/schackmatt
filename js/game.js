@@ -161,23 +161,132 @@ function board_from_FEN(fen) {
 	}
 	return board;
 }
+function get_diagonals_from_sq(board,sq) {
+	/*returns an array of sqs on a legal diagonal from sq on board*/
+	var source_piece_color = board[sq.x][sq.y].color;
+	var list = [];
+	var a = sq.x;
+	var b = sq.y;
+	while (a+1 < 8 && b+1 < 8) {
+		a++;
+		b++;
+		if (board[a][b] != null) {
+			if (board[a][b].color == source_piece_color) {
+				break;
+			} else {
+				list[list.length] = {x:a,y:b};
+				break;
+			}
+		} else {
+			list[list.length] = {x:a,y:b};
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a-1 > -1 && b+1 < 8) {
+		a--;
+		b++;
+		if (board[a][b] != null) {
+			if (board[a][b].color == source_piece_color) {
+				break;
+			} else {
+				list[list.length] = {x:a,y:b};
+				break;
+			}
+		} else {
+			list[list.length] = {x:a,y:b};
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a+1 < 8 && b-1 > -1) {
+		a++;
+		b--;
+		if (board[a][b] != null) {
+			if (board[a][b].color == source_piece_color) {
+				break;
+			} else {
+				list[list.length] = {x:a,y:b};
+				break;
+			}
+		} else {
+			list[list.length] = {x:a,y:b};
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a-1 > -1 && b-1 > -1) {
+		a--;
+		b--;
+		if (board[a][b] != null) {
+			if (board[a][b].color == source_piece_color) {
+				break;
+			} else {
+				list[list.length] = {x:a,y:b};
+				break;
+			}
+		} else {
+			list[list.length] = {x:a,y:b};
+		}
+	}
+	return list;
+}
 function get_positions_after_moves_from_sq(board,sq) {
 	/*returns an array of positions following the legal moves from the sq in board, on board*/
+	var source_piece_color = board[sq.x][sq.y].color;
 	var new_positions = [];
 	try {
+		var list = [];
 		if (board[sq.x][sq.y].type == "KING") {
-			
+			list[list.length] = {x:sq.x+1,y:sq.y};
+			list[list.length] = {x:sq.x+1,y:sq.y+1};
+			list[list.length] = {x:sq.x+1,y:sq.y-1};
+			list[list.length] = {x:sq.x-1,y:sq.y};
+			list[list.length] = {x:sq.x-1,y:sq.y+1};
+			list[list.length] = {x:sq.x-1,y:sq.y-1};
+			list[list.length] = {x:sq.x,y:sq.y+1};
+			list[list.length] = {x:sq.x,y:sq.y-1};
 		} else if (board[sq.x][sq.y].type == "QUEEN") {
 
 		} else if (board[sq.x][sq.y].type == "BISHOP") {
-
+			var diagonals = get_diagonals_from_sq(board,sq);
+			for (var n = 0; n < diagonals.length; n++) {
+				list[list.length] = diagonals[n];
+			}
 		} else if (board[sq.x][sq.y].type == "KNIGHT") {
-			
+			list[list.length] = {x:sq.x+1,y:sq.y+2};
+			list[list.length] = {x:sq.x+1,y:sq.y-2};
+			list[list.length] = {x:sq.x+2,y:sq.y+1};
+			list[list.length] = {x:sq.x+2,y:sq.y-1};
+			list[list.length] = {x:sq.x-1,y:sq.y+2};
+			list[list.length] = {x:sq.x-1,y:sq.y-2};
+			list[list.length] = {x:sq.x-2,y:sq.y+1};
+			list[list.length] = {x:sq.x-2,y:sq.y-1};
 		} else if (board[sq.x][sq.y].type == "ROOK") {
 
 		} else if (board[sq.x][sq.y].type == "PAWN") {
 
 		}
+		// console.log("list length = "+list.length);
+		for (var i = 0; i < list.length; i++) {
+			if (list[i].x < 0 || list[i].x > 7 || list[i].y < 0 || list[i].y > 7) {
+				console.log("index out of bounds, deleting sq "+list[i].x+","+list[i].y);
+				list.splice(i,1);
+				i--;
+			}
+		}
+		// console.log("list length = "+list.length);
+		for (var i = 0; i < list.length; i++) {
+			// console.log("friendly piece check for "+list[i].x+","+list[i].y);
+			if (board[list[i].x][list[i].y] != null) {
+				if (board[list[i].x][list[i].y].color == source_piece_color) {
+					console.log("sq occupied by friendly, deleting sq "+list[i].x+","+list[i].y);
+					list.splice(i,1);
+					i--;
+				}
+			}
+		}
+		console.log("list length = "+list.length);
 	} catch(e) {
 		console.log(e.message);
 	}
