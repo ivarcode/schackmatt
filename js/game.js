@@ -32,6 +32,10 @@ Game.prototype.get_FEN = function() {
 	/*returns the FEN string (position) of the Game*/
 	return this.fen;
 };
+Game.prototype.get_legal_positions = function() {
+	/*returns an array of legal positions that are the result of the next possible legal moves in the position in Game*/
+
+};
 Game.prototype.get_turn = function() {
 	/*returns the turn of game in the form of a string "WHITE" or "BLACK"*/
 	var i = 0;
@@ -52,8 +56,9 @@ Game.prototype.get_turn = function() {
 
 
 
-function function_name(argument) {
-	// body...
+function board_from_FEN(fen) {
+	/*returns a board (an array containing pieces) that results from the parameter fen*/
+	
 }
 
 
@@ -61,8 +66,9 @@ Game.prototype.print = function(print_board) {
 	/*prints information about Game to the console and prints out char based board graphic if print_board == true*/
 	console.log("Game.prototype.print("+print_board+")");
 	console.log("\t" + this.p1 + " vs " + this.p2);
-	console.log("\t" + this.get_turn() + " turn");
-	console.log("\t" + this.get_legal_moves().length + " moves");
+	console.log("\tturn = \"" + this.get_turn()+"\"");
+	console.log("\tcurrent pos = \""+this.get_FEN()+"\"");
+	console.log("\t" + this.get_legal_positions().length + " moves");
 	var n = "";
 	if (game.castling[0]) {
 		n += "K";
