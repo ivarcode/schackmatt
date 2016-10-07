@@ -36,6 +36,7 @@ Game.prototype.get_legal_positions = function() {
 	/*returns an array of legal positions that are the result of the next possible legal moves in the position in Game*/
 	var board = board_from_FEN(this.get_FEN());
 	print_board(board);
+	
 };
 Game.prototype.get_turn = function() {
 	/*returns the turn of game in the form of a string "WHITE" or "BLACK"*/
