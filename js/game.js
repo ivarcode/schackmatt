@@ -10,54 +10,7 @@ function Game(p1, p2, gametype, pos, pgn) {
 	this.p2 = p2;
 	this.gametype = gametype;
 	this.fen = pos;
-	// console.log("this.fen = "+this.fen);
 	this.pgn = pgn;
-	this.turn = null;
-	this.castling = [];
-	this.halfmove = null;
-	this.move_count = null;
-	this.enPassant_allowedAt = null;
-	this.load_data_from_FEN = function() {
-		/*skips board and loads other data to game*/
-		var i = 0;
-		while (this.get_FEN().charAt(i) != ' ') {
-			i++;
-		}
-		i++;
-		if (this.get_FEN().charAt(i) == 'w') {
-			this.turn = "WHITE";
-		} else if (this.get_FEN().charAt(i) == 'b') {
-			this.turn = "BLACK";
-		} else {
-			console.log("charAt(i) = "+this.get_FEN().charAt(i));
-			throw "ERR :: invalid color";
-		}
-		i+=2;
-		if (this.get_FEN().charAt(i++) == "K") {
-			this.castling[0] = true;
-		}
-		if (this.get_FEN().charAt(i++) == "Q") {
-			this.castling[1] = true;
-		}
-		if (this.get_FEN().charAt(i++) == "k") {
-			this.castling[2] = true;
-		}
-		if (this.get_FEN().charAt(i++) == "q") {
-			this.castling[3] = true;
-		}
-		i++;
-		if (this.get_FEN().charAt(i) == '-') {
-			if (this.enPassant_allowedAt)
-				this.enPassant_allowedAt = null;
-		} else {
-			this.enPassant_allowedAt = this.get_FEN().charAt(i);
-		}
-		i+=2;
-		this.halfmove = this.get_FEN().charAt(i);
-		i+=2;
-		this.move_count = this.get_FEN().charAt(i);
-	};
-	this.load_data_from_FEN();
 }
 /*Piece object constructor
 used as the object to store all the data associated with a 'piece' i.e. type, color*/
@@ -79,6 +32,23 @@ Game.prototype.get_FEN = function() {
 	/*returns the FEN string (position) of the Game*/
 	return this.fen;
 };
+Game.prototype.get_turn = function() {
+	/*returns the turn of game in the form of a string "WHITE" or "BLACK"*/
+	var i = 0;
+	while (this.get_FEN().charAt(i) != ' ') {
+		i++;
+	}
+	var t = this.get_FEN().charAt(i+1);
+	// console.log("turn = "+turn);
+	if (t == 'w') {
+		// console.log("get_turn WHITE");
+		return "WHITE";
+	} else if (t == 'b') {
+		// console.log("get_turn BLACK");
+		return "BLACK";
+	}
+	return "ERR: invalid color in FEN";
+};
 
 
 
@@ -87,7 +57,93 @@ function function_name(argument) {
 }
 
 
-
+Game.prototype.print = function(print_board) {
+	/*prints information about Game to the console and prints out char based board graphic if print_board == true*/
+	console.log("Game.prototype.print("+print_board+")");
+	console.log("\t" + this.p1 + " vs " + this.p2);
+	console.log("\t" + this.get_turn() + " turn");
+	console.log("\t" + this.get_legal_moves().length + " moves");
+	var n = "";
+	if (game.castling[0]) {
+		n += "K";
+	}
+	if (game.castling[1]) {
+		n += "Q";
+	}
+	if (game.castling[2]) {
+		n += "k";
+	}
+	if (game.castling[3]) {
+		n += "q";
+	}
+	console.log("\tcastling availability :: "+n);
+	// if (this.is_check(game.turn)) {
+	// 	console.log("\t" + game.turn + " KING in check");
+	// } else {
+	// 	console.log("\t" + game.turn + " KING is safe");
+	// }
+	this.print_PGN();
+	if (game.enPassant_allowedAt != null) {
+		console.log("\tenPassant legal at " + game.enPassant_allowedAt.x + "," + game.enPassant_allowedAt.y);
+	} else {
+		console.log("\tenPassant not legal");
+	}
+	console.log("\tcurrent FEN = "+this.get_FEN());
+	if (print_board) {
+		this.print_Pos();
+	}
+};
+Game.prototype.print_Pos = function() {
+	var s = "";
+	for (var a = 7; a > -1; a--) {
+		s += "\t";
+		for (var b = 0; b < 8; b++) {
+			try {
+				if (this.get_piece({x:a,y:b}).color == "WHITE") {
+					if (this.get_piece({x:a,y:b}).type == "KING") {
+						s += "K";
+					} else if (this.get_piece({x:a,y:b}).type == "QUEEN") {
+						s += "Q";
+					} else if (this.get_piece({x:a,y:b}).type == "BISHOP") {
+						s += "B";
+					} else if (this.get_piece({x:a,y:b}).type == "KNIGHT") {
+						s += "N";
+					} else if (this.get_piece({x:a,y:b}).type == "ROOK") {
+						s += "R";
+					} else if (this.get_piece({x:a,y:b}).type == "PAWN") {
+						s += "P";
+					}
+				} else {
+					if (this.get_piece({x:a,y:b}).type == "KING") {
+						s += "k";
+					} else if (this.get_piece({x:a,y:b}).type == "QUEEN") {
+						s += "q";
+					} else if (this.get_piece({x:a,y:b}).type == "BISHOP") {
+						s += "b";
+					} else if (this.get_piece({x:a,y:b}).type == "KNIGHT") {
+						s += "n";
+					} else if (this.get_piece({x:a,y:b}).type == "ROOK") {
+						s += "r";
+					} else if (this.get_piece({x:a,y:b}).type == "PAWN") {
+						s += "p";
+					}
+				}
+			} catch(e) {
+				s += " ";
+				// console.log(e.message);
+			}
+		}
+		s += "\n";
+	}
+	console.log(s);
+};
+Game.prototype.print_PGN = function() {
+	var out = "";
+	for (var i = 0; i < this.pgn.length; i++) {
+		out += this.pgn[i].notation+" ";
+	}
+	console.log("\tPGN :: "+out);
+};
 
 
 
