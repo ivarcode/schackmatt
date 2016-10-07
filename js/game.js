@@ -231,12 +231,74 @@ function get_diagonals_from_sq(board,sq) {
 	}
 	return list;
 }
+function get_flats_from_sq(board,sq) {
+	/*returns an array of sqs on a legal diagonal from sq on board*/
+	var source_piece_color = board[sq.x][sq.y].color;
+	var list = [];
+	var a = sq.x;
+	var b = sq.y;
+	while (a+1 < 8) {
+		a++;
+		if (board[a][b] != null) {
+			if (board[a][b].color == source_piece_color) {
+				break;
+			} else {
+				list[list.length] = {x:a,y:b};
+				break;
+			}
+		} else {
+			list[list.length] = {x:a,y:b};
+		}
+	}
+	a = sq.x;
+	while (a-1 > -1) {
+		a--;
+		if (board[a][b] != null) {
+			if (board[a][b].color == source_piece_color) {
+				break;
+			} else {
+				list[list.length] = {x:a,y:b};
+				break;
+			}
+		} else {
+			list[list.length] = {x:a,y:b};
+		}
+	}
+	a = sq.x;
+	while (b+1 < 8) {
+		b++;
+		if (board[a][b] != null) {
+			if (board[a][b].color == source_piece_color) {
+				break;
+			} else {
+				list[list.length] = {x:a,y:b};
+				break;
+			}
+		} else {
+			list[list.length] = {x:a,y:b};
+		}
+	}
+	b = sq.y;
+	while (b-1 > -1) {
+		b--;
+		if (board[a][b] != null) {
+			if (board[a][b].color == source_piece_color) {
+				break;
+			} else {
+				list[list.length] = {x:a,y:b};
+				break;
+			}
+		} else {
+			list[list.length] = {x:a,y:b};
+		}
+	}
+	return list;
+}
 function get_positions_after_moves_from_sq(board,sq) {
 	/*returns an array of positions following the legal moves from the sq in board, on board*/
 	var source_piece_color = board[sq.x][sq.y].color;
-	var new_positions = [];
+	var list = [];
 	try {
-		var list = [];
 		if (board[sq.x][sq.y].type == "KING") {
 			list[list.length] = {x:sq.x+1,y:sq.y};
 			list[list.length] = {x:sq.x+1,y:sq.y+1};
@@ -247,7 +309,14 @@ function get_positions_after_moves_from_sq(board,sq) {
 			list[list.length] = {x:sq.x,y:sq.y+1};
 			list[list.length] = {x:sq.x,y:sq.y-1};
 		} else if (board[sq.x][sq.y].type == "QUEEN") {
-
+			var diagonals = get_diagonals_from_sq(board,sq);
+			for (var n = 0; n < diagonals.length; n++) {
+				list[list.length] = diagonals[n];
+			}
+			var flats = get_flats_from_sq(board,sq);
+			for (var n = 0; n < flats.length; n++) {
+				list[list.length] = flats[n];
+			}
 		} else if (board[sq.x][sq.y].type == "BISHOP") {
 			var diagonals = get_diagonals_from_sq(board,sq);
 			for (var n = 0; n < diagonals.length; n++) {
@@ -263,7 +332,10 @@ function get_positions_after_moves_from_sq(board,sq) {
 			list[list.length] = {x:sq.x-2,y:sq.y+1};
 			list[list.length] = {x:sq.x-2,y:sq.y-1};
 		} else if (board[sq.x][sq.y].type == "ROOK") {
-
+			var flats = get_flats_from_sq(board,sq);
+			for (var n = 0; n < flats.length; n++) {
+				list[list.length] = flats[n];
+			}
 		} else if (board[sq.x][sq.y].type == "PAWN") {
 
 		}
@@ -290,7 +362,7 @@ function get_positions_after_moves_from_sq(board,sq) {
 	} catch(e) {
 		console.log(e.message);
 	}
-	return new_positions;
+	return list;
 }
 function print_board(board) {
 	/*prints board in the console for debugging*/
