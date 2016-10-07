@@ -34,7 +34,7 @@ Game.prototype.get_FEN = function() {
 };
 Game.prototype.get_legal_positions = function() {
 	/*returns an array of legal positions that are the result of the next possible legal moves in the position in Game*/
-
+	var board = board_from_FEN(this.get_FEN());
 };
 Game.prototype.get_turn = function() {
 	/*returns the turn of game in the form of a string "WHITE" or "BLACK"*/
@@ -58,13 +58,94 @@ Game.prototype.get_turn = function() {
 
 function board_from_FEN(fen) {
 	/*returns a board (an array containing pieces) that results from the parameter fen*/
-	
+	var board = [
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null]
+	];
+	var i = 0;
+	var a = 7;
+	var b = 0;
+	var n = 1;
+	while (true) {
+		if (fen.charAt(i) == 'k') {
+			board[a][b] = bKing;
+			i++;
+			b++;
+		} else if (fen.charAt(i) == 'q') {
+			board[a][b] = bQueen;
+			i++;
+			b++;
+		} else if (fen.charAt(i) == 'b') {
+			board[a][b] = bBishop;
+			i++;
+			b++;
+		} else if (fen.charAt(i) == 'n') {
+			board[a][b] = bKnight;
+			i++;
+			b++;
+		} else if (fen.charAt(i) == 'r') {
+			board[a][b] = bRook;
+			i++;
+			b++;
+		} else if (fen.charAt(i) == 'p') {
+			board[a][b] = bPawn;
+			i++;
+			b++;
+		} else if (fen.charAt(i) == 'K') {
+			board[a][b] = wKing;
+			i++;
+			b++;
+		} else if (fen.charAt(i) == 'Q') {
+			board[a][b] = wQueen;
+			i++;
+			b++;
+		} else if (fen.charAt(i) == 'B') {
+			board[a][b] = wBishop;
+			i++;
+			b++;
+		} else if (fen.charAt(i) == 'N') {
+			board[a][b] = wKnight;
+			i++;
+			b++;
+		} else if (fen.charAt(i) == 'R') {
+			board[a][b] = wRook;
+			i++;
+			b++;
+		} else if (fen.charAt(i) == 'P') {
+			board[a][b] = wPawn;
+			i++;
+			b++;
+		} else if (fen.charAt(i) == '/') {
+			a--;
+			i++;
+			b = 0;
+		} else if (fen.charAt(i) == ' ') {
+			break;
+		} else {
+			if (n == parseInt(fen.charAt(i))) {
+				board[a][b] = null;
+				b++;
+				n = 1;
+				i++;
+			} else {
+				board[a][b] = null;
+				b++; n++;
+			}
+		}
+	}
+	return board;
 }
 
 
-Game.prototype.print = function(print_board) {
-	/*prints information about Game to the console and prints out char based board graphic if print_board == true*/
-	console.log("Game.prototype.print("+print_board+")");
+Game.prototype.print = function(print_position) {
+	/*prints information about Game to the console and prints out char based board graphic if print_position == true*/
+	console.log("Game.prototype.print("+print_position+")");
 	console.log("\t" + this.p1 + " vs " + this.p2);
 	console.log("\tturn = \"" + this.get_turn()+"\"");
 	console.log("\tcurrent pos = \""+this.get_FEN()+"\"");
@@ -95,7 +176,7 @@ Game.prototype.print = function(print_board) {
 		console.log("\tenPassant not legal");
 	}
 	console.log("\tcurrent FEN = "+this.get_FEN());
-	if (print_board) {
+	if (print_position) {
 		this.print_Pos();
 	}
 };
