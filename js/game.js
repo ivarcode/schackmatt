@@ -35,6 +35,7 @@ Game.prototype.get_FEN = function() {
 Game.prototype.get_legal_positions = function() {
 	/*returns an array of legal positions that are the result of the next possible legal moves in the position in Game*/
 	var board = board_from_FEN(this.get_FEN());
+	print_board(board);
 };
 Game.prototype.get_turn = function() {
 	/*returns the turn of game in the form of a string "WHITE" or "BLACK"*/
@@ -55,7 +56,7 @@ Game.prototype.get_turn = function() {
 };
 
 
-
+/*Helper functions*/
 function board_from_FEN(fen) {
 	/*returns a board (an array containing pieces) that results from the parameter fen*/
 	var board = [
@@ -140,6 +141,52 @@ function board_from_FEN(fen) {
 		}
 	}
 	return board;
+}
+function print_board(board) {
+	/*prints board in the console for debugging*/
+	var s = " ________ \n";
+	for (var a = 7; a > -1; a--) {
+		s += "|";
+		for (var b = 0; b < 8; b++) {
+			try {
+				if (board[a][b].color == "WHITE") {
+					if (board[a][b].type == "KING") {
+						s += "K";
+					} else if (board[a][b].type == "QUEEN") {
+						s += "Q";
+					} else if (board[a][b].type == "BISHOP") {
+						s += "B";
+					} else if (board[a][b].type == "KNIGHT") {
+						s += "N";
+					} else if (board[a][b].type == "ROOK") {
+						s += "R";
+					} else if (board[a][b].type == "PAWN") {
+						s += "P";
+					}
+				} else if (board[a][b].color == "BLACK") {
+					if (board[a][b].type == "KING") {
+						s += "k";
+					} else if (board[a][b].type == "QUEEN") {
+						s += "q";
+					} else if (board[a][b].type == "BISHOP") {
+						s += "b";
+					} else if (board[a][b].type == "KNIGHT") {
+						s += "n";
+					} else if (board[a][b].type == "ROOK") {
+						s += "r";
+					} else if (board[a][b].type == "PAWN") {
+						s += "p";
+					}
+				}
+			} catch(e) {
+				s += " ";
+				// console.log(e.message);
+			}
+		}
+		s += "|\n";
+	}
+	s += " -------- ";
+	console.log(s);
 }
 
 
