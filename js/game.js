@@ -19,11 +19,12 @@ function Piece(type, color) {
 	this.color = color;
 }
 /*Move object constructor
-used as the object to store all the data associated with a 'move' calculation i.e. src, dest, piece*/
-function Move(src, dest, piece) {
+used as the object to store all the data associated with a 'move' calculation i.e. src, dest, piece, position*/
+function Move(src, dest, piece, position) {
 	this.src = src;
 	this.dest = dest;
 	this.piece = piece;
+	this.position = position;
 }
 
 
@@ -32,9 +33,9 @@ Game.prototype.get_FEN = function() {
 	/*returns the FEN string (position) of the Game*/
 	return this.fen;
 };
-Game.prototype.get_legal_positions = function() {
-	/*returns an array of legal positions that are the result of the next possible legal moves in the position in Game*/
-	var positions = [];
+Game.prototype.get_legal_moves = function() {
+	/*returns an array of legal moves that are the result of the position in Game*/
+	var moves = [];
 	var board = board_from_FEN(this.get_FEN());
 	print_board(board);
 	// loop through board to find all pieces of the same color as Game.get_turn
@@ -44,7 +45,7 @@ Game.prototype.get_legal_positions = function() {
 				var piece = board[i][j];
 				if (piece.color == this.get_turn()) {
 					console.log("checking moves for piece \""+piece.color+" "+piece.type+"\" at "+i+","+j);
-					var list_of_sqs = get_positions_after_moves_from_sq(board,{x:i,y:j});
+					var list_of_sqs = get_destinations_after_moves_from_sq(board,{x:i,y:j});
 					console.log(list_of_sqs);
 				}
 			} catch(e) {
@@ -54,7 +55,7 @@ Game.prototype.get_legal_positions = function() {
 	}
 
 
-	return positions;
+	return moves;
 };
 Game.prototype.get_turn = function() {
 	/*returns the turn of game in the form of a string "WHITE" or "BLACK"*/
@@ -79,7 +80,7 @@ Game.prototype.print = function(print_position) {
 	console.log("\t" + this.p1 + " vs " + this.p2);
 	console.log("\tturn = \"" + this.get_turn()+"\"");
 	console.log("\tcurrent pos = \""+this.get_FEN()+"\"");
-	console.log("\t" + this.get_legal_positions().length + " moves");
+	console.log("\t" + this.get_legal_moves().length + " moves");
 	var n = "";
 	if (game.castling[0]) {
 		n += "K";
@@ -392,8 +393,8 @@ function get_opp_color(color) {
 		throw "Exception: color invalid.";
 	}
 }
-function get_positions_after_moves_from_sq(board,sq) {
-	/*returns an array of positions following the legal moves from the sq in board, on board*/
+function get_destinations_after_moves_from_sq(board,sq) {
+	/*returns an array of destinations following the legal moves from the sq in board, on board*/
 	var source_piece_color = board[sq.x][sq.y].color;
 	var list = [];
 	try {
