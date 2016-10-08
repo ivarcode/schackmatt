@@ -467,7 +467,89 @@ function get_positions_after_moves_from_sq(board,sq) {
 				list[list.length] = flats[n];
 			}
 		} else if (board[sq.x][sq.y].type == "PAWN") {
-			// TODO HAVENT COMPLETED PAWN MOVEMENTS YET
+			if (source_piece_color == "WHITE") {
+				if (sq.x > 0 && sq.x < 7) {
+					if (board[sq.x+1][sq.y] == null) {
+						list[list.length] = {x:sq.x+1,y:sq.y};
+					}
+				}
+				if (sq.x == 1) {
+					if (board[sq.x+1][sq.y] == null && board[sq.x+2][sq.y] == null) {
+						list[list.length] = {x:sq.x+2,y:sq.y};
+					}
+				}
+				try {
+					if (board[sq.x+1][sq.y+1].color == "BLACK") {
+						list[list.length] = {x:sq.x+1,y:sq.y+1};
+					}
+				} catch(e) {
+					// console.log(e.message);
+				}
+				try {
+					if (board[sq.x+1][sq.y-1].color == "BLACK") {
+						list[list.length] = {x:sq.x+1,y:sq.y-1};
+					}
+				} catch(e) {
+					// console.log(e.message);
+				}
+				if (sq.x == 4) {
+					try {
+						if (board[sq.x][sq.y-1].color == "BLACK" && board[sq.x][sq.y-1].type == "PAWN" && board[sq.x+1][sq.y-1] == null) {
+							list[list.length] = {x:sq.x+1,y:sq.y-1};
+						}
+					} catch(e) {
+						// console.log(e.message);
+					}
+					try {
+						if (board[sq.x][sq.y+1].color == "BLACK" && board[sq.x][sq.y+1].type == "PAWN" && board[sq.x+1][sq.y+1] == null) {
+							list[list.length] = {x:sq.x+1,y:sq.y+1};
+						}
+					} catch(e) {
+						// console.log(e.message);
+					}
+				}
+			} else if (source_piece_color == "BLACK") {
+				if (sq.x > 0 && sq.x < 7) {
+					if (board[sq.x-1][sq.y] == null) {
+						list[list.length] = {x:sq.x-1,y:sq.y};
+					}
+				}
+				if (sq.x == 6) {
+					if (board[sq.x-1][sq.y] == null && board[sq.x-2][sq.y] == null) {
+						list[list.length] = {x:sq.x-2,y:sq.y};
+					}
+				}
+				try {
+					if (board[sq.x-1][sq.y+1].color == "WHITE") {
+						list[list.length] = {x:sq.x-1,y:sq.y+1};
+					}
+				} catch(e) {
+					// console.log(e.message);
+				}
+				try {
+					if (board[sq.x-1][sq.y-1].color == "WHITE") {
+						list[list.length] = {x:sq.x-1,y:sq.y-1};
+					}
+				} catch(e) {
+					// console.log(e.message);
+				}
+				if (sq.x == 3) {
+					try {
+						if (board[sq.x][sq.y-1].color == "WHITE" && board[sq.x][sq.y-1].type == "PAWN" && board[sq.x-1][sq.y-1] == null) {
+							list[list.length] = {x:sq.x-1,y:sq.y-1};
+						}
+					} catch(e) {
+						// console.log(e.message);
+					}
+					try {
+						if (board[sq.x][sq.y+1].color == "WHITE" && board[sq.x][sq.y+1].type == "PAWN" && board[sq.x-1][sq.y+1] == null) {
+							list[list.length] = {x:sq.x-1,y:sq.y+1};
+						}
+					} catch(e) {
+						// console.log(e.message);
+					}
+				}
+			}
 		}
 		// index out of bounds check
 		for (var i = 0; i < list.length; i++) {
