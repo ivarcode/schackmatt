@@ -308,6 +308,7 @@ function get_positions_after_moves_from_sq(board,sq) {
 			list[list.length] = {x:sq.x-1,y:sq.y-1};
 			list[list.length] = {x:sq.x,y:sq.y+1};
 			list[list.length] = {x:sq.x,y:sq.y-1};
+			
 		} else if (board[sq.x][sq.y].type == "QUEEN") {
 			var diagonals = get_diagonals_from_sq(board,sq);
 			for (var n = 0; n < diagonals.length; n++) {
@@ -339,20 +340,20 @@ function get_positions_after_moves_from_sq(board,sq) {
 		} else if (board[sq.x][sq.y].type == "PAWN") {
 
 		}
-		// console.log("list length = "+list.length);
+		// index out of bounds check
 		for (var i = 0; i < list.length; i++) {
 			if (list[i].x < 0 || list[i].x > 7 || list[i].y < 0 || list[i].y > 7) {
-				console.log("index out of bounds, deleting sq "+list[i].x+","+list[i].y);
+				// console.log("index out of bounds, deleting sq "+list[i].x+","+list[i].y);
 				list.splice(i,1);
 				i--;
 			}
 		}
-		// console.log("list length = "+list.length);
+		// friendly piece check
 		for (var i = 0; i < list.length; i++) {
 			// console.log("friendly piece check for "+list[i].x+","+list[i].y);
 			if (board[list[i].x][list[i].y] != null) {
 				if (board[list[i].x][list[i].y].color == source_piece_color) {
-					console.log("sq occupied by friendly, deleting sq "+list[i].x+","+list[i].y);
+					// console.log("sq occupied by friendly, deleting sq "+list[i].x+","+list[i].y);
 					list.splice(i,1);
 					i--;
 				}
