@@ -47,9 +47,32 @@ Game.prototype.get_legal_moves = function() {
 					console.log("checking moves for piece \""+piece.color+" "+piece.type+"\" at "+i+","+j);
 					var list_of_sqs = get_destinations_after_moves_from_sq(board,{x:i,y:j});
 					console.log(list_of_sqs);
+					
+
+
+					for (var n = 0; n < list_of_sqs.length; n++) {
+						var new_board = copy_board(board);
+						// castling exception to position change
+						if (piece.type == "KING") {
+
+						} else 
+						// en passant && queening exception to position change
+						if (piece.type == "PAWN") {
+
+						} else {
+							// all other cases - just move the piece from src to dest
+							new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+							new_board[i][j] = null;
+							var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board));
+							moves[moves.length] = new_move;
+							new_move.print();
+						}
+					}
+
+
 				}
 			} catch(e) {
-				// console.log(e.message);
+				console.log(e.message);
 			}
 		}
 	}
@@ -74,6 +97,8 @@ Game.prototype.get_turn = function() {
 	}
 	return "ERR: invalid color in FEN";
 };
+
+/*Game prototype methods*/
 Game.prototype.print = function(print_position) {
 	/*prints information about Game to the console and prints out char based board graphic if print_position == true*/
 	console.log("Game.prototype.print("+print_position+")");
@@ -164,6 +189,13 @@ Game.prototype.print_PGN = function() {
 };
 
 
+/*Move prototype methods*/
+Move.prototype.print = function() {
+	/*prints out Move data*/
+	console.log("Move::   "+this.src.x+","+this.src.y+" --> "+this.dest.x+","+this.dest.y+"   =   "+this.piece.color+" "+this.piece.type);
+};
+
+
 /*helper functions*/
 function board_from_FEN(fen) {
 	/*returns a board (an array containing pieces) that results from the parameter fen*/
@@ -249,6 +281,29 @@ function board_from_FEN(fen) {
 		}
 	}
 	return board;
+}
+function board_to_FEN(old_fen,board) {
+	/*returns an FEN from the current FEN to the following board position*/
+	console.log(old_fen);
+}
+function copy_board(board) {
+	/*returns a copy of board*/
+	var new_board = [
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null],
+	[null,null,null,null,null,null,null,null]
+	];
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			new_board[i][j] = board[i][j];
+		}
+	}
+	return new_board;
 }
 function get_diagonals_from_sq(board,sq) {
 	/*returns an array of sqs on a legal diagonal from sq on board*/
