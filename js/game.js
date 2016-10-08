@@ -439,6 +439,64 @@ function print_board(board) {
 	s += " -------- ";
 	console.log(s);
 }
+function sq_is_threatened_by(board,sq,color) {
+	/*returns a boolean result if sq on board is threatened by color*/
+	var piece = null;
+	var list = [];
+	// checking adjacent sqs for king of color 'color'
+	list[list.length] = {x:sq.x+1,y:sq.y};
+	list[list.length] = {x:sq.x+1,y:sq.y+1};
+	list[list.length] = {x:sq.x+1,y:sq.y-1};
+	list[list.length] = {x:sq.x-1,y:sq.y};
+	list[list.length] = {x:sq.x-1,y:sq.y+1};
+	list[list.length] = {x:sq.x-1,y:sq.y-1};
+	list[list.length] = {x:sq.x,y:sq.y+1};
+	list[list.length] = {x:sq.x,y:sq.y-1};
+	for (var i = 0; i < list.length; i++) {
+		if (list[i].x > -1 && list[i].x < 8 && list[i].y > -1 && list[i].y < 8) {
+			try {
+				piece = board[list[i].x][list[i].y];
+				if (piece.color == color && piece.type == "KING") {
+					console.log(list[i].x+","+list[i].y+" is threatened by "+color+" king");
+					return true;
+				}
+			} catch(e) {
+				// console.log(e.message);
+			}
+		}
+	}
+	piece = null;
+	list = [];
+	// checking knight threats
+	list[list.length] = {x:sq.x+1,y:sq.y+2};
+	list[list.length] = {x:sq.x+1,y:sq.y-2};
+	list[list.length] = {x:sq.x+2,y:sq.y+1};
+	list[list.length] = {x:sq.x+2,y:sq.y-1};
+	list[list.length] = {x:sq.x-1,y:sq.y+2};
+	list[list.length] = {x:sq.x-1,y:sq.y-2};
+	list[list.length] = {x:sq.x-2,y:sq.y+1};
+	list[list.length] = {x:sq.x-2,y:sq.y-1};
+	for (var i = 0; i < list.length; i++) {
+		if (list[i].x > -1 && list[i].x < 8 && list[i].y > -1 && list[i].y < 8) {
+			try {
+				piece = board[list[i].x][list[i].y];
+				if (piece.color == color && piece.type == "KNIGHT") {
+					console.log(list[i].x+","+list[i].y+" is threatened by "+color+" knight");
+					return true;
+				}
+			} catch(e) {
+				// console.log(e.message);
+			}
+		}
+	}
+	// checking flat threats
+	var a = sq.x;
+	var b = sq.y;
+	while (a+1 < 8) {
+		a++;
+		
+	}
+}
 
 
 Game.prototype.print = function(print_position) {
