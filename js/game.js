@@ -44,8 +44,8 @@ Game.prototype.get_legal_positions = function() {
 				var piece = board[i][j];
 				if (piece.color == this.get_turn()) {
 					console.log("checking moves for piece \""+piece.color+" "+piece.type+"\" at "+i+","+j);
-					var a = get_positions_after_moves_from_sq(board,{x:i,y:j});
-					console.log(a);
+					var list_of_sqs = get_positions_after_moves_from_sq(board,{x:i,y:j});
+					console.log(list_of_sqs);
 				}
 			} catch(e) {
 				// console.log(e.message);
@@ -294,6 +294,16 @@ function get_flats_from_sq(board,sq) {
 	}
 	return list;
 }
+function get_opp_color(color) {
+	/*returns the opp color of color*/
+	if (color == "WHITE") {
+		return "BLACK";
+	} else if (color == "BLACK") {
+		return "WHITE";
+	} else {
+		throw "Exception: color invalid.";
+	}
+}
 function get_positions_after_moves_from_sq(board,sq) {
 	/*returns an array of positions following the legal moves from the sq in board, on board*/
 	var source_piece_color = board[sq.x][sq.y].color;
@@ -308,7 +318,25 @@ function get_positions_after_moves_from_sq(board,sq) {
 			list[list.length] = {x:sq.x-1,y:sq.y-1};
 			list[list.length] = {x:sq.x,y:sq.y+1};
 			list[list.length] = {x:sq.x,y:sq.y-1};
-			
+			// if WHITE king on e1
+			if (source_piece_color == "WHITE" && sq.x == 0 && sq.y == 4) {
+				// if there is a WHITE ROOK on h1 and f1 == null and g1 == null
+				if (board[0][7].type == "ROOK" && board[0][7].color == source_piece_color && board[0][5] == null && board[0][6] == null) {
+					// KINGSIDE CASTLE
+					if (!sq_is_threatened_by(board,{x:0,y:4},get_opp_color(source_piece_color)) && !sq_is_threatened_by(board,{x:0,y:5},get_opp_color(source_piece_color)) && !sq_is_threatened_by(board,{x:0,y:6},get_opp_color(source_piece_color))) {
+						list[list.length] = {x:0,y:6};
+					}
+				}
+				// if there is a WHITE ROOK on a1 and b1 == null and c1 == null and d1 == null
+				if (board[0][0].type == "ROOK" && board[0][0].color == source_piece_color && board[0][1] == null && board[0][2] == null && board[0][3] == null) {
+					// QUEENSIDE CASTLE
+					if (!sq_is_threatened_by(board,{x:0,y:4},get_opp_color(source_piece_color)) && !sq_is_threatened_by(board,{x:0,y:3},get_opp_color(source_piece_color)) && !sq_is_threatened_by(board,{x:0,y:2},get_opp_color(source_piece_color))) {
+						list[list.length] = {x:0,y:2};
+					}
+				}
+			} else /*if BLACK king on e8*/ if (source_piece_color == "BLACK" && sq.x == 7 && sq.y == 4) {
+
+			}
 		} else if (board[sq.x][sq.y].type == "QUEEN") {
 			var diagonals = get_diagonals_from_sq(board,sq);
 			for (var n = 0; n < diagonals.length; n++) {
@@ -338,7 +366,7 @@ function get_positions_after_moves_from_sq(board,sq) {
 				list[list.length] = flats[n];
 			}
 		} else if (board[sq.x][sq.y].type == "PAWN") {
-
+			// TODO HAVENT COMPLETED PAWN MOVEMENTS YET
 		}
 		// index out of bounds check
 		for (var i = 0; i < list.length; i++) {
