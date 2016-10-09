@@ -285,6 +285,59 @@ function board_from_FEN(fen) {
 function board_to_FEN(old_fen,board) {
 	/*returns an FEN from the current FEN to the following board position*/
 	console.log(old_fen);
+	print_board(board);
+	var new_FEN = "";
+	var inc = 0;
+	for (var a = 0; a < 8; a++) {
+		for (var b = 0; b < 8; b++) {
+			if (board[7-a][b] == null) {
+				inc++;
+			} else {
+				if (inc > 0) {
+					new_FEN += inc;
+					inc = 0;
+				}
+				if (board[7-a][b].color == "WHITE") {
+					if (board[7-a][b].type == "KING") {
+						new_FEN += "K";
+					} else if (board[7-a][b].type == "QUEEN") {
+						new_FEN += "Q";
+					} else if (board[7-a][b].type == "BISHOP") {
+						new_FEN += "B";
+					} else if (board[7-a][b].type == "KNIGHT") {
+						new_FEN += "N";
+					} else if (board[7-a][b].type == "ROOK") {
+						new_FEN += "R";
+					} else if (board[7-a][b].type == "PAWN") {
+						new_FEN += "P";
+					}
+				} else {
+					if (board[7-a][b].type == "KING") {
+						new_FEN += "k";
+					} else if (board[7-a][b].type == "QUEEN") {
+						new_FEN += "q";
+					} else if (board[7-a][b].type == "BISHOP") {
+						new_FEN += "b";
+					} else if (board[7-a][b].type == "KNIGHT") {
+						new_FEN += "n";
+					} else if (board[7-a][b].type == "ROOK") {
+						new_FEN += "r";
+					} else if (board[7-a][b].type == "PAWN") {
+						new_FEN += "p";
+					}
+				}
+			}
+		}
+		if (inc > 0) {
+			new_FEN += inc;
+			inc = 0;
+		}
+		if (a != 7) {
+			new_FEN += "/";
+		}
+	}
+	console.log(new_FEN);
+	// switch turn data to reflect after a move has been made
 }
 function copy_board(board) {
 	/*returns a copy of board*/
