@@ -58,7 +58,7 @@ Game.prototype.get_legal_moves = function() {
 						} else 
 						// en passant && queening exception to position change
 						if (piece.type == "PAWN") {
-
+							
 						} else {
 							// all other cases - just move the piece from src to dest
 							new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
@@ -285,7 +285,11 @@ function board_from_FEN(fen) {
 function board_to_FEN(old_fen,board,src,dest,piece) {
 	/*returns an FEN from the current FEN to the following board position*/
 	console.log(old_fen);
-	print_board(board);
+	var old_board = board_from_FEN(old_fen);
+	// console.log("old board");
+	// print_board(old_board);
+	// console.log("new board");
+	// print_board(board);
 	var new_FEN = "";
 	var inc = 0;
 	for (var a = 0; a < 8; a++) {
@@ -343,17 +347,102 @@ function board_to_FEN(old_fen,board,src,dest,piece) {
 		c++;
 	}
 	c++;
+	var was_blacks_turn = null;
 	if (old_fen.charAt(c) == 'w') {
 		new_FEN += "b";
-		i += 2;
-		if (old_fen.charAt(c) == 'K') {
-			
-		}
-		
+		was_blacks_turn = false;
 	} else if (old_fen.charAt(c) == 'b') {
 		new_FEN += "w";
+		was_blacks_turn = true;
+	}
+	c += 2;
+	new_FEN += " ";
+	// load castling data
+	var castling_data = [];
+	while (old_fen.charAt(c) != ' ') {
+		if (old_fen.charAt(c) == 'K') {
+			castling_data[0] = true;
+		} else if (old_fen.charAt(c) == 'Q') {
+			castling_data[1] = true;
+		} else if (old_fen.charAt(c) == 'k') {
+			castling_data[2] = true;
+		} else if (old_fen.charAt(c) == 'q') {
+			castling_data[3] = true;
+		}
+		c++;
+	}
+	// white, kingside
+	if (castling_data[0]) {
+		if (piece.color == "WHITE" && (piece.type == "KING" || (piece.type == "ROOK" && (board[0][7] == null || (board[0][7].type != "ROOK" || board[0][7].color != "WHITE"))))) {
+			castling_data[0] = false;
+		}
+	}
+	// white, queenside
+	if (castling_data[1]) {
+		if (piece.color == "WHITE" && (piece.type == "KING" || (piece.type == "ROOK" && (board[0][0] == null || (board[0][0].type != "ROOK" || board[0][0].color != "WHITE"))))) {
+			castling_data[1] = false;
+		}
+	}
+	// black, kingside
+	if (castling_data[2]) {
+		if (piece.color == "BLACK" && (piece.type == "KING" || (piece.type == "ROOK" && (board[7][7] == null || (board[7][7].type != "ROOK" || board[7][7].color != "BLACK"))))) {
+			castling_data[2] = false;
+		}
+	}
+	// black, queenside
+	if (castling_data[3]) {
+		if (piece.color == "BLACK" && (piece.type == "KING" || (piece.type == "ROOK" && (board[7][0] == null || (board[7][0].type != "ROOK" || board[7][0].color != "BLACK"))))) {
+			castling_data[3] = false;
+		}
+	}
+	if (castling_data[0]) {
+		new_FEN += 'K';
+	}
+	if (castling_data[1]) {
+		new_FEN += 'Q';
+	}
+	if (castling_data[2]) {
+		new_FEN += 'k';
+	}
+	if (castling_data[3]) {
+		new_FEN += 'q';
 	}
 	new_FEN += " ";
+	c++;
+	if (piece.type == "PAWN") {
+		if (piece.color == "WHITE") {
+			if (dest.x - src.x == 2) {
+				new_FEN += pair_to_sq({x:2,y:src.y});
+			} else {
+				new_FEN += "-";
+			}
+		} else /*piece.color == "BLACK"*/ {
+			if (src.x - dest.x == 2) {
+				new_FEN += pair_to_sq({x:5,y:src.y});
+			} else {
+				new_FEN += "-";
+			}
+		}
+	} else {
+		new_FEN += "-";
+	}
+	new_FEN += " ";
+	while (old_fen.charAt(c) != ' ') {
+		c++;
+	}
+	c++;
+	if (old_board[dest.x][dest.y] != null || piece.type == "PAWN") {
+		new_FEN += "0";
+	} else {
+		new_FEN += parseInt(old_fen.charAt(c))+1;
+	}
+	c += 2;
+	new_FEN += " ";
+	if (was_blacks_turn) {
+		new_FEN += parseInt(old_fen.charAt(c))+1;
+	} else {
+		new_FEN += old_fen.charAt(c);
+	}
 
 	console.log(new_FEN);
 }
@@ -702,6 +791,24 @@ function get_destinations_after_moves_from_sq(board,sq) {
 		console.log(e.message);
 	}
 	return list;
+}
+function pair_to_sq(sq) {
+	/*converts the square in the array to the square on the chessboard
+	ex: e4 */
+	var square = "";
+	switch (sq.y) {
+		case 0: square += "a"; break;
+		case 1: square += "b"; break;
+		case 2: square += "c"; break;
+		case 3: square += "d"; break;
+		case 4: square += "e"; break;
+		case 5: square += "f"; break;
+		case 6: square += "g"; break;
+		case 7: square += "h"; break;
+		default: console.log("ERR :: sq out of range");
+	}
+	square += sq.x+1;
+	return square;
 }
 function print_board(board) {
 	/*prints board in the console for debugging*/
