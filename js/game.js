@@ -63,7 +63,7 @@ Game.prototype.get_legal_moves = function() {
 							// all other cases - just move the piece from src to dest
 							new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
 							new_board[i][j] = null;
-							var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board));
+							var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
 							moves[moves.length] = new_move;
 							new_move.print();
 						}
@@ -282,7 +282,7 @@ function board_from_FEN(fen) {
 	}
 	return board;
 }
-function board_to_FEN(old_fen,board) {
+function board_to_FEN(old_fen,board,src,dest,piece) {
 	/*returns an FEN from the current FEN to the following board position*/
 	console.log(old_fen);
 	print_board(board);
@@ -336,8 +336,26 @@ function board_to_FEN(old_fen,board) {
 			new_FEN += "/";
 		}
 	}
-	console.log(new_FEN);
+	new_FEN += " ";
 	// switch turn data to reflect after a move has been made
+	var c = 0;
+	while (old_fen.charAt(c) != ' ') {
+		c++;
+	}
+	c++;
+	if (old_fen.charAt(c) == 'w') {
+		new_FEN += "b";
+		i += 2;
+		if (old_fen.charAt(c) == 'K') {
+			
+		}
+		
+	} else if (old_fen.charAt(c) == 'b') {
+		new_FEN += "w";
+	}
+	new_FEN += " ";
+
+	console.log(new_FEN);
 }
 function copy_board(board) {
 	/*returns a copy of board*/
