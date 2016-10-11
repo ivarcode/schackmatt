@@ -54,11 +54,27 @@ Game.prototype.get_legal_moves = function() {
 						var new_board = copy_board(board);
 						// castling exception to position change
 						if (piece.type == "KING") {
-							
+							var castling_data = get_castling_data(this.get_FEN());
+							if (list_of_sqs[n].y - j == 2) {
+								// kingside castle
+								if (piece.color == "WHITE" && castling_data[0]) {
+
+								}
+							} else if (j - list_of_sqs[n].y == 2) {
+								// queenside castle
+
+							} else {
+								// normal king move
+								new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+								new_board[i][j] = null;
+								var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+								moves[moves.length] = new_move;
+								new_move.print();
+							}
 						} else 
 						// en passant && queening exception to position change
 						if (piece.type == "PAWN") {
-							
+
 						} else {
 							// all other cases - just move the piece from src to dest
 							new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
@@ -284,7 +300,7 @@ function board_from_FEN(fen) {
 }
 function board_to_FEN(old_fen,board,src,dest,piece) {
 	/*returns an FEN from the current FEN to the following board position*/
-	console.log(old_fen);
+	// console.log(old_fen);
 	var old_board = board_from_FEN(old_fen);
 	// console.log("old board");
 	// print_board(old_board);
@@ -410,6 +426,7 @@ function board_to_FEN(old_fen,board,src,dest,piece) {
 	new_FEN += " ";
 	c++;
 	if (piece.type == "PAWN") {
+		// TODO possible change - only add sq if there is a pawn of the opposite color on one side or the other of the src piece?
 		if (piece.color == "WHITE") {
 			if (dest.x - src.x == 2) {
 				new_FEN += pair_to_sq({x:2,y:src.y});
@@ -444,7 +461,7 @@ function board_to_FEN(old_fen,board,src,dest,piece) {
 		new_FEN += old_fen.charAt(c);
 	}
 
-	console.log(new_FEN);
+	// console.log(new_FEN);
 }
 function copy_board(board) {
 	/*returns a copy of board*/
@@ -464,6 +481,31 @@ function copy_board(board) {
 		}
 	}
 	return new_board;
+}
+function get_castling_data(fen) {
+	/*returns an array of length 4 of boolean data about castling legality reflected from the FEN parameter (KQkq)*/
+	var c = 0;
+	while (fen.charAt(c) != ' ') {
+		c++;
+	}
+	c += 3;
+	var castling_data = [];
+	for (var i = 0; i < 4; i++) {
+		castling_data[i] = false;
+	}
+	while (fen.charAt(c) != ' ') {
+		if (fen.charAt(c) == 'K') {
+			castling_data[0] = true;
+		} else if (fen.charAt(c) == 'Q') {
+			castling_data[1] = true;
+		} else if (fen.charAt(c) == 'k') {
+			castling_data[2] = true;
+		} else if (fen.charAt(c) == 'q') {
+			castling_data[3] = true;
+		}
+	}
+	console.log(castling_data);
+	return castling_data;
 }
 function get_diagonals_from_sq(board,sq) {
 	/*returns an array of sqs on a legal diagonal from sq on board*/
