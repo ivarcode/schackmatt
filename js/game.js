@@ -54,7 +54,7 @@ Game.prototype.get_legal_moves = function() {
 						var new_board = copy_board(board);
 						// castling exception to position change
 						if (piece.type == "KING") {
-
+							
 						} else 
 						// en passant && queening exception to position change
 						if (piece.type == "PAWN") {
