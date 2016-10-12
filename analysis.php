@@ -49,7 +49,7 @@
 		board_img.src = "./img/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 
 		// var game = new Game("player 1","player 2","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
-		var game = new Game("player 1","player 2","TEST","rnbqkbnr/pppppppp/8/8/8/2N5/PPPPPPPP/R1BQKBNR b KQkq - 1 1",[]);
+		var game = new Game("player 1","player 2","TEST","rnbqkb1r/1p3ppp/p2p1n2/2pPp3/4P3/5N2/PPP1BPPP/RNBQK2R w KQkq c6 0 6",[]);
 		game.print(true);
 
 
