@@ -15,6 +15,7 @@
 	<link rel="stylesheet" href="style.css">
 
 	<script type="text/javascript" src="./js/game.js"></script>
+	<script type="text/javascript" src="./js/bots/bot_gerald.js"></script>
 	
 	<script type="text/javascript">
 
@@ -52,7 +53,7 @@
 		var game = new Game("player 1","player 2","TEST","8/8/p7/8/8/2Q5/3RkPK1/8 b - - 3 59",[]);
 
 		// bot function calculations here
-		
+
 
 		game.print(true);
 
