@@ -49,7 +49,11 @@
 		board_img.src = "./img/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 
 		// var game = new Game("player 1","player 2","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
-		var game = new Game("player 1","player 2","TEST","rnbqkb1r/1p3ppp/p2p1n2/2pPp3/4P3/5N2/PPP1BPPP/RNBQK2R w KQkq c6 0 6",[]);
+		var game = new Game("player 1","player 2","TEST","8/8/p7/8/8/2Q5/3RkPK1/8 b - - 3 59",[]);
+
+		// bot function calculations here
+		
+
 		game.print(true);
 
 

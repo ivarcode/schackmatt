@@ -221,10 +221,17 @@ Game.prototype.get_legal_moves = function() {
 		}
 	}
 
-
 	for (var n = 0; n < moves.length; n++) {
-		moves[n].print();
+		// moves[n].print();
+		var king_loc = get_king_loc(board_from_FEN(moves[n].position),this.get_turn());
+		// console.log(king_loc);
+		if (sq_is_threatened_by(board_from_FEN(moves[n].position),king_loc,get_opp_color(this.get_turn()))) {
+			// console.log(this.get_turn()+" king is in check");
+			moves.splice(n,1);
+			n--;
+		}
 	}
+	// console.log(moves);
 	return moves;
 };
 Game.prototype.get_turn = function() {
@@ -556,6 +563,9 @@ function board_to_FEN(old_fen,board,src,dest,piece) {
 	if (castling_data[3]) {
 		new_FEN += 'q';
 	}
+	if (!castling_data[0] && !castling_data[1] && !castling_data[2] && !castling_data[3]) {
+		new_FEN += '-';
+	}
 	new_FEN += " ";
 	c++;
 	if (piece.type == "PAWN") {
@@ -584,12 +594,22 @@ function board_to_FEN(old_fen,board,src,dest,piece) {
 	if (old_board[dest.x][dest.y] != null || piece.type == "PAWN") {
 		new_FEN += "0";
 	} else {
-		new_FEN += parseInt(old_fen.charAt(c))+1;
+		var halfmove_str = ""; 
+		while (old_fen.charAt(c) != ' ') {
+			halfmove_str += old_fen.charAt(c);
+			c++;
+		}
+		new_FEN += parseInt(halfmove_str)+1;
 	}
 	c += 2;
 	new_FEN += " ";
+	var turn_count_str = "";
+	while (c < old_fen.length) {
+		turn_count_str += old_fen.charAt(c);
+		c++;
+	}
 	if (was_blacks_turn) {
-		new_FEN += parseInt(old_fen.charAt(c))+1;
+		new_FEN += parseInt(turn_count_str)+1;
 	} else {
 		new_FEN += old_fen.charAt(c);
 	}
@@ -775,6 +795,17 @@ function get_flats_from_sq(board,sq) {
 		}
 	}
 	return list;
+}
+function get_king_loc(board,color) {
+	/*returns the loc of the king of color on board in an x,y pair*/
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			if (board[i][j] != null && board[i][j].type == "KING" && board[i][j].color == color) {
+				return {x:i,y:j};
+			}
+		}
+	}
+	return null;
 }
 function get_opp_color(color) {
 	/*returns the opp color of color*/
@@ -1052,7 +1083,7 @@ function sq_is_threatened_by(board,sq,color) {
 			try {
 				piece = board[list[i].x][list[i].y];
 				if (piece.color == color && piece.type == "KING") {
-					console.log(list[i].x+","+list[i].y+" is threatened by "+color+" king");
+					// console.log(list[i].x+","+list[i].y+" is threatened by "+color+" king");
 					return true;
 				}
 			} catch(e) {
@@ -1076,7 +1107,7 @@ function sq_is_threatened_by(board,sq,color) {
 			try {
 				piece = board[list[i].x][list[i].y];
 				if (piece.color == color && piece.type == "KNIGHT") {
-					console.log(list[i].x+","+list[i].y+" is threatened by "+color+" knight");
+					// console.log(list[i].x+","+list[i].y+" is threatened by "+color+" knight");
 					return true;
 				}
 			} catch(e) {
