@@ -15,65 +15,112 @@
 	<link rel="stylesheet" href="style.css">
 
 	<script type="text/javascript" src="./js/game.js"></script>
-	<script type="text/javascript" src="./js/rules.js"></script>
+	<script type="text/javascript" src="./js/bots/bot_gerald.js"></script>
+	
 	<script type="text/javascript">
 
-		//write position testing code here
+		var IMAGES = {wPawn:new Image(),wRook:new Image(),wKnight:new Image(),wBishop:new Image(),wQueen:new Image(),wKing:new Image(),bPawn:new Image(),bRook:new Image(),bKnight:new Image(),bBishop:new Image(),bQueen:new Image(),bKing:new Image()};
 
-
-
-
-		var game = new game("Player 1", "Player 2", "STANDARD",[]);
-
-		console.log(game);
-		printGame(game);
+		IMAGES.wPawn.src = "./img/pieces/w_Pawn.png";
+		IMAGES.wRook.src = "./img/pieces/w_Rook.png";
+		IMAGES.wKnight.src = "./img/pieces/w_Knight.png";
+		IMAGES.wBishop.src = "./img/pieces/w_Bishop.png";
+		IMAGES.wQueen.src = "./img/pieces/w_Queen.png";
+		IMAGES.wKing.src = "./img/pieces/w_King.png";
+		IMAGES.bPawn.src = "./img/pieces/b_Pawn.png";
+		IMAGES.bRook.src = "./img/pieces/b_Rook.png";
+		IMAGES.bKnight.src = "./img/pieces/b_Knight.png";
+		IMAGES.bBishop.src = "./img/pieces/b_Bishop.png";
+		IMAGES.bQueen.src = "./img/pieces/b_Queen.png";
+		IMAGES.bKing.src = "./img/pieces/b_King.png";
 
 		var board_canvas;
 		var board_context;
 		var SQ_DIM = 80;
 
-		var sq_is_selected = false;
 		var selected_square;
 		var tintSquare;
-		var click_data = {src: null, dest: null};
+		var click_data = {src: null, dest: null, mSrc: null, mDest: null};
 		var mouse_over_board = false;
+		var current_mousePos = null;
+		var mousedown = false;
+		var queening = false;
 
 		var board_img = new Image();
 		board_img.src = "./img/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 
+		var game = new Game("player 1","player 2","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
+		// var game = new Game("player 1","player 2","TEST","8/8/p7/8/8/2Q5/3RkPK1/8 b - - 3 59",[]);
+
+		// bot function calculations here
+		calculate_tree(game);
+
+
+
+		// game.print(true);
+
+
 		function setup() {
 			board_canvas = document.getElementById("board");
+			// disables default context menu on rightclick on board
+			board_canvas.oncontextmenu = function (e) {
+    			e.preventDefault();
+			};
 			board_context = board_canvas.getContext("2d");
 
 			drawBoard();
 			
 			board_canvas.addEventListener('mousedown',function(events){
-				var mousePos = getMousePos(board_canvas,events);
-				click_data.src = mousePos;
-				// console.log("mousedown at (" + mousePos.x + "," + mousePos.y + ")");
-			});
-			board_canvas.addEventListener('mouseup',function(events){
-				var mousePos = getMousePos(board_canvas,events);
-				click_data.dest = mousePos;
-				// console.log("mouseup at (" + mousePos.x + "," + mousePos.y + ")");
-				var src = {x:click_data.src.x/SQ_DIM,y:click_data.src.y/SQ_DIM};
-				var dest = {x:click_data.dest.x/SQ_DIM,y:click_data.dest.y/SQ_DIM};
-				src = {x:src.x-(src.x%1),y:src.y-(src.y%1)};
-				dest = {x:dest.x-(dest.x%1),y:dest.y-(dest.y%1)};
-				// console.log("src " + src.x + "," + src.y);
-				// console.log("dest " + dest.x + "," + dest.y);
+				
 
-				if (src.x == dest.x && src.y == dest.y) {
-					// console.log("selected_square");
+				/*mousedown*/
+
+
+
+				click_data.mSrc = getMousePos(board_canvas,events);
+				var s = getSquareFromMousePos(click_data.mSrc);
+				console.log(s);
+				
+				if (selected_square != null) {
+					if (s.x == selected_square.x && s.y == selected_square.y) {
+						selected_square = null;
+					} else {
+						console.log("make move second click");
+						game.make_move(new Move(selected_square,s,game.get_piece(selected_square)));
+					}
 				} else {
-					var s = {x:7-src.y,y:src.x};
-					var d = {x:7-dest.y,y:dest.x};
-					// console.log("makeMove(" + s.x + "," + s.y + " --> " + d.x + "," + d.y + ")");
-					makeMove(s,d,game);
-					// printGame(game);
+					if (game.get_piece(s) != null && game.get_piece(s).color == game.turn) {
+						console.log("setting selected_square to "+s.x+","+s.y);
+						selected_square = s;
+					} else {
+						selected_square = null;
+					}
 				}
 
-				// var move = new move(src,dest,null);
+
+
+				mousedown = true;
+				drawBoard();
+			});
+			board_canvas.addEventListener('mouseup',function(events){
+
+
+				if (selected_square != null) {
+					click_data.mDest = getMousePos(board_canvas,events);
+					var d = getSquareFromMousePos(click_data.mDest);
+					if (selected_square.x == d.x && selected_square.y == d.y) {
+						selected_square = null;
+					} else {
+						var move = new Move({x:selected_square.x,y:selected_square.y},{x:d.x,y:d.y},game.get_piece(selected_square));
+						game.make_move(move,false);
+						game.print(true);
+						selected_square = null;
+					}
+				}
+
+
+				mousedown = false;
+				drawBoard();
 
 			});
 			board_canvas.addEventListener('mouseenter',function(events){
@@ -85,10 +132,9 @@
 			});
 			board_canvas.addEventListener('mousemove',function(events){
 				if (mouse_over_board) {
-					// console.log("mousemove mouse_over_board");
-					var mousePos = getMousePos(board_canvas,events);
-					var x = mousePos.x;
-					var y = mousePos.y;
+					current_mousePos = getMousePos(board_canvas,events);
+					var x = current_mousePos.x;
+					var y = current_mousePos.y;
 					x -= x%SQ_DIM;
 					y -= y%SQ_DIM;
 					// console.log("mousePos on canvas : " + x + " " + y);
@@ -103,6 +149,7 @@
 		}
 
 		function getMousePos(canvas,events) {
+			/*returns an object {x,y} that contain the mousePos data from events on the canvas*/
 			var obj = canvas;
 			var top = 0, left = 0;
 			var mX = 0, mY = 0;
@@ -117,64 +164,108 @@
 		}
 
 		function getSquareFromMousePos(loc) {
+			/*this function converts the mousePos data to a square on the chessboard*/
 			var x = loc.x;
 			var y = loc.y;
 			x -= x%SQ_DIM;
 			y -= y%SQ_DIM;
 			x /= SQ_DIM;
 			y /= SQ_DIM;
-			return { x: x, y: y };
+			return { x: 7-y, y: x };
 		}
 
 		function drawBoard() {
+			/*function that loops through the board and draws the pieces, as well as highlights proper squares and handles dragged pieces*/
 			board_context.globalALpha = 1;
 			board_context.drawImage(board_img,0,0);
 			if (mouse_over_board) {
 				tintSq(tintSquare.x,tintSquare.y);
 			}
-			if (sq_is_selected) {
-				selSq(selected_square.x,selected_square.y);
-			}
 			board_context.globalAlpha = 1;
 			for (var i = 0; i < 8; i++) {
 				for (var j = 0; j < 8; j++) {
-					// console.log(game.board[j][i]);
-					if (game.board[j][i] == wPawn) { 
-						board_context.drawImage(IMAGES.wPawn,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == wKnight) { 
-						board_context.drawImage(IMAGES.wKnight,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == wBishop) { 
-						board_context.drawImage(IMAGES.wBishop,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == wRook) { 
-						board_context.drawImage(IMAGES.wRook,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == wQueen) { 
-						board_context.drawImage(IMAGES.wQueen,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == wKing) { 
-						board_context.drawImage(IMAGES.wKing,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == bPawn) { 
-						board_context.drawImage(IMAGES.bPawn,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == bKnight) { 
-						board_context.drawImage(IMAGES.bKnight,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == bBishop) { 
-						board_context.drawImage(IMAGES.bBishop,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == bRook) { 
-						board_context.drawImage(IMAGES.bRook,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == bQueen) { 
-						board_context.drawImage(IMAGES.bQueen,i*SQ_DIM,(7-j)*SQ_DIM);
-					} else if (game.board[j][i] == bKing) { 
-						board_context.drawImage(IMAGES.bKing,i*SQ_DIM,(7-j)*SQ_DIM);
+					if (selected_square != null && mousedown) {
+						if (i == selected_square.y && j == selected_square.x) {
+							//dont draw, draw later
+						} else {
+							try {
+								drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,game.board[j][i]);
+							} catch(e) {
+								console.log("ERR :: "+e.message)
+							}
+						}
 					} else {
-						//draw nothing
+						try {
+							drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,game.board[j][i]);
+						} catch(e) {
+							// console.log("ERR :: "+e.message)
+						}
 					}
+				}
+			}
+			if (selected_square != null && mousedown) {
+				drawPiece(current_mousePos.x-40,current_mousePos.y-40,game.get_piece(selected_square));
+			}
+		}
+
+		function drawPiece(x,y,piece) {
+			/*draws one piece in the board at the coordinates given*/
+			// console.log("drawPiece("+x+","+y+","+piece.type+")");
+			if (piece == wPawn) { 
+				board_context.drawImage(IMAGES.wPawn,x,y);
+			} else if (piece == wKnight) { 
+				board_context.drawImage(IMAGES.wKnight,x,y);
+			} else if (piece == wBishop) { 
+				board_context.drawImage(IMAGES.wBishop,x,y);
+			} else if (piece == wRook) { 
+				board_context.drawImage(IMAGES.wRook,x,y);
+			} else if (piece == wQueen) { 
+				board_context.drawImage(IMAGES.wQueen,x,y);
+			} else if (piece == wKing) { 
+				board_context.drawImage(IMAGES.wKing,x,y);
+			} else if (piece == bPawn) { 
+				board_context.drawImage(IMAGES.bPawn,x,y);
+			} else if (piece == bKnight) { 
+				board_context.drawImage(IMAGES.bKnight,x,y);
+			} else if (piece == bBishop) { 
+				board_context.drawImage(IMAGES.bBishop,x,y);
+			} else if (piece == bRook) { 
+				board_context.drawImage(IMAGES.bRook,x,y);
+			} else if (piece == bQueen) { 
+				board_context.drawImage(IMAGES.bQueen,x,y);
+			} else if (piece == bKing) { 
+				board_context.drawImage(IMAGES.bKing,x,y);
+			} else {
+				//boolean to decide whether coordinate drawing is turned on
+				var draw_coordinates = true;
+				
+				if (draw_coordinates) {
+					//draw coordinate
+					var a = x/80;
+					var b = y/80;
+					var coord = "";
+					switch (a) {
+						case 0: coord += "a";break;
+						case 1: coord += "b";break;
+						case 2: coord += "c";break;
+						case 3: coord += "d";break;
+						case 4: coord += "e";break;
+						case 5: coord += "f";break;
+						case 6: coord += "g";break;
+						case 7: coord += "h";break;
+					}
+					coord += 8-b;
+					board_context.font = "20px lucida console";
+					board_context.strokeText(coord,x+30,y+50);
 				}
 			}
 		}
 
 		function tintSq(x,y) {
-			// console.log("tintSq " + x + "," + y);
+			/*function responsible for tinting squares yellow*/
 			board_context.fillStyle = "yellow";
 			board_context.globalAlpha = 0.5;
-			if (sq_is_selected) {
+			if (selected_square != null) {
 				if (!(selected_square.x == x && selected_square.y == y)) {
 					board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
 				}
@@ -184,6 +275,7 @@
 		}
 
 		function selSq(x,y) {
+			/*function responsible for tinting sqs blue*/
 			board_context.fillStyle = "blue";
 			board_context.globalAlpha = 0.5;
 			board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
@@ -194,27 +286,22 @@
 	</script>
 </head>
 <body>
-	<div id="container">
 
-		<div id="header">
-			<h1>schackmatt.net</h1>
-			<h3>WIP</h3>
-			<h5>Coded by Camden I. Wagner<br>camden.i.wagner@ivarcode.net</h5>
-		</div>
-
+	<section id="cover" name="cover">
 		<div id="game">
 			
 			<canvas id="board" width="640" height="640">canvas</canvas>
 
-			<div id="game_data">
+			<!-- <div id="game_data">
 				<h3 id="materialBalance">null</h3>
-			</div>
+			</div> -->
 
 		</div>
 
 		<div>
 			<h4 id="FEN"></h4>
 		</div>
-	</div>
+	</section>
+
 </body>
 </html>
