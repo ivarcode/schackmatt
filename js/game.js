@@ -37,7 +37,7 @@ Game.prototype.get_legal_moves = function() {
 	/*returns an array of legal moves that are the result of the position in Game*/
 	var moves = [];
 	var board = board_from_FEN(this.get_FEN());
-	print_board(board);
+	// print_board(board);
 	// loop through board to find all pieces of the same color as Game.get_turn
 	for (var i = 0; i < 8; i++) {
 		for (var j = 0; j < 8; j++) {

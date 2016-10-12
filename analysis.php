@@ -49,13 +49,15 @@
 		var board_img = new Image();
 		board_img.src = "./img/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 
-		// var game = new Game("player 1","player 2","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
-		var game = new Game("player 1","player 2","TEST","8/8/p7/8/8/2Q5/3RkPK1/8 b - - 3 59",[]);
+		var game = new Game("player 1","player 2","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
+		// var game = new Game("player 1","player 2","TEST","8/8/p7/8/8/2Q5/3RkPK1/8 b - - 3 59",[]);
 
 		// bot function calculations here
+		calculate_tree(game);
 
 
-		game.print(true);
+
+		// game.print(true);
 
 
 		function setup() {
@@ -196,7 +198,7 @@
 						try {
 							drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,game.board[j][i]);
 						} catch(e) {
-							console.log("ERR :: "+e.message)
+							// console.log("ERR :: "+e.message)
 						}
 					}
 				}
