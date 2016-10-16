@@ -176,6 +176,8 @@
 
 		function drawBoard() {
 			/*function that loops through the board and draws the pieces, as well as highlights proper squares and handles dragged pieces*/
+			var board = board_from_FEN(game.get_FEN());
+
 			board_context.globalALpha = 1;
 			board_context.drawImage(board_img,0,0);
 			if (mouse_over_board) {
@@ -189,14 +191,14 @@
 							//dont draw, draw later
 						} else {
 							try {
-								drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,game.board[j][i]);
+								drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,board[j][i]);
 							} catch(e) {
 								console.log("ERR :: "+e.message)
 							}
 						}
 					} else {
 						try {
-							drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,game.board[j][i]);
+							drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,board[j][i]);
 						} catch(e) {
 							console.log("ERR :: "+e.message)
 						}
