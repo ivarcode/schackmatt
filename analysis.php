@@ -53,7 +53,7 @@
 		// var game = new Game("player 1","player 2","TEST","8/8/p7/8/8/2Q5/3RkPK1/8 b - - 3 59",[]);
 
 		// bot function calculations here
-		calculate_tree(game);
+		// calculate_tree(game);
 
 
 
@@ -198,7 +198,7 @@
 						try {
 							drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,game.board[j][i]);
 						} catch(e) {
-							// console.log("ERR :: "+e.message)
+							console.log("ERR :: "+e.message)
 						}
 					}
 				}
