@@ -72,10 +72,7 @@
 			
 			board_canvas.addEventListener('mousedown',function(events){
 				
-
 				/*mousedown*/
-
-
 
 				click_data.mSrc = getMousePos(board_canvas,events);
 				var s = getSquareFromMousePos(click_data.mSrc);
