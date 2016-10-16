@@ -139,10 +139,7 @@ Game.prototype.get_opp_color = function(color) {
 		throw "ERR :: invalid color";
 	}
 };
-Game.prototype.get_piece = function(sq) {
-	/*returns the piece at sq on Game.board*/
-	return this.board[sq.x][sq.y];
-};
+
 
 
 

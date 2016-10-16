@@ -107,6 +107,7 @@
 					var d = getSquareFromMousePos(click_data.mDest);
 					if (selected_square.x == d.x && selected_square.y == d.y) {
 						selected_square = null;
+						console.log("same sq - deselect");
 					} else {
 						var move = new Move({x:selected_square.x,y:selected_square.y},{x:d.x,y:d.y},game.get_piece(selected_square));
 						game.make_move(move,false);
@@ -125,7 +126,7 @@
 			});
 			board_canvas.addEventListener('mouseleave',function(events){
 				mouse_over_board = false;
-				for (var i = 0; i < 10; i++) { drawBoard(); /*looping drawBoard() to clear all tinting*/}
+				drawBoard();
 			});
 			board_canvas.addEventListener('mousemove',function(events){
 				if (mouse_over_board) {

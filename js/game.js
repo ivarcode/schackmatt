@@ -234,6 +234,11 @@ Game.prototype.get_legal_moves = function() {
 	// console.log(moves);
 	return moves;
 };
+Game.prototype.get_piece = function(sq) {
+	/*returns the piece at sq on Game.board*/
+	var board = board_from_FEN(this.get_FEN());
+	return board[sq.x][sq.y];
+};
 Game.prototype.get_turn = function() {
 	/*returns the turn of game in the form of a string "WHITE" or "BLACK"*/
 	var i = 0;
