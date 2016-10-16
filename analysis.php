@@ -80,13 +80,14 @@
 				
 				if (selected_square != null) {
 					if (s.x == selected_square.x && s.y == selected_square.y) {
+						// console.log("same sq");
 						selected_square = null;
 					} else {
 						console.log("make move second click");
 						game.make_move(new Move(selected_square,s,game.get_piece(selected_square)));
 					}
 				} else {
-					if (game.get_piece(s) != null && game.get_piece(s).color == game.turn) {
+					if (game.get_piece(s) != null && game.get_piece(s).color == game.get_turn()) {
 						console.log("setting selected_square to "+s.x+","+s.y);
 						selected_square = s;
 					} else {
