@@ -38,6 +38,8 @@
 		var board_context;
 		var SQ_DIM = 80;
 
+		var strategic_draws = []; // for lack of a better name for this variable, I am sure one will come to me
+
 		var selected_square;
 		var tintSquare;
 		var click_data = {src: null, dest: null, mSrc: null, mDest: null};
@@ -63,9 +65,9 @@
 		function setup() {
 			board_canvas = document.getElementById("board");
 			// disables default context menu on rightclick on board
-			board_canvas.oncontextmenu = function (e) {
-    			e.preventDefault();
-			};
+			board_canvas.oncontextmenu = function(events) {
+    			events.preventDefault();
+    		};
 			board_context = board_canvas.getContext("2d");
 
 			drawBoard();
@@ -77,31 +79,36 @@
 				click_data.mSrc = getMousePos(board_canvas,events);
 				var s = getSquareFromMousePos(click_data.mSrc);
 				console.log(s);
-				
-				if (selected_square != null) {
-					if (s.x == selected_square.x && s.y == selected_square.y) {
-						// console.log("same sq");
-						selected_square = null;
+
+				if (events.button === 0 /*left*/) {
+					console.log("left click");
+					if (selected_square != null) {
+						if (s.x == selected_square.x && s.y == selected_square.y) {
+							console.log("same sq");
+							selected_square = null;
+						} else {
+							console.log("make move second click");
+							game.make_move(new Move(selected_square,s,game.get_piece(selected_square)));
+						}
 					} else {
-						console.log("make move second click");
-						game.make_move(new Move(selected_square,s,game.get_piece(selected_square)));
+						if (game.get_piece(s) != null && game.get_piece(s).color == game.get_turn()) {
+							console.log("setting selected_square to "+s.x+","+s.y);
+							selected_square = s;
+						} else {
+							selected_square = null;
+						}
 					}
-				} else {
-					if (game.get_piece(s) != null && game.get_piece(s).color == game.get_turn()) {
-						console.log("setting selected_square to "+s.x+","+s.y);
-						selected_square = s;
-					} else {
-						selected_square = null;
-					}
+				} else if (events.button === 2 /*right*/) {
+					console.log("right click");
+					strategic_draws[strategic_draws.length] = {src:getSquareFromMousePos(getMousePos(board_canvas,events)),dest:null};
+    				console.log(strategic_draws);
+    				console.log("add an arrow originating from "+strategic_draws[strategic_draws.length].src.x+","+strategic_draws[strategic_draws.length].src.y);
 				}
-
-
 
 				mousedown = true;
 				drawBoard();
 			});
 			board_canvas.addEventListener('mouseup',function(events){
-
 
 				if (selected_square != null) {
 					click_data.mDest = getMousePos(board_canvas,events);
@@ -115,9 +122,10 @@
 						game.print(true);
 						selected_square = null;
 					}
+				} else {
+					console.log("add an arrow originating from "+strategic_draws[strategic_draws.length].src.x+","+strategic_draws[strategic_draws.length].src.y);
+					//add an arrow
 				}
-
-
 				mousedown = false;
 				drawBoard();
 
