@@ -74,11 +74,33 @@
 			
 			board_canvas.addEventListener('mousedown',function(events){
 				
+				// collect src sq from events
+				click_data.mSrc = getMousePos(board_canvas,events);
+				var s = getSquareFromMousePos(click_data.mSrc);
+				console.log("src sq = "+s.x+","+s.y);
+
+				if (events.button === 0 /*left mousebutton pressed*/) {
+					selected_square = s;
+				} else if (events.button === 2 /*right mousebutton pressed*/) {
+					// add mousedown src and null dest object to the end of the strategic_draws array
+					strategic_draws[strategic_draws.length] = {src:s,dest:null};
+				}
 
 			});
 			board_canvas.addEventListener('mouseup',function(events){
 
-				
+				// collect dest sq from events
+				click_data.mDest = getMousePos(board_canvas,events);
+				var d = getSquareFromMousePos(click_data.mDest);
+				console.log("dest sq = "+d.x+","+d.y);
+
+				// if strategic_draws latest entry has a src, but a null dest
+				if (strategic_draws.length > 0 && ) {
+					// set the dest to d bc that means the right mouse button was down
+
+				} else /*if selected_square is not null*/ if (selected_square != null) {
+
+				}
 
 			});
 			board_canvas.addEventListener('mouseenter',function(events){
