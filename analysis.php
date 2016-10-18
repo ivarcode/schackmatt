@@ -96,12 +96,30 @@
 
 				// if strategic_draws latest entry has a src, but a null dest
 				if (strategic_draws.length > 0 && strategic_draws[strategic_draws.length-1].src != null && strategic_draws[strategic_draws.length-1].dest == null) {
-					// set the dest to d bc that means the right mouse button was down
-					strategic_draws[strategic_draws.length-1].dest = d;
-					// console.log("set dest of last enty in strategic_draws to "+d.x+","+d.y);
-					// console.log(strategic_draws[strategic_draws.length-1]);
+					var does_not_exist_already = true;
+					var index_of_existing_element = null;
+					// check to see if that draw already exists
+					for (var i = 0; i < strategic_draws.length; i++) {
+						if (i == strategic_draws.length-1) {
+							if (does_not_exist_already) {
+								// set the dest to d bc that means the right mouse button was down
+								strategic_draws[strategic_draws.length-1].dest = d;
+								break;
+							} else {
+								// console.log("splicing @ "+i+" and end");
+								strategic_draws.splice(strategic_draws.length-1,1);
+								strategic_draws.splice(index_of_existing_element,1);
+								// console.log(strategic_draws);
+								i--;
+								break;
+							}
+						} else if (strategic_draws[i].src.x == strategic_draws[strategic_draws.length-1].src.x && strategic_draws[i].src.y == strategic_draws[strategic_draws.length-1].src.y && strategic_draws[i].dest.x == d.x && strategic_draws[i].dest.y == d.y) {
+							does_not_exist_already = false;
+							index_of_existing_element = i;
+						}
+					}
 				} else /*if selected_square is not null*/ if (selected_square != null) {
-					
+
 				}
 
 			});
@@ -160,7 +178,7 @@
 			/*function that loops through the board and draws the pieces, as well as highlights proper squares and handles dragged pieces*/
 			var board = board_from_FEN(game.get_FEN());
 
-			board_context.globalALpha = 1;
+			board_context.globalAlpha = 1;
 			board_context.drawImage(board_img,0,0);
 			if (mouse_over_board) {
 				tintSq(tintSquare.x,tintSquare.y);
@@ -189,6 +207,18 @@
 			}
 			if (selected_square != null && mousedown) {
 				drawPiece(current_mousePos.x-40,current_mousePos.y-40,game.get_piece(selected_square));
+			}
+			// draw strategic_draws
+			// console.log("number of strategic_draws = "+strategic_draws.length);
+			board_context.globalAlpha = 0.8;
+			board_context.fillStyle = "green";
+			for (var i = 0; i < strategic_draws.length; i++) {
+				if (strategic_draws[i].dest != null && strategic_draws[i].src.x == strategic_draws[i].dest.x && strategic_draws[i].src.y == strategic_draws[i].dest.y) {
+					// same sq, so draw a box type select to "highlight individual sq"
+					var y = 7-strategic_draws[i].src.x;
+					var x = strategic_draws[i].src.y;
+					board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
+				}
 			}
 		}
 
