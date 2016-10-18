@@ -81,6 +81,8 @@
 
 				if (events.button === 0 /*left mousebutton pressed*/) {
 					selected_square = s;
+					// clear strategic_draws array
+					strategic_draws = [];
 				} else if (events.button === 2 /*right mousebutton pressed*/) {
 					// add mousedown src and null dest object to the end of the strategic_draws array
 					strategic_draws[strategic_draws.length] = {src:s,dest:null};
@@ -210,14 +212,22 @@
 			}
 			// draw strategic_draws
 			// console.log("number of strategic_draws = "+strategic_draws.length);
-			board_context.globalAlpha = 0.8;
-			board_context.fillStyle = "green";
+			board_context.globalAlpha = 0.6;
+			board_context.fillStyle = "#14B21D";
 			for (var i = 0; i < strategic_draws.length; i++) {
+				// if src and dest of the index are the same
 				if (strategic_draws[i].dest != null && strategic_draws[i].src.x == strategic_draws[i].dest.x && strategic_draws[i].src.y == strategic_draws[i].dest.y) {
-					// same sq, so draw a box type select to "highlight individual sq"
+					// draw a box type select to "highlight individual sq"
 					var y = 7-strategic_draws[i].src.x;
 					var x = strategic_draws[i].src.y;
-					board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
+					board_context.fillRect((x*SQ_DIM)+5,(y*SQ_DIM)+5,5,30);
+					board_context.fillRect((x*SQ_DIM)+10,(y*SQ_DIM)+5,25,5);
+					board_context.fillRect((x*SQ_DIM)+45,(y*SQ_DIM)+5,30,5);
+					board_context.fillRect((x*SQ_DIM)+70,(y*SQ_DIM)+10,5,25);
+					board_context.fillRect((x*SQ_DIM)+5,(y*SQ_DIM)+45,5,30);
+					board_context.fillRect((x*SQ_DIM)+10,(y*SQ_DIM)+70,25,5);
+					board_context.fillRect((x*SQ_DIM)+45,(y*SQ_DIM)+70,30,5);
+					board_context.fillRect((x*SQ_DIM)+70,(y*SQ_DIM)+45,5,25);
 				}
 			}
 		}
