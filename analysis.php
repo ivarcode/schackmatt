@@ -77,7 +77,7 @@
 				// collect src sq from events
 				click_data.mSrc = getMousePos(board_canvas,events);
 				var s = getSquareFromMousePos(click_data.mSrc);
-				console.log("src sq = "+s.x+","+s.y);
+				// console.log("src sq = "+s.x+","+s.y);
 
 				if (events.button === 0 /*left mousebutton pressed*/) {
 					selected_square = s;
@@ -92,14 +92,16 @@
 				// collect dest sq from events
 				click_data.mDest = getMousePos(board_canvas,events);
 				var d = getSquareFromMousePos(click_data.mDest);
-				console.log("dest sq = "+d.x+","+d.y);
+				// console.log("dest sq = "+d.x+","+d.y);
 
 				// if strategic_draws latest entry has a src, but a null dest
-				if (strategic_draws.length > 0 && ) {
+				if (strategic_draws.length > 0 && strategic_draws[strategic_draws.length-1].src != null && strategic_draws[strategic_draws.length-1].dest == null) {
 					// set the dest to d bc that means the right mouse button was down
-
+					strategic_draws[strategic_draws.length-1].dest = d;
+					// console.log("set dest of last enty in strategic_draws to "+d.x+","+d.y);
+					// console.log(strategic_draws[strategic_draws.length-1]);
 				} else /*if selected_square is not null*/ if (selected_square != null) {
-
+					
 				}
 
 			});
