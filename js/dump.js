@@ -708,3 +708,79 @@ this.load_data_from_FEN = function() {
 	this.move_count = this.get_FEN().charAt(i);
 };
 this.load_data_from_FEN();
+
+
+
+
+
+
+
+
+
+
+				/*mousedown*/
+
+				click_data.mSrc = getMousePos(board_canvas,events);
+				var s = getSquareFromMousePos(click_data.mSrc);
+				console.log(s);
+
+				if (events.button === 0 /*left*/) {
+					console.log("left click");
+					if (selected_square != null) {
+						if (s.x == selected_square.x && s.y == selected_square.y) {
+							console.log("same sq");
+							selected_square = null;
+						} else {
+							console.log("make move second click");
+							game.make_move(new Move(selected_square,s,game.get_piece(selected_square)));
+						}
+					} else {
+						if (game.get_piece(s) != null && game.get_piece(s).color == game.get_turn()) {
+							console.log("setting selected_square to "+s.x+","+s.y);
+							selected_square = s;
+						} else {
+							selected_square = null;
+						}
+					}
+				} else if (events.button === 2 /*right*/) {
+					console.log("right click");
+					strategic_draws[strategic_draws.length] = {src:getSquareFromMousePos(getMousePos(board_canvas,events)),dest:null};
+    				console.log(strategic_draws);
+    				console.log("add an arrow originating from "+strategic_draws[strategic_draws.length].src.x+","+strategic_draws[strategic_draws.length].src.y);
+				}
+
+				mousedown = true;
+				drawBoard();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				/*mouseup*/
+				if (selected_square != null) {
+					click_data.mDest = getMousePos(board_canvas,events);
+					var d = getSquareFromMousePos(click_data.mDest);
+					if (selected_square.x == d.x && selected_square.y == d.y) {
+						selected_square = null;
+						console.log("same sq - deselect");
+					} else {
+						var move = new Move({x:selected_square.x,y:selected_square.y},{x:d.x,y:d.y},game.get_piece(selected_square));
+						game.make_move(move,false);
+						game.print(true);
+						selected_square = null;
+					}
+				} else {
+					console.log("add an arrow originating from "+strategic_draws[strategic_draws.length].src.x+","+strategic_draws[strategic_draws.length].src.y);
+					//add an arrow
+				}
+				mousedown = false;
+				drawBoard();
