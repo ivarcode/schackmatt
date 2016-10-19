@@ -19,7 +19,7 @@
 	
 	<script type="text/javascript">
 
-		var IMAGES = {wPawn:new Image(),wRook:new Image(),wKnight:new Image(),wBishop:new Image(),wQueen:new Image(),wKing:new Image(),bPawn:new Image(),bRook:new Image(),bKnight:new Image(),bBishop:new Image(),bQueen:new Image(),bKing:new Image()};
+		var IMAGES = {wPawn:new Image(),wRook:new Image(),wKnight:new Image(),wBishop:new Image(),wQueen:new Image(),wKing:new Image(),bPawn:new Image(),bRook:new Image(),bKnight:new Image(),bBishop:new Image(),bQueen:new Image(),bKing:new Image(),arrow:new Image()};
 
 		IMAGES.wPawn.src = "./img/pieces/w_Pawn.png";
 		IMAGES.wRook.src = "./img/pieces/w_Rook.png";
@@ -33,6 +33,7 @@
 		IMAGES.bBishop.src = "./img/pieces/b_Bishop.png";
 		IMAGES.bQueen.src = "./img/pieces/b_Queen.png";
 		IMAGES.bKing.src = "./img/pieces/b_King.png";
+		IMAGES.arrow.src = "./img/arrow.png";
 
 		var board_canvas;
 		var board_context;
@@ -181,6 +182,7 @@
 			var board = board_from_FEN(game.get_FEN());
 
 			board_context.globalAlpha = 1;
+			board_context.restore();
 			board_context.drawImage(board_img,0,0);
 			if (mouse_over_board) {
 				tintSq(tintSquare.x,tintSquare.y);
@@ -228,6 +230,17 @@
 					board_context.fillRect((x*SQ_DIM)+10,(y*SQ_DIM)+70,25,5);
 					board_context.fillRect((x*SQ_DIM)+45,(y*SQ_DIM)+70,30,5);
 					board_context.fillRect((x*SQ_DIM)+70,(y*SQ_DIM)+45,5,25);
+				} else if (strategic_draws[i].dest != null) {
+					// draw an arrow from src to dest
+					var src = strategic_draws[i].src;
+					var dest = strategic_draws[i].dest;
+					board_context.translate(src.y*SQ_DIM,(7-src.x)*SQ_DIM);
+					board_context.rotate(0.1);
+					board_context.drawImage(IMAGES.arrow,0,0/*,SQ_DIM,SQ_DIM*2*/);
+					board_context.rotate(-0.1);
+					board_context.translate(-src.y*SQ_DIM,-(7-src.x)*SQ_DIM);
+				} else {
+					// strategic_draws[i] does not contain enough information to be drawn, so skip
 				}
 			}
 		}
