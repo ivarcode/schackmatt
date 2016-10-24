@@ -19,7 +19,7 @@
 	
 	<script type="text/javascript">
 
-		var IMAGES = {wPawn:new Image(),wRook:new Image(),wKnight:new Image(),wBishop:new Image(),wQueen:new Image(),wKing:new Image(),bPawn:new Image(),bRook:new Image(),bKnight:new Image(),bBishop:new Image(),bQueen:new Image(),bKing:new Image()};
+		var IMAGES = {wPawn:new Image(),wRook:new Image(),wKnight:new Image(),wBishop:new Image(),wQueen:new Image(),wKing:new Image(),bPawn:new Image(),bRook:new Image(),bKnight:new Image(),bBishop:new Image(),bQueen:new Image(),bKing:new Image(),arrow:new Image()};
 
 		IMAGES.wPawn.src = "./img/pieces/w_Pawn.png";
 		IMAGES.wRook.src = "./img/pieces/w_Rook.png";
@@ -33,10 +33,13 @@
 		IMAGES.bBishop.src = "./img/pieces/b_Bishop.png";
 		IMAGES.bQueen.src = "./img/pieces/b_Queen.png";
 		IMAGES.bKing.src = "./img/pieces/b_King.png";
+		IMAGES.arrow.src = "./img/arrow.png";
 
 		var board_canvas;
 		var board_context;
 		var SQ_DIM = 80;
+
+		var strategic_draws = []; // for lack of a better name for this variable, I am sure one will come to me
 
 		var selected_square;
 		var tintSquare;
@@ -53,74 +56,97 @@
 		// var game = new Game("player 1","player 2","TEST","8/8/p7/8/8/2Q5/3RkPK1/8 b - - 3 59",[]);
 
 		// bot function calculations here
-		calculate_tree(game);
+		// calculate_tree(game);
 
 
 
-		// game.print(true);
+		game.print(true);
 
 
 		function setup() {
 			board_canvas = document.getElementById("board");
 			// disables default context menu on rightclick on board
-			board_canvas.oncontextmenu = function (e) {
-    			e.preventDefault();
-			};
+			board_canvas.oncontextmenu = function(events) {
+    			events.preventDefault();
+    		};
 			board_context = board_canvas.getContext("2d");
 
 			drawBoard();
 			
 			board_canvas.addEventListener('mousedown',function(events){
 				
-
-				/*mousedown*/
-
-
-
+				// collect src sq from events
 				click_data.mSrc = getMousePos(board_canvas,events);
 				var s = getSquareFromMousePos(click_data.mSrc);
-				console.log(s);
-				
-				if (selected_square != null) {
-					if (s.x == selected_square.x && s.y == selected_square.y) {
-						selected_square = null;
-					} else {
-						console.log("make move second click");
-						game.make_move(new Move(selected_square,s,game.get_piece(selected_square)));
-					}
-				} else {
-					if (game.get_piece(s) != null && game.get_piece(s).color == game.turn) {
-						console.log("setting selected_square to "+s.x+","+s.y);
-						selected_square = s;
-					} else {
-						selected_square = null;
-					}
+				console.log("src sq = "+s.x+","+s.y);
+
+				if (events.button === 0 /*left mousebutton pressed*/) {
+					selected_square = s;
+					// clear strategic_draws array
+					strategic_draws = [];
+				} else if (events.button === 2 /*right mousebutton pressed*/) {
+					// add mousedown src and null dest object to the end of the strategic_draws array
+					strategic_draws[strategic_draws.length] = {src:s,dest:null};
 				}
 
-
-
 				mousedown = true;
-				drawBoard();
+
 			});
 			board_canvas.addEventListener('mouseup',function(events){
 
+				// collect dest sq from events
+				click_data.mDest = getMousePos(board_canvas,events);
+				var d = getSquareFromMousePos(click_data.mDest);
+				console.log("dest sq = "+d.x+","+d.y);
 
-				if (selected_square != null) {
-					click_data.mDest = getMousePos(board_canvas,events);
-					var d = getSquareFromMousePos(click_data.mDest);
-					if (selected_square.x == d.x && selected_square.y == d.y) {
-						selected_square = null;
-					} else {
-						var move = new Move({x:selected_square.x,y:selected_square.y},{x:d.x,y:d.y},game.get_piece(selected_square));
-						game.make_move(move,false);
-						game.print(true);
-						selected_square = null;
+				// if strategic_draws latest entry has a src, but a null dest
+				if (strategic_draws.length > 0 && strategic_draws[strategic_draws.length-1].src != null && strategic_draws[strategic_draws.length-1].dest == null) {
+					var does_not_exist_already = true;
+					var index_of_existing_element = null;
+					// check to see if that draw already exists
+					for (var i = 0; i < strategic_draws.length; i++) {
+						if (i == strategic_draws.length-1) {
+							if (does_not_exist_already) {
+								// set the dest to d bc that means the right mouse button was down
+								strategic_draws[strategic_draws.length-1].dest = d;
+								break;
+							} else {
+								// console.log("splicing @ "+i+" and end");
+								strategic_draws.splice(strategic_draws.length-1,1);
+								strategic_draws.splice(index_of_existing_element,1);
+								// console.log(strategic_draws);
+								i--;
+								break;
+							}
+						} else if (strategic_draws[i].src.x == strategic_draws[strategic_draws.length-1].src.x && strategic_draws[i].src.y == strategic_draws[strategic_draws.length-1].src.y && strategic_draws[i].dest.x == d.x && strategic_draws[i].dest.y == d.y) {
+							does_not_exist_already = false;
+							index_of_existing_element = i;
+						}
+					}
+				} else /*if selected_square is not null*/ if (selected_square != null) {
+					var move_data = {src:selected_square,dest:d};
+					// console.log(move_data);
+					var current_board = board_from_FEN(game.get_FEN());
+					print_board(current_board);
+					// check move legality
+					var legal_moves = get_legal_moves(game.get_FEN());
+					console.log(legal_moves);
+					var move_is_legal = false;
+					var move_index = null;
+					for (var n = 0; n < legal_moves.length; n++) {
+						if (move_data.src.x == legal_moves[n].src.x && move_data.src.y == legal_moves[n].src.y && move_data.dest.x == legal_moves[n].dest.x && move_data.dest.y == legal_moves[n].dest.y) {
+							console.log("move is legal");
+							move_is_legal = true;
+							move_index = n;
+						}
+					}
+					// make move if it is legal
+					if (move_is_legal) {
+						game.set_FEN(legal_moves[move_index].position);
 					}
 				}
 
-
 				mousedown = false;
-				drawBoard();
 
 			});
 			board_canvas.addEventListener('mouseenter',function(events){
@@ -128,7 +154,7 @@
 			});
 			board_canvas.addEventListener('mouseleave',function(events){
 				mouse_over_board = false;
-				for (var i = 0; i < 10; i++) { drawBoard(); /*looping drawBoard() to clear all tinting*/}
+				drawBoard();
 			});
 			board_canvas.addEventListener('mousemove',function(events){
 				if (mouse_over_board) {
@@ -176,7 +202,10 @@
 
 		function drawBoard() {
 			/*function that loops through the board and draws the pieces, as well as highlights proper squares and handles dragged pieces*/
-			board_context.globalALpha = 1;
+			var board = board_from_FEN(game.get_FEN());
+
+			board_context.globalAlpha = 1;
+			board_context.restore();
 			board_context.drawImage(board_img,0,0);
 			if (mouse_over_board) {
 				tintSq(tintSquare.x,tintSquare.y);
@@ -189,22 +218,54 @@
 							//dont draw, draw later
 						} else {
 							try {
-								drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,game.board[j][i]);
+								drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,board[j][i]);
 							} catch(e) {
 								console.log("ERR :: "+e.message)
 							}
 						}
 					} else {
 						try {
-							drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,game.board[j][i]);
+							drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,board[j][i]);
 						} catch(e) {
-							// console.log("ERR :: "+e.message)
+							console.log("ERR :: "+e.message)
 						}
 					}
 				}
 			}
 			if (selected_square != null && mousedown) {
+				// console.log("drawing piece on mouse");
 				drawPiece(current_mousePos.x-40,current_mousePos.y-40,game.get_piece(selected_square));
+			}
+			// draw strategic_draws
+			// console.log("number of strategic_draws = "+strategic_draws.length);
+			board_context.globalAlpha = 0.6;
+			board_context.fillStyle = "#14B21D";
+			for (var i = 0; i < strategic_draws.length; i++) {
+				// if src and dest of the index are the same
+				if (strategic_draws[i].dest != null && strategic_draws[i].src.x == strategic_draws[i].dest.x && strategic_draws[i].src.y == strategic_draws[i].dest.y) {
+					// draw a box type select to "highlight individual sq"
+					var y = 7-strategic_draws[i].src.x;
+					var x = strategic_draws[i].src.y;
+					board_context.fillRect((x*SQ_DIM)+5,(y*SQ_DIM)+5,5,30);
+					board_context.fillRect((x*SQ_DIM)+10,(y*SQ_DIM)+5,25,5);
+					board_context.fillRect((x*SQ_DIM)+45,(y*SQ_DIM)+5,30,5);
+					board_context.fillRect((x*SQ_DIM)+70,(y*SQ_DIM)+10,5,25);
+					board_context.fillRect((x*SQ_DIM)+5,(y*SQ_DIM)+45,5,30);
+					board_context.fillRect((x*SQ_DIM)+10,(y*SQ_DIM)+70,25,5);
+					board_context.fillRect((x*SQ_DIM)+45,(y*SQ_DIM)+70,30,5);
+					board_context.fillRect((x*SQ_DIM)+70,(y*SQ_DIM)+45,5,25);
+				} else if (strategic_draws[i].dest != null) {
+					// draw an arrow from src to dest
+					// var src = strategic_draws[i].src;
+					// var dest = strategic_draws[i].dest;
+					// board_context.translate(src.y*SQ_DIM,(7-src.x)*SQ_DIM);
+					// board_context.rotate(Math.PI);
+					// board_context.drawImage(IMAGES.arrow,0,0/*,width,height*/);
+					// board_context.rotate(-Math.PI);
+					// board_context.translate(-src.y*SQ_DIM,-(7-src.x)*SQ_DIM);
+				} else {
+					// strategic_draws[i] does not contain enough information to be drawn, so skip
+				}
 			}
 		}
 
@@ -237,7 +298,7 @@
 				board_context.drawImage(IMAGES.bKing,x,y);
 			} else {
 				//boolean to decide whether coordinate drawing is turned on
-				var draw_coordinates = true;
+				var draw_coordinates = false;
 				
 				if (draw_coordinates) {
 					//draw coordinate
@@ -287,7 +348,15 @@
 </head>
 <body>
 
+	<div id="nav">
+		<p>v0.1</p>
+	</div>
+
+	<center><h1>schackmatt.net</h1></center>
+	<center><h2>analysis board</h2></center>
+
 	<section id="cover" name="cover">
+
 		<div id="game">
 			
 			<canvas id="board" width="640" height="640">canvas</canvas>
@@ -302,6 +371,11 @@
 			<h4 id="FEN"></h4>
 		</div>
 	</section>
+
+	<div id="controls">
+		<p>Controls:<br>drag &amp; drop piece movement<br>right-click for drawing (currently works on individual squares only</p>
+		<p><a href="https://github.com/ivarcode/schackmatt">Source Code</a> - WORK IN PROGRESS<br>Please contact <i>camden.i.wagner@ivarcode.net</i> with suggestions or feedback of any kind.</p>
+	</div>
 
 </body>
 </html>

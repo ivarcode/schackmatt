@@ -3,19 +3,21 @@
 	Camden I. Wagner
 	5/11/2016
 */
-html,
+
 body {
-	background: #000000;
-	height: 100%;
+	background:url('img/BAckGrey.png') center no-repeat;
+	background-size: cover;
+    font-family: "Lucida Console", Monaco, monospace;
+    color: white;
+    height: 100%;
 	margin: 0px;
 }
 
+#nav {
+	margin-left: 10px;
+}
+
 #cover {
-    background: #222 url('img/BAckGrey.png') center center no-repeat;
-    font-family: "Lucida Console", Monaco, monospace;
-    /*background-size: cover;*/
-    color: white;
-    height: 100%;
     text-align: center;
     display: flex;
     align-items: center;
@@ -33,6 +35,13 @@ body {
 	background-color: #939393;
 }*/
 
+#controls {
+	margin-left: 10px;
+}
+#controls a {
+	color: cyan;
+}
+
 #FEN {
-	margin-top: 700px;
+	/*margin-top: 700px;*/
 }
