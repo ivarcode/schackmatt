@@ -78,7 +78,7 @@
 				// collect src sq from events
 				click_data.mSrc = getMousePos(board_canvas,events);
 				var s = getSquareFromMousePos(click_data.mSrc);
-				// console.log("src sq = "+s.x+","+s.y);
+				console.log("src sq = "+s.x+","+s.y);
 
 				if (events.button === 0 /*left mousebutton pressed*/) {
 					selected_square = s;
@@ -89,13 +89,15 @@
 					strategic_draws[strategic_draws.length] = {src:s,dest:null};
 				}
 
+				mousedown = true;
+
 			});
 			board_canvas.addEventListener('mouseup',function(events){
 
 				// collect dest sq from events
 				click_data.mDest = getMousePos(board_canvas,events);
 				var d = getSquareFromMousePos(click_data.mDest);
-				// console.log("dest sq = "+d.x+","+d.y);
+				console.log("dest sq = "+d.x+","+d.y);
 
 				// if strategic_draws latest entry has a src, but a null dest
 				if (strategic_draws.length > 0 && strategic_draws[strategic_draws.length-1].src != null && strategic_draws[strategic_draws.length-1].dest == null) {
@@ -122,8 +124,12 @@
 						}
 					}
 				} else /*if selected_square is not null*/ if (selected_square != null) {
-
+					var move_data = {src:selected_square,dest:d};
+					// console.log(move_data);
+					
 				}
+
+				mousedown = false;
 
 			});
 			board_canvas.addEventListener('mouseenter',function(events){
@@ -210,6 +216,7 @@
 				}
 			}
 			if (selected_square != null && mousedown) {
+				// console.log("drawing piece on mouse");
 				drawPiece(current_mousePos.x-40,current_mousePos.y-40,game.get_piece(selected_square));
 			}
 			// draw strategic_draws
@@ -274,7 +281,7 @@
 				board_context.drawImage(IMAGES.bKing,x,y);
 			} else {
 				//boolean to decide whether coordinate drawing is turned on
-				var draw_coordinates = true;
+				var draw_coordinates = false;
 				
 				if (draw_coordinates) {
 					//draw coordinate
