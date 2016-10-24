@@ -33,207 +33,6 @@ Game.prototype.get_FEN = function() {
 	/*returns the FEN string (position) of the Game*/
 	return this.fen;
 };
-Game.prototype.get_legal_moves = function() {
-	/*returns an array of legal moves that are the result of the position in Game*/
-	var moves = [];
-	var board = board_from_FEN(this.get_FEN());
-	// print_board(board);
-	// loop through board to find all pieces of the same color as Game.get_turn
-	for (var i = 0; i < 8; i++) {
-		for (var j = 0; j < 8; j++) {
-			try {
-				var piece = board[i][j];
-				if (piece.color == this.get_turn()) {
-					// console.log("checking moves for piece \""+piece.color+" "+piece.type+"\" at "+i+","+j);
-					var list_of_sqs = get_destinations_after_moves_from_sq(board,{x:i,y:j});
-					// console.log(list_of_sqs);
-					
-
-
-					for (var n = 0; n < list_of_sqs.length; n++) {
-						var new_board = copy_board(board);
-						// print_board(new_board);
-						// castling exception to position change
-						if (piece.type == "KING") {
-							// window.alert("piece.type == king");
-							var castling_data = get_castling_data(this.get_FEN());
-							// window.alert("got castling_data");
-							if (list_of_sqs[n].y - j == 2) {
-								// kingside castle
-								// console.log("kingside castle");
-								if ((piece.color == "WHITE" && castling_data[0]) || (piece.color == "BLACK" && castling_data[2])) {
-									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
-									new_board[i][j] = null;
-									new_board[i][j+1] = new_board[i][7];
-									new_board[i][7] = null;
-									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-									moves[moves.length] = new_move;
-									// new_move.print();
-								}
-							} else if (j - list_of_sqs[n].y == 2) {
-								// queenside castle
-								// console.log("queenside castle");
-								if ((piece.color == "WHITE" && castling_data[1]) || (piece.color == "BLACK" && castling_data[3])) {
-									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
-									new_board[i][j] = null;
-									new_board[i][j-1] = new_board[i][0];
-									new_board[i][0] = null;
-									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-									moves[moves.length] = new_move;
-									// new_move.print();
-								}
-							} else {
-								// normal king move
-								new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
-								new_board[i][j] = null;
-								var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-								moves[moves.length] = new_move;
-								// new_move.print();
-							}
-						} else /*en passant && queening exception to position change*/ if (piece.type == "PAWN") {
-							if (piece.color == "WHITE") {
-								if (list_of_sqs[n].x == 5 && new_board[list_of_sqs[n].x][list_of_sqs[n].y] == null && list_of_sqs[n].y != j) {
-									// en passant
-									var fen_data = this.get_FEN();
-									var c = 0;
-									var inc = 0;
-									while (fen_data.charAt(c) != ' ' || inc < 2) {
-										if (fen_data.charAt(c) == ' ') {
-											inc++;
-										}
-										c++;
-									}
-									c++;
-									if (fen_data.charAt(c) == '-') {
-										// en passant not allowed
-									} else /*en passant is allowed*/ {
-										var tempsq = ""+fen_data.charAt(c)+fen_data.charAt(c+1)
-										// console.log(tempsq);
-										var en_passant_sq = sq_to_pair(tempsq);
-										// console.log("en passant is allowed at the following sq:");
-										// console.log(en_passant_sq);
-										if (en_passant_sq.x == list_of_sqs[n].x && en_passant_sq.y == list_of_sqs[n].y) {
-											// console.log("success");
-											new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
-											new_board[i][j] = null;
-											new_board[i][list_of_sqs[n].y] = null;
-											var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-											moves[moves.length] = new_move;
-											// new_move.print();
-										}
-									}
-								} else if (list_of_sqs[n].x == 7) {
-									// queening
-									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = wQueen;
-									new_board[i][j] = null;
-									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-									moves[moves.length] = new_move;
-									// new_move.print();
-									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = wBishop;
-									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-									moves[moves.length] = new_move;
-									// new_move.print();
-									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = wKnight;
-									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-									moves[moves.length] = new_move;
-									// new_move.print();
-									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = wRook;
-									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-									moves[moves.length] = new_move;
-									// new_move.print();
-								} else {
-									// normal pawn move
-									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
-									new_board[i][j] = null;
-									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-									moves[moves.length] = new_move;
-									// new_move.print();
-								}
-							} else /*piece.color == "BLACK"*/ {
-								if (list_of_sqs[n].x == 2 && new_board[list_of_sqs[n].x][list_of_sqs[n].y] == null && list_of_sqs[n].y != j) {
-									// en passant
-									var fen_data = this.get_FEN();
-									var c = 0;
-									var inc = 0;
-									while (fen_data.charAt(c) != ' ' || inc < 2) {
-										if (fen_data.charAt(c) == ' ') {
-											inc++;
-										}
-										c++;
-									}
-									c++;
-									if (fen_data.charAt(c) == '-') {
-										// en passant not allowed
-									} else /*en passant is allowed*/ {
-										var en_passant_sq = sq_to_pair(""+fen_data.charAt(c)+fen_data.charAt(c+1));
-										// console.log("en passant is allowed at the following sq:");
-										// console.log(en_passant_sq);
-										if (en_passant_sq.x == list_of_sqs[n].x && en_passant_sq.y == list_of_sqs[n].y) {
-											new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
-											new_board[i][j] = null;
-											new_board[i][list_of_sqs[n].y] = null;
-											var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-											moves[moves.length] = new_move;
-											// new_move.print();
-										}
-									}
-								} else if (list_of_sqs[n].x == 0) {
-									// queening
-									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = bQueen;
-									new_board[i][j] = null;
-									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-									moves[moves.length] = new_move;
-									// new_move.print();
-									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = bBishop;
-									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-									moves[moves.length] = new_move;
-									// new_move.print();
-									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = bKnight;
-									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-									moves[moves.length] = new_move;
-									// new_move.print();
-									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = bRook;
-									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-									moves[moves.length] = new_move;
-									// new_move.print();
-								} else {
-									// normal pawn move
-									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
-									new_board[i][j] = null;
-									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-									moves[moves.length] = new_move;
-									// new_move.print();
-								}
-							}
-						} else {
-							// all other cases - just move the piece from src to dest
-							new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
-							new_board[i][j] = null;
-							var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
-							moves[moves.length] = new_move;
-							// new_move.print();
-						}
-					}
-				}
-			} catch(e) {
-				// console.log(e.message);
-			}
-		}
-	}
-
-	for (var n = 0; n < moves.length; n++) {
-		// moves[n].print();
-		var king_loc = get_king_loc(board_from_FEN(moves[n].position),this.get_turn());
-		// console.log(king_loc);
-		if (sq_is_threatened_by(board_from_FEN(moves[n].position),king_loc,get_opp_color(this.get_turn()))) {
-			// console.log(this.get_turn()+" king is in check");
-			moves.splice(n,1);
-			n--;
-		}
-	}
-	// console.log(moves);
-	return moves;
-};
 Game.prototype.get_piece = function(sq) {
 	/*returns the piece at sq on Game.board*/
 	var board = board_from_FEN(this.get_FEN());
@@ -264,33 +63,33 @@ Game.prototype.print = function(print_position) {
 	console.log("\t" + this.p1 + " vs " + this.p2);
 	console.log("\tturn = \"" + this.get_turn()+"\"");
 	console.log("\tcurrent pos = \""+this.get_FEN()+"\"");
-	console.log("\t" + this.get_legal_moves().length + " moves");
+	console.log("\t" + get_legal_moves(this.get_FEN()).length + " moves");
 	var n = "";
-	if (game.castling[0]) {
-		n += "K";
-	}
-	if (game.castling[1]) {
-		n += "Q";
-	}
-	if (game.castling[2]) {
-		n += "k";
-	}
-	if (game.castling[3]) {
-		n += "q";
-	}
-	console.log("\tcastling availability :: "+n);
+	// if (game.castling[0]) {
+	// 	n += "K";
+	// }
+	// if (game.castling[1]) {
+	// 	n += "Q";
+	// }
+	// if (game.castling[2]) {
+	// 	n += "k";
+	// }
+	// if (game.castling[3]) {
+	// 	n += "q";
+	// }
+	// console.log("\tcastling availability :: "+n);
 	// if (this.is_check(game.turn)) {
 	// 	console.log("\t" + game.turn + " KING in check");
 	// } else {
 	// 	console.log("\t" + game.turn + " KING is safe");
 	// }
 	this.print_PGN();
-	if (game.enPassant_allowedAt != null) {
-		console.log("\tenPassant legal at " + game.enPassant_allowedAt.x + "," + game.enPassant_allowedAt.y);
-	} else {
-		console.log("\tenPassant not legal");
-	}
-	console.log("\tcurrent FEN = "+this.get_FEN());
+	// if (game.enPassant_allowedAt != null) {
+	// 	console.log("\tenPassant legal at " + game.enPassant_allowedAt.x + "," + game.enPassant_allowedAt.y);
+	// } else {
+	// 	console.log("\tenPassant not legal");
+	// }
+	// console.log("\tcurrent FEN = "+this.get_FEN());
 	if (print_position) {
 		this.print_Pos();
 	}
@@ -811,6 +610,218 @@ function get_king_loc(board,color) {
 		}
 	}
 	return null;
+}
+function get_legal_moves(fen) {
+	/*returns an array of legal moves that are the result of the position in fen*/
+	var moves = [];
+	var board = board_from_FEN(fen);
+	// print_board(board);
+	var n = 0;
+	while (fen.charAt(n) != ' ') {
+		n++;
+	}
+	n++;
+	var turn = null;
+	if (fen.charAt(n) == 'w') {
+		turn = "WHITE";
+	} else {
+		turn = "BLACK";
+	}
+	// loop through board to find all pieces of the same color as turn
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			try {
+				var piece = board[i][j];
+				if (piece.color == turn) {
+					// console.log("checking moves for piece \""+piece.color+" "+piece.type+"\" at "+i+","+j);
+					var list_of_sqs = get_destinations_after_moves_from_sq(board,{x:i,y:j});
+					// console.log(list_of_sqs);
+					
+
+
+					for (var n = 0; n < list_of_sqs.length; n++) {
+						var new_board = copy_board(board);
+						// print_board(new_board);
+						// castling exception to position change
+						if (piece.type == "KING") {
+							// window.alert("piece.type == king");
+							var castling_data = get_castling_data(fen);
+							// window.alert("got castling_data");
+							if (list_of_sqs[n].y - j == 2) {
+								// kingside castle
+								// console.log("kingside castle");
+								if ((piece.color == "WHITE" && castling_data[0]) || (piece.color == "BLACK" && castling_data[2])) {
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+									new_board[i][j] = null;
+									new_board[i][j+1] = new_board[i][7];
+									new_board[i][7] = null;
+									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+								}
+							} else if (j - list_of_sqs[n].y == 2) {
+								// queenside castle
+								// console.log("queenside castle");
+								if ((piece.color == "WHITE" && castling_data[1]) || (piece.color == "BLACK" && castling_data[3])) {
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+									new_board[i][j] = null;
+									new_board[i][j-1] = new_board[i][0];
+									new_board[i][0] = null;
+									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+								}
+							} else {
+								// normal king move
+								new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+								new_board[i][j] = null;
+								var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+								moves[moves.length] = new_move;
+								// new_move.print();
+							}
+						} else /*en passant && queening exception to position change*/ if (piece.type == "PAWN") {
+							if (piece.color == "WHITE") {
+								if (list_of_sqs[n].x == 5 && new_board[list_of_sqs[n].x][list_of_sqs[n].y] == null && list_of_sqs[n].y != j) {
+									// en passant
+									var fen_data = fen;
+									var c = 0;
+									var inc = 0;
+									while (fen_data.charAt(c) != ' ' || inc < 2) {
+										if (fen_data.charAt(c) == ' ') {
+											inc++;
+										}
+										c++;
+									}
+									c++;
+									if (fen_data.charAt(c) == '-') {
+										// en passant not allowed
+									} else /*en passant is allowed*/ {
+										var tempsq = ""+fen_data.charAt(c)+fen_data.charAt(c+1)
+										// console.log(tempsq);
+										var en_passant_sq = sq_to_pair(tempsq);
+										// console.log("en passant is allowed at the following sq:");
+										// console.log(en_passant_sq);
+										if (en_passant_sq.x == list_of_sqs[n].x && en_passant_sq.y == list_of_sqs[n].y) {
+											// console.log("success");
+											new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+											new_board[i][j] = null;
+											new_board[i][list_of_sqs[n].y] = null;
+											var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+											moves[moves.length] = new_move;
+											// new_move.print();
+										}
+									}
+								} else if (list_of_sqs[n].x == 7) {
+									// queening
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = wQueen;
+									new_board[i][j] = null;
+									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = wBishop;
+									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = wKnight;
+									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = wRook;
+									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+								} else {
+									// normal pawn move
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+									new_board[i][j] = null;
+									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+								}
+							} else /*piece.color == "BLACK"*/ {
+								if (list_of_sqs[n].x == 2 && new_board[list_of_sqs[n].x][list_of_sqs[n].y] == null && list_of_sqs[n].y != j) {
+									// en passant
+									var fen_data = fen;
+									var c = 0;
+									var inc = 0;
+									while (fen_data.charAt(c) != ' ' || inc < 2) {
+										if (fen_data.charAt(c) == ' ') {
+											inc++;
+										}
+										c++;
+									}
+									c++;
+									if (fen_data.charAt(c) == '-') {
+										// en passant not allowed
+									} else /*en passant is allowed*/ {
+										var en_passant_sq = sq_to_pair(""+fen_data.charAt(c)+fen_data.charAt(c+1));
+										// console.log("en passant is allowed at the following sq:");
+										// console.log(en_passant_sq);
+										if (en_passant_sq.x == list_of_sqs[n].x && en_passant_sq.y == list_of_sqs[n].y) {
+											new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+											new_board[i][j] = null;
+											new_board[i][list_of_sqs[n].y] = null;
+											var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+											moves[moves.length] = new_move;
+											// new_move.print();
+										}
+									}
+								} else if (list_of_sqs[n].x == 0) {
+									// queening
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = bQueen;
+									new_board[i][j] = null;
+									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = bBishop;
+									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = bKnight;
+									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = bRook;
+									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+								} else {
+									// normal pawn move
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+									new_board[i][j] = null;
+									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+								}
+							}
+						} else {
+							// all other cases - just move the piece from src to dest
+							new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+							new_board[i][j] = null;
+							var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(fen,new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+							moves[moves.length] = new_move;
+							// new_move.print();
+						}
+					}
+				}
+			} catch(e) {
+				// console.log(e.message);
+			}
+		}
+	}
+
+	for (var n = 0; n < moves.length; n++) {
+		// moves[n].print();
+		var king_loc = get_king_loc(board_from_FEN(moves[n].position),turn);
+		// console.log(king_loc);
+		if (sq_is_threatened_by(board_from_FEN(moves[n].position),king_loc,get_opp_color(turn))) {
+			// console.log(turn+" king is in check");
+			moves.splice(n,1);
+			n--;
+		}
+	}
+	// console.log(moves);
+	return moves;
 }
 function get_opp_color(color) {
 	/*returns the opp color of color*/

@@ -60,7 +60,7 @@
 
 
 
-		// game.print(true);
+		game.print(true);
 
 
 		function setup() {
