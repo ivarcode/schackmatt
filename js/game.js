@@ -55,6 +55,11 @@ Game.prototype.get_turn = function() {
 	}
 	return "ERR: invalid color in FEN";
 };
+/*Game prototype setters*/
+Game.prototype.set_FEN = function(fen) {
+	/*sets the fen of game to the parameter fen*/
+	this.fen = fen;
+};
 
 /*Game prototype methods*/
 Game.prototype.print = function(print_position) {

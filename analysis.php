@@ -129,7 +129,21 @@
 					var current_board = board_from_FEN(game.get_FEN());
 					print_board(current_board);
 					// check move legality
-					
+					var legal_moves = get_legal_moves(game.get_FEN());
+					console.log(legal_moves);
+					var move_is_legal = false;
+					var move_index = null;
+					for (var n = 0; n < legal_moves.length; n++) {
+						if (move_data.src.x == legal_moves[n].src.x && move_data.src.y == legal_moves[n].src.y && move_data.dest.x == legal_moves[n].dest.x && move_data.dest.y == legal_moves[n].dest.y) {
+							console.log("move is legal");
+							move_is_legal = true;
+							move_index = n;
+						}
+					}
+					// make move if it is legal
+					if (move_is_legal) {
+						game.set_FEN(legal_moves[move_index].position);
+					}
 				}
 
 				mousedown = false;
