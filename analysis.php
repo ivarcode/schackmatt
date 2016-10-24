@@ -126,6 +126,9 @@
 				} else /*if selected_square is not null*/ if (selected_square != null) {
 					var move_data = {src:selected_square,dest:d};
 					// console.log(move_data);
+					var current_board = board_from_FEN(game.get_FEN());
+					print_board(current_board);
+					// check move legality
 					
 				}
 

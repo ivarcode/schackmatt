@@ -444,7 +444,7 @@ function board_from_FEN(fen) {
 	return board;
 }
 function board_to_FEN(old_fen,board,src,dest,piece) {
-	/*returns an FEN from the current FEN to the following board position*/
+	/*returns an FEN from the current FEN to the following board position (src,dest,piece define the last move)*/
 	// console.log(old_fen);
 	var old_board = board_from_FEN(old_fen);
 	// console.log("old board");
