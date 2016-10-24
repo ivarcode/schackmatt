@@ -232,13 +232,13 @@
 					board_context.fillRect((x*SQ_DIM)+70,(y*SQ_DIM)+45,5,25);
 				} else if (strategic_draws[i].dest != null) {
 					// draw an arrow from src to dest
-					var src = strategic_draws[i].src;
-					var dest = strategic_draws[i].dest;
-					board_context.translate(src.y*SQ_DIM,(7-src.x)*SQ_DIM);
-					board_context.rotate(Math.PI);
-					board_context.drawImage(IMAGES.arrow,0,0/*,width,height*/);
-					board_context.rotate(-Math.PI);
-					board_context.translate(-src.y*SQ_DIM,-(7-src.x)*SQ_DIM);
+					// var src = strategic_draws[i].src;
+					// var dest = strategic_draws[i].dest;
+					// board_context.translate(src.y*SQ_DIM,(7-src.x)*SQ_DIM);
+					// board_context.rotate(Math.PI);
+					// board_context.drawImage(IMAGES.arrow,0,0/*,width,height*/);
+					// board_context.rotate(-Math.PI);
+					// board_context.translate(-src.y*SQ_DIM,-(7-src.x)*SQ_DIM);
 				} else {
 					// strategic_draws[i] does not contain enough information to be drawn, so skip
 				}
