@@ -13,6 +13,10 @@ body {
 	margin: 0px;
 }
 
+#nav {
+	margin-left: 10px;
+}
+
 #cover {
     text-align: center;
     display: flex;
@@ -30,6 +34,13 @@ body {
 	height: 200px;
 	background-color: #939393;
 }*/
+
+#controls {
+	margin-left: 10px;
+}
+#controls a {
+	color: cyan;
+}
 
 #FEN {
 	/*margin-top: 700px;*/

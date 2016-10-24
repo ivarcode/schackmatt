@@ -348,7 +348,9 @@
 </head>
 <body>
 
-	<p>v0.1</p>
+	<div id="nav">
+		<p>v0.1</p>
+	</div>
 
 	<center><h1>schackmatt.net</h1></center>
 	<center><h2>analysis board</h2></center>
@@ -370,7 +372,10 @@
 		</div>
 	</section>
 
-	
+	<div id="controls">
+		<p>Controls:<br>drag &amp; drop piece movement<br>right-click for drawing (currently works on individual squares only</p>
+		<p><a href="https://github.com/ivarcode/schackmatt">Source Code</a> - WORK IN PROGRESS<br>Please contact <i>camden.i.wagner@ivarcode.net</i> with suggestions or feedback of any kind.</p>
+	</div>
 
 </body>
 </html>
