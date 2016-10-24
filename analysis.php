@@ -235,9 +235,9 @@
 					var src = strategic_draws[i].src;
 					var dest = strategic_draws[i].dest;
 					board_context.translate(src.y*SQ_DIM,(7-src.x)*SQ_DIM);
-					board_context.rotate(0.1);
-					board_context.drawImage(IMAGES.arrow,0,0/*,SQ_DIM,SQ_DIM*2*/);
-					board_context.rotate(-0.1);
+					board_context.rotate(Math.PI);
+					board_context.drawImage(IMAGES.arrow,0,0/*,width,height*/);
+					board_context.rotate(-Math.PI);
 					board_context.translate(-src.y*SQ_DIM,-(7-src.x)*SQ_DIM);
 				} else {
 					// strategic_draws[i] does not contain enough information to be drawn, so skip
