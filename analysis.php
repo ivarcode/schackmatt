@@ -348,7 +348,13 @@
 </head>
 <body>
 
+	<p>v0.1</p>
+
+	<center><h1>schackmatt.net</h1></center>
+	<center><h2>analysis board</h2></center>
+
 	<section id="cover" name="cover">
+
 		<div id="game">
 			
 			<canvas id="board" width="640" height="640">canvas</canvas>
@@ -363,6 +369,8 @@
 			<h4 id="FEN"></h4>
 		</div>
 	</section>
+
+	
 
 </body>
 </html>
