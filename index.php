@@ -17,8 +17,8 @@ index.php
 </head>
 
 <body style="text-align:center; margin:75px;">
-		<h1>THE COM214 WEB PAGE 1</h1>
-		<h3> All the content behind authentication goes here </h3>
+		<h1>landing page</h1>
+		<h3> temporary </h3>
 		<img src="newcycle3.png" width="300">
 		<h3> <a href="index2.php">GOTO page 2</a></h3>
 	  <?php
