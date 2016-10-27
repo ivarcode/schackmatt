@@ -19,7 +19,7 @@ body {
 
 #cover {
     text-align: center;
-    display: flex;
+    
     align-items: center;
 }
 
@@ -40,8 +40,4 @@ body {
 }
 #controls a {
 	color: cyan;
-}
-
-#FEN {
-	/*margin-top: 700px;*/
 }

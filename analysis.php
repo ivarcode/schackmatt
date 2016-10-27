@@ -72,6 +72,9 @@
 			board_context = board_canvas.getContext("2d");
 
 			drawBoard();
+
+			// setting HTML fen element
+			document.getElementById("FEN").innerHTML = game.get_FEN();
 			
 			board_canvas.addEventListener('mousedown',function(events){
 				
@@ -143,6 +146,7 @@
 					// make move if it is legal
 					if (move_is_legal) {
 						game.set_FEN(legal_moves[move_index].position);
+						document.getElementById("FEN").innerHTML = game.get_FEN();
 					}
 				}
 
@@ -357,23 +361,27 @@
 
 	<section id="cover" name="cover">
 
+		
+
 		<div id="game">
 			
 			<canvas id="board" width="640" height="640">canvas</canvas>
 
-			<!-- <div id="game_data">
+			<div id="game_data">
 				<h3 id="materialBalance">null</h3>
-			</div> -->
+			</div>
+
+			<div>
+				<h4 id="FEN">fen placeholder</h4>
+			</div>
 
 		</div>
 
-		<div>
-			<h4 id="FEN"></h4>
-		</div>
+		
 	</section>
 
 	<div id="controls">
-		<p>Controls:<br>drag &amp; drop piece movement<br>right-click for drawing (currently works on individual squares only</p>
+		<p>Controls:<br>drag &amp; drop piece movement<br>right-click for drawing (currently works on individual squares only)</p>
 		<p><a href="https://github.com/ivarcode/schackmatt">Source Code</a> - WORK IN PROGRESS<br>Please contact <i>camden.i.wagner@ivarcode.net</i> with suggestions or feedback of any kind.</p>
 	</div>
 
