@@ -260,13 +260,26 @@
 					board_context.fillRect((x*SQ_DIM)+70,(y*SQ_DIM)+45,5,25);
 				} else if (strategic_draws[i].dest != null) {
 					// draw an arrow from src to dest
-					// var src = strategic_draws[i].src;
-					// var dest = strategic_draws[i].dest;
-					// board_context.translate(src.y*SQ_DIM,(7-src.x)*SQ_DIM);
-					// board_context.rotate(Math.PI);
-					// board_context.drawImage(IMAGES.arrow,0,0/*,width,height*/);
-					// board_context.rotate(-Math.PI);
-					// board_context.translate(-src.y*SQ_DIM,-(7-src.x)*SQ_DIM);
+					var src = strategic_draws[i].src;
+					var dest = strategic_draws[i].dest;
+					var deltaX = dest.x - src.x;
+					var deltaY = dest.y - src.y;
+					var arrow_width = 80;
+					var arrow_height = (deltaX*80*deltaX*80)+(deltaY*80*deltaY*80);
+					arrow_height = Math.sqrt(arrow_height);
+					var rad = Math.atan2(deltaY,deltaX);
+					console.log(rad);
+					board_context.translate(src.y*SQ_DIM,(7-src.x)*SQ_DIM);
+					board_context.translate(deltaY*40,(7-deltaX)*40);
+					// board_context.translate(arrow_width/2,arrow_height/2);
+					// board_context.translate(40,40);
+					board_context.rotate(rad);
+					board_context.drawImage(IMAGES.arrow,0,0,arrow_width,arrow_height);
+					board_context.rotate(-rad);
+					board_context.translate(-src.y*SQ_DIM,-(7-src.x)*SQ_DIM);
+					board_context.translate(-(deltaY*40),-((7-deltaX)*40));
+					// board_context.translate(-(arrow_width/2),-(arrow_height/2));
+					// board_context.translate(-40,-40);
 				} else {
 					// strategic_draws[i] does not contain enough information to be drawn, so skip
 				}
