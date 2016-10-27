@@ -73,8 +73,8 @@
 
 			drawBoard();
 
-			// setting HTML fen element
-			document.getElementById("FEN").innerHTML = game.get_FEN();
+			// setting HTML elements
+			setHTMLElements();
 			
 			board_canvas.addEventListener('mousedown',function(events){
 				
@@ -146,7 +146,7 @@
 					// make move if it is legal
 					if (move_is_legal) {
 						game.set_FEN(legal_moves[move_index].position);
-						document.getElementById("FEN").innerHTML = game.get_FEN();
+						setHTMLElements();
 					}
 				}
 
@@ -344,6 +344,16 @@
 			board_context.fillStyle = "blue";
 			board_context.globalAlpha = 0.5;
 			board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
+		}
+
+		function setHTMLElements() {
+			/*sets the HTML elements associated with the game data*/
+			document.getElementById("FEN").innerHTML = game.get_FEN();
+			if (calculate_material_balance(game.get_FEN()) > 0) {
+				document.getElementById("materialBalance").innerHTML = "material balance = +"+calculate_material_balance(game.get_FEN());
+			} else {
+				document.getElementById("materialBalance").innerHTML = "material balance = "+calculate_material_balance(game.get_FEN());
+			}
 		}
 
 		window.addEventListener('load', setup, false);

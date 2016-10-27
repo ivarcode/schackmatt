@@ -426,6 +426,36 @@ function board_to_FEN(old_fen,board,src,dest,piece) {
 	// console.log(new_FEN);
 	return new_FEN;
 }
+function calculate_material_balance(fen) {
+	/*function that calculates and returns the material balance of the input FEN +/- W/B advantage*/
+	var material_balance = null;
+	var board = board_from_FEN(fen);
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			if (board[i][j] != null) {
+				var piece = board[i][j];
+				if (piece.color == "WHITE") {
+					switch (piece.type) {
+						case "QUEEN": material_balance+=9;break;
+						case "ROOK": material_balance+=5;break;
+						case "BISHOP": material_balance+=3;break;
+						case "KNIGHT": material_balance+=3;break;
+						case "PAWN": material_balance+=1;break;
+					}
+				} else if (piece.color == "BLACK") {
+					switch (piece.type) {
+						case "QUEEN": material_balance-=9;break;
+						case "ROOK": material_balance-=5;break;
+						case "BISHOP": material_balance-=3;break;
+						case "KNIGHT": material_balance-=3;break;
+						case "PAWN": material_balance-=1;break;
+					}
+				}
+			}
+		}
+	}
+	return material_balance;
+}
 function copy_board(board) {
 	/*returns a copy of board*/
 	var new_board = [
