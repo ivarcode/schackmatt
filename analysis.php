@@ -268,16 +268,18 @@
 					var arrow_height = (deltaX*80*deltaX*80)+(deltaY*80*deltaY*80);
 					arrow_height = Math.sqrt(arrow_height);
 					var rad = Math.atan2(deltaY,deltaX);
-					console.log(rad);
-					board_context.translate(src.y*SQ_DIM,(7-src.x)*SQ_DIM);
-					board_context.translate(deltaY*40,(7-deltaX)*40);
+					// console.log(rad);
+					var tranx = src.y*SQ_DIM;
+					var trany = (7-src.x)*SQ_DIM;
+					board_context.translate(tranx,trany);
+					// board_context.translate(deltaY*40,(7-deltaX)*40);
 					// board_context.translate(arrow_width/2,arrow_height/2);
 					// board_context.translate(40,40);
 					board_context.rotate(rad);
 					board_context.drawImage(IMAGES.arrow,0,0,arrow_width,arrow_height);
 					board_context.rotate(-rad);
-					board_context.translate(-src.y*SQ_DIM,-(7-src.x)*SQ_DIM);
-					board_context.translate(-(deltaY*40),-((7-deltaX)*40));
+					board_context.translate(-tranx,-trany);
+					// board_context.translate(-(deltaY*40),-((7-deltaX)*40));
 					// board_context.translate(-(arrow_width/2),-(arrow_height/2));
 					// board_context.translate(-40,-40);
 				} else {
