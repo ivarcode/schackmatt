@@ -262,6 +262,8 @@
 					// draw an arrow from src to dest
 					var src = strategic_draws[i].src;
 					var dest = strategic_draws[i].dest;
+					// console.log(src);
+					// console.log(dest);
 					var deltaX = dest.x - src.x;
 					var deltaY = dest.y - src.y;
 					var arrow_width = 80;
@@ -269,16 +271,18 @@
 					arrow_height = Math.sqrt(arrow_height);
 					var rad = Math.atan2(deltaY,deltaX);
 					// console.log(rad);
-					var tranx = src.y*SQ_DIM;
-					var trany = (7-src.x)*SQ_DIM;
-					board_context.translate(tranx,trany);
-					// board_context.translate(deltaY*40,(7-deltaX)*40);
+					var tranx = Math.max(src.x,dest.x);
+					var trany = Math.min(src.y,dest.y);
+					console.log(tranx,trany);
+					board_context.translate(trany*SQ_DIM,(7-tranx)*SQ_DIM);
+					board_context.translate(deltaY*40,deltaX*40);
 					// board_context.translate(arrow_width/2,arrow_height/2);
 					// board_context.translate(40,40);
 					board_context.rotate(rad);
-					board_context.drawImage(IMAGES.arrow,0,0,arrow_width,arrow_height);
+					board_context.drawImage(IMAGES.arrow,-deltaX*40,-deltaY*40,arrow_width,arrow_height);
 					board_context.rotate(-rad);
-					board_context.translate(-tranx,-trany);
+					board_context.translate(-trany*SQ_DIM,-(7-tranx)*SQ_DIM);
+					board_context.translate(-deltaY*40,-deltaX*40);
 					// board_context.translate(-(deltaY*40),-((7-deltaX)*40));
 					// board_context.translate(-(arrow_width/2),-(arrow_height/2));
 					// board_context.translate(-40,-40);
