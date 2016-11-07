@@ -273,28 +273,40 @@
 					// console.log(rad);
 					var tranx = Math.max(src.x,dest.x);
 					var trany = Math.min(src.y,dest.y);
-					console.log(tranx,trany);
+					// console.log(tranx,trany);
 					var a = trany*SQ_DIM;
 					var b = (7-tranx)*SQ_DIM;
-					board_context.fillRect(a,b,5,5);
+					// board_context.fillRect(a,b,5,5);
 					board_context.translate(a,b);
-					board_context.fillRect(5,5,5,5);
-					console.log("deltaX = "+deltaX+" deltaY = "+deltaY);
-					board_context.translate((deltaY*40)+40,(deltaX*40)+40);
-					board_context.fillRect(0,0,5,5);
+					// board_context.fillRect(5,5,5,5);
+					// console.log("deltaX = "+deltaX+" deltaY = "+deltaY);
+					var cY = (deltaY*40);
+					var cX = (deltaX*40);
+					if (deltaX >= 0) {
+						// do nothing
+						if (deltaY >= 0) {
+							// do nothing
+						} else {
+							cY = -cY;
+						}
+					} else {
+						cX = -cX;
+						if (deltaY >= 0) {
+							// do nothing
+						} else {
+							cY = -cY;
+						}
+					}
+					board_context.translate(cY+40,cX+40);
+					// board_context.fillRect(0,0,5,5);
 					// board_context.translate(arrow_width/2,arrow_height/2);
 					// board_context.translate(40,40);
 					board_context.rotate(rad);
-					if (deltaX >= 0) {
-						console.log("ayy");
-						board_context.drawImage(IMAGES.arrow,-(arrow_width/2),-(arrow_height/2),arrow_width,arrow_height);
-					} else {
-						console.log("kek");
-						board_context.drawImage(IMAGES.arrow,(arrow_width/2),-(arrow_height/2),arrow_width,arrow_height);
-					}
+					board_context.drawImage(IMAGES.arrow,-(arrow_width/2),-(arrow_height/2),arrow_width,arrow_height);
+					
 					board_context.rotate(-rad);
 					board_context.translate(-a,-b);
-					board_context.translate(-((deltaY*40)+40),-((deltaX*40)+40));
+					board_context.translate(-(cY+40),-(cX+40));
 					// board_context.translate(-(deltaY*40),-((7-deltaX)*40));
 					// board_context.translate(-(arrow_width/2),-(arrow_height/2));
 					// board_context.translate(-40,-40);
