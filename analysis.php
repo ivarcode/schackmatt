@@ -108,6 +108,7 @@
 					var index_of_existing_element = null;
 					// check to see if that draw already exists
 					for (var i = 0; i < strategic_draws.length; i++) {
+						// if we are ready to add the draw to the end
 						if (i == strategic_draws.length-1) {
 							if (does_not_exist_already) {
 								// set the dest to d bc that means the right mouse button was down
@@ -121,7 +122,7 @@
 								i--;
 								break;
 							}
-						} else if (strategic_draws[i].src.x == strategic_draws[strategic_draws.length-1].src.x && strategic_draws[i].src.y == strategic_draws[strategic_draws.length-1].src.y && strategic_draws[i].dest.x == d.x && strategic_draws[i].dest.y == d.y) {
+						} else if /*if the arrow has already been drawn from src -> dest or from dest -> src*/ ((strategic_draws[i].src.x == strategic_draws[strategic_draws.length-1].src.x && strategic_draws[i].src.y == strategic_draws[strategic_draws.length-1].src.y && strategic_draws[i].dest.x == d.x && strategic_draws[i].dest.y == d.y) || (strategic_draws[i].dest.x == strategic_draws[strategic_draws.length-1].src.x && strategic_draws[i].dest.y == strategic_draws[strategic_draws.length-1].src.y && strategic_draws[i].src.x == d.x && strategic_draws[i].src.y == d.y)) {
 							does_not_exist_already = false;
 							index_of_existing_element = i;
 						}
@@ -262,58 +263,62 @@
 					// draw an arrow from src to dest
 					var src = strategic_draws[i].src;
 					var dest = strategic_draws[i].dest;
-					// console.log(src);
-					// console.log(dest);
-					var deltaX = dest.x - src.x;
-					var deltaY = dest.y - src.y;
-					var arrow_width = 80;
-					var arrow_height = (deltaX*80*deltaX*80)+(deltaY*80*deltaY*80);
-					arrow_height = Math.sqrt(arrow_height);
-					var rad = Math.atan2(deltaY,deltaX);
-					// console.log(rad);
-					var tranx = Math.max(src.x,dest.x);
-					var trany = Math.min(src.y,dest.y);
-					// console.log(tranx,trany);
-					var a = trany*SQ_DIM;
-					var b = (7-tranx)*SQ_DIM;
-					// board_context.fillRect(a,b,5,5);
-					board_context.translate(a,b);
-					// board_context.fillRect(5,5,5,5);
-					// console.log("deltaX = "+deltaX+" deltaY = "+deltaY);
-					var cY = (deltaY*40);
-					var cX = (deltaX*40);
-					if (deltaX >= 0) {
-						// do nothing
-						if (deltaY >= 0) {
-							// do nothing
-						} else {
-							cY = -cY;
-						}
-					} else {
-						cX = -cX;
-						if (deltaY >= 0) {
-							// do nothing
-						} else {
-							cY = -cY;
-						}
-					}
-					board_context.translate(cY+40,cX+40);
-					// board_context.fillRect(0,0,5,5);
-					// board_context.translate(arrow_width/2,arrow_height/2);
-					// board_context.translate(40,40);
-					board_context.rotate(rad);
-					board_context.drawImage(IMAGES.arrow,-(arrow_width/2),-(arrow_height/2),arrow_width,arrow_height);
-					
-					board_context.rotate(-rad);
-					board_context.translate(-a,-b);
-					board_context.translate(-(cY+40),-(cX+40));
-					// board_context.translate(-(deltaY*40),-((7-deltaX)*40));
-					// board_context.translate(-(arrow_width/2),-(arrow_height/2));
-					// board_context.translate(-40,-40);
+					drawArrow(src,dest);
 				} else {
-					// strategic_draws[i] does not contain enough information to be drawn, so skip
+					// draw "hover arrow" here (the arrow the user is currently in the process of drawing, ie. mousedown == true but mouseup hasnt set a dest yet)
+
 				}
 			}
+		}
+
+		function drawArrow(src,dest) {
+			/*function that draws an arrow to the board after doing all the angle and length calculations*/
+			var deltaX = dest.x - src.x;
+			var deltaY = dest.y - src.y;
+			var arrow_width = 80;
+			var arrow_height = (deltaX*80*deltaX*80)+(deltaY*80*deltaY*80);
+			arrow_height = Math.sqrt(arrow_height);
+			var rad = Math.atan2(deltaY,deltaX);
+			// console.log(rad);
+			var tranx = Math.max(src.x,dest.x);
+			var trany = Math.min(src.y,dest.y);
+			// console.log(tranx,trany);
+			var a = trany*SQ_DIM;
+			var b = (7-tranx)*SQ_DIM;
+			// board_context.fillRect(a,b,5,5);
+			board_context.translate(a,b);
+			// board_context.fillRect(5,5,5,5);
+			// console.log("deltaX = "+deltaX+" deltaY = "+deltaY);
+			var cY = (deltaY*40);
+			var cX = (deltaX*40);
+			if (deltaX >= 0) {
+				// do nothing
+				if (deltaY >= 0) {
+					// do nothing
+				} else {
+					cY = -cY;
+				}
+			} else {
+				cX = -cX;
+				if (deltaY >= 0) {
+					// do nothing
+				} else {
+					cY = -cY;
+				}
+			}
+			board_context.translate(cY+40,cX+40);
+			// board_context.fillRect(0,0,5,5);
+			// board_context.translate(arrow_width/2,arrow_height/2);
+			// board_context.translate(40,40);
+			board_context.rotate(rad);
+			board_context.drawImage(IMAGES.arrow,-(arrow_width/2),-(arrow_height/2),arrow_width,arrow_height);
+			
+			board_context.rotate(-rad);
+			board_context.translate(-a,-b);
+			board_context.translate(-(cY+40),-(cX+40));
+			// board_context.translate(-(deltaY*40),-((7-deltaX)*40));
+			// board_context.translate(-(arrow_width/2),-(arrow_height/2));
+			// board_context.translate(-40,-40);
 		}
 
 		function drawPiece(x,y,piece) {
