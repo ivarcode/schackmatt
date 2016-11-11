@@ -266,7 +266,9 @@
 					drawArrow(src,dest);
 				} else {
 					// draw "hover arrow" here (the arrow the user is currently in the process of drawing, ie. mousedown == true but mouseup hasnt set a dest yet)
-
+					var src = strategic_draws[i].src;
+					var dest = getSquareFromMousePos(current_mousePos);
+					drawArrow(src,dest);
 				}
 			}
 		}
