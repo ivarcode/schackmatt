@@ -269,7 +269,9 @@
 					// draw "hover arrow" here (the arrow the user is currently in the process of drawing, ie. mousedown == true but mouseup hasnt set a dest yet)
 					var src = strategic_draws[i].src;
 					var dest = getSquareFromMousePos(current_mousePos);
-					drawArrow(src,dest);
+					if (!(src.x == dest.x && src.y == dest.y)) {
+						drawArrow(src,dest);
+					}
 				}
 			}
 		}
@@ -314,7 +316,8 @@
 			// board_context.translate(arrow_width/2,arrow_height/2);
 			// board_context.translate(40,40);
 			board_context.rotate(rad);
-			board_context.drawImage(IMAGES.arrow,-(arrow_width/2),-(arrow_height/2),arrow_width,arrow_height);
+			board_context.drawImage(IMAGES.arrow,-(arrow_width/2),-(arrow_height/2),arrow_width,SQ_DIM);
+			board_context.drawImage(IMAGES.shaft,-(arrow_width/2),-(arrow_height/2)+SQ_DIM,arrow_width,arrow_height-SQ_DIM);
 			
 			board_context.rotate(-rad);
 			board_context.translate(-a,-b);
