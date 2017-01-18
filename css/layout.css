@@ -6,3 +6,32 @@ body {
 	margin:0;
 	padding:0;
 }
+
+#container {
+	width: 980px;
+	height: auto;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 21px;
+	margin-bottom: 21px;
+}
+
+#header {
+	height: 40px;
+	background-image: url(../assets/logo.png);
+	background-repeat: no-repeat;
+	margin-bottom: 10px;
+}
+
+#navbar {
+	height: 40px;
+	background-color: rgb(13,13,13);
+}
+
+#content {
+	height: 600px;
+}
+
+#footer {
+	height: 100px;
+}

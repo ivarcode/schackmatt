@@ -16,7 +16,13 @@ template.php
 		
 	</div>
 	<div id="navbar">
-		
+		<nav>
+			<ul>
+				<li><a href="#">Login</a></li>
+				<li><a href="#">Register</a></li>
+				<li><a href="#">Recover</a></li>
+			</ul>
+		</nav>
 	</div>
 	<div id="content">
 		
