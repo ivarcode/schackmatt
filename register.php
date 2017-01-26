@@ -25,7 +25,15 @@ register.php
 		</nav>
 	</div>
 	<div id="content">
-		
+		<!-- register form -->
+		<form action="register.php" method="post" enctype="multipart/formdata">
+			<input type="email" name="email" placeholder="email address" required="required" autofocus>
+			<input type="text" name="username" placeholder="username" required="required">
+			<input type="text" name="name" placeholder="name" required="required">
+			<input type="password" name="password" placeholder="password" required="required">
+			<input type="password" name="confirm_password" placeholder="confirm password" required="required">
+			<input type="submit" name="register" value="register">
+		</form>
 	</div>
 	<div id="footer">
 		
