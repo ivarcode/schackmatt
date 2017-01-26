@@ -1,5 +1,5 @@
 <!--
-template.php
+register.php
 -->
 
 <!DOCTYPE html>
@@ -8,7 +8,7 @@ template.php
 	<link rel="stylesheet" type="text/css" href="css/layout.css">
 	<link rel="stylesheet" type="text/css" href="css/menu.css">
 
-	<title>untitled</title>
+	<title>Register</title>
 </head>
 <body>
 <div id="container">
