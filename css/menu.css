@@ -10,12 +10,11 @@ nav ul li {
 	list-style-type: none;
 	float: left;
 	display: block;
-	width: 150px;
 	height: 40px;
 	text-align: center;
 	line-height: 40px;
 	font-family: "Lucida Console", Monaco, monospace;
-	font-size: 18px;
+	font-size: 16px;
 }
 nav ul li a {
 	text-decoration: none;

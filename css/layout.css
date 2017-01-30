@@ -8,12 +8,15 @@ body {
 }
 
 #container {
-	width: 980px;
+	width: 1024px;
 	height: auto;
 	margin-right: auto;
 	margin-left: auto;
-	margin-top: 21px;
-	margin-bottom: 21px;
+}
+
+#navbar {
+	height: 40px;
+	background-color: rgb(13,13,13);
 }
 
 #header {
@@ -21,11 +24,6 @@ body {
 	background-image: url(../assets/logo.png);
 	background-repeat: no-repeat;
 	margin-bottom: 10px;
-}
-
-#navbar {
-	height: 40px;
-	background-color: rgb(13,13,13);
 }
 
 #content {

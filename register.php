@@ -12,9 +12,6 @@ register.php
 </head>
 <body>
 <div id="container">
-	<div id="header">
-		
-	</div>
 	<div id="navbar">
 		<nav>
 			<ul>
@@ -23,6 +20,9 @@ register.php
 				<li><a href="#">Recover</a></li>
 			</ul>
 		</nav>
+	</div>
+	<div id="header">
+		
 	</div>
 	<div id="content">
 		<!-- register form -->
