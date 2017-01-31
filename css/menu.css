@@ -6,7 +6,19 @@ nav ul {
 	margin: 0;
 	padding: 0;
 }
-nav ul li {
+#right_nav ul li {
+	list-style-type: none;
+	float: right;
+	display: block;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	font-family: "Lucida Console", Monaco, monospace;
+	font-size: 16px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+#left_nav ul li {
 	list-style-type: none;
 	float: left;
 	display: block;
@@ -15,6 +27,8 @@ nav ul li {
 	line-height: 40px;
 	font-family: "Lucida Console", Monaco, monospace;
 	font-size: 16px;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 nav ul li a {
 	text-decoration: none;
