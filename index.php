@@ -2,42 +2,45 @@
 index.php
 -->
 
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>schackmatt.net</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-</head>
-<body>
+<?php
+	include 'header.php';
+?>
+
 <div id="container">
-	<!-- <div id="navbar">
-		<nav id="left_nav">
-			<ul>
-				<li><a href="#">Play</a></li>
-				<li><a href="#">Tactics</a></li>
-			</ul>
-		</nav>
-		<nav id="right_nav">
-			<ul>
-				<li><a href="#">Login</a></li>
-				<li><a href="#">Register</a></li>
-			</ul>
-		</nav>
-	</div>
-	<div id="header">
-		
-	</div> -->
+	
 	<div id="content">
+		<!-- login form -->
+		<form action="includes/login.inc.php" method="POST" enctype="multipart/formdata">
+			<input type="text" name="username" placeholder="username" required="required" autofocus><br>
+			<input type="password" name="password" placeholder="password" required="required"><br>
+			<input type="submit" name="login" value="login">
+		</form>
+
+		<?php
+			if (isset($_SESSION['id'])) {
+				echo $_SESSION['id'];
+			} else {
+				echo "You are not logged in.";
+			}
+		?>
+
+		<br><br>
+
 		<!-- register form -->
-		<form action="register.php" method="POST" enctype="multipart/formdata">
-			<input type="email" name="email" placeholder="email address" required="required" autofocus>
-			<input type="text" name="username" placeholder="username" required="required">
-			<input type="text" name="name" placeholder="name" required="required">
-			<input type="password" name="password" placeholder="password" required="required">
-			<input type="password" name="confirm_password" placeholder="confirm password" required="required">
+		<form action="includes/register.inc.php" method="POST" enctype="multipart/formdata">
+			<input type="email" name="email" placeholder="email address" required="required" autofocus><br>
+			<input type="text" name="username" placeholder="username" required="required"><br>
+			<input type="text" name="name" placeholder="name" required="required"><br>
+			<input type="password" name="password" placeholder="password" required="required"><br>
+			<input type="password" name="confirm_password" placeholder="confirm password" required="required"><br>
 			<input type="submit" name="register" value="register">
 		</form>
+
+		<!-- logout form -->
+		<form action="includes/logout.inc.php">
+			<button>LOGOUT</button>
+		</form>
+
 	</div>
 	<div id="footer">
 		

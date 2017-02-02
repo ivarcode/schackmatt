@@ -1,0 +1,32 @@
+/*
+style.css
+*/
+
+* {
+	text-decoration: none;
+}
+
+body {
+	margin:0;
+	padding:0;
+	background-color: rgb(40,40,40);
+}
+
+header {
+	width:100%;
+	height:40px;
+	background-color: rgb(13,13,13);
+}
+
+nav ul {
+	margin: 0;
+	padding: 0;
+}
+
+nav ul li {
+	list-style: none;
+}
+
+nav ul li a {
+	color: #FFF;
+}

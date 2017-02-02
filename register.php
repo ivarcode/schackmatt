@@ -1,15 +1,35 @@
+<!--
+register.php
+-->
+
 <?php
-
-include 'dbh.php';
-
-$email = $_POST['email'];
-$username = $_POST['username'];
-$name = $_POST['name'];
-$password = $_POST['password'];
-$confirm_password = $_POST['confirm_password'];
-
-$sql = "INSERT INTO user (email, username, name, password) VALUES ('$email','$username','$name','$password')";
-
-$result = $mysqli_query($conn,$sql);
-
+	include 'header.php';
 ?>
+
+<div id="container">
+	
+	<div id="content">
+		
+
+		<br><br>
+
+		<!-- register form -->
+		<form action="includes/register.inc.php" method="POST" enctype="multipart/formdata">
+			<input type="email" name="email" placeholder="email address" required="required" autofocus><br>
+			<input type="text" name="username" placeholder="username" required="required"><br>
+			<input type="text" name="name" placeholder="name" required="required"><br>
+			<input type="password" name="password" placeholder="password" required="required"><br>
+			<input type="password" name="confirm_password" placeholder="confirm password" required="required"><br>
+			<input type="submit" name="register" value="register">
+		</form>
+
+		
+
+	</div>
+	<div id="footer">
+		
+	</div>
+</div>
+
+</body>
+</html>
