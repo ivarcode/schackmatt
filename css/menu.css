@@ -2,10 +2,7 @@
 menu.css
 */
 
-nav ul {
-	margin: 0;
-	padding: 0;
-}
+
 #right_nav ul li {
 	list-style-type: none;
 	float: right;
