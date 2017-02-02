@@ -16,15 +16,6 @@ login.php
 			<input type="submit" name="login" value="login">
 		</form>
 
-		<?php
-			if (isset($_SESSION['id'])) {
-				echo $_SESSION['id'];
-			} else {
-				echo "You are not logged in.";
-			}
-		?>
-
-
 	</div>
 	<div id="footer">
 		
