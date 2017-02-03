@@ -26,10 +26,9 @@ register.php
 		
 
 	</div>
-	<div id="footer">
-		
-	</div>
+
 </div>
 
-</body>
-</html>
+<?php
+	include 'footer.php';
+?>
