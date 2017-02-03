@@ -32,29 +32,59 @@ nav {
 	margin-right: auto;
 }
 
-nav ul {
-	margin: 0;
-	padding: 0;
+nav #unordered_list_left {
+	margin: 0px;
+	padding: 0px;
+	float: left;
+}
+
+nav #unordered_list_right {
+	margin: 0px;
+	padding: 0px;
 	float: right;
 }
 
-nav ul li {
+nav #unordered_list_right li {
 	list-style: none;
 	float: left;
 	padding: 12px;
 }
 
-nav ul li a:hover {
-	color: #FFF;
-}
-
-nav ul li a {
+nav #unordered_list_right li a {
 	color: rgb(200,200,200);
 	font-size: 16px;
+}
+
+nav #unordered_list_right li a:hover {
+	color: #FFF;
 }
 
 #copyright_tag {
 	margin-top:4px;
 	font-size: 12px;
 	color: rgb(200,200,200);
+}
+
+#content {
+	height: 600px;
+	width: 1024px;
+	margin-right: auto;
+	margin-left: auto;
+	padding: 50px;
+	color: rgb(200,200,200);
+}
+
+form #username, #password, #email, #name, #confirm_password {
+	width: 300px;
+	font-size: 16px;
+	padding: 5px;
+	margin: 5px;
+}
+
+form #login_button, #register_button {
+	width: 200px;
+	font-size: 20px;
+	padding: 5px;
+	margin: 10px;
+	margin-left: 60px;
 }

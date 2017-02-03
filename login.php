@@ -9,11 +9,14 @@ login.php
 <div id="container">
 	
 	<div id="content">
+
+		<h1>Login</h1>
+		<br>
 		<!-- login form -->
 		<form action="includes/login.inc.php" method="POST" enctype="multipart/formdata">
-			<input type="text" name="username" placeholder="username" required="required" autofocus><br>
-			<input type="password" name="password" placeholder="password" required="required"><br>
-			<input type="submit" name="login" value="login">
+			<input id="username" type="text" name="username" placeholder="username" required="required" autofocus><br>
+			<input id="password" type="password" name="password" placeholder="password" required="required"><br>
+			<input id="login_button" type="submit" name="login" value="login">
 		</form>
 
 	</div>

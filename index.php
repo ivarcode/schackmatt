@@ -20,11 +20,6 @@ index.php
 
 		<br><br>
 
-		<!-- logout form -->
-		<form action="includes/logout.inc.php">
-			<button>LOGOUT</button>
-		</form>
-
 	</div>
 
 </div>
