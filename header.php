@@ -18,7 +18,7 @@ header.php
 <header>
 	<nav>
 		<ul id="unordered_list_left">
-			<a href="./"><img src="assets/logo.png?<?php echo time(); ?>"></a>
+			<a href="./"><img src="assets/logo.png?<?php echo time(); ?>" height="40px"></a>
 		</ul>
 		<ul id="unordered_list_right">
 			<?php
