@@ -3,7 +3,7 @@ footer.php
 -->
 
 <footer>
-	<nav>
+	<nav id="footer_nav">
 		<ul>
 			<li><p id="copyright_tag">Copyright &copy; 2016 C.I.W.</p></li>
 		</ul>

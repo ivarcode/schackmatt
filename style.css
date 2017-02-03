@@ -88,3 +88,7 @@ form #login_button, #register_button {
 	margin: 10px;
 	margin-left: 60px;
 }
+
+#footer_nav {
+	margin-top: 12px;
+}
