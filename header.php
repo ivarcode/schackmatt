@@ -4,6 +4,7 @@ header.php
 
 <?php
 	session_start();
+	include 'dbh.php';
 ?>
 
 <!DOCTYPE html>
@@ -18,26 +19,19 @@ header.php
 <header>
 	<nav>
 		<ul id="unordered_list_left">
+			<!-- site logo -->
 			<a href="./"><img src="assets/logo.png?<?php echo time(); ?>" height="40px"></a>
 		</ul>
 		<ul id="unordered_list_right">
 			<?php
 				if (isset($_SESSION['id'])) {
-					// user is logged in, do not show login button
-				} else {
-					echo "<li><a href='login.php'>Login</a></li>";
-				}
-
-				if (isset($_SESSION['id'])) {
-					// user is logged in, do not show regster button
-				} else {
-					echo "<li><a href='register.php'>Register</a></li>";
-				}
-
-				if (isset($_SESSION['id'])) {
+					// if the user is logged in, show their username (button to their profile) and the logout button
+					echo "<li><a href='#'>USERNAME_GOES_HERE</a></li>";
 					echo "<li><a href='includes/logout.inc.php'>Logout</a></li>";
 				} else {
-					// user is not logged in, do not show logout button
+					// if the user is not logged in, show login button and the register button
+					echo "<li><a href='login.php'>Login</a></li>";
+					echo "<li><a href='register.php'>Register</a></li>";
 				}
 			?>
 			
