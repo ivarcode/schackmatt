@@ -26,7 +26,13 @@ header.php
 			<?php
 				if (isset($_SESSION['id'])) {
 					// if the user is logged in, show their username (button to their profile) and the logout button
-					echo "<li><a href='#'>USERNAME_GOES_HERE</a></li>";
+					$sesh_id = $_SESSION['id'];
+					// getting the data from the server
+					$sql = "SELECT * FROM user WHERE id='$sesh_id'";
+					$result = mysqli_query($conn,$sql);
+					$row = mysqli_fetch_assoc($result);
+					// displaying the username and logout button in the header
+					echo "<li><a href='#'>".$row['username']."</a></li>";
 					echo "<li><a href='includes/logout.inc.php'>Logout</a></li>";
 				} else {
 					// if the user is not logged in, show login button and the register button

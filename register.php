@@ -16,7 +16,7 @@ register.php
 		<?php
 			if (isset($_SESSION['id'])) {
 				echo "You are already logged in!";
-				header("Location: index.php");
+				header("Location: ./");
 			}
 		?>
 		

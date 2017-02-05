@@ -10,12 +10,12 @@ $sql = "SELECT * FROM user WHERE username='$username' AND password='$password'";
 $result = mysqli_query($conn,$sql);
 
 if (!$row = mysqli_fetch_assoc($result)) {
-	echo "Your username and/or password is incorrect.";
+	// refresh page and throw login_failure error
+	header("Location: ../login.php?error=login_failure");
 } else {
-	// echo "You are logged in.";
+	// logs the user in
 	$_SESSION['id'] = $row['id'];
+	header("Location: ../");
 }
-
-header("Location: ../index.php");
 
 ?>
