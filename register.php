@@ -4,21 +4,13 @@ register.php
 
 <?php
 	include 'header.php';
-	include 'dbh.php';
 ?>
 
 <div id="container">
 	
 	<div id="content">
 
-		<!-- getting the url from the server to handle thrown errors -->
-		<?php
-			$url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-			// if the $url contains passwords_do_not_match error
-			if (strpos($url,'error=passwords_do_not_match') !== false) {
-				echo "<h3 class='red_error_text'>Your passwords did not match.</h3><br>";
-			}
-		?>
+		<h1>Register</h1>
 		
 		<!-- php script redirects to index.php if the user is already logged in -->
 		<?php
@@ -27,8 +19,19 @@ register.php
 				header("Location: index.php");
 			}
 		?>
-
-		<h1>Register</h1>
+		
+		<!-- getting the url from the server to handle thrown errors -->
+		<?php
+			$url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			// if the $url contains username_is_taken error
+			if (strpos($url,'error=username_is_taken') !== false) {
+				echo "<br><h3 class='red_error_text'>That username is taken.</h3>";
+			}
+			// if the $url contains passwords_do_not_match error
+			elseif (strpos($url,'error=passwords_do_not_match') !== false) {
+				echo "<br><h3 class='red_error_text'>Your passwords did not match.</h3>";
+			}
+		?>
 		<br>
 		<!-- register form -->
 		<form action="includes/register.inc.php" method="POST" enctype="multipart/formdata">
