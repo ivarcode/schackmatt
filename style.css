@@ -92,3 +92,7 @@ form #login_button, #register_button {
 #footer_nav {
 	margin-top: 12px;
 }
+
+.red_error_text {
+	color:red;
+}
