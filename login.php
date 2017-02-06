@@ -26,6 +26,10 @@ login.php
 			// if the $url contains login_failure error
 			if (strpos($url,'error=login_failure') !== false) {
 				echo "<br><h3 class='red_error_text'>Your username or password were incorrect.</h3>";
+			} 
+			// if the $url contains registration_success info
+			elseif (strpos($url,'info=registration_success') !== false) {
+				echo "<br><h3 class='green_success_text'>You have successfully registered! Please log in now.</h3>";
 			}
 		?>
 		<br>
