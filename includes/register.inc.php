@@ -15,6 +15,7 @@ $result = mysqli_query($conn,$sql);
 if (mysqli_num_rows($result) > 0) {
 	// refresh page and throw username_is_taken error
 	header("Location: ../register.php?error=username_is_taken");
+	exit();
 } else {
 	// checking to see if password & confirm_password are equal
 	if ($password == $confirm_password) {
@@ -27,6 +28,7 @@ if (mysqli_num_rows($result) > 0) {
 	} else {
 		// refresh page and throw passwords_do_not_match error
 		header("Location: ../register.php?error=passwords_do_not_match");
+		exit();
 	}
 }
 

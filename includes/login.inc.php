@@ -12,6 +12,7 @@ $result = mysqli_query($conn,$sql);
 if (!$row = mysqli_fetch_assoc($result)) {
 	// refresh page and throw login_failure error
 	header("Location: ../login.php?error=login_failure");
+	exit();
 } else {
 	// logs the user in
 	$_SESSION['id'] = $row['id'];
