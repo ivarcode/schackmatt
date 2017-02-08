@@ -9,10 +9,9 @@ $password = mysqli_real_escape_string($conn,$_POST['password']);
 
 // getting the hash from the password column of the user
 $stmt = $conn->prepare("SELECT * FROM user WHERE username=?");
-// binding $usr and $pwd var params
-$stmt->bind_param("ss",$usr,$pwd);
+// binding $usr var param
+$stmt->bind_param("s",$usr);
 $usr = $username;
-$pwd = $password;
 // executing once for the row
 $stmt->execute();
 
@@ -27,7 +26,7 @@ if (!password_verify($password,$hash)) {
 	// refresh page and throw login_failure error
 	header("Location: ../login.php?error=login_failure");
 	exit();
-} else {
+} /*if the password IS verified*/ else {
 	// logs the user in
 	$_SESSION['id'] = $row['id'];
 	// redirects the user to index.php

@@ -6,7 +6,7 @@ include '../dbh.php';
 // initialize and prevent SQL injection
 $email = mysqli_real_escape_string($conn,$_POST['email']);
 $username = mysqli_real_escape_string($conn,$_POST['username']);
-$name = mysqli_real_escape_string($conn,$_POST['name'];
+$name = mysqli_real_escape_string($conn,$_POST['name']);
 $password = mysqli_real_escape_string($conn,$_POST['password']);
 $confirm_password = mysqli_real_escape_string($conn,$_POST['confirm_password']);
 
