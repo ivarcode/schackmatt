@@ -3,12 +3,22 @@
 session_start();
 include '../dbh.php';
 
-$username = $_POST['username'];
-$password = $_POST['password'];
+// initialize and prevent SQL injection
+$username = mysqli_real_escape_string($conn,$_POST['username']);
+$password = mysqli_real_escape_string($conn,$_POST['password']);
 
 // getting the hash from the password column of the user
-$sql = "SELECT * FROM user WHERE username='$username'";
-$result = mysqli_query($conn,$sql);
+$stmt = $conn->prepare("SELECT * FROM user WHERE username=?");
+// binding $usr and $pwd var params
+$stmt->bind_param("ss",$usr,$pwd);
+$usr = $username;
+$pwd = $password;
+// executing once for the row
+$stmt->execute();
+
+// setting the result of the stmt execution
+$result = $stmt->get_result();
+
 $row = mysqli_fetch_assoc($result);
 $hash = $row['password'];
 
@@ -18,17 +28,8 @@ if (!password_verify($password,$hash)) {
 	header("Location: ../login.php?error=login_failure");
 	exit();
 } else {
-	$sql = "SELECT * FROM user WHERE username='$username' AND password='$hash'";
-	$result = mysqli_query($conn,$sql);
-
-	if (!$row = mysqli_fetch_assoc($result)) {
-		// refresh page and throw login_failure error
-		header("Location: ../login.php?error=login_failure");
-		exit();
-	} else {
-		// logs the user in
-		$_SESSION['id'] = $row['id'];
-	}
+	// logs the user in
+	$_SESSION['id'] = $row['id'];
 	// redirects the user to index.php
 	header("Location: ../");
 }

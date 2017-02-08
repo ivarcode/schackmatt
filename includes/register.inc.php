@@ -3,11 +3,12 @@
 session_start();
 include '../dbh.php';
 
-$email = $_POST['email'];
-$username = $_POST['username'];
-$name = $_POST['name'];
-$password = $_POST['password'];
-$confirm_password = $_POST['confirm_password'];
+// initialize and prevent SQL injection
+$email = mysqli_real_escape_string($conn,$_POST['email']);
+$username = mysqli_real_escape_string($conn,$_POST['username']);
+$name = mysqli_real_escape_string($conn,$_POST['name'];
+$password = mysqli_real_escape_string($conn,$_POST['password']);
+$confirm_password = mysqli_real_escape_string($conn,$_POST['confirm_password']);
 
 // checking to see if username is taken
 $sql = "SELECT username FROM user WHERE username='$username'";

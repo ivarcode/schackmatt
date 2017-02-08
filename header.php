@@ -25,7 +25,7 @@ header.php
 		<ul id="unordered_list_right">
 			<?php
 				if (isset($_SESSION['id'])) {
-					// if the user is logged in, show their username (button to their profile) and the logout button
+					// if the user is logged in, show their username (button to more options in the future) and the logout button
 					$sesh_id = $_SESSION['id'];
 					// getting the data from the server
 					$sql = "SELECT * FROM user WHERE id='$sesh_id'";
