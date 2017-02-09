@@ -17,7 +17,7 @@ index.php
 				$sql = "SELECT * FROM user WHERE id='$sesh_id'";
 				$result = mysqli_query($conn,$sql);
 				$row = mysqli_fetch_assoc($result);
-				echo "<h5 style='float:right;'>member since ".$row['timestamp']."</h5><h2>".$row['username']."</h2><hr>";
+				echo "<h5 style='float:right;'>member since ".$row['timestamp']."</h5><h2>".$row['username']."</h2>";
 			} else {
 				// default guest homepage
 				echo "You are not logged in.";
@@ -25,6 +25,11 @@ index.php
 		?>
 
 		<br><br>
+		<hr>
+
+		<?php
+			include 'boards/analysis_board.php';
+		?>
 
 	</div>
 
