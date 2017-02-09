@@ -10,9 +10,18 @@ $name = mysqli_real_escape_string($conn,$_POST['name']);
 $password = mysqli_real_escape_string($conn,$_POST['password']);
 $confirm_password = mysqli_real_escape_string($conn,$_POST['confirm_password']);
 
+// getting the currently existing user with the same username (if one exists)
+$stmt = $conn->prepare("SELECT username FROM user WHERE username=?");
+// binding $usr var param
+$stmt->bind_param("s",$usr);
+$usr = $username;
+// executing once for the username
+$stmt->execute();
+
+// setting the result of the stmt execution
+$result = $stmt->get_result();
+
 // checking to see if username is taken
-$sql = "SELECT username FROM user WHERE username='$username'";
-$result = mysqli_query($conn,$sql);
 if (mysqli_num_rows($result) > 0) {
 	// refresh page and throw username_is_taken error
 	header("Location: ../register.php?error=username_is_taken");
@@ -23,8 +32,18 @@ if (mysqli_num_rows($result) > 0) {
 		// hashing password
 		$hash = password_hash($password,PASSWORD_DEFAULT);
 		// register user and return to index.php
-		$sql = "INSERT INTO user (email, username, name, password) VALUES ('$email','$username','$name','$hash')";
-		$result = mysqli_query($conn,$sql);
+		$stmt = $conn->prepare("INSERT INTO user (email, username, name, password) VALUES (?,?,?,?)");
+		// binding $e,$usr,$n,$pwd var params
+		$stmt->bind_param("ssss",$e,$usr,$n,$pwd);
+		$e = $email;
+		$usr = $username;
+		$n = $name;
+		$pwd = $hash; // hashing pwd
+		// executing
+		$stmt->execute();
+
+		// setting result
+		$result = $stmt->get_result();
 
 		// redirect to login.php with the registration success message
 		header("Location: ../login.php?info=registration_success");
