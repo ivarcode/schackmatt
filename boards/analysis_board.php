@@ -1,3 +1,9 @@
+<script type="text/javascript">
+	
+	
+
+</script>
+
 <div id="game">
 	
 	<canvas id="board" width="640" height="640">canvas</canvas>
