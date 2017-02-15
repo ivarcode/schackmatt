@@ -105,7 +105,7 @@ function get_legal_moves(fen) {
 
 				} else if (piece == 'B' || piece == 'b') {
 					// BISHOP
-
+					
 				} else if (piece == 'N' || piece == 'n') {
 					// KNIGHT
 					var sqs = [];
@@ -150,6 +150,9 @@ function get_legal_moves(fen) {
 												rank_identifier = true;
 											}
 											if (sqs_2[j].rank == r) {
+												file_identifier = true;
+											}
+											if (!file_identifier && !rank_identifier) {
 												file_identifier = true;
 											}
 										}
