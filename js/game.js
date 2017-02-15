@@ -127,6 +127,49 @@ function get_legal_moves(fen) {
 								var move = "";
 								// add N for knight
 								move += 'N';
+								// getting other sqs that can move to the same place to check if another knight can go to the sqs[i] in which case we need to identify that in the move notation
+								var file_identifier = false;
+								var rank_identifier = false;
+								var sqs_2 = [];
+								sqs_2.push({rank:sqs[i].rank+2,file:sqs[i].file+1});
+								sqs_2.push({rank:sqs[i].rank+2,file:sqs[i].file-1});
+								sqs_2.push({rank:sqs[i].rank+1,file:sqs[i].file+2});
+								sqs_2.push({rank:sqs[i].rank+1,file:sqs[i].file-2});
+								sqs_2.push({rank:sqs[i].rank-2,file:sqs[i].file+1});
+								sqs_2.push({rank:sqs[i].rank-2,file:sqs[i].file-1});
+								sqs_2.push({rank:sqs[i].rank-1,file:sqs[i].file+2});
+								sqs_2.push({rank:sqs[i].rank-1,file:sqs[i].file-2});
+								// loop through sqs_2
+								for (var j = 0; j < sqs_2.length; j++) {
+									// if sq is on board && if sq != the loc of piece we are already moving
+									if (sqs_2[j].rank < 8 && sqs_2[j].rank > -1 && sqs_2[j].file < 8 && sqs_2[j].file > -1 && (sqs_2[j].rank != r || sqs_2[j].file != f)) {
+										// if the piece at sqs_2[j] is the same color and is a knight
+										if ((board[sqs_2[j].rank][sqs_2[j].file] == 'N' && turn == "WHITE") || (board[sqs_2[j].rank][sqs_2[j].file] == 'n' && turn == "BLACK")) {
+											// if the files of the two pieces are the same, include the rank identifier, if the ranks are the same, include the file identifier
+											if (sqs_2[j].file == f) {
+												rank_identifier = true;
+											}
+											if (sqs_2[j].rank == r) {
+												file_identifier = true;
+											}
+										}
+									}
+								}
+								if (file_identifier) {
+									switch (f) {
+										case 0: move += 'a'; break;
+										case 1: move += 'b'; break;
+										case 2: move += 'c'; break;
+										case 3: move += 'd'; break;
+										case 4: move += 'e'; break;
+										case 5: move += 'f'; break;
+										case 6: move += 'g'; break;
+										case 7: move += 'h'; break;
+									}
+								}
+								if (rank_identifier) {
+									move += r+1;
+								}
 								// if dest sq not empty
 								if (board[sqs[i].rank][sqs[i].file] != null) {
 									// add x for capture
@@ -134,8 +177,8 @@ function get_legal_moves(fen) {
 								}
 								// add square
 								move += get_square(sqs[i].rank,sqs[i].file);
-								// if move is check to enemy king
-								
+								// add move to moves array
+								moves.push(move);
 							}
 						}
 					}
@@ -149,6 +192,7 @@ function get_legal_moves(fen) {
 			}
 		}
 	}
+	console.log(moves);
 
 	return moves;
 }

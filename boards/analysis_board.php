@@ -3,7 +3,8 @@
 <!-- local script on analysis_board.php that displays the game with a user interface -->
 <script type="text/javascript">
 // initializing a standard game
-var game = new Game("player_one","player_two","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
+// var game = new Game("player_one","player_two","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
+var game = new Game("player_one","player_two","STANDARD","8/2k5/8/6N1/8/2N3N1/3K4/8 w - - 0 1",[]);
 
 print_game_info(game);
 
