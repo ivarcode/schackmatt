@@ -89,9 +89,87 @@ function get_legal_moves(fen) {
 	// translates the fen to the var board in array form
 	var board = board_from_fen(fen);
 	var turn = get_turn(fen);
+	// loop through each piece in board
+	for (var r = 0; r < 8; r++) {
+		for (var f = 0; f < 8; f++) {
+			// initialize piece var
+			var piece = board[r][f];
+			// if piece is not null AND (if piece is uppercase and turn == white OR if piece is lowercase and turn == black)
+			if (piece != null && ((piece == piece.toUpperCase() && turn == "WHITE") || (piece == piece.toLowerCase() && turn == "BLACK"))) {
+				console.log(piece);
+				if (piece == 'K' || piece == 'k') {
+					// KING
 
-	
+				} else if (piece == 'Q' || piece == 'q') {
+					// QUEEN
+
+				} else if (piece == 'B' || piece == 'b') {
+					// BISHOP
+
+				} else if (piece == 'N' || piece == 'n') {
+					// KNIGHT
+					var sqs = [];
+					sqs.push({rank:r+2,file:f+1});
+					sqs.push({rank:r+2,file:f-1});
+					sqs.push({rank:r+1,file:f+2});
+					sqs.push({rank:r+1,file:f-2});
+					sqs.push({rank:r-2,file:f+1});
+					sqs.push({rank:r-2,file:f-1});
+					sqs.push({rank:r-1,file:f+2});
+					sqs.push({rank:r-1,file:f-2});
+					// loop through sqs array
+					for (var i = 0; i < sqs.length; i++) {
+						// if sq is on board
+						if (sqs[i].rank < 8 && sqs[i].rank > -1 && sqs[i].file < 8 && sqs[i].file > -1) {
+							// if sq is not occupied by friendly piece
+							if (board[sqs[i].rank][sqs[i].file] == null || ((board[sqs[i].rank][sqs[i].file] == board[sqs[i].rank][sqs[i].file].toUpperCase() && turn == "BLACK") || (board[sqs[i].rank][sqs[i].file] == board[sqs[i].rank][sqs[i].file].toLowerCase() && turn == "WHITE"))) {
+								// add move to moves array
+								var move = "";
+								// add N for knight
+								move += 'N';
+								// if dest sq not empty
+								if (board[sqs[i].rank][sqs[i].file] != null) {
+									// add x for capture
+									move += 'x';
+								}
+								// add square
+								move += get_square(sqs[i].rank,sqs[i].file);
+								// if move is check to enemy king
+								
+							}
+						}
+					}
+				} else if (piece == 'R' || piece == 'r') {
+					// ROOK
+
+				} else if (piece == 'P' || piece == 'p') {
+					// PAWN
+
+				}
+			}
+		}
+	}
+
 	return moves;
+}
+function get_square(rank,file) {
+	/*returns the string form of the square when given a rank and file numerical param*/
+	var sq = "";
+	// convert numerical file to letter
+	switch (file) {
+		case 0: sq += 'a'; break;
+		case 1: sq += 'b'; break;
+		case 2: sq += 'c'; break;
+		case 3: sq += 'd'; break;
+		case 4: sq += 'e'; break;
+		case 5: sq += 'f'; break;
+		case 6: sq += 'g'; break;
+		case 7: sq += 'h'; break;
+		default: console.log("ERR :: sq out of range");
+	}
+	// add on the rank
+	sq += rank+1;
+	return sq;
 }
 function get_turn(fen) {
 	/*gets the color of the player next to move*/
