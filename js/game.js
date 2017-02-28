@@ -70,6 +70,31 @@ function board_from_fen(fen) {
 	}
 	return board;
 }
+function calculate_material_balance(fen) {
+	/*function that calculates and returns the material balance of the input FEN +/- W/B advantage*/
+	var material_balance = 0;
+	var board = board_from_fen(fen);
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			if (board[i][j] != null) {
+				var piece = board[i][j];
+				switch (piece) {
+					case 'Q': material_balance+=9;break;
+					case 'R': material_balance+=5;break;
+					case 'B': material_balance+=3;break;
+					case 'N': material_balance+=3;break;
+					case 'P': material_balance+=1;break;
+					case 'q': material_balance-=9;break;
+					case 'r': material_balance-=5;break;
+					case 'b': material_balance-=3;break;
+					case 'n': material_balance-=3;break;
+					case 'p': material_balance-=1;break;
+				}
+			}
+		}
+	}
+	return material_balance;
+}
 function get_castling_data(fen) {
 	/*gets the sides of the board allowed to be castled on for both sides*/
 	var i = 0;
@@ -139,6 +164,9 @@ function get_legal_moves(fen) {
 							}
 						}
 					}
+					// TODO CASTLING DATA
+
+
 				} else if (piece == 'Q' || piece == 'q') {
 					// QUEEN
 
@@ -179,7 +207,151 @@ function get_legal_moves(fen) {
 					}
 				} else if (piece == 'R' || piece == 'r') {
 					// ROOK
-
+					var sq = {rank:r+1,file:f};
+					// up
+					while (sq.rank < 8) {
+						// if sq is empty
+						if (board[sq.rank][sq.file] == null) {
+							var move = new Move(
+								{rank:r,file:f},
+								{rank:sq.rank,file:sq.file},
+								piece,
+								get_position_after_move_on_board(
+									{rank:r,file:f},
+									{rank:sq.rank,file:sq.file},
+									piece,
+									board),
+								null);
+							moves.push(move);
+							sq.rank++;
+						} else /*not empty sq*/ {
+							// if sq is not empty but is occupied by an enemy piece
+							if ((is_white(board[sq.rank][sq.file]) && turn == "BLACK") || (is_black(board[sq.rank][sq.file]) && turn == "WHITE")) {
+								var move = new Move(
+									{rank:r,file:f},
+									{rank:sq.rank,file:sq.file},
+									piece,
+									get_position_after_move_on_board(
+										{rank:r,file:f},
+										{rank:sq.rank,file:sq.file},
+										piece,
+										board),
+									null);
+								moves.push(move);
+							}
+							// end loop
+							break;
+						}
+					}
+					sq.rank = r-1;
+					// down
+					while (sq.rank > -1) {
+						// if sq is empty
+						if (board[sq.rank][sq.file] == null) {
+							var move = new Move(
+								{rank:r,file:f},
+								{rank:sq.rank,file:sq.file},
+								piece,
+								get_position_after_move_on_board(
+									{rank:r,file:f},
+									{rank:sq.rank,file:sq.file},
+									piece,
+									board),
+								null);
+							moves.push(move);
+							sq.rank--;
+						} else /*not empty sq*/ {
+							// if sq is not empty but is occupied by an enemy piece
+							if ((is_white(board[sq.rank][sq.file]) && turn == "BLACK") || (is_black(board[sq.rank][sq.file]) && turn == "WHITE")) {
+								var move = new Move(
+									{rank:r,file:f},
+									{rank:sq.rank,file:sq.file},
+									piece,
+									get_position_after_move_on_board(
+										{rank:r,file:f},
+										{rank:sq.rank,file:sq.file},
+										piece,
+										board),
+									null);
+								moves.push(move);
+							}
+							// end loop
+							break;
+						}
+					}
+					sq.rank = r;
+					sq.file = f+1;
+					// right
+					while (sq.file < 8) {
+						// if sq is empty
+						if (board[sq.rank][sq.file] == null) {
+							var move = new Move(
+								{rank:r,file:f},
+								{rank:sq.rank,file:sq.file},
+								piece,
+								get_position_after_move_on_board(
+									{rank:r,file:f},
+									{rank:sq.rank,file:sq.file},
+									piece,
+									board),
+								null);
+							moves.push(move);
+							sq.file++;
+						} else /*not empty sq*/ {
+							// if sq is not empty but is occupied by an enemy piece
+							if ((is_white(board[sq.rank][sq.file]) && turn == "BLACK") || (is_black(board[sq.rank][sq.file]) && turn == "WHITE")) {
+								var move = new Move(
+									{rank:r,file:f},
+									{rank:sq.rank,file:sq.file},
+									piece,
+									get_position_after_move_on_board(
+										{rank:r,file:f},
+										{rank:sq.rank,file:sq.file},
+										piece,
+										board),
+									null);
+								moves.push(move);
+							}
+							// end loop
+							break;
+						}
+					}
+					sq.file = f-1;
+					// left
+					while (sq.file > -1) {
+						// if sq is empty
+						if (board[sq.rank][sq.file] == null) {
+							var move = new Move(
+								{rank:r,file:f},
+								{rank:sq.rank,file:sq.file},
+								piece,
+								get_position_after_move_on_board(
+									{rank:r,file:f},
+									{rank:sq.rank,file:sq.file},
+									piece,
+									board),
+								null);
+							moves.push(move);
+							sq.file--;
+						} else /*not empty sq*/ {
+							// if sq is not empty but is occupied by an enemy piece
+							if ((is_white(board[sq.rank][sq.file]) && turn == "BLACK") || (is_black(board[sq.rank][sq.file]) && turn == "WHITE")) {
+								var move = new Move(
+									{rank:r,file:f},
+									{rank:sq.rank,file:sq.file},
+									piece,
+									get_position_after_move_on_board(
+										{rank:r,file:f},
+										{rank:sq.rank,file:sq.file},
+										piece,
+										board),
+									null);
+								moves.push(move);
+							}
+							// end loop
+							break;
+						}
+					}
 				} else if (piece == 'P' || piece == 'p') {
 					// PAWN
 
@@ -323,17 +495,17 @@ function print_move(move) {
 /*IMAGES*/
 var IMAGES = {wPawn:new Image(),wRook:new Image(),wKnight:new Image(),wBishop:new Image(),wQueen:new Image(),wKing:new Image(),bPawn:new Image(),bRook:new Image(),bKnight:new Image(),bBishop:new Image(),bQueen:new Image(),bKing:new Image(),arrow:new Image(),shaft:new Image()};
 
-IMAGES.wPawn.src = "./img/pieces/w_Pawn.png";
-IMAGES.wRook.src = "./img/pieces/w_Rook.png";
-IMAGES.wKnight.src = "./img/pieces/w_Knight.png";
-IMAGES.wBishop.src = "./img/pieces/w_Bishop.png";
-IMAGES.wQueen.src = "./img/pieces/w_Queen.png";
-IMAGES.wKing.src = "./img/pieces/w_King.png";
-IMAGES.bPawn.src = "./img/pieces/b_Pawn.png";
-IMAGES.bRook.src = "./img/pieces/b_Rook.png";
-IMAGES.bKnight.src = "./img/pieces/b_Knight.png";
-IMAGES.bBishop.src = "./img/pieces/b_Bishop.png";
-IMAGES.bQueen.src = "./img/pieces/b_Queen.png";
-IMAGES.bKing.src = "./img/pieces/b_King.png";
-IMAGES.arrow.src = "./img/arrow.png";
-IMAGES.shaft.src = "./img/shaft.png";
+IMAGES.wPawn.src = "./assets/pieces/w_Pawn.png";
+IMAGES.wRook.src = "./assets/pieces/w_Rook.png";
+IMAGES.wKnight.src = "./assets/pieces/w_Knight.png";
+IMAGES.wBishop.src = "./assets/pieces/w_Bishop.png";
+IMAGES.wQueen.src = "./assets/pieces/w_Queen.png";
+IMAGES.wKing.src = "./assets/pieces/w_King.png";
+IMAGES.bPawn.src = "./assets/pieces/b_Pawn.png";
+IMAGES.bRook.src = "./assets/pieces/b_Rook.png";
+IMAGES.bKnight.src = "./assets/pieces/b_Knight.png";
+IMAGES.bBishop.src = "./assets/pieces/b_Bishop.png";
+IMAGES.bQueen.src = "./assets/pieces/b_Queen.png";
+IMAGES.bKing.src = "./assets/pieces/b_King.png";
+IMAGES.arrow.src = "./assets/arrow.png";
+IMAGES.shaft.src = "./assets/shaft.png";

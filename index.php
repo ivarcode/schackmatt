@@ -24,8 +24,7 @@ index.php
 			}
 		?>
 
-		<br><br>
-		<hr>
+		<br><hr><br>
 
 		<?php
 			include 'boards/analysis_board.php';
