@@ -28,7 +28,7 @@ board_img.src = "./assets/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 
 // initializing a standard game
 // var game = new Game("player_one","player_two","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
-var game = new Game("player_one","player_two","STANDARD","8/2k5/8/6N1/8/2R3B1/3K4/8 w - - 0 1",[]);
+var game = new Game("player_one","player_two","STANDARD","rnbqkbnr/ppp3pp/3p1p2/4p3/4P3/3B1N2/PPPP1PPP/RNBQK2R w KQkq - 0 4",[]);
 
 print_game_info(game);
 
@@ -209,7 +209,7 @@ function drawBoard() {
 	}
 	if (selected_square != null && mousedown) {
 		// console.log("drawing piece on mouse");
-		drawPiece(current_mousePos.x-40,current_mousePos.y-40,game.get_piece(selected_square));
+		drawPiece(current_mousePos.x-40,current_mousePos.y-40,get_piece(board,selected_square));
 	}
 	// draw strategic_draws
 	// console.log("number of strategic_draws = "+strategic_draws.length);
