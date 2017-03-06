@@ -225,13 +225,81 @@ function get_legal_moves(fen) {
 									}
 									// if queenside castle is allowed in game
 									if (d.charAt(i) == 'Q') {
-
+										// if b1,c1 and d1 are clear
+										if (board[0][1] == null && board[0][2] == null && board[0][3] == null) {
+											// if d1 is not going through check for white
+											if (!is_sq_threatened_by(board,{x:0,y:3},"BLACK")) {
+												// add move to moves array
+												var move = new Move(
+													{rank:r,file:f},
+													{rank:0,file:2},
+													piece,
+													get_position_after_move_on_board(
+														{rank:r,file:f},
+														{rank:0,file:2},
+														piece,
+														board),
+													null);
+												moves.push(move);
+											}
+										}
 									}
 								}
 							}
 						}
 					} else /*is_black(piece)*/ {
-
+						// if king is on starting sq
+						if (r == 7 && f == 4) {
+							// if castling data is not '-'
+							var d = get_castling_data(fen);
+							if (d != '-') {
+								// loop through castling data and try to see if each castle is legal on each char
+								for (var i = 0; i < d.length; i++) {
+									// if kingside castle is allowed in game
+									if (d.charAt(i) == 'k') {
+										// if f1 and g1 are clear
+										if (board[7][5] == null && board[7][6] == null) {
+											// if f1 is not going through check for black
+											if (!is_sq_threatened_by(board,{x:7,y:5},"WHITE")) {
+												// add move to moves array
+												var move = new Move(
+													{rank:r,file:f},
+													{rank:7,file:6},
+													piece,
+													get_position_after_move_on_board(
+														{rank:r,file:f},
+														{rank:7,file:6},
+														piece,
+														board),
+													null);
+												moves.push(move);
+											}
+										}
+									}
+									// if queenside castle is allowed in game
+									if (d.charAt(i) == 'q') {
+										// if b1,c1 and d1 are clear
+										if (board[7][1] == null && board[7][2] == null && board[7][3] == null) {
+											// if d1 is not going through check for black
+											if (!is_sq_threatened_by(board,{x:7,y:3},"WHITE")) {
+												// add move to moves array
+												var move = new Move(
+													{rank:r,file:f},
+													{rank:7,file:2},
+													piece,
+													get_position_after_move_on_board(
+														{rank:r,file:f},
+														{rank:7,file:2},
+														piece,
+														board),
+													null);
+												moves.push(move);
+											}
+										}
+									}
+								}
+							}
+						}
 					}
 
 
