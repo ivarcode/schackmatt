@@ -108,7 +108,7 @@ function get_castling_data(fen) {
 		return "-";
 	}
 	// add to data
-	data = fen.charAt(i);
+	var data = fen.charAt(i);
 	i++;
 	// add the rest to data
 	while (fen.charAt(i) != ' ') {
@@ -160,7 +160,7 @@ function get_legal_moves(fen) {
 			var piece = board[r][f];
 			// if piece is not null AND (if piece is white and turn == white OR if piece is black and turn == black)
 			if (piece != null && ((is_white(piece) && turn == "WHITE") || (is_black(piece) && turn == "BLACK"))) {
-				console.log(piece);
+				// console.log(piece);
 				if (piece == 'K' || piece == 'k') {
 					// KING
 					var sqs = [];
@@ -187,7 +187,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sqs[i].rank,file:sqs[i].file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -217,7 +217,7 @@ function get_legal_moves(fen) {
 														{rank:r,file:f},
 														{rank:0,file:6},
 														piece,
-														board),
+														fen),
 													null);
 												moves.push(move);
 											}
@@ -238,7 +238,7 @@ function get_legal_moves(fen) {
 														{rank:r,file:f},
 														{rank:0,file:2},
 														piece,
-														board),
+														fen),
 													null);
 												moves.push(move);
 											}
@@ -270,7 +270,7 @@ function get_legal_moves(fen) {
 														{rank:r,file:f},
 														{rank:7,file:6},
 														piece,
-														board),
+														fen),
 													null);
 												moves.push(move);
 											}
@@ -291,7 +291,7 @@ function get_legal_moves(fen) {
 														{rank:r,file:f},
 														{rank:7,file:2},
 														piece,
-														board),
+														fen),
 													null);
 												moves.push(move);
 											}
@@ -318,7 +318,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.rank++;
@@ -334,7 +334,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -356,7 +356,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.rank--;
@@ -372,7 +372,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -394,7 +394,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.rank--;
@@ -410,7 +410,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -432,7 +432,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.rank++;
@@ -448,7 +448,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -469,7 +469,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.rank++;
@@ -484,7 +484,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -505,7 +505,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.rank--;
@@ -520,7 +520,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -542,7 +542,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.file++;
@@ -557,7 +557,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -578,7 +578,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.file--;
@@ -593,7 +593,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -616,7 +616,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.rank++;
@@ -632,7 +632,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -654,7 +654,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.rank--;
@@ -670,7 +670,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -692,7 +692,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.rank--;
@@ -708,7 +708,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -730,7 +730,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.rank++;
@@ -746,7 +746,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -780,7 +780,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sqs[i].rank,file:sqs[i].file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -801,7 +801,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.rank++;
@@ -816,7 +816,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -837,7 +837,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.rank--;
@@ -852,7 +852,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -874,7 +874,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.file++;
@@ -889,7 +889,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -910,7 +910,7 @@ function get_legal_moves(fen) {
 									{rank:r,file:f},
 									{rank:sq.rank,file:sq.file},
 									piece,
-									board),
+									fen),
 								null);
 							moves.push(move);
 							sq.file--;
@@ -925,7 +925,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:sq.rank,file:sq.file},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -951,7 +951,7 @@ function get_legal_moves(fen) {
 											{rank:r,file:f},
 											{rank:3,file:f},
 											piece,
-											board),
+											fen),
 										null);
 									moves.push(move);
 								}
@@ -970,7 +970,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r+1,file:f},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -985,7 +985,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r+1,file:f+1},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -1000,7 +1000,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r+1,file:f-1},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -1018,7 +1018,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r+1,file:f},
 										'Q',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1029,7 +1029,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r+1,file:f},
 										'B',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1040,7 +1040,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r+1,file:f},
 										'N',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1051,7 +1051,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r+1,file:f},
 										'R',
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -1066,7 +1066,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r+1,file:f+1},
 										'Q',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1077,7 +1077,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r+1,file:f+1},
 										'B',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1088,7 +1088,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r+1,file:f+1},
 										'N',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1099,7 +1099,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r+1,file:f+1},
 										'R',
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -1114,7 +1114,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f+1},
 										'Q',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1125,7 +1125,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f+1},
 										'B',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1136,7 +1136,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f+1},
 										'N',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1147,7 +1147,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f+1},
 										'R',
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -1165,7 +1165,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r+1,file:f+1},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -1179,7 +1179,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r+1,file:f-1},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -1200,7 +1200,7 @@ function get_legal_moves(fen) {
 											{rank:r,file:f},
 											{rank:4,file:f},
 											piece,
-											board),
+											fen),
 										null);
 									moves.push(move);
 								}
@@ -1219,7 +1219,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f},
 										piece-
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -1234,7 +1234,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f+1},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -1249,7 +1249,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f-1},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -1267,7 +1267,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f},
 										'q',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1278,7 +1278,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f},
 										'b',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1289,7 +1289,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f},
 										'n',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1300,7 +1300,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f},
 										'r',
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -1315,7 +1315,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f+1},
 										'q',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1326,7 +1326,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f+1},
 										'b',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1337,7 +1337,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f+1},
 										'n',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1348,7 +1348,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f+1},
 										'r',
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -1363,7 +1363,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f-1},
 										'q',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1374,7 +1374,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f-1},
 										'b',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1385,7 +1385,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f-1},
 										'n',
-										board),
+										fen),
 									null);
 								moves.push(move);
 								move = new Move(
@@ -1396,7 +1396,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f-1},
 										'r',
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -1413,7 +1413,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f+1},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -1427,7 +1427,7 @@ function get_legal_moves(fen) {
 										{rank:r,file:f},
 										{rank:r-1,file:f-1},
 										piece,
-										board),
+										fen),
 									null);
 								moves.push(move);
 							}
@@ -1449,8 +1449,11 @@ function get_piece(board,sq) {
 	/*returns the piece at sq on Game.board*/
 	return board[sq.x][sq.y];
 }
-function get_position_after_move_on_board(src,dest,piece,board) {
+function get_position_after_move_on_board(src,dest,piece,fen) {
 	/*returns a board array created from the moving the piece from src to dest on the board param*/
+	var pos = "";
+	var castling_data = get_castling_data(fen);
+	var board = board_from_fen(fen);
 	var board_after_move = [
 	[null,null,null,null,null,null,null,null],
 	[null,null,null,null,null,null,null,null],
@@ -1471,7 +1474,54 @@ function get_position_after_move_on_board(src,dest,piece,board) {
 	board_after_move[dest.rank][dest.file] = piece;
 	// replace src with null
 	board_after_move[src.rank][src.file] = null;
-	return board_after_move;
+	if (piece == "K" && src.rank == 0 && src.file == 4) {
+		if (dest.rank == 6) {
+			board_after_move[5][0] = "R";
+			board_after_move[7][0] = null;
+		} else if (dest.rank == 2) {
+			board_after_move[3][0] = "R";
+			board_after_move[0][0] = null;
+		}
+		var a = 0;
+		var ncd = "";
+		while (a < castling_data.length) {
+			if (castling_data.charAt(a) == '-') {
+				break;
+			}
+			if (castling_data.charAt(a) == 'K' || castling_data.charAt(a) == 'Q') {
+				// do not add to ncd
+			} else {
+				ncd += castling_data.charAt(a);
+			}
+		}
+		// set castling_data to ncd (the new castling data)
+		castling_data = ncd;
+	} else if (piece == "k" && src.rank == 7 && src.file == 4) {
+		if (dest.rank == 6) {
+			board_after_move[5][7] = "r";
+			board_after_move[7][7] = null;
+		} else if (dest.rank == 2) {
+			board_after_move[3][7] = "r";
+			board_after_move[0][7] = null;
+		}
+		var a = 0;
+		var ncd = "";
+		while (a < castling_data.length) {
+			if (castling_data.charAt(a) == '-') {
+				break;
+			}
+			if (castling_data.charAt(a) == 'k' || castling_data.charAt(a) == 'q') {
+				// do not add to ncd
+			} else {
+				ncd += castling_data.charAt(a);
+			}
+		}
+		// set castling_data to ncd (the new castling data)
+		castling_data = ncd;
+	}
+
+
+	return pos;
 }
 function get_square(rank,file) {
 	/*returns the string form of the square when given a rank and file numerical param*/
