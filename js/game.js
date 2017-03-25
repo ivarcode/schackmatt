@@ -146,6 +146,56 @@ function get_en_passant_sq(fen) {
 	}
 	return null;
 }
+function get_fullmove(fen) {
+	/*returns the halfmove number*/
+	var i = 0;
+	// set i to en passant sq
+	while (fen.charAt(i) != ' ') {
+		i++;
+	}
+	i+=3;
+	while (fen.charAt(i) != ' ') {
+		i++;
+	}
+	i++;
+	while (fen.charAt(i) != ' ') {
+		i++;
+	}
+	i++;
+	while (fen.charAt(i) != ' ') {
+		i++;
+	}
+	i++;
+	var fm = ""+fen.charAt(i);
+	if (fen.charAt(i+1) != ' ') {
+		fm += fen.charAt(i+1);
+	}
+	fm = parseInt(fm);
+	return fm;
+}
+function get_halfmove(fen) {
+	/*returns the halfmove number*/
+	var i = 0;
+	// set i to en passant sq
+	while (fen.charAt(i) != ' ') {
+		i++;
+	}
+	i+=3;
+	while (fen.charAt(i) != ' ') {
+		i++;
+	}
+	i++;
+	while (fen.charAt(i) != ' ') {
+		i++;
+	}
+	i++;
+	var hm = ""+fen.charAt(i);
+	if (fen.charAt(i+1) != ' ') {
+		hm += fen.charAt(i+1);
+	}
+	hm = parseInt(hm);
+	return hm;
+}
 function get_legal_moves(fen) {
 	/*gets all the legal moves from the fen*/
 	// initializes empty moves array
@@ -160,7 +210,7 @@ function get_legal_moves(fen) {
 			var piece = board[r][f];
 			// if piece is not null AND (if piece is white and turn == white OR if piece is black and turn == black)
 			if (piece != null && ((is_white(piece) && turn == "WHITE") || (is_black(piece) && turn == "BLACK"))) {
-				console.log(piece);
+				// console.log(piece);
 				if (piece == 'K' || piece == 'k') {
 					// KING
 					var sqs = [];
@@ -1451,7 +1501,7 @@ function get_piece(board,sq) {
 }
 function get_position_after_move_on_board(src,dest,piece,fen) {
 	/*returns a board array created from the moving the piece from src to dest on the board param*/
-	console.log("get_position_after_move_on_board("+src+","+dest+","+piece+","+fen+")")
+	// console.log("get_position_after_move_on_board("+src+","+dest+","+piece+","+fen+")");
 	var pos = "";
 	var castling_data = get_castling_data(fen);
 	var board = board_from_fen(fen);
@@ -1634,9 +1684,31 @@ function get_position_after_move_on_board(src,dest,piece,fen) {
 	}
 	pos += castling_data;
 	pos += ' ';
-
-
-
+	var new_eps = "-";
+	if (piece == 'P' || piece == 'p') {
+		if (Math.abs(src.rank-dest.rank) == 2) {
+			if (dest.rank == 3) {
+				new_eps = get_square(2,dest.file);
+			} else if (dest.rank == 4) {
+				new_eps = get_square(5,dest.file);
+			} else {
+				throw "ERR: invalid movement of pawn (two squares to rank other than 3 or 4)";
+			}
+		}
+	}
+	pos += new_eps;
+	pos += ' ';
+	if (piece == 'P' || piece == 'p' || board[dest.rank][dest.file] != null) {
+		pos += '0';
+	} else {
+		pos += get_halfmove(fen)+1;
+	}
+	pos += ' ';
+	if (get_turn(fen) == "BLACK") {
+		pos += get_fullmove(fen)+1;
+	} else {
+		pos += get_fullmove(fen);
+	}
 	return pos;
 }
 function get_square(rank,file) {
