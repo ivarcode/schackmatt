@@ -102,7 +102,7 @@ function get_castling_data(fen) {
 	while (fen.charAt(i) != ' ') {
 		i++;
 	}
-	i += 2;
+	i += 3;
 	// checks if - identifies no legal castles for either side
 	if (fen.charAt(i) == '-') {
 		return "-";
@@ -160,7 +160,7 @@ function get_legal_moves(fen) {
 			var piece = board[r][f];
 			// if piece is not null AND (if piece is white and turn == white OR if piece is black and turn == black)
 			if (piece != null && ((is_white(piece) && turn == "WHITE") || (is_black(piece) && turn == "BLACK"))) {
-				// console.log(piece);
+				console.log(piece);
 				if (piece == 'K' || piece == 'k') {
 					// KING
 					var sqs = [];
@@ -1451,6 +1451,7 @@ function get_piece(board,sq) {
 }
 function get_position_after_move_on_board(src,dest,piece,fen) {
 	/*returns a board array created from the moving the piece from src to dest on the board param*/
+	console.log("get_position_after_move_on_board("+src+","+dest+","+piece+","+fen+")")
 	var pos = "";
 	var castling_data = get_castling_data(fen);
 	var board = board_from_fen(fen);
@@ -1474,6 +1475,7 @@ function get_position_after_move_on_board(src,dest,piece,fen) {
 	board_after_move[dest.rank][dest.file] = piece;
 	// replace src with null
 	board_after_move[src.rank][src.file] = null;
+	// king exceptions
 	if (piece == "K" && src.rank == 0 && src.file == 4) {
 		if (dest.rank == 6) {
 			board_after_move[5][0] = "R";
@@ -1493,6 +1495,7 @@ function get_position_after_move_on_board(src,dest,piece,fen) {
 			} else {
 				ncd += castling_data.charAt(a);
 			}
+			a++;
 		}
 		// set castling_data to ncd (the new castling data)
 		castling_data = ncd;
@@ -1515,10 +1518,123 @@ function get_position_after_move_on_board(src,dest,piece,fen) {
 			} else {
 				ncd += castling_data.charAt(a);
 			}
+			a++;
 		}
 		// set castling_data to ncd (the new castling data)
 		castling_data = ncd;
 	}
+	// corner exceptions
+	if ((src.rank == 0 && src.file == 7) || (dest.rank == 0 && dest.file == 7)) {
+		var a = 0;
+		var ncd = "";
+		while (a < castling_data.length) {
+			if (castling_data.charAt(a) == '-') {
+				break;
+			}
+			if (castling_data.charAt(a) == 'K') {
+				// do not add to ncd
+			} else {
+				ncd += castling_data.charAt(a);
+			}
+			a++;
+		}
+		// set castling_data to ncd (the new castling data)
+		castling_data = ncd;
+	} else if ((src.rank == 0 && src.file == 0) || (dest.rank == 0 && dest.file == 0)) {
+		var a = 0;
+		var ncd = "";
+		while (a < castling_data.length) {
+			if (castling_data.charAt(a) == '-') {
+				break;
+			}
+			if (castling_data.charAt(a) == 'Q') {
+				// do not add to ncd
+			} else {
+				ncd += castling_data.charAt(a);
+			}
+			a++;
+		}
+		// set castling_data to ncd (the new castling data)
+		castling_data = ncd;
+	} else if ((src.rank == 7 && src.file == 7) || (dest.rank == 7 && dest.file == 7)) {
+		var a = 0;
+		var ncd = "";
+		while (a < castling_data.length) {
+			if (castling_data.charAt(a) == '-') {
+				break;
+			}
+			if (castling_data.charAt(a) == 'k') {
+				// do not add to ncd
+			} else {
+				ncd += castling_data.charAt(a);
+			}
+			a++;
+		}
+		// set castling_data to ncd (the new castling data)
+		castling_data = ncd;
+	} else if ((src.rank == 7 && src.file == 0) || (dest.rank == 7 && dest.file == 0)) {
+		var a = 0;
+		var ncd = "";
+		while (a < castling_data.length) {
+			if (castling_data.charAt(a) == '-') {
+				break;
+			}
+			if (castling_data.charAt(a) == 'q') {
+				// do not add to ncd
+			} else {
+				ncd += castling_data.charAt(a);
+			}
+			a++;
+		}
+		// set castling_data to ncd (the new castling data)
+		castling_data = ncd;
+	}
+	// en passant pawn clearance
+	var eps = get_en_passant_sq(fen);
+	if (piece == 'P' || piece == 'p') {
+		if (dest.rank == eps.rank && dest.file == eps.file) {
+			var clearance_rank = null;
+			if (dest.rank == 5) {
+				clearance_rank = 4;
+			} else if (dest.rank == 2) {
+				clearance_rank = 3;
+			} else {
+				throw "ERR: dest rank for en passant clearance sq is neither 5 nor 2";
+			}
+			board_after_move[clearance_rank][dest.file] = null;
+		}
+	}
+	// loop through board_after_move and create the first part of pos
+	var inc = 0;
+	for (var a = 0; a < 8; a++) {
+		for (var b = 0; b < 8; b++) {
+			if (board_after_move[a][b] == null) {
+				inc++;
+			} else {
+				if (inc > 0) {
+					pos += inc;
+					inc = 0;
+				}
+				pos += board_after_move[a][b];
+			}
+		}
+		if (inc > 0) {
+			pos += inc;
+			inc = 0;
+		}
+		if (a != 7) {
+			pos += '/';
+		}
+	}
+	pos += ' ';
+	if (get_turn(fen) == "WHITE") {
+		pos += "b ";
+	} else {
+		pos += "w ";
+	}
+	pos += castling_data;
+	pos += ' ';
+
 
 
 	return pos;
@@ -1815,6 +1931,7 @@ function print_move(move) {
 	/*prints all the information of move*/
 	console.log(move.notation);
 	console.log(get_string_coord(move.src)+" --> "+get_string_coord(move.dest)+" = "+move.piece);
+	console.log(move.position);
 }
 
 
