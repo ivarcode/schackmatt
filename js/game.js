@@ -1490,7 +1490,7 @@ function get_legal_moves(fen) {
 	console.log(moves);
 	for (var a = 0; a < moves.length; a++) {
 		// print move data for testing
-		print_move(moves[a]);
+		// print_move(moves[a]);
 	}
 
 	return moves;

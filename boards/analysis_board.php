@@ -29,7 +29,6 @@ board_img.src = "./assets/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 // initializing a standard game
 // var game = new Game("player_one","player_two","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
 var game = new Game("player_one","player_two","STANDARD","rnbqkbnr/ppp3pp/3p1p2/4p3/4P3/3B1N2/PPPP1PPP/RNBQK2R w KQkq - 0 4",[]);
-
 print_game_info(game);
 
 
@@ -100,10 +99,11 @@ function setup() {
 		} else /*if selected_square is not null*/ if (selected_square != null) {
 			var move_data = {src:selected_square,dest:d};
 			// console.log(move_data);
-			var current_board = board_from_FEN(game.get_FEN());
-			print_board(current_board);
+			var current_board = board_from_fen(game.fen);
+			print_board_from_fen(game.fen);
 			// check move legality
-			var legal_moves = get_legal_moves(game.get_FEN());
+			var legal_moves = get_legal_moves(game.fen);
+			console.log("LEGAL MOVES");
 			console.log(legal_moves);
 			var move_is_legal = false;
 			var move_index = null;
