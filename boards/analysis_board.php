@@ -109,6 +109,7 @@ function setup() {
 			var move_index = null;
 			for (var n = 0; n < legal_moves.length; n++) {
 				if (move_data.src.x == legal_moves[n].src.x && move_data.src.y == legal_moves[n].src.y && move_data.dest.x == legal_moves[n].dest.x && move_data.dest.y == legal_moves[n].dest.y) {
+					
 					console.log("move is legal");
 					move_is_legal = true;
 					move_index = n;
