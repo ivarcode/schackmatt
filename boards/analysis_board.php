@@ -103,13 +103,14 @@ function setup() {
 			print_board_from_fen(game.fen);
 			// check move legality
 			var legal_moves = get_legal_moves(game.fen);
-			console.log("LEGAL MOVES");
+			// console.log("LEGAL MOVES");
 			console.log(legal_moves);
 			var move_is_legal = false;
 			var move_index = null;
 			for (var n = 0; n < legal_moves.length; n++) {
-				if (move_data.src.x == legal_moves[n].src.x && move_data.src.y == legal_moves[n].src.y && move_data.dest.x == legal_moves[n].dest.x && move_data.dest.y == legal_moves[n].dest.y) {
-					
+				// console.log(" "+n+"  "+move_data.src.x+","+move_data.src.y+"  "+move_data.dest.x+","+move_data.dest.y+"\n "+n+"  "+legal_moves[n].src.rank+","+legal_moves[n].src.file+"  "+legal_moves[n].dest.rank+","+legal_moves[n].dest.file);
+				if (move_data.src.x == legal_moves[n].src.rank && move_data.src.y == legal_moves[n].src.file && move_data.dest.x == legal_moves[n].dest.rank && move_data.dest.y == legal_moves[n].dest.file) {
+
 					console.log("move is legal");
 					move_is_legal = true;
 					move_index = n;
@@ -117,8 +118,10 @@ function setup() {
 			}
 			// make move if it is legal
 			if (move_is_legal) {
-				game.set_FEN(legal_moves[move_index].position);
+				update_position(game,legal_moves[move_index].position);
 				setHTMLElements();
+				print_game_info(game);
+				drawBoard();
 			}
 		}
 
@@ -244,6 +247,66 @@ function drawBoard() {
 			}
 		}
 	}
+	// draw arrows for legal moves
+	if (true) {
+		var m = get_legal_moves(game.fen);
+		// console.log("draw legal moves on board");
+		for (var i = 0; i < m.length; i++) {
+			// console.log(m[i]);
+			draw_move_arrow(m[i].src,m[i].dest);
+		}
+	}
+}
+
+function draw_move_arrow(src,dest) {
+	/*function that draws an arrow to the board after doing all the angle and length calculations*/
+	var deltaX = dest.rank - src.rank;
+	var deltaY = dest.file - src.file;
+	var arrow_width = 80;
+	var arrow_height = (deltaX*80*deltaX*80)+(deltaY*80*deltaY*80);
+	arrow_height = Math.sqrt(arrow_height);
+	var rad = Math.atan2(deltaY,deltaX);
+	// console.log(rad);
+	var tranx = Math.max(src.rank,dest.rank);
+	var trany = Math.min(src.file,dest.file);
+	// console.log(tranx,trany);
+	var a = trany*SQ_DIM;
+	var b = (7-tranx)*SQ_DIM;
+	// board_context.fillRect(a,b,5,5);
+	board_context.translate(a,b);
+	// board_context.fillRect(5,5,5,5);
+	// console.log("deltaX = "+deltaX+" deltaY = "+deltaY);
+	var cY = (deltaY*40);
+	var cX = (deltaX*40);
+	if (deltaX >= 0) {
+		// do nothing
+		if (deltaY >= 0) {
+			// do nothing
+		} else {
+			cY = -cY;
+		}
+	} else {
+		cX = -cX;
+		if (deltaY >= 0) {
+			// do nothing
+		} else {
+			cY = -cY;
+		}
+	}
+	board_context.translate(cY+40,cX+40);
+	// board_context.fillRect(0,0,5,5);
+	// board_context.translate(arrow_width/2,arrow_height/2);
+	// board_context.translate(40,40);
+	board_context.rotate(rad);
+	board_context.drawImage(IMAGES.arrow,-(arrow_width/2),-(arrow_height/2),arrow_width,SQ_DIM);
+	board_context.drawImage(IMAGES.shaft,-(arrow_width/2),-(arrow_height/2)+SQ_DIM,arrow_width,arrow_height-SQ_DIM);
+	
+	board_context.rotate(-rad);
+	board_context.translate(-a,-b);
+	board_context.translate(-(cY+40),-(cX+40));
+	// board_context.translate(-(deltaY*40),-((7-deltaX)*40));
+	// board_context.translate(-(arrow_width/2),-(arrow_height/2));
+	// board_context.translate(-40,-40);
 }
 
 function drawArrow(src,dest) {

@@ -1268,7 +1268,7 @@ function get_legal_moves(fen) {
 									get_position_after_move_on_board(
 										{rank:r,file:f},
 										{rank:r-1,file:f},
-										piece-
+										piece,
 										fen),
 									null);
 								moves.push(move);
@@ -1656,7 +1656,7 @@ function get_position_after_move_on_board(src,dest,piece,fen) {
 	}
 	// loop through board_after_move and create the first part of pos
 	var inc = 0;
-	for (var a = 0; a < 8; a++) {
+	for (var a = 7; a > -1; a--) {
 		for (var b = 0; b < 8; b++) {
 			if (board_after_move[a][b] == null) {
 				inc++;
@@ -1672,7 +1672,7 @@ function get_position_after_move_on_board(src,dest,piece,fen) {
 			pos += inc;
 			inc = 0;
 		}
-		if (a != 7) {
+		if (a != 0) {
 			pos += '/';
 		}
 	}
@@ -2004,6 +2004,11 @@ function print_move(move) {
 	console.log(move.notation);
 	console.log(get_string_coord(move.src)+" --> "+get_string_coord(move.dest)+" = "+move.piece);
 	console.log(move.position);
+}
+function update_position(g,pos) {
+	/*function updates the position pos in game g*/
+	g.fen = pos;
+
 }
 
 
