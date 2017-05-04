@@ -1274,7 +1274,7 @@ function get_legal_moves(fen) {
 								moves.push(move);
 							}
 							// if enemy piece exists to the right diagonal
-							if (board[r-1][f+1] != null && is_black(board[r-1][f+1])) {
+							if (board[r-1][f+1] != null && is_white(board[r-1][f+1])) {
 								// add capture to moves array
 								var move = new Move(
 									{rank:r,file:f},
@@ -1289,7 +1289,7 @@ function get_legal_moves(fen) {
 								moves.push(move);
 							}
 							// if enemy piece exists to the left diagonal
-							if (board[r-1][f-1] != null && is_black(board[r-1][f-1])) {
+							if (board[r-1][f-1] != null && is_white(board[r-1][f-1])) {
 								// add capture to moves array
 								var move = new Move(
 									{rank:r,file:f},
@@ -1355,7 +1355,7 @@ function get_legal_moves(fen) {
 								moves.push(move);
 							}
 							// if enemy piece exists to the right diagonal
-							if (board[r-1][f+1] != null && is_black(board[r-1][f+1])) {
+							if (board[r-1][f+1] != null && is_white(board[r-1][f+1])) {
 								// add capture to moves array
 								var move = new Move(
 									{rank:r,file:f},
@@ -1403,7 +1403,7 @@ function get_legal_moves(fen) {
 								moves.push(move);
 							}
 							// if enemy piece exists to the left diagonal
-							if (board[r-1][f-1] != null && is_black(board[r-1][f-1])) {
+							if (board[r-1][f-1] != null && is_white(board[r-1][f-1])) {
 								// add capture to moves array
 								var move = new Move(
 									{rank:r,file:f},

@@ -15,10 +15,10 @@ var SQ_DIM = 80;
 var strategic_draws = []; // for lack of a better name for this variable, I am sure one will come to me
 
 var selected_square;
-var tintSquare;
+var tint_square;
 var click_data = {src: null, dest: null, mSrc: null, mDest: null};
 var mouse_over_board = false;
-var current_mousePos = null;
+var current_mouse_pos = null;
 var mousedown = false;
 var queening = false;
 
@@ -40,16 +40,16 @@ function setup() {
 	};
 	board_context = board_canvas.getContext("2d");
 
-	drawBoard();
+	draw_board();
 
 	// setting HTML elements
-	setHTMLElements();
+	set_HTML_elements();
 	
 	board_canvas.addEventListener('mousedown',function(events){
 		
 		// collect src sq from events
-		click_data.mSrc = getMousePos(board_canvas,events);
-		var s = getSquareFromMousePos(click_data.mSrc);
+		click_data.mSrc = get_mouse_pos(board_canvas,events);
+		var s = get_sq_from_mouse_pos(click_data.mSrc);
 		console.log("src sq = "+s.x+","+s.y);
 
 		if (events.button === 0 /*left mousebutton pressed*/) {
@@ -67,8 +67,8 @@ function setup() {
 	board_canvas.addEventListener('mouseup',function(events){
 
 		// collect dest sq from events
-		click_data.mDest = getMousePos(board_canvas,events);
-		var d = getSquareFromMousePos(click_data.mDest);
+		click_data.mDest = get_mouse_pos(board_canvas,events);
+		var d = get_sq_from_mouse_pos(click_data.mDest);
 		console.log("dest sq = "+d.x+","+d.y);
 
 		// if strategic_draws latest entry has a src, but a null dest
@@ -119,9 +119,9 @@ function setup() {
 			// make move if it is legal
 			if (move_is_legal) {
 				update_position(game,legal_moves[move_index].position);
-				setHTMLElements();
+				set_HTML_elements();
 				print_game_info(game);
-				drawBoard();
+				draw_board();
 			}
 		}
 
@@ -133,27 +133,27 @@ function setup() {
 	});
 	board_canvas.addEventListener('mouseleave',function(events){
 		mouse_over_board = false;
-		drawBoard();
+		draw_board();
 	});
 	board_canvas.addEventListener('mousemove',function(events){
 		if (mouse_over_board) {
-			current_mousePos = getMousePos(board_canvas,events);
-			var x = current_mousePos.x;
-			var y = current_mousePos.y;
+			current_mouse_pos = get_mouse_pos(board_canvas,events);
+			var x = current_mouse_pos.x;
+			var y = current_mouse_pos.y;
 			x -= x%SQ_DIM;
 			y -= y%SQ_DIM;
 			// console.log("mousePos on canvas : " + x + " " + y);
 			x /= SQ_DIM;
 			y /= SQ_DIM;
 			// console.log("mousePos on canvas / SQ_DIM : " + x + " " + y);
-			tintSquare = {x:x, y:y};
+			tint_square = {x:x, y:y};
 			// console.log("mousemove");
-			drawBoard();
+			draw_board();
 		}
 	});
 }
 
-function getMousePos(canvas,events) {
+function get_mouse_pos(canvas,events) {
 	/*returns an object {x,y} that contain the mousePos data from events on the canvas*/
 	var obj = canvas;
 	var top = 0, left = 0;
@@ -168,7 +168,7 @@ function getMousePos(canvas,events) {
 	return { x: mX, y: mY };
 }
 
-function getSquareFromMousePos(loc) {
+function get_sq_from_mouse_pos(loc) {
 	/*this function converts the mousePos data to a square on the chessboard*/
 	var x = loc.x;
 	var y = loc.y;
@@ -179,7 +179,7 @@ function getSquareFromMousePos(loc) {
 	return { x: 7-y, y: x };
 }
 
-function drawBoard() {
+function draw_board() {
 	/*function that loops through the board and draws the pieces, as well as highlights proper squares and handles dragged pieces*/
 	var board = board_from_fen(game.fen);
 
@@ -187,7 +187,7 @@ function drawBoard() {
 	board_context.restore();
 	board_context.drawImage(board_img,0,0);
 	if (mouse_over_board) {
-		tintSq(tintSquare.x,tintSquare.y);
+		tint_sq(tint_square.x,tint_square.y);
 	}
 	board_context.globalAlpha = 1;
 	for (var i = 0; i < 8; i++) {
@@ -197,14 +197,14 @@ function drawBoard() {
 					//dont draw, draw later
 				} else {
 					try {
-						drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,board[j][i]);
+						draw_piece(i*SQ_DIM,(7-j)*SQ_DIM,board[j][i]);
 					} catch(e) {
 						console.log("ERR :: "+e.message)
 					}
 				}
 			} else {
 				try {
-					drawPiece(i*SQ_DIM,(7-j)*SQ_DIM,board[j][i]);
+					draw_piece(i*SQ_DIM,(7-j)*SQ_DIM,board[j][i]);
 				} catch(e) {
 					console.log("ERR :: "+e.message)
 				}
@@ -213,7 +213,7 @@ function drawBoard() {
 	}
 	if (selected_square != null && mousedown) {
 		// console.log("drawing piece on mouse");
-		drawPiece(current_mousePos.x-40,current_mousePos.y-40,get_piece(board,selected_square));
+		draw_piece(current_mouse_pos.x-40,current_mouse_pos.y-40,get_piece(board,selected_square));
 	}
 	// draw strategic_draws
 	// console.log("number of strategic_draws = "+strategic_draws.length);
@@ -237,23 +237,27 @@ function drawBoard() {
 			// draw an arrow from src to dest
 			var src = strategic_draws[i].src;
 			var dest = strategic_draws[i].dest;
-			drawArrow(src,dest);
+			draw_arrow(src,dest);
 		} else {
 			// draw "hover arrow" here (the arrow the user is currently in the process of drawing, ie. mousedown == true but mouseup hasnt set a dest yet)
 			var src = strategic_draws[i].src;
-			var dest = getSquareFromMousePos(current_mousePos);
+			var dest = get_sq_from_mouse_pos(current_mouse_pos);
 			if (!(src.x == dest.x && src.y == dest.y)) {
-				drawArrow(src,dest);
+				draw_arrow(src,dest);
 			}
 		}
 	}
 	// draw arrows for legal moves
-	if (true) {
+	if (mouse_over_board) {
 		var m = get_legal_moves(game.fen);
 		// console.log("draw legal moves on board");
 		for (var i = 0; i < m.length; i++) {
 			// console.log(m[i]);
-			draw_move_arrow(m[i].src,m[i].dest);
+			var cms = get_sq_from_mouse_pos(current_mouse_pos);
+			// console.log(cms);
+			if (m[i].src.rank == cms.x && m[i].src.file == cms.y) {
+				draw_move_arrow(m[i].src,m[i].dest);
+			}
 		}
 	}
 }
@@ -309,7 +313,7 @@ function draw_move_arrow(src,dest) {
 	// board_context.translate(-40,-40);
 }
 
-function drawArrow(src,dest) {
+function draw_arrow(src,dest) {
 	/*function that draws an arrow to the board after doing all the angle and length calculations*/
 	var deltaX = dest.x - src.x;
 	var deltaY = dest.y - src.y;
@@ -360,9 +364,9 @@ function drawArrow(src,dest) {
 	// board_context.translate(-40,-40);
 }
 
-function drawPiece(x,y,piece) {
+function draw_piece(x,y,piece) {
 	/*draws one piece in the board at the coordinates given*/
-	// console.log("drawPiece("+x+","+y+","+piece.type+")");
+	// console.log("draw_piece("+x+","+y+","+piece.type+")");
 	if (piece == 'P') { 
 		board_context.drawImage(IMAGES.wPawn,x,y);
 	} else if (piece == 'N') { 
@@ -413,7 +417,7 @@ function drawPiece(x,y,piece) {
 	}
 }
 
-function tintSq(x,y) {
+function tint_sq(x,y) {
 	/*function responsible for tinting squares yellow*/
 	board_context.fillStyle = "yellow";
 	board_context.globalAlpha = 0.5;
@@ -426,20 +430,20 @@ function tintSq(x,y) {
 	}
 }
 
-function selSq(x,y) {
+function sel_sq(x,y) {
 	/*function responsible for tinting sqs blue*/
 	board_context.fillStyle = "blue";
 	board_context.globalAlpha = 0.5;
 	board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
 }
 
-function setHTMLElements() {
+function set_HTML_elements() {
 	/*sets the HTML elements associated with the game data*/
 	document.getElementById("FEN").innerHTML = game.fen;
 	if (calculate_material_balance(game.fen) > 0) {
-		document.getElementById("materialBalance").innerHTML = "material balance = +"+calculate_material_balance(game.fen);
+		document.getElementById("material_balance").innerHTML = "material balance = +"+calculate_material_balance(game.fen);
 	} else {
-		document.getElementById("materialBalance").innerHTML = "material balance = "+calculate_material_balance(game.fen);
+		document.getElementById("material_balance").innerHTML = "material balance = "+calculate_material_balance(game.fen);
 	}
 }
 
@@ -453,7 +457,7 @@ window.addEventListener('load', setup, false);
 	<canvas id="board" width="640" height="640">canvas</canvas>
 	<br><br>
 	<div id="game_data">
-		<h3 id="materialBalance">null</h3>
+		<h3 id="material_balance">null</h3>
 	</div>
 	<br>
 	<div>
