@@ -1527,11 +1527,11 @@ function get_position_after_move_on_board(src,dest,piece,fen) {
 	board_after_move[src.rank][src.file] = null;
 	// king exceptions
 	if (piece == "K" && src.rank == 0 && src.file == 4) {
-		if (dest.rank == 6) {
-			board_after_move[5][0] = "R";
-			board_after_move[7][0] = null;
-		} else if (dest.rank == 2) {
-			board_after_move[3][0] = "R";
+		if (dest.file == 6) {
+			board_after_move[0][5] = "R";
+			board_after_move[0][7] = null;
+		} else if (dest.file == 2) {
+			board_after_move[0][3] = "R";
 			board_after_move[0][0] = null;
 		}
 		var a = 0;
@@ -1550,12 +1550,12 @@ function get_position_after_move_on_board(src,dest,piece,fen) {
 		// set castling_data to ncd (the new castling data)
 		castling_data = ncd;
 	} else if (piece == "k" && src.rank == 7 && src.file == 4) {
-		if (dest.rank == 6) {
-			board_after_move[5][7] = "r";
+		if (dest.file == 6) {
+			board_after_move[7][5] = "r";
 			board_after_move[7][7] = null;
-		} else if (dest.rank == 2) {
-			board_after_move[3][7] = "r";
-			board_after_move[0][7] = null;
+		} else if (dest.file == 2) {
+			board_after_move[7][3] = "r";
+			board_after_move[7][0] = null;
 		}
 		var a = 0;
 		var ncd = "";
