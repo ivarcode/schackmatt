@@ -449,9 +449,9 @@ function set_HTML_elements() {
 	var pgn_html = "";
 	for (var i = 0; i < game.pgn.length; i++) {
 		if (i%2 == 0) {
-			pgn_html += "<tr><td>"+((i/2)+1)+"</td>";
+			pgn_html += "<tr><td style='width:30px;float:right;'>"+((i/2)+1)+"</td>";
 		}
-		pgn_html += "<td>"+game.pgn[i].notation+"</td>";
+		pgn_html += "<td style='width:100px;'>"+game.pgn[i].notation+"</td>";
 		if (i%2 == 1) {
 			pgn_html += "</tr>";
 		}
@@ -466,16 +466,18 @@ window.addEventListener('load', setup, false);
 
 <div id="game">
 	
-	<table id="pgn" style="float:right;"></table>
 	<canvas id="board" width="640" height="640">canvas</canvas>
-	<br><br>
-	<div id="game_data">
-		<h3 id="material_balance">null</h3>
-	</div>
-	<br>
-	<div>
-		<h4 id="fen">fen placeholder</h4>
+	<div id="table">
+		<table id="pgn"></table>
 	</div>
 
+</div>
+<br><br>
+<div class="game_data" style="width:300px;margin-top:630px;">
+	<h3 id="material_balance">null</h3>
+</div>
+<br>
+<div class="game_data">
+	<h4 id="fen">fen placeholder</h4>
 </div>
 
