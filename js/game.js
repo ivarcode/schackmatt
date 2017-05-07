@@ -25,7 +25,7 @@ function Move(src, dest, piece, position, notation) {
 }
 
 
-function board_from_fen(fen) {
+function get_board_from_fen(fen) {
 	/*returns the board in array form from the param fen*/
 	// initializes board array
 	var board = [
@@ -73,7 +73,7 @@ function board_from_fen(fen) {
 function calculate_material_balance(fen) {
 	/*function that calculates and returns the material balance of the input FEN +/- W/B advantage*/
 	var material_balance = 0;
-	var board = board_from_fen(fen);
+	var board = get_board_from_fen(fen);
 	for (var i = 0; i < 8; i++) {
 		for (var j = 0; j < 8; j++) {
 			if (board[i][j] != null) {
@@ -196,12 +196,43 @@ function get_halfmove(fen) {
 	hm = parseInt(hm);
 	return hm;
 }
+function get_king_loc(fen,color) {
+	/*returns the loc in x and y of the king of color in the fen*/
+	// console.log(fen+" "+color);
+	var i = 0;
+	var x = 7;
+	var y = 0;
+	while (fen.charAt(i) != ' ') {
+		if (color == "WHITE" && fen.charAt(i) == 'K') {
+			return {x:x,y:y};
+		}
+		if (color == "BLACK" && fen.charAt(i) == 'k') {
+			return {x:x,y:y};
+		}
+		if (fen.charAt(i) == '/') {
+			x--;
+			y = 0;
+			i++;
+			continue;
+		}
+		if (fen.charAt(i) == 'p' || fen.charAt(i) == 'n' || fen.charAt(i) == 'b' || fen.charAt(i) == 'r' || fen.charAt(i) == 'q' || fen.charAt(i) == 'k' || fen.charAt(i) == 'P' || fen.charAt(i) == 'N' || fen.charAt(i) == 'B' || fen.charAt(i) == 'R' || fen.charAt(i) == 'Q' || fen.charAt(i) == 'K') {
+			y++;
+		} else {
+			var n = parseInt(fen.charAt(i));
+			while (n > 0) {
+				y++;
+				n--;
+			}
+		}
+		i++;
+	}
+}
 function get_legal_moves(fen) {
 	/*gets all the legal moves from the fen*/
 	// initializes empty moves array
 	var moves = [];
 	// translates the fen to the var board in array form
-	var board = board_from_fen(fen);
+	var board = get_board_from_fen(fen);
 	var turn = get_turn(fen);
 	// loop through each piece in board
 	for (var r = 0; r < 8; r++) {
@@ -1058,7 +1089,7 @@ function get_legal_moves(fen) {
 						// if on the 7th rank
 						if (r == 6) {
 							// if no piece in front of pawn
-							if (board[r+1][f]) {
+							if (board[r+1][f] == null) {
 								// add pawn moves one sq to moves array
 								var move = new Move(
 									{rank:r,file:f},
@@ -1154,48 +1185,48 @@ function get_legal_moves(fen) {
 								moves.push(move);
 							}
 							// if enemy piece exists to the left diagonal
-							if (board[r-1][f+1] != null && is_black(board[r-1][f+1])) {
+							if (board[r+1][f-1] != null && is_black(board[r+1][f-1])) {
 								// add capture to moves array
 								var move = new Move(
 									{rank:r,file:f},
-									{rank:r-1,file:f+1},
+									{rank:r+1,file:f-1},
 									'Q',
 									get_position_after_move_on_board(
 										{rank:r,file:f},
-										{rank:r-1,file:f+1},
+										{rank:r+1,file:f-1},
 										'Q',
 										fen),
 									null);
 								moves.push(move);
 								move = new Move(
 									{rank:r,file:f},
-									{rank:r-1,file:f+1},
+									{rank:r+1,file:f-1},
 									'B',
 									get_position_after_move_on_board(
 										{rank:r,file:f},
-										{rank:r-1,file:f+1},
+										{rank:r+1,file:f-1},
 										'B',
 										fen),
 									null);
 								moves.push(move);
 								move = new Move(
 									{rank:r,file:f},
-									{rank:r-1,file:f+1},
+									{rank:r+1,file:f-1},
 									'N',
 									get_position_after_move_on_board(
 										{rank:r,file:f},
-										{rank:r-1,file:f+1},
+										{rank:r+1,file:f-1},
 										'N',
 										fen),
 									null);
 								moves.push(move);
 								move = new Move(
 									{rank:r,file:f},
-									{rank:r-1,file:f+1},
+									{rank:r+1,file:f-1},
 									'R',
 									get_position_after_move_on_board(
 										{rank:r,file:f},
-										{rank:r-1,file:f+1},
+										{rank:r+1,file:f-1},
 										'R',
 										fen),
 									null);
@@ -1307,7 +1338,7 @@ function get_legal_moves(fen) {
 						// if on the 2nd rank
 						if (r == 1) {
 							// if no piece in front of pawn
-							if (board[r-1][f]) {
+							if (board[r-1][f] == null) {
 								// add pawn moves one sq to moves array
 								var move = new Move(
 									{rank:r,file:f},
@@ -1487,13 +1518,56 @@ function get_legal_moves(fen) {
 			}
 		}
 	}
+	for (var a = 0; a < moves.length; a++) {
+		moves[a].notation = get_notation(fen,moves[a]);
+	}
 	// console.log(moves);
+	var safe_moves = [];
 	for (var a = 0; a < moves.length; a++) {
 		// print move data for testing
 		// print_move(moves[a]);
+		var b = get_board_from_fen(moves[a].position);
+		var king_loc = get_king_loc(moves[a].position,get_opp_color(get_turn(moves[a].position)));
+		// console.log(king_loc);
+
+		if (is_sq_threatened_by(b,king_loc,get_turn(moves[a].position))) {
+			// console.log("move is illegal - check");
+		} else {
+			safe_moves.push(moves[a]);
+		}
+	}
+	moves = safe_moves;
+	// console.log(moves);
+	return moves;
+}
+function get_notation(fen,move) {
+	/*gets the proper notation for the move on the current position (fen)*/
+	var notation = "";
+	// piece
+	notation += move.piece.toUpperCase();
+	// if captures 'x'
+	if (get_piece(get_board_from_fen(fen),{x:move.dest.rank,y:move.dest.file}) != null) {
+		notation += 'x';
+	}
+	// dest sq
+	notation += get_square(move.dest.rank,move.dest.file);
+	// check
+	if (is_check(move.position)) {
+		if (is_checkmate(move.position)) {
+			notation += '#';
+		} else {
+			notation += '+';
+		}
 	}
 
-	return moves;
+	return notation;
+}
+function get_opp_color(color) {
+	/*returns the opp color*/
+	if (color == "WHITE") {
+		return "BLACK";
+	}
+	return "WHITE";
 }
 function get_piece(board,sq) {
 	/*returns the piece at sq on Game.board*/
@@ -1504,7 +1578,7 @@ function get_position_after_move_on_board(src,dest,piece,fen) {
 	// console.log("get_position_after_move_on_board("+src+","+dest+","+piece+","+fen+")");
 	var pos = "";
 	var castling_data = get_castling_data(fen);
-	var board = board_from_fen(fen);
+	var board = get_board_from_fen(fen);
 	var board_after_move = [
 	[null,null,null,null,null,null,null,null],
 	[null,null,null,null,null,null,null,null],
@@ -1757,6 +1831,19 @@ function is_black(piece) {
 	}
 	return false;
 }
+function is_check(fen) {
+	/*returns bool if the given position is check*/
+	var color = get_turn(fen);
+	var kl = get_king_loc(fen,color);
+	return is_sq_threatened_by(get_board_from_fen(fen),{x:kl.rank,y:kl.file},get_opp_color(color));
+}
+function is_checkmate(fen) {
+	/*returns bool if the given position is checkmate*/
+	var color = get_turn(fen);
+	var kl = get_king_loc(fen,color);
+	var lm = get_legal_moves(fen);
+	return lm.length == 0 && is_check(fen);
+}
 function is_white(piece) {
 	/*returns true if this piece is white*/
 	if (piece == piece.toUpperCase()) {
@@ -1766,6 +1853,7 @@ function is_white(piece) {
 }
 function is_sq_threatened_by(board,sq,color) {
 	/*returns a boolean result if sq on board is threatened by color*/
+	// console.log("is "+sq.x+","+sq.y+" threatened by "+color);
 	var piece = null;
 	var list = [];
 	// checking king threats
@@ -1958,7 +2046,7 @@ function is_sq_threatened_by(board,sq,color) {
 	// return false if none of the above conditions have led to a returning true
 	return false;
 }
-function print_board_from_fen(fen) {
+function print_get_board_from_fen(fen) {
 	/*prints the board in the console that reflects the fen*/
 	var string = "";
 	var i = 0;
@@ -1975,7 +2063,7 @@ function print_board_from_fen(fen) {
 		}
 		// if the char is a number
 		if (parseInt(fen.charAt(i)) < 9) {
-			for (var j = parseInt(fen.charAt(i)); j > -1; j--) {
+			for (var j = parseInt(fen.charAt(i)); j > 0; j--) {
 				// add space to string
 				string += ' ';
 			}
@@ -1991,7 +2079,7 @@ function print_game_info(g) {
 	/*prints all the information about the current state of Game 'g' into the console*/
 	console.log(g.gametype+" GAME : "+g.white+" vs "+g.black);
 	console.log("\t"+g.fen);
-	console.log("\t"+print_board_from_fen(g.fen));
+	console.log("\t"+print_get_board_from_fen(g.fen));
 	console.log("\t"+get_turn(g.fen)+"'s turn");
 	console.log("\tavailable castles : "+get_castling_data(g.fen));
 	console.log("\tPGN : ");
@@ -2002,8 +2090,8 @@ function print_game_info(g) {
 function print_move(move) {
 	/*prints all the information of move*/
 	console.log(move.notation);
-	console.log(get_string_coord(move.src)+" --> "+get_string_coord(move.dest)+" = "+move.piece);
-	console.log(move.position);
+	console.log("\t"+get_string_coord(move.src)+" --> "+get_string_coord(move.dest)+" = "+move.piece);
+	console.log("\t"+move.position);
 }
 function update_position(g,pos) {
 	/*function updates the position pos in game g*/

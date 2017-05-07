@@ -28,7 +28,7 @@ board_img.src = "./assets/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 
 // initializing a standard game
 // var game = new Game("player_one","player_two","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
-var game = new Game("player_one","player_two","STANDARD","rnbqkbnr/ppp3pp/3p1p2/4p3/4P3/3B1N2/PPPP1PPP/RNBQK2R w KQkq - 0 4",[]);
+var game = new Game("player_one","player_two","STANDARD","r3k2r/pp1bn1pp/1qp5/4P1N1/2B1P3/3Q4/P1P3PP/R1B1K2R b KQkq - 5 16",[]);
 print_game_info(game);
 
 
@@ -99,8 +99,8 @@ function setup() {
 		} else /*if selected_square is not null*/ if (selected_square != null) {
 			var move_data = {src:selected_square,dest:d};
 			// console.log(move_data);
-			var current_board = board_from_fen(game.fen);
-			print_board_from_fen(game.fen);
+			var current_board = get_board_from_fen(game.fen);
+			print_get_board_from_fen(game.fen);
 			// check move legality
 			var legal_moves = get_legal_moves(game.fen);
 			// console.log("LEGAL MOVES");
@@ -181,7 +181,7 @@ function get_sq_from_mouse_pos(loc) {
 
 function draw_board() {
 	/*function that loops through the board and draws the pieces, as well as highlights proper squares and handles dragged pieces*/
-	var board = board_from_fen(game.fen);
+	var board = get_board_from_fen(game.fen);
 
 	board_context.globalAlpha = 1;
 	board_context.restore();
