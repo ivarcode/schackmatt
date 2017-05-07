@@ -27,8 +27,8 @@ board_img.src = "./assets/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 
 
 // initializing a standard game
-// var game = new Game("player_one","player_two","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
-var game = new Game("player_one","player_two","STANDARD","r3k2r/pp1bn1pp/1qp5/4P1N1/2B1P3/3Q4/P1P3PP/R1B1K2R b KQkq - 5 16",[]);
+var game = new Game("player_one","player_two","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
+// var game = new Game("player_one","player_two","STANDARD","6k1/6P1/5KPP/8/8/8/8/8 w - - 5 16",[]);
 print_game_info(game);
 
 
@@ -118,7 +118,8 @@ function setup() {
 			}
 			// make move if it is legal
 			if (move_is_legal) {
-				update_position(game,legal_moves[move_index].position);
+				print_move(legal_moves[move_index]);
+				update_position(game,legal_moves[move_index]);
 				set_HTML_elements();
 				print_game_info(game);
 				draw_board();
@@ -439,12 +440,23 @@ function sel_sq(x,y) {
 
 function set_HTML_elements() {
 	/*sets the HTML elements associated with the game data*/
-	document.getElementById("FEN").innerHTML = game.fen;
+	document.getElementById("fen").innerHTML = game.fen;
 	if (calculate_material_balance(game.fen) > 0) {
 		document.getElementById("material_balance").innerHTML = "material balance = +"+calculate_material_balance(game.fen);
 	} else {
 		document.getElementById("material_balance").innerHTML = "material balance = "+calculate_material_balance(game.fen);
 	}
+	var pgn_html = "";
+	for (var i = 0; i < game.pgn.length; i++) {
+		if (i%2 == 0) {
+			pgn_html += "<tr><td>"+((i/2)+1)+"</td>";
+		}
+		pgn_html += "<td>"+game.pgn[i].notation+"</td>";
+		if (i%2 == 1) {
+			pgn_html += "</tr>";
+		}
+	}
+	document.getElementById("pgn").innerHTML = pgn_html;
 }
 
 window.addEventListener('load', setup, false);
@@ -454,6 +466,7 @@ window.addEventListener('load', setup, false);
 
 <div id="game">
 	
+	<table id="pgn" style="float:right;"></table>
 	<canvas id="board" width="640" height="640">canvas</canvas>
 	<br><br>
 	<div id="game_data">
@@ -461,7 +474,7 @@ window.addEventListener('load', setup, false);
 	</div>
 	<br>
 	<div>
-		<h4 id="FEN">fen placeholder</h4>
+		<h4 id="fen">fen placeholder</h4>
 	</div>
 
 </div>

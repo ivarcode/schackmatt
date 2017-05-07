@@ -20,6 +20,7 @@ function Move(src, dest, piece, position, notation) {
 	this.src = src;
 	this.dest = dest;
 	this.piece = piece;
+	this.previous_position = null;
 	this.position = position;
 	this.notation = notation;
 }
@@ -1518,9 +1519,14 @@ function get_legal_moves(fen) {
 			}
 		}
 	}
+	// set previous position to fen
 	for (var a = 0; a < moves.length; a++) {
-		moves[a].notation = get_notation(fen,moves[a]);
+		moves[a].previous_position = fen;
 	}
+	// kept commented to avoid endless loops
+	/*for (var a = 0; a < moves.length; a++) {
+		moves[a].notation = get_notation(fen,moves[a]);
+	}*/
 	// console.log(moves);
 	var safe_moves = [];
 	for (var a = 0; a < moves.length; a++) {
@@ -1544,13 +1550,23 @@ function get_notation(fen,move) {
 	/*gets the proper notation for the move on the current position (fen)*/
 	var notation = "";
 	// piece
-	notation += move.piece.toUpperCase();
+	if (!(move.piece == 'p' || move.piece == 'P')) {
+		notation += move.piece.toUpperCase();
+	}
 	// if captures 'x'
 	if (get_piece(get_board_from_fen(fen),{x:move.dest.rank,y:move.dest.file}) != null) {
 		notation += 'x';
 	}
 	// dest sq
 	notation += get_square(move.dest.rank,move.dest.file);
+	// castling
+	if (move.piece == "K" || move.piece == 'k') {
+		if (move.src.file - move.dest.file == 2) {
+			notation = "0-0-0";
+		} else if (move.src.file - move.dest.file == -2) {
+			notation = "0-0";
+		}
+	}
 	// check
 	if (is_check(move.position)) {
 		if (is_checkmate(move.position)) {
@@ -1835,7 +1851,8 @@ function is_check(fen) {
 	/*returns bool if the given position is check*/
 	var color = get_turn(fen);
 	var kl = get_king_loc(fen,color);
-	return is_sq_threatened_by(get_board_from_fen(fen),{x:kl.rank,y:kl.file},get_opp_color(color));
+	// console.log(kl);
+	return is_sq_threatened_by(get_board_from_fen(fen),kl,get_opp_color(color));
 }
 function is_checkmate(fen) {
 	/*returns bool if the given position is checkmate*/
@@ -2082,21 +2099,32 @@ function print_game_info(g) {
 	console.log("\t"+print_get_board_from_fen(g.fen));
 	console.log("\t"+get_turn(g.fen)+"'s turn");
 	console.log("\tavailable castles : "+get_castling_data(g.fen));
-	console.log("\tPGN : ");
+	var pgnstr = "";
+	for (var i = 0; i < g.pgn.length; i++) {
+		pgnstr += g.pgn[i].notation;
+		if (i != g.pgn.length-1) {
+			pgnstr += ' ';
+		}
+	}
+	console.log("\tPGN : "+pgnstr);
+	console.log(g.pgn);
 	var legal_moves = get_legal_moves(g.fen);
 	console.log("\t"+legal_moves.length+" legal moves");
 
 }
 function print_move(move) {
 	/*prints all the information of move*/
+	if (move.notation == null) {
+		move.notation = get_notation(move.previous_position,move);
+	}
 	console.log(move.notation);
 	console.log("\t"+get_string_coord(move.src)+" --> "+get_string_coord(move.dest)+" = "+move.piece);
 	console.log("\t"+move.position);
 }
-function update_position(g,pos) {
+function update_position(g,move) {
 	/*function updates the position pos in game g*/
-	g.fen = pos;
-
+	g.fen = move.position;
+	g.pgn.push(move);
 }
 
 
