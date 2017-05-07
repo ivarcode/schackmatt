@@ -96,6 +96,20 @@ function calculate_material_balance(fen) {
 	}
 	return material_balance;
 }
+function file_to_char(file) {
+	/*converts the file from an int to a char*/
+	switch (file) {
+		case 0: return 'a';
+		case 1: return 'b';
+		case 2: return 'c';
+		case 3: return 'd';
+		case 4: return 'e';
+		case 5: return 'f';
+		case 6: return 'g';
+		case 7: return 'h';
+		default: throw "ERR invalid file int value";
+	}
+}
 function get_castling_data(fen) {
 	/*gets the sides of the board allowed to be castled on for both sides*/
 	var i = 0;
@@ -1549,6 +1563,66 @@ function get_legal_moves(fen) {
 function get_notation(fen,move) {
 	/*gets the proper notation for the move on the current position (fen)*/
 	var notation = "";
+	var is_queening = false;
+	if (move.dest.rank == 7 && (move.piece == 'Q' || move.piece == 'R' || move.piece == 'B' || move.piece == 'N')) {
+		if (get_piece(get_board_from_fen(fen),{x:move.dest.rank-1,y:move.dest.file}) == 'P') {
+			if (get_piece(get_board_from_fen(move.position),{x:move.dest.rank-1,y:move.dest.file}) == null) {
+				is_queening = true;
+			}
+		}
+		if (move.dest.file != 7) {
+			if (get_piece(get_board_from_fen(fen),{x:move.dest.rank-1,y:move.dest.file+1}) == 'P') {
+				if (get_piece(get_board_from_fen(move.position),{x:move.dest.rank-1,y:move.dest.file+1}) == null) {
+					notation += ""+file_to_char(move.dest.file+1)+"x";
+					is_queening = true;
+				}
+			}
+		}
+		if (move.dest.file != 0) {
+			if (get_piece(get_board_from_fen(fen),{x:move.dest.rank-1,y:move.dest.file-1}) == 'P') {
+				if (get_piece(get_board_from_fen(move.position),{x:move.dest.rank-1,y:move.dest.file-1}) == null) {
+					notation += ""+file_to_char(move.dest.file-1)+"x";
+					is_queening = true;
+				}
+			}
+		}
+	}
+	if (move.dest.rank == 0 && (move.piece == 'q' || move.piece == 'r' || move.piece == 'b' || move.piece == 'n')) {
+		if (get_piece(get_board_from_fen(fen),{x:move.dest.rank+1,y:move.dest.file}) == 'p') {
+			if (get_piece(get_board_from_fen(move.position),{x:move.dest.rank+1,y:move.dest.file}) == null) {
+				is_queening = true;
+			}
+		}
+		if (move.dest.file != 7) {
+			if (get_piece(get_board_from_fen(fen),{x:move.dest.rank+1,y:move.dest.file+1}) == 'p') {
+				if (get_piece(get_board_from_fen(move.position),{x:move.dest.rank+1,y:move.dest.file+1}) == null) {
+					notation += ""+file_to_char(move.dest.file+1)+"x";
+					is_queening = true;
+				}
+			}
+		}
+		if (move.dest.file != 0) {
+			if (get_piece(get_board_from_fen(fen),{x:move.dest.rank+1,y:move.dest.file-1}) == 'p') {
+				if (get_piece(get_board_from_fen(move.position),{x:move.dest.rank+1,y:move.dest.file-1}) == null) {
+					notation += ""+file_to_char(move.dest.file-1)+"x";
+					is_queening = true;
+				}
+			}
+		}
+	}
+	if (is_queening) {
+		notation += get_square(move.dest.rank,move.dest.file);
+		notation += ("="+move.piece.toUpperCase());
+		// check
+		if (is_check(move.position)) {
+			if (is_checkmate(move.position)) {
+				notation += '#';
+			} else {
+				notation += '+';
+			}
+		}
+		return notation;
+	}
 	// piece
 	if (!(move.piece == 'p' || move.piece == 'P')) {
 		notation += move.piece.toUpperCase();
