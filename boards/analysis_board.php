@@ -456,6 +456,12 @@ function set_HTML_elements() {
 			pgn_html += "</tr>";
 		}
 	}
+	if (game.pgn.length == 0) {
+		pgn_html = "<tr><td style='width:30px;float:right;'>1</td><td style='width:100px;'></td><td style='width:100px;'></td></tr>";
+	}
+	if (game.pgn.length == 1) {
+		pgn_html += "<td style='width:100px;'></td>";
+	}
 	document.getElementById("pgn").innerHTML = pgn_html;
 }
 
@@ -467,8 +473,18 @@ window.addEventListener('load', setup, false);
 <div id="game">
 	
 	<canvas id="board" width="640" height="640">canvas</canvas>
-	<div id="table">
-		<table id="pgn"></table>
+	<div id="right_panel">
+		<h3 id="opponent">opponent</h3>
+		<div id="table">
+			<table id="pgn"></table>
+			<div>
+				<button class="table_controls" id="to_start"><<</button>
+				<button class="table_controls" id="back"><</button>
+				<button class="table_controls" id="forward">></button>
+				<button class="table_controls" id="to_end">>></button>
+			</div>
+		</div>
+		<h3 id="self">self</h3>
 	</div>
 
 </div>

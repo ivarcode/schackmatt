@@ -112,13 +112,31 @@ form #login_button, #register_button {
 	display: inline-block;
 	float: left;
 }
-#table {
-	padding: 10px;
-	background-color: rgba(0,0,0,0.5);
-	margin-top: 180px;
+
+#right_panel {
+	margin-top: 145px;
 	margin-left: 20px;
-	height:260px;
-	overflow:auto;
 	display: inline-block;
 	float: left;
+}
+
+#table {
+	height:260px;
+	padding: 10px;
+	background-color: rgba(0,0,0,0.5);
+	overflow:auto;
+}
+
+#right_panel h3 {
+	padding: 8px;
+	font-size: 20px;
+}
+
+.table_controls {
+	background-color: rgba(0,0,0,0.5);
+	margin-top: 20px;
+	width: 50px;
+	height: 25px;
+	color:crimson;
+	border: none;
 }
