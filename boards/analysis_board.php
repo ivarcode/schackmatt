@@ -631,8 +631,11 @@ window.addEventListener('load', setup, false);
 <div class="game_data" style="width:300px;margin-top:570px;">
 	<h3 id="material_balance">null</h3>
 </div>
-<br>
 <div class="game_data">
 	<h4 id="fen">fen placeholder</h4>
 </div>
+
+<br>
+<br>
+<p id="footnotes">contact : camden.i.wagner@ivarcode.net<br>lol <a href="https://github.com/ivarcode/schackmatt/commit/a790cc724374f452b473f1ad533a60cd1624d438">commit a790cc724374f452b473f1ad533a60cd1624d438</a></p>
 

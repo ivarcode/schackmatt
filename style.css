@@ -149,3 +149,10 @@ form #login_button, #register_button {
 	padding-right: 0;
 	font-size: 20px;
 }
+
+#footnotes {
+	color:yellow;
+}
+#footnotes a {
+	color:lightblue;
+}

@@ -20,7 +20,8 @@ index.php
 				echo "<h5 style='float:right;'>member since ".$row['timestamp']."</h5><h2>".$row['username']."</h2>";
 			} else {
 				// default guest homepage
-				echo "You are not logged in.";
+				// echo "You are not logged in.";
+				echo "ye ik the nav buttons for the pgn dont work.. if you find any other bugs pls report";
 			}
 		?>
 
