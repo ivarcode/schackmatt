@@ -300,6 +300,10 @@ function draw_board() {
 	if (mouse_over_board) {
 		tint_sq(tint_square.x,tint_square.y,"yellow",0.7);
 	}
+	if (is_check(game.fen)) {
+		var kl = get_king_loc(game.fen,get_turn(game.fen));
+		tint_sq(kl.y,7-kl.x,"red",0.6);
+	}
 	board_context.globalAlpha = 1;
 	for (var i = 0; i < 8; i++) {
 		for (var j = 0; j < 8; j++) {

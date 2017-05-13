@@ -242,6 +242,7 @@ function get_king_loc(fen,color) {
 		}
 		i++;
 	}
+	throw "get rekt";
 }
 function get_legal_moves(fen) {
 	/*gets all the legal moves from the fen*/
