@@ -121,9 +121,11 @@ form #login_button, #register_button {
 }
 
 #table {
-	height:260px;
 	padding: 10px;
 	background-color: rgba(0,0,0,0.5);
+}
+#pgn_container {
+	height:220px;
 	overflow:auto;
 }
 
@@ -132,6 +134,9 @@ form #login_button, #register_button {
 	font-size: 20px;
 }
 
+#table_controls_div {
+
+}
 .table_controls {
 	background-color: rgba(0,0,0,0.5);
 	margin-top: 20px;

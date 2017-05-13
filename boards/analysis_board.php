@@ -20,7 +20,8 @@ var click_data = {src: null, dest: null, mSrc: null, mDest: null};
 var mouse_over_board = false;
 var current_mouse_pos = null;
 var mousedown = false;
-var queening = false;
+var promoting = false;
+var promoting_to = null;
 
 var board_img = new Image();
 board_img.src = "./assets/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
@@ -28,7 +29,7 @@ board_img.src = "./assets/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 
 // initializing a standard game
 // var game = new Game("player_one","player_two","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
-var game = new Game("player_one","player_two","STANDARD","2k2r2/6PP/8/6K1/8/8/8/8 w - - 1 18",[]);
+var game = new Game("player_one","player_two","STANDARD","2k2r2/6PP/8/6K1/8/8/4p3/8 w - - 1 18",[]);
 print_game_info(game);
 
 
@@ -100,7 +101,7 @@ function setup() {
 			var move_data = {src:selected_square,dest:d};
 			// console.log(move_data);
 			var current_board = get_board_from_fen(game.fen);
-			print_get_board_from_fen(game.fen);
+			print_board_from_fen(game.fen);
 			// check move legality
 			var legal_moves = get_legal_moves(game.fen);
 			// console.log("LEGAL MOVES");
@@ -110,23 +111,46 @@ function setup() {
 			for (var n = 0; n < legal_moves.length; n++) {
 				// console.log(" "+n+"  "+move_data.src.x+","+move_data.src.y+"  "+move_data.dest.x+","+move_data.dest.y+"\n "+n+"  "+legal_moves[n].src.rank+","+legal_moves[n].src.file+"  "+legal_moves[n].dest.rank+","+legal_moves[n].dest.file);
 				if (move_data.src.x == legal_moves[n].src.rank && move_data.src.y == legal_moves[n].src.file && move_data.dest.x == legal_moves[n].dest.rank && move_data.dest.y == legal_moves[n].dest.file) {
-
-					console.log("move is legal");
-					move_is_legal = true;
+					// console.log("move is legal");
+					if (!move_is_legal) {
+						move_is_legal = true;
+					} else {
+						promoting = true;
+						promoting_to = move_data.dest;
+						// console.log("PROMOTING");
+					}
 					move_index = n;
 				}
 			}
-			// make move if it is legal
-			if (move_is_legal) {
-				print_move(legal_moves[move_index]);
+			// make move if it is legal and we are not promoting (waiting for a second click to determine what piece to promote)
+			if (move_is_legal && !promoting) {
+				// print_move(legal_moves[move_index]);
 				update_position(game,legal_moves[move_index]);
 				set_HTML_elements();
 				print_game_info(game);
-				draw_board();
+				draw_board();//excessive redraw??
+			} else if (promoting) {
+				// white is promoting
+				if (promoting_to.x == 7) {
+					if (move_data.src.x == 7 && move_data.src.y == promoting_to.y && move_data.dest.x == 7 && move_data.dest.y == promoting_to.y) {
+						for (var n = 0; n < legal_moves.length; n++) {
+							if (legal_moves[n].piece == 'Q' && legal_moves[n].dest.rank == 7 && legal_moves[n].dest.file == promoting_to.y && get_piece(current_board,{x:legal_moves[n].src.rank,y:legal_moves[n].src.file}) == 'P') {
+								promoting_to = null;
+								promoting = false;
+								update_position(game,legal_moves[n]);
+								set_HTML_elements();
+								print_game_info(game);
+								break;
+							}
+						}
+					}
+				}
+				draw_board();//excessive redraw??
 			}
 		}
 
 		mousedown = false;
+		draw_board();
 
 	});
 	board_canvas.addEventListener('mouseenter',function(events){
@@ -188,7 +212,7 @@ function draw_board() {
 	board_context.restore();
 	board_context.drawImage(board_img,0,0);
 	if (mouse_over_board) {
-		tint_sq(tint_square.x,tint_square.y);
+		tint_sq(tint_square.x,tint_square.y,"yellow",0.7);
 	}
 	board_context.globalAlpha = 1;
 	for (var i = 0; i < 8; i++) {
@@ -248,6 +272,30 @@ function draw_board() {
 			}
 		}
 	}
+
+	// if promoting, draw promotion options
+	if (promoting) {
+		if (promoting_to.x == 7) {
+			tint_sq(promoting_to.y,(7-promoting_to.x),"green",0.8);
+			tint_sq(promoting_to.y,(8-promoting_to.x),"green",0.8);
+			tint_sq(promoting_to.y,(9-promoting_to.x),"green",0.8);
+			tint_sq(promoting_to.y,(10-promoting_to.x),"green",0.8);
+			draw_piece(promoting_to.y*SQ_DIM,(7-promoting_to.x)*SQ_DIM,'Q');
+			draw_piece(promoting_to.y*SQ_DIM,((7-promoting_to.x)*SQ_DIM)+SQ_DIM,'N');
+			draw_piece(promoting_to.y*SQ_DIM,((7-promoting_to.x)*SQ_DIM)+(SQ_DIM*2),'R');
+			draw_piece(promoting_to.y*SQ_DIM,((7-promoting_to.x)*SQ_DIM)+(SQ_DIM*3),'B');
+		} else if (promoting_to.x == 0) {
+			tint_sq(promoting_to.y,promoting_to.x+7,"green",0.8);
+			tint_sq(promoting_to.y,promoting_to.x+6,"green",0.8);
+			tint_sq(promoting_to.y,promoting_to.x+5,"green",0.8);
+			tint_sq(promoting_to.y,promoting_to.x+4,"green",0.8);
+			draw_piece(promoting_to.y*SQ_DIM,(promoting_to.x+7)*SQ_DIM,'q');
+			draw_piece(promoting_to.y*SQ_DIM,(promoting_to.x+6)*SQ_DIM,'n');
+			draw_piece(promoting_to.y*SQ_DIM,(promoting_to.x+5)*SQ_DIM,'r');
+			draw_piece(promoting_to.y*SQ_DIM,(promoting_to.x+4)*SQ_DIM,'b');
+		}
+	}
+
 	// draw arrows for legal moves
 	if (mouse_over_board) {
 		var m = get_legal_moves(game.fen);
@@ -418,10 +466,10 @@ function draw_piece(x,y,piece) {
 	}
 }
 
-function tint_sq(x,y) {
-	/*function responsible for tinting squares yellow*/
-	board_context.fillStyle = "yellow";
-	board_context.globalAlpha = 0.5;
+function tint_sq(x,y,color,global_alpha) {
+	/*function responsible for tinting squares of color 'color'*/
+	board_context.fillStyle = color;
+	board_context.globalAlpha = global_alpha;
 	if (selected_square != null) {
 		if (!(selected_square.x == x && selected_square.y == y)) {
 			board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
@@ -429,13 +477,6 @@ function tint_sq(x,y) {
 	} else {
 		board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
 	}
-}
-
-function sel_sq(x,y) {
-	/*function responsible for tinting sqs blue*/
-	board_context.fillStyle = "blue";
-	board_context.globalAlpha = 0.5;
-	board_context.fillRect(x*SQ_DIM,y*SQ_DIM,SQ_DIM,SQ_DIM);
 }
 
 function set_HTML_elements() {
@@ -476,8 +517,10 @@ window.addEventListener('load', setup, false);
 	<div id="right_panel">
 		<h3 id="opponent">opponent</h3>
 		<div id="table">
-			<table id="pgn"></table>
-			<div>
+			<div id="pgn_container">
+				<table id="pgn"></table>
+			</div>
+			<div id="table_controls_div">
 				<button class="table_controls" id="to_start"><<</button>
 				<button class="table_controls" id="back"><</button>
 				<button class="table_controls" id="forward">></button>

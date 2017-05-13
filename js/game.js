@@ -2137,7 +2137,7 @@ function is_sq_threatened_by(board,sq,color) {
 	// return false if none of the above conditions have led to a returning true
 	return false;
 }
-function print_get_board_from_fen(fen) {
+function print_board_from_fen(fen) {
 	/*prints the board in the console that reflects the fen*/
 	var string = "";
 	var i = 0;
@@ -2170,7 +2170,7 @@ function print_game_info(g) {
 	/*prints all the information about the current state of Game 'g' into the console*/
 	console.log(g.gametype+" GAME : "+g.white+" vs "+g.black);
 	console.log("\t"+g.fen);
-	console.log("\t"+print_get_board_from_fen(g.fen));
+	console.log("\t"+print_board_from_fen(g.fen));
 	console.log("\t"+get_turn(g.fen)+"'s turn");
 	console.log("\tavailable castles : "+get_castling_data(g.fen));
 	var pgnstr = "";
@@ -2197,6 +2197,9 @@ function print_move(move) {
 }
 function update_position(g,move) {
 	/*function updates the position pos in game g*/
+	if (move.notation == null) {
+		move.notation = get_notation(move.previous_position,move);
+	}
 	g.fen = move.position;
 	g.pgn.push(move);
 }
