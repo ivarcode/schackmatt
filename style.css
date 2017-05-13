@@ -144,6 +144,8 @@ form #login_button, #register_button {
 }
 
 #game_result_E {
+	margin-left: 640px;
 	padding: 30px;
+	padding-right: 0;
 	font-size: 20px;
 }

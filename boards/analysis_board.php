@@ -628,7 +628,7 @@ window.addEventListener('load', setup, false);
 
 </div>
 <br><br>
-<div class="game_data" style="width:300px;margin-top:630px;">
+<div class="game_data" style="width:300px;margin-top:570px;">
 	<h3 id="material_balance">null</h3>
 </div>
 <br>
