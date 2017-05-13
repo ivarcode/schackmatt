@@ -144,6 +144,92 @@ function setup() {
 							}
 						}
 					}
+					if (move_data.src.x == 6 && move_data.src.y == promoting_to.y && move_data.dest.x == 6 && move_data.dest.y == promoting_to.y) {
+						for (var n = 0; n < legal_moves.length; n++) {
+							if (legal_moves[n].piece == 'N' && legal_moves[n].dest.rank == 7 && legal_moves[n].dest.file == promoting_to.y && get_piece(current_board,{x:legal_moves[n].src.rank,y:legal_moves[n].src.file}) == 'P') {
+								promoting_to = null;
+								promoting = false;
+								update_position(game,legal_moves[n]);
+								set_HTML_elements();
+								print_game_info(game);
+								break;
+							}
+						}
+					}
+					if (move_data.src.x == 5 && move_data.src.y == promoting_to.y && move_data.dest.x == 5 && move_data.dest.y == promoting_to.y) {
+						for (var n = 0; n < legal_moves.length; n++) {
+							if (legal_moves[n].piece == 'R' && legal_moves[n].dest.rank == 7 && legal_moves[n].dest.file == promoting_to.y && get_piece(current_board,{x:legal_moves[n].src.rank,y:legal_moves[n].src.file}) == 'P') {
+								promoting_to = null;
+								promoting = false;
+								update_position(game,legal_moves[n]);
+								set_HTML_elements();
+								print_game_info(game);
+								break;
+							}
+						}
+					}
+					if (move_data.src.x == 4 && move_data.src.y == promoting_to.y && move_data.dest.x == 4 && move_data.dest.y == promoting_to.y) {
+						for (var n = 0; n < legal_moves.length; n++) {
+							if (legal_moves[n].piece == 'B' && legal_moves[n].dest.rank == 7 && legal_moves[n].dest.file == promoting_to.y && get_piece(current_board,{x:legal_moves[n].src.rank,y:legal_moves[n].src.file}) == 'P') {
+								promoting_to = null;
+								promoting = false;
+								update_position(game,legal_moves[n]);
+								set_HTML_elements();
+								print_game_info(game);
+								break;
+							}
+						}
+					}
+				} else // black is promoting
+				if (promoting_to.x == 0) {
+					if (move_data.src.x == 0 && move_data.src.y == promoting_to.y && move_data.dest.x == 0 && move_data.dest.y == promoting_to.y) {
+						for (var n = 0; n < legal_moves.length; n++) {
+							if (legal_moves[n].piece == 'q' && legal_moves[n].dest.rank == 0 && legal_moves[n].dest.file == promoting_to.y && get_piece(current_board,{x:legal_moves[n].src.rank,y:legal_moves[n].src.file}) == 'p') {
+								promoting_to = null;
+								promoting = false;
+								update_position(game,legal_moves[n]);
+								set_HTML_elements();
+								print_game_info(game);
+								break;
+							}
+						}
+					}
+					if (move_data.src.x == 1 && move_data.src.y == promoting_to.y && move_data.dest.x == 1 && move_data.dest.y == promoting_to.y) {
+						for (var n = 0; n < legal_moves.length; n++) {
+							if (legal_moves[n].piece == 'n' && legal_moves[n].dest.rank == 0 && legal_moves[n].dest.file == promoting_to.y && get_piece(current_board,{x:legal_moves[n].src.rank,y:legal_moves[n].src.file}) == 'p') {
+								promoting_to = null;
+								promoting = false;
+								update_position(game,legal_moves[n]);
+								set_HTML_elements();
+								print_game_info(game);
+								break;
+							}
+						}
+					}
+					if (move_data.src.x == 2 && move_data.src.y == promoting_to.y && move_data.dest.x == 2 && move_data.dest.y == promoting_to.y) {
+						for (var n = 0; n < legal_moves.length; n++) {
+							if (legal_moves[n].piece == 'r' && legal_moves[n].dest.rank == 0 && legal_moves[n].dest.file == promoting_to.y && get_piece(current_board,{x:legal_moves[n].src.rank,y:legal_moves[n].src.file}) == 'p') {
+								promoting_to = null;
+								promoting = false;
+								update_position(game,legal_moves[n]);
+								set_HTML_elements();
+								print_game_info(game);
+								break;
+							}
+						}
+					}
+					if (move_data.src.x == 3 && move_data.src.y == promoting_to.y && move_data.dest.x == 3 && move_data.dest.y == promoting_to.y) {
+						for (var n = 0; n < legal_moves.length; n++) {
+							if (legal_moves[n].piece == 'b' && legal_moves[n].dest.rank == 0 && legal_moves[n].dest.file == promoting_to.y && get_piece(current_board,{x:legal_moves[n].src.rank,y:legal_moves[n].src.file}) == 'p') {
+								promoting_to = null;
+								promoting = false;
+								update_position(game,legal_moves[n]);
+								set_HTML_elements();
+								print_game_info(game);
+								break;
+							}
+						}
+					}
 				}
 				draw_board();//excessive redraw??
 			}
@@ -152,7 +238,7 @@ function setup() {
 		mousedown = false;
 		draw_board();
 
-	});
+	});	
 	board_canvas.addEventListener('mouseenter',function(events){
 		mouse_over_board = true;
 	});
@@ -504,6 +590,13 @@ function set_HTML_elements() {
 		pgn_html += "<td style='width:100px;'></td>";
 	}
 	document.getElementById("pgn").innerHTML = pgn_html;
+	if (game.result != null) {
+		document.getElementById("game_result_E").innerHTML = ":        "+game.result.e;
+		document.getElementById("game_result_E").style.opacity = 1.0;
+	} else {
+		document.getElementById("game_result_E").innerHTML = ":         null";
+		document.getElementById("game_result_E").style.opacity = 0.0;
+	}
 }
 
 window.addEventListener('load', setup, false);
@@ -514,6 +607,9 @@ window.addEventListener('load', setup, false);
 <div id="game">
 	
 	<canvas id="board" width="640" height="640">canvas</canvas>
+	<div id="game_result">
+		<h2 id="game_result_E"></h2>
+	</div>
 	<div id="right_panel">
 		<h3 id="opponent">opponent</h3>
 		<div id="table">

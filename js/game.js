@@ -13,6 +13,7 @@ function Game(white, black, gametype, pos, pgn) {
 	this.gametype = gametype;
 	this.fen = pos;
 	this.pgn = pgn;
+	this.result = null;
 }
 /*Move object constructor
 used as the object to store all the data associated with a 'move' calculation i.e. src, dest, piece, position, notation*/
@@ -2202,6 +2203,17 @@ function update_position(g,move) {
 	}
 	g.fen = move.position;
 	g.pgn.push(move);
+	if (is_checkmate(g.fen)) {
+		if (get_turn(g.fen) == "WHITE") {
+			console.log("white has been checkmated");
+			g.result = {w:0,b:1,e:"white has been checkmated"};
+		} else if (get_turn(g.fen) == "BLACK") {
+			console.log("black has been checkmated");
+			g.result = {w:1,b:0,e:"black has been checkmated"};
+		} else {
+			throw "idek how";
+		}
+	}
 }
 
 

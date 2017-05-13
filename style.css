@@ -114,7 +114,7 @@ form #login_button, #register_button {
 }
 
 #right_panel {
-	margin-top: 145px;
+	margin-top: 60px;
 	margin-left: 20px;
 	display: inline-block;
 	float: left;
@@ -134,9 +134,6 @@ form #login_button, #register_button {
 	font-size: 20px;
 }
 
-#table_controls_div {
-
-}
 .table_controls {
 	background-color: rgba(0,0,0,0.5);
 	margin-top: 20px;
@@ -144,4 +141,9 @@ form #login_button, #register_button {
 	height: 25px;
 	color:crimson;
 	border: none;
+}
+
+#game_result_E {
+	padding: 30px;
+	font-size: 20px;
 }
