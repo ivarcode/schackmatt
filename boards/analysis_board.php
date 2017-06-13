@@ -28,8 +28,8 @@ board_img.src = "./assets/board_" + SQ_DIM*8 + "x" + SQ_DIM*8 + ".png";
 
 
 // initializing a standard game
-// var game = new Game("player_one","player_two","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
-var game = new Game("player_one","player_two","STANDARD","2k2r2/6PP/8/6K1/8/8/4p3/8 w - - 1 18",[]);
+var game = new Game("player_one","player_two","STANDARD","rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",[]);
+// var game = new Game("player_one","player_two","STANDARD","2k2r2/6PP/8/6K1/8/8/4p3/8 w - - 1 18",[]);
 print_game_info(game);
 
 
