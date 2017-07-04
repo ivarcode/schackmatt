@@ -26,10 +26,19 @@ function Move(src, dest, piece, position, notation) {
 	this.notation = notation;
 }
 
+function make_random_move(g) {
+	var moves = get_legal_moves(g.fen);
+	console.log(moves);
+	var random_move = moves[parseInt(Math.random()*moves.length)];
+	console.log("computer plays "+get_notation(g.fen,random_move));
+	update_position(g,random_move);
+}
 
-function get_board_from_fen(fen) {
+
+function get_board_from_fen(f) {
 	/*returns the board in array form from the param fen*/
 	// initializes board array
+	var fen = ""+f;
 	var board = [
 	[null,null,null,null,null,null,null,null],
 	[null,null,null,null,null,null,null,null],

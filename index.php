@@ -26,9 +26,17 @@ index.php
 		?>
 
 		<br><hr><br>
-
+		<!-- getting the url from the server to handle thrown errors -->
 		<?php
-			include 'boards/analysis_board.php';
+			$url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			// if the $url contains somehow_the_user_memed_me error
+			if (strpos($url,'error=somehow_the_user_memed_me') !== false) {
+				echo "<center><br><h3 class='red_error_text'>somehow, i've been memed</h3></center>";
+			}
+		?>
+		<?php
+			// include 'boards/analysis_board.php';
+			include 'create_game.php';
 		?>
 
 	</div>

@@ -38,6 +38,21 @@ nav #unordered_list_left {
 	float: left;
 }
 
+nav #unordered_list_left li {
+	list-style: none;
+	float: left;
+	padding: 12px;
+}
+
+nav #unordered_list_left li a {
+	color: rgb(200,200,200);
+	font-size: 16px;
+}
+
+nav #unordered_list_left li a:hover {
+	color: #FFF;
+}
+
 nav #unordered_list_right {
 	margin: 0px;
 	padding: 0px;
@@ -155,4 +170,29 @@ form #login_button, #register_button {
 }
 #footnotes a {
 	color:lightblue;
+}
+
+input[type='radio'] {
+	float: left;
+	margin-top: 20px;
+	margin-left: 106px;
+    transform: scale(3);
+}
+
+#create_game_form {
+	background-color: #1d1e21;
+	height: 100%;
+	width:500px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#create_game_form img {
+	margin-left:40px;
+}
+
+#create_game_form h2 {
+	font-size: 20px;
+	margin-top:15px;
+	margin-left: 50px;
 }

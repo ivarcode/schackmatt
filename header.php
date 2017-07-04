@@ -20,7 +20,12 @@ header.php
 	<nav>
 		<ul id="unordered_list_left">
 			<!-- site logo -->
-			<a href="./"><img src="assets/logo.png?<?php echo time(); ?>" height="40px"></a>
+			<a style="float: left;" href="./"><img src="assets/logo.png?<?php echo time(); ?>" height="40px"></a>
+			<?php
+				// if (isset($_SESSION['id'])) {
+				// 	echo "<li style='margin-left:40px;'><a href='includes/logout.inc.php'>create a game</a></li>";
+				// }
+			?>
 		</ul>
 		<ul id="unordered_list_right">
 			<?php
