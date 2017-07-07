@@ -1,5 +1,5 @@
 // Camden Wagner
-// server.js
+// app.js
 
 console.log('Starting server...');
 
