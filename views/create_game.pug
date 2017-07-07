@@ -1,0 +1,47 @@
+extends layout
+
+block content
+  h1 
+    center #{title}
+  form#create_game_form(method='POST', action='/games/create')
+    br
+    img(style='margin-left:90px;', src='/assets/pieces/w_King.png')
+    img(src='/assets/random_color_icon.png')
+    img(src='/assets/pieces/b_King.png')
+    br
+    input.color_selector(style='margin-left:125px;', type='radio', name='radio', value='white')
+    input.color_selector(type='radio', name='radio', value='random', checked='')
+    input.color_selector(type='radio', name='radio', value='black')
+    br
+    br
+    br
+    h2(style='margin-left:100px;float:left;') white
+    h2(style='float:left;') random
+    h2(style='float:left;') black
+    br
+    br
+    select(name='vs', style='margin-left:160px;margin-top:20px;font-size:24px;background-color:#1d1e21;border: none;color: grey;')
+      option(value='computer') vs computer
+      option(value='player') vs player
+    br
+    br
+    hr(style='color:white;width:80%;margin-right:auto;margin-left:auto;')
+    br
+    input#create_game_button(style='margin-left:160px;font-size:26px;color:white;background-color: #1d1e21;border:none;', type='submit', name='create_game_button', value='create game')
+    
+    
+    
+    
+    
+    
+    
+    //- #form-group
+    //-   label White:
+    //-   input.form-control(name='white', type='text')
+    //- #form-group
+    //-   label PGN:
+    //-   input.form-control(name='pgn', type='text')
+    //- #form-group
+    //-   label Result:
+    //-   input.form-control(name='result', type='text')
+    //- input.btn.btn-primary(type='submit',value='submit')
