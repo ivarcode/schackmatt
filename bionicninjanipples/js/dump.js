@@ -1,0 +1,1004 @@
+Game.prototype.change_turn = function() {
+	/*changes the turn of Game*/
+	this.turn = this.get_opp_color(this.get_turn());
+};
+Game.prototype.copy = function() {
+	/*copies Game into a new game object and returns that object*/
+	var g = new Game(this.p1,this.p2,this.gametype,this.fen,this.pgn);
+	// console.log("game.copy() :: successful");
+	return g;
+};
+
+Game.prototype.is_legal_move = function(move) {
+	console.log("lel");
+	/*returns whether or not the move from src -> dest is a legal move*/
+	var moves = this.get_legal_moves();
+	for (var i = 0; i < moves.length; i++) {
+		if (moves[i].src.x == move.src.x && moves[i].src.y == move.src.y && moves[i].dest.x == move.dest.x && moves[i].dest.y == move.dest.y) {
+			console.log("is_legal_move() true");
+			return true;
+		}
+	}
+	return false;
+};
+
+Game.prototype.move_piece = function(move) {
+	/*places piece on dest and sets the src to null*/
+	this.set_piece(move.dest,move.piece);
+	this.set_piece(move.src,null);
+};
+
+Game.prototype.make_move = function(move,force_move) {
+	/*attempts to make move of piece but checks move legality first if force_move != true*/
+	// move.print();
+	if (force_move || this.is_legal_move(move)) {
+		// console.log("moving piece "+move.piece.color+" "+move.piece.type);
+		// move.print();
+		// this.add_move_to_PGN(move);
+		this.move_piece(move);
+		this.change_turn();
+	} else {
+		console.log(".make_move :: move is not valid");
+		console.log(move);
+	}
+	this.set_FEN();
+	// this.print();
+};
+
+
+
+Game.prototype.game_after_move = function(move) {
+	/*returns Game object after move has been made*/
+	var g = this.copy();
+	g.make_move(move,true);
+	return g;
+};
+
+
+
+
+Game.prototype.get_king = function(color) {
+	/*finds the king of color in game*/
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			if (game.get_piece({x:i,y:j}) != null && game.get_piece({x:i,y:j}).type == "KING" && game.get_piece({x:i,y:j}).color == color) {
+				// console.log("\t\t"+i+" "+j);
+				// console.log("\t\tget_king() :: "+color+" king found on board");
+				return {x:i,y:j};
+			}
+		}
+	}
+	// console.log("\t\tget_king() :: no "+color+" king found on board");
+	return null;
+};
+Game.prototype.get_legal_moves = function() {
+	/*returns an array of legal moves from the position in Game*/
+	// console.log('get legal moves function happens');
+	var moves = [];
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			try {
+				// console.log("trying");
+				if (this.get_piece({x:i,y:j}) != null && this.get_piece({x:i,y:j}).color == this.get_turn()) {
+					var a = this.get_moves_from_sq({x:i,y:j});
+					console.log(a);
+					// console.log("testing for moves from sq "+i+","+j);
+					for (var b = 0; b < a.length; b++) {
+						moves[moves.length] = a[b];
+					}
+				}
+			} catch(e) {
+				console.log("ERR :: " + e.message);
+			}
+		}
+	}
+	console.log("\tget_legal_moves() before filtered checks length = "+moves.length);
+	for (var a = 0; a < moves.length; a++) {
+		var g = this.game_after_move(moves[a]);
+		g.printPos();
+		if (g.is_check(game.turn)) {
+			moves.remove(a);
+			a--;
+		}
+	}
+	console.log("\tget_legal_moves() after filtered checks length = "+moves.length);
+	for (var d = 0; d < moves.length; d++) {
+		moves[d].print();
+	}
+	return moves;
+};
+Game.prototype.get_moves_from_sq = function(sq) {
+	/*gets the piece on the board and calculates its possible moves
+	returns an array of moves*/
+	var piece = this.get_piece(sq);
+	if (piece == null) {
+		return [];
+	}
+	if (piece.type == "KING") {
+		return this.get_king_moves(sq,piece.color);
+	} else if (piece.type == "QUEEN") {
+		return this.get_queen_moves(sq,piece.color);
+	} else if (piece.type == "BISHOP") {
+		return this.get_bishop_moves(sq,piece.color);
+	} else if (piece.type == "KNIGHT") {
+		return this.get_knight_moves(sq,piece.color);
+	} else if (piece.type == "ROOK") {
+		return this.get_rook_moves(sq,piece.color);
+	} else if (piece.type == "PAWN") {
+		return this.get_pawn_moves(sq,piece.color);
+	}
+	return [];
+};
+Game.prototype.get_opp_color = function(color) {
+	/*returns the color that is not the input color, white -> black, black -> white*/
+	if (color == "WHITE") {
+		return "BLACK";
+	} else if (color == "BLACK") {
+		return "WHITE";
+	} else {
+		throw "ERR :: invalid color";
+	}
+};
+
+
+
+
+
+
+Game.prototype.get_king_moves = function(sq,color) {
+	/*gets all moves from sq for the arg color king*/
+	var moves = [];
+	var list = [];
+	// building a list of sqs surrounding the source sq
+	list[list.length] = {x:sq.x+1,y:sq.y};
+	list[list.length] = {x:sq.x+1,y:sq.y+1};
+	list[list.length] = {x:sq.x+1,y:sq.y-1};
+	list[list.length] = {x:sq.x-1,y:sq.y};
+	list[list.length] = {x:sq.x-1,y:sq.y+1};
+	list[list.length] = {x:sq.x-1,y:sq.y-1};
+	list[list.length] = {x:sq.x,y:sq.y+1};
+	list[list.length] = {x:sq.x,y:sq.y-1};
+	// for loop adds each move to the 'moves' array declared above if the sq is both in bounds of the board and is not occupied by a friendly piece
+	for (var i = 0; i < list.length; i++) {
+		if (list[i].x > -1 && list[i].x < 8 && list[i].y > -1 && list[i].y < 8) {
+			if (this.board[list[i].x][list[i].y] == null || this.board[list[i].x][list[i].y].color != color) {
+				moves[moves.length] = new Move(sq,list[i],this.get_piece(sq));
+			}
+		}
+	}
+	var c = this.get_opp_color(color);
+	if (!this.is_sq_threatened_by(sq,c)) {
+		if (sq.x == 0 && sq.y == 4 && color == "WHITE" && this.castling[0] && this.board[sq.x][sq.y+1] == null && !this.is_sq_threatened_by({x:sq.x,y:sq.y+1},c) && this.board[sq.x][sq.y+2] == null && !this.is_sq_threatened_by({x:sq.x,y:sq.y+2},c)) {
+			moves[moves.length] = new Move(sq,{x:sq.x,y:sq.y+2},this.get_piece(sq));
+			console.log("kingside castling allowed for white");
+		}
+		if (sq.x == 0 && sq.y == 4 && color == "WHITE" && this.castling[1] && this.board[sq.x][sq.y-1] == null && !this.is_sq_threatened_by({x:sq.x,y:sq.y-1},c) && this.board[sq.x][sq.y-2] == null && !this.is_sq_threatened_by({x:sq.x,y:sq.y-2},c) && this.board[sq.x][sq.y-3] == null) {
+			moves[moves.length] = new Move(sq,{x:sq.x,y:sq.y-2},this.get_piece(sq));
+			console.log("queenside castling allowed for white");
+		}
+		if (sq.x == 7 && sq.y == 4 && color == "BLACK" && this.castling[2] && this.board[sq.x][sq.y+1] == null && !this.is_sq_threatened_by({x:sq.x,y:sq.y+1},c) && this.board[sq.x][sq.y+2] == null && !this.is_sq_threatened_by({x:sq.x,y:sq.y+2},c)) {
+			moves[moves.length] = new Move(sq,{x:sq.x,y:sq.y+2},this.get_piece(sq));
+			console.log("kingside castling allowed for black");
+		}
+		if (sq.x == 7 && sq.y == 4 && color == "BLACK" && this.castling[3] && this.board[sq.x][sq.y-1] == null && !this.is_sq_threatened_by({x:sq.x,y:sq.y-1},c) && this.board[sq.x][sq.y-2] == null && !this.is_sq_threatened_by({x:sq.x,y:sq.y-2},c) && this.board[sq.x][sq.y-3] == null) {
+			moves[moves.length] = new Move(sq,{x:sq.x,y:sq.y-2},this.get_piece(sq));
+			console.log("queenside castling allowed for black");
+		}
+	}
+	return moves;
+};
+Game.prototype.get_king_moves_without_castles = function(sq,color) {
+	/*gets all moves from sq in game for the arg color king but doesn't check for castling (avoids loops)*/
+	var moves = [];
+	var list = [];
+	list[list.length] = {x:sq.x+1,y:sq.y};
+	list[list.length] = {x:sq.x+1,y:sq.y+1};
+	list[list.length] = {x:sq.x+1,y:sq.y-1};
+	list[list.length] = {x:sq.x-1,y:sq.y};
+	list[list.length] = {x:sq.x-1,y:sq.y+1};
+	list[list.length] = {x:sq.x-1,y:sq.y-1};
+	list[list.length] = {x:sq.x,y:sq.y+1};
+	list[list.length] = {x:sq.x,y:sq.y-1};
+	for (var i = 0; i < list.length; i++) {
+		if (list[i].x > -1 && list[i].x < 8 && list[i].y > -1 && list[i].y < 8) {
+			if (this.board[list[i].x][list[i].y] == null || this.board[list[i].x][list[i].y].color != color) {
+				moves[moves.length] = new Move(sq,list[i],this.get_piece(sq));
+			}
+		}
+	}
+	return moves;
+};
+Game.prototype.get_knight_moves = function(sq,color) {
+	/*gets all moves from sq in game for the arg color knight*/
+	var moves = [];
+	var list = [];
+	list[list.length] = {x:sq.x+1,y:sq.y+2};
+	list[list.length] = {x:sq.x+1,y:sq.y-2};
+	list[list.length] = {x:sq.x+2,y:sq.y+1};
+	list[list.length] = {x:sq.x+2,y:sq.y-1};
+	list[list.length] = {x:sq.x-1,y:sq.y+2};
+	list[list.length] = {x:sq.x-1,y:sq.y-2};
+	list[list.length] = {x:sq.x-2,y:sq.y+1};
+	list[list.length] = {x:sq.x-2,y:sq.y-1};
+	for (var i = 0; i < list.length; i++) {
+		if (list[i].x > -1 && list[i].x < 8 && list[i].y > -1 && list[i].y < 8) {
+			if (this.board[list[i].x][list[i].y] == null || this.board[list[i].x][list[i].y].color != color) {
+				moves[moves.length] = new Move(sq,list[i],this.get_piece(sq));
+
+			}
+		}
+	}
+	return moves;
+};
+Game.prototype.get_queen_moves = function(sq,color) {
+	/*gets all moves from sq in game for the arg color queen*/
+	var a = this.get_rook_moves(sq,color);
+	var b = this.get_bishop_moves(sq,color);
+	var moves = a.concat(b);
+	return moves;
+};
+Game.prototype.get_rook_moves = function(sq,color) {
+	/*gets all moves from sq in game for the arg color rook*/
+	var moves = [];
+	var a = sq.x;
+	var b = sq.y;
+	while (a+1 < 8) {
+		a++;
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a-1 > -1) {
+		a--;
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (b+1 < 8) {
+		b++;
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (b-1 > -1) {
+		b--;
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	return moves;
+};
+Game.prototype.get_bishop_moves = function(sq,color) {
+	/*gets all moves from sq in game for the arg color bishop*/
+	var moves = [];
+	var a = sq.x;
+	var b = sq.y;
+	while (a+1 < 8 && b+1 < 8) {
+		a++;
+		b++;
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a+1 < 8 && b-1 > -1) {
+		a++;
+		b--;
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a-1 > -1 && b+1 < 8) {
+		a--;
+		b++;
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	a = sq.x;
+	b = sq.y;
+	while (a-1 > -1 && b-1 > -1) {
+		a--;
+		b--;
+		if (this.board[a][b] == null || this.board[a][b].color != color) {
+			moves[moves.length] = new Move(sq,{x:a,y:b},this.get_piece(sq));
+			if (this.board[a][b] != null) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	return moves;
+};
+Game.prototype.get_pawn_moves = function(sq,color) {
+	/*gets all moves from sq in game for the arg color pawn*/
+	var moves = [];
+	if (color == "WHITE") {
+		// single move
+		if (this.board[sq.x+1][sq.y] == null) {
+			moves[moves.length] = new Move(sq,{x:sq.x+1,y:sq.y},this.get_piece(sq));
+		}
+		// first move for pawn, two square move
+		if (sq.x == 1 && this.board[sq.x+2][sq.y] == null && this.board[sq.x+1][sq.y] == null) {
+			moves[moves.length] = new Move(sq,{x:sq.x+2,y:sq.y},this.get_piece(sq));
+		}
+		// capture
+		if (sq.x+1 < 8 && sq.y+1 < 8 && this.board[sq.x+1][sq.y+1] != null && this.board[sq.x+1][sq.y+1].color != color) {
+			moves[moves.length] = new Move(sq,{x:sq.x+1,y:sq.y+1},this.get_piece(sq));
+		}
+		if (sq.x+1 < 8 && sq.y-1 > -1 && this.board[sq.x+1][sq.y-1] != null && this.board[sq.x+1][sq.y-1].color != color) {
+			moves[moves.length] = new Move(sq,{x:sq.x+1,y:sq.y-1},this.get_piece(sq));
+		}
+		// en passant
+		if (this.enPassant_allowedAt != null) {
+			if (this.enPassant_allowedAt.x == sq.x+1 && this.enPassant_allowedAt.y == sq.y+1) {
+				moves[moves.length] = new Move(sq,{x:sq.x+1,y:sq.y+1},this.get_piece(sq));
+			} else if (this.enPassant_allowedAt.x == sq.x+1 && this.enPassant_allowedAt.y == sq.y-1) {
+				moves[moves.length] = new Move(sq,{x:sq.x+1,y:sq.y-1},this.get_piece(sq));
+			}
+		}
+	} else /*if turn == BLACK*/{
+		// single move
+		if (this.board[sq.x-1][sq.y] == null) {
+			moves[moves.length] = new Move(sq,{x:sq.x-1,y:sq.y},this.get_piece(sq));
+		}
+		// first move for pawn, two square move
+		if (sq.x == 6 && this.board[sq.x-2][sq.y] == null && this.board[sq.x-1][sq.y] == null) {
+			moves[moves.length] = new Move(sq,{x:sq.x-2,y:sq.y},this.get_piece(sq));
+		}
+		// capture
+		if (sq.x-1 > -1 && sq.y+1 < 8 && this.board[sq.x-1][sq.y+1] != null && this.board[sq.x-1][sq.y+1].color != color) {
+			moves[moves.length] = new Move(sq,{x:sq.x-1,y:sq.y+1},this.get_piece(sq));
+		}
+		if (sq.x-1 > -1 && sq.y-1 > -1 && this.board[sq.x-1][sq.y-1] != null && this.board[sq.x-1][sq.y-1].color != color) {
+			moves[moves.length] = new Move(sq,{x:sq.x-1,y:sq.y-1},this.get_piece(sq));
+		}
+		// en passant
+		if (this.enPassant_allowedAt != null) {
+			if (this.enPassant_allowedAt.x == sq.x+1 && this.enPassant_allowedAt.y == sq.y+1) {
+				moves[moves.length] = new Move(sq,{x:sq.x-1,y:sq.y+1},this.get_piece(sq));
+			} else if (this.enPassant_allowedAt.x == sq.x-1 && this.enPassant_allowedAt.y == sq.y-1) {
+				moves[moves.length] = new Move(sq,{x:sq.x-1,y:sq.y-1},this.get_piece(sq));
+			}
+		}
+	}
+	for (var i = 0; i < moves.length; i++) {
+		if (moves[i].dest.x == 7) {
+			moves[i].piece = wKnight;
+			moves[moves.length] = new Move(sq,moves[i].dest,wBishop);
+			moves[moves.length] = new Move(sq,moves[i].dest,wRook);
+			moves[moves.length] = new Move(sq,moves[i].dest,wQueen);
+		} else if (moves[i].dest.x == 0) {
+			moves[i].piece = bKnight;
+			moves[moves.length] = new Move(sq,moves[i].dest,bBishop);
+			moves[moves.length] = new Move(sq,moves[i].dest,bRook);
+			moves[moves.length] = new Move(sq,moves[i].dest,bQueen);
+		}
+	}
+	return moves;
+};
+
+
+Game.prototype.set_FEN = function() {
+	/*sets the fen property of Game to refect the current state of Game*/
+	var newFEN = "";
+	var inc = 0;
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			if (this.board[7-i][j] == null) {
+				inc++;
+			} else {
+				if (inc > 0) {
+					newFEN += inc;
+					inc = 0;
+				}
+				if (this.board[7-i][j].color == "WHITE") {
+					if (this.board[7-i][j].type == "KING") {
+						newFEN += "K";
+					} else if (this.board[7-i][j].type == "QUEEN") {
+						newFEN += "Q";
+					} else if (this.board[7-i][j].type == "BISHOP") {
+						newFEN += "B";
+					} else if (this.board[7-i][j].type == "KNIGHT") {
+						newFEN += "N";
+					} else if (this.board[7-i][j].type == "ROOK") {
+						newFEN += "R";
+					} else if (this.board[7-i][j].type == "PAWN") {
+						newFEN += "P";
+					}
+				} else {
+					if (this.board[7-i][j].type == "KING") {
+						newFEN += "k";
+					} else if (this.board[7-i][j].type == "QUEEN") {
+						newFEN += "q";
+					} else if (this.board[7-i][j].type == "BISHOP") {
+						newFEN += "b";
+					} else if (this.board[7-i][j].type == "KNIGHT") {
+						newFEN += "n";
+					} else if (this.board[7-i][j].type == "ROOK") {
+						newFEN += "r";
+					} else if (this.board[7-i][j].type == "PAWN") {
+						newFEN += "p";
+					}
+				}
+			}
+		}
+		if (inc > 0) {
+			newFEN += inc;
+			inc = 0;
+		}
+		if (i != 7) {
+			newFEN += "/";
+		}
+	}
+	newFEN += " ";
+	if (this.turn == "WHITE") {
+		newFEN += "w";
+	} else {
+		newFEN += "b";
+	}
+	newFEN += " ";
+	if (this.castling[0]) {
+		newFEN += "K";
+	}
+	if (this.castling[1]) {
+		newFEN += "Q";
+	}
+	if (this.castling[2]) {
+		newFEN += "k";
+	}
+	if (this.castling[3]) {
+		newFEN += "q";
+	} else {
+		if (!this.castling[0] && !this.castling[1] && !this.castling[2] && !this.castling[3]) {
+			newFEN += "-";
+		}
+	}
+	newFEN += " ";
+	if (this.enPassant_allowedAt != null) {
+		newFEN += pairToSq(this.enPassant_allowedAt);
+	} else {
+		newFEN += "-";
+	}
+	newFEN += " ";
+	newFEN += this.halfmove;
+	newFEN += " ";
+	newFEN += this.move_count;
+
+	this.fen = newFEN;
+};
+Game.prototype.set_piece = function(sq,piece) {
+	/*sets the sq on board equal to piece*/
+	this.board[sq.x][sq.y] = piece;
+};
+
+
+
+Game.prototype.is_checkmate = function() {
+	/*returns whether or not the position in game is currently checkmate*/
+	if (this.get_legal_moves().length == 0 && this.is_check()) {
+		console.log("CHECKMATE");
+		return true;
+	}
+	return false;
+};
+Game.prototype.is_stalemate = function() {
+	/*returns whether or not the position in game is currently stalemate*/
+	if (this.get_legal_moves().length == 0 && !this.is_check()) {
+		console.log("STALEMATE");
+		return true;
+	}
+	return false;
+};
+Game.prototype.get_players = function() {
+	/*returns an object {p1,p2} which returns the respective players in Game*/
+	return {p1:this.p1,p2:this.p2};
+};
+
+
+
+
+
+
+
+Move.prototype.print = function() {
+	console.log(this.piece.color+" "+this.piece.type+"   "+this.src.x+","+this.src.y+" --> "+this.dest.x+","+this.dest.y);
+};
+Move.prototype.get_notation = function() {
+	/*returns a string containing the notation of the move in game*/
+	// var notation = "";
+	// if (piece == null) {
+	// 	return null;
+	// }
+	// if (piece.type == "KING") {
+	// 	notation += "K";
+	// } else if (piece.type == "QUEEN") {
+	// 	notation += "Q";
+	// } else if (piece.type == "BISHOP") {
+	// 	notation += "B";
+	// } else if (piece.type == "KNIGHT") {
+	// 	notation += "N";
+	// } else if (piece.type == "ROOK") {
+	// 	notation += "R";
+	// } else {
+	// 	//add nothing
+	// }
+	// if (game.get_piece(move.dest) != null) {
+	// 	notation += "x";
+	// }
+	// notation += pairToSq(move.dest);
+	// if (game.game_after_move(move).is_checkmate()) {
+	// 	notation += "#";
+	// } else if (game.game_after_move(move).is_check()) {
+	// 	notation += "+";
+	// }
+	// return notation;
+};
+
+Game.prototype.is_sq_threatened_by = function(sq,color) {
+	/*returns a boolean if the sq on Game is threatened by color*/
+	var moves = [];
+	var c = this.get_opp_color(color);
+	moves = this.get_knight_moves(sq,c);
+	for (var i = 0; i < moves.length; i++) {
+		if (game.board[moves[i].dest.x][moves[i].dest.y] != null && game.board[moves[i].dest.x][moves[i].dest.y].type == "KNIGHT" && game.board[moves[i].dest.x][moves[i].dest.y].color == color) {
+			console.log("knight threatens "+color+" king");
+			return true;
+		}
+	}
+	moves = this.get_bishop_moves(sq,c);
+	for (var i = 0; i < moves.length; i++) {
+		if (this.board[moves[i].dest.x][moves[i].dest.y] != null && ((this.board[moves[i].dest.x][moves[i].dest.y].type == "BISHOP") || (this.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN")) && this.board[moves[i].dest.x][moves[i].dest.y].color == color) {
+			console.log("bishop or queen threatens "+color+" king");
+			return true;
+		}
+	}
+	moves = this.get_rook_moves(sq,c);
+	for (var i = 0; i < moves.length; i++) {
+		if (this.board[moves[i].dest.x][moves[i].dest.y] != null && ((this.board[moves[i].dest.x][moves[i].dest.y].type == "ROOK") || (this.board[moves[i].dest.x][moves[i].dest.y].type == "QUEEN")) && this.board[moves[i].dest.x][moves[i].dest.y].color == color) {
+			console.log("rook or queen threatens "+color+" king");
+			return true;
+		}
+	}
+	if (color == "BLACK") {
+		try {
+			if (this.board[sq.x+1][sq.y+1].type == "PAWN" && this.board[sq.x+1][sq.y+1].color == color) {
+				return true;
+			}
+		} catch(e) {
+			// console.log("ERR :: " + e.message);
+		}
+		try {
+			if (this.board[sq.x+1][sq.y-1].type == "PAWN" && this.board[sq.x+1][sq.y-1].color == color) {
+				return true;
+			}
+		} catch(e) {
+			// console.log("ERR :: " + e.message);
+		}
+	} else /*turn == WHITE*/{
+		try {
+			if (this.board[sq.x-1][sq.y+1].type == "PAWN" && this.board[sq.x-1][sq.y+1].color == color) {
+				return true;
+			}
+		} catch(e) {
+			// console.log("ERR :: " + e.message);
+		}
+		try {
+			if (this.board[sq.x-1][sq.y-1].type == "PAWN" && this.board[sq.x-1][sq.y-1].color == color) {
+				return true;
+			}
+		} catch(e) {
+			// console.log("ERR :: " + e.message);
+		}
+	}
+	moves = this.get_king_moves_without_castles(sq,c);
+	for (var i = 0; i < moves.length; i++) {
+		if (this.board[moves[i].dest.x][moves[i].dest.y] != null && this.board[moves[i].dest.x][moves[i].dest.y].type == "KING" && this.board[moves[i].dest.x][moves[i].dest.y].color == color) {
+			console.log("king threatens "+color+" king");
+			return true;
+		}
+	}
+	return false;
+}
+
+
+Game.prototype.is_check = function(color) {
+	/*returns whether or not the position in game is currently check*/
+	console.log(color);
+	var sq = this.get_king(color);
+	console.log(sq);
+	if (this.is_sq_threatened_by(sq,this.get_opp_color(color))) {
+		console.log("CHECK");
+		return true;
+	}
+	console.log("NOT CHECK");
+	return false;
+};
+
+
+
+
+this.castling = [];
+this.halfmove = null;
+this.move_count = null;
+this.enPassant_allowedAt = null;
+this.load_data_from_FEN = function() {
+	/*skips board and loads other data to game*/
+	var i = 0;
+	while (this.get_FEN().charAt(i) != ' ') {
+		i++;
+	}
+	i++;
+	if (this.get_FEN().charAt(i) == 'w') {
+		this.turn = "WHITE";
+	} else if (this.get_FEN().charAt(i) == 'b') {
+		this.turn = "BLACK";
+	} else {
+		console.log("charAt(i) = "+this.get_FEN().charAt(i));
+		throw "ERR :: invalid color";
+	}
+	i+=2;
+	if (this.get_FEN().charAt(i++) == "K") {
+		this.castling[0] = true;
+	}
+	if (this.get_FEN().charAt(i++) == "Q") {
+		this.castling[1] = true;
+	}
+	if (this.get_FEN().charAt(i++) == "k") {
+		this.castling[2] = true;
+	}
+	if (this.get_FEN().charAt(i++) == "q") {
+		this.castling[3] = true;
+	}
+	i++;
+	if (this.get_FEN().charAt(i) == '-') {
+		if (this.enPassant_allowedAt)
+			this.enPassant_allowedAt = null;
+	} else {
+		this.enPassant_allowedAt = this.get_FEN().charAt(i);
+	}
+	i+=2;
+	this.halfmove = this.get_FEN().charAt(i);
+	i+=2;
+	this.move_count = this.get_FEN().charAt(i);
+};
+this.load_data_from_FEN();
+
+
+
+
+
+
+
+
+
+
+				/*mousedown*/
+
+				click_data.mSrc = getMousePos(board_canvas,events);
+				var s = getSquareFromMousePos(click_data.mSrc);
+				console.log(s);
+
+				if (events.button === 0 /*left*/) {
+					console.log("left click");
+					if (selected_square != null) {
+						if (s.x == selected_square.x && s.y == selected_square.y) {
+							console.log("same sq");
+							selected_square = null;
+						} else {
+							console.log("make move second click");
+							game.make_move(new Move(selected_square,s,game.get_piece(selected_square)));
+						}
+					} else {
+						if (game.get_piece(s) != null && game.get_piece(s).color == game.get_turn()) {
+							console.log("setting selected_square to "+s.x+","+s.y);
+							selected_square = s;
+						} else {
+							selected_square = null;
+						}
+					}
+				} else if (events.button === 2 /*right*/) {
+					console.log("right click");
+					strategic_draws[strategic_draws.length] = {src:getSquareFromMousePos(getMousePos(board_canvas,events)),dest:null};
+    				console.log(strategic_draws);
+    				console.log("add an arrow originating from "+strategic_draws[strategic_draws.length].src.x+","+strategic_draws[strategic_draws.length].src.y);
+				}
+
+				mousedown = true;
+				drawBoard();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				/*mouseup*/
+				if (selected_square != null) {
+					click_data.mDest = getMousePos(board_canvas,events);
+					var d = getSquareFromMousePos(click_data.mDest);
+					if (selected_square.x == d.x && selected_square.y == d.y) {
+						selected_square = null;
+						console.log("same sq - deselect");
+					} else {
+						var move = new Move({x:selected_square.x,y:selected_square.y},{x:d.x,y:d.y},game.get_piece(selected_square));
+						game.make_move(move,false);
+						game.print(true);
+						selected_square = null;
+					}
+				} else {
+					console.log("add an arrow originating from "+strategic_draws[strategic_draws.length].src.x+","+strategic_draws[strategic_draws.length].src.y);
+					//add an arrow
+				}
+				mousedown = false;
+				drawBoard();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				Game.prototype.get_legal_moves = function() {
+	/*returns an array of legal moves that are the result of the position in Game*/
+	var moves = [];
+	var board = board_from_FEN(this.get_FEN());
+	// print_board(board);
+	// loop through board to find all pieces of the same color as Game.get_turn
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			try {
+				var piece = board[i][j];
+				if (piece.color == this.get_turn()) {
+					// console.log("checking moves for piece \""+piece.color+" "+piece.type+"\" at "+i+","+j);
+					var list_of_sqs = get_destinations_after_moves_from_sq(board,{x:i,y:j});
+					// console.log(list_of_sqs);
+					
+
+
+					for (var n = 0; n < list_of_sqs.length; n++) {
+						var new_board = copy_board(board);
+						// print_board(new_board);
+						// castling exception to position change
+						if (piece.type == "KING") {
+							// window.alert("piece.type == king");
+							var castling_data = get_castling_data(this.get_FEN());
+							// window.alert("got castling_data");
+							if (list_of_sqs[n].y - j == 2) {
+								// kingside castle
+								// console.log("kingside castle");
+								if ((piece.color == "WHITE" && castling_data[0]) || (piece.color == "BLACK" && castling_data[2])) {
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+									new_board[i][j] = null;
+									new_board[i][j+1] = new_board[i][7];
+									new_board[i][7] = null;
+									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+								}
+							} else if (j - list_of_sqs[n].y == 2) {
+								// queenside castle
+								// console.log("queenside castle");
+								if ((piece.color == "WHITE" && castling_data[1]) || (piece.color == "BLACK" && castling_data[3])) {
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+									new_board[i][j] = null;
+									new_board[i][j-1] = new_board[i][0];
+									new_board[i][0] = null;
+									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+								}
+							} else {
+								// normal king move
+								new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+								new_board[i][j] = null;
+								var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+								moves[moves.length] = new_move;
+								// new_move.print();
+							}
+						} else /*en passant && queening exception to position change*/ if (piece.type == "PAWN") {
+							if (piece.color == "WHITE") {
+								if (list_of_sqs[n].x == 5 && new_board[list_of_sqs[n].x][list_of_sqs[n].y] == null && list_of_sqs[n].y != j) {
+									// en passant
+									var fen_data = this.get_FEN();
+									var c = 0;
+									var inc = 0;
+									while (fen_data.charAt(c) != ' ' || inc < 2) {
+										if (fen_data.charAt(c) == ' ') {
+											inc++;
+										}
+										c++;
+									}
+									c++;
+									if (fen_data.charAt(c) == '-') {
+										// en passant not allowed
+									} else /*en passant is allowed*/ {
+										var tempsq = ""+fen_data.charAt(c)+fen_data.charAt(c+1)
+										// console.log(tempsq);
+										var en_passant_sq = sq_to_pair(tempsq);
+										// console.log("en passant is allowed at the following sq:");
+										// console.log(en_passant_sq);
+										if (en_passant_sq.x == list_of_sqs[n].x && en_passant_sq.y == list_of_sqs[n].y) {
+											// console.log("success");
+											new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+											new_board[i][j] = null;
+											new_board[i][list_of_sqs[n].y] = null;
+											var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+											moves[moves.length] = new_move;
+											// new_move.print();
+										}
+									}
+								} else if (list_of_sqs[n].x == 7) {
+									// queening
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = wQueen;
+									new_board[i][j] = null;
+									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = wBishop;
+									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = wKnight;
+									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = wRook;
+									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+								} else {
+									// normal pawn move
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+									new_board[i][j] = null;
+									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+								}
+							} else /*piece.color == "BLACK"*/ {
+								if (list_of_sqs[n].x == 2 && new_board[list_of_sqs[n].x][list_of_sqs[n].y] == null && list_of_sqs[n].y != j) {
+									// en passant
+									var fen_data = this.get_FEN();
+									var c = 0;
+									var inc = 0;
+									while (fen_data.charAt(c) != ' ' || inc < 2) {
+										if (fen_data.charAt(c) == ' ') {
+											inc++;
+										}
+										c++;
+									}
+									c++;
+									if (fen_data.charAt(c) == '-') {
+										// en passant not allowed
+									} else /*en passant is allowed*/ {
+										var en_passant_sq = sq_to_pair(""+fen_data.charAt(c)+fen_data.charAt(c+1));
+										// console.log("en passant is allowed at the following sq:");
+										// console.log(en_passant_sq);
+										if (en_passant_sq.x == list_of_sqs[n].x && en_passant_sq.y == list_of_sqs[n].y) {
+											new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+											new_board[i][j] = null;
+											new_board[i][list_of_sqs[n].y] = null;
+											var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+											moves[moves.length] = new_move;
+											// new_move.print();
+										}
+									}
+								} else if (list_of_sqs[n].x == 0) {
+									// queening
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = bQueen;
+									new_board[i][j] = null;
+									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = bBishop;
+									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = bKnight;
+									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = bRook;
+									new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+								} else {
+									// normal pawn move
+									new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+									new_board[i][j] = null;
+									var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+									moves[moves.length] = new_move;
+									// new_move.print();
+								}
+							}
+						} else {
+							// all other cases - just move the piece from src to dest
+							new_board[list_of_sqs[n].x][list_of_sqs[n].y] = new_board[i][j];
+							new_board[i][j] = null;
+							var new_move = new Move({x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece,board_to_FEN(this.get_FEN(),new_board,{x:i,y:j},{x:list_of_sqs[n].x,y:list_of_sqs[n].y},piece));
+							moves[moves.length] = new_move;
+							// new_move.print();
+						}
+					}
+				}
+			} catch(e) {
+				// console.log(e.message);
+			}
+		}
+	}
+
+	for (var n = 0; n < moves.length; n++) {
+		// moves[n].print();
+		var king_loc = get_king_loc(board_from_FEN(moves[n].position),this.get_turn());
+		// console.log(king_loc);
+		if (sq_is_threatened_by(board_from_FEN(moves[n].position),king_loc,get_opp_color(this.get_turn()))) {
+			// console.log(this.get_turn()+" king is in check");
+			moves.splice(n,1);
+			n--;
+		}
+	}
+	// console.log(moves);
+	return moves;
+};
