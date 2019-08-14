@@ -1,9 +1,0 @@
-universal chat log created when game is started with a new opponent
-	messages sent during games have a game id value which allows us to find the p2p in game chat, keeping spectator chat separate
-
-tournament style ideas?
-	draw 1
-	win 2
-	each consecutive game after a win increases your streak, and number of wins - 3 is what is added to the 2 for each win?
-
-
