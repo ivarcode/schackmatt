@@ -4,10 +4,11 @@ import { Component } from '@angular/core';
     selector: 'app-header',
     template: `
         <div class="topnav" id="myTopnav">
-            <a routerLink="/" class="active my_font" id="title">ivarcode.net</a>
-            <a routerLink="/what-i-do" class="topnavel my_font">what i do </a>
-            <a routerLink="/about-me" class="topnavel my_font">about me</a>
-            <a href="http://schackmatt.net/" class="topnavel my_font">chess</a>
+            <a routerLink="/" class="active my_font" id="title"
+                >schackmatt.net</a
+            >
+            <a routerLink="/puzzle" class="topnavel my_font">some puzzle?</a>
+            <a routerLink="/profile" class="topnavel my_font">profile</a>
         </div>
     `,
     styleUrls: ['./header.component.css']
