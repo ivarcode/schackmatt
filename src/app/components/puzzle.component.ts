@@ -14,8 +14,15 @@ export class PuzzleComponent implements OnInit {
     @ViewChild('boardCanvas', { static: true })
     boardCanvas: ElementRef<HTMLCanvasElement>;
     private boardContext: CanvasRenderingContext2D;
+
+    private RESOURCES: {
+        boardImageSrc: string;
+    };
+
     constructor() {}
+
     ngOnInit() {
         this.boardContext = this.boardCanvas.nativeElement.getContext('2d');
+        this.RESOURCES.boardImageSrc = '../../assets/board_640x640.png';
     }
 }
