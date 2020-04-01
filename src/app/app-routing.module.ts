@@ -1,20 +1,11 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { PuzzleComponent } from './components/puzzle.component';
+import { Routes, RouterModule } from '@angular/router';
 
-const appRoutes: Routes = [
-    {
-        component: PuzzleComponent,
-        path: 'puzzle'
-    },
-    {
-        redirectTo: '#', // to be changed to direct to a live (or random) chess game
-        path: '**'
-    }
-];
+
+const routes: Routes = [];
 
 @NgModule({
-    exports: [RouterModule],
-    imports: [RouterModule.forRoot(appRoutes)]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
