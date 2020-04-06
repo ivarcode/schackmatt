@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Game } from '../lib/game.library';
 
 @Component({
     selector: 'app-game',
@@ -6,16 +7,10 @@ import { Component } from '@angular/core';
     styleUrls: ['./game.component.css']
 })
 export class GameComponent {
-    private game: {
-        fen: string;
-        pgn: string;
-    };
+    private game: Game;
 
     constructor() {
-        this.game = {
-            fen: '',
-            pgn: ''
-        };
+        this.game = new Game();
         console.log(this.game);
     }
 }
