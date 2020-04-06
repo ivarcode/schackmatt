@@ -1,4 +1,9 @@
 app-footer {
     position: fixed;
     bottom: 0;
+    right: 0;
+}
+
+.router-container {
+    background: center center no-repeat url('../assets/wood_bg.jpeg');
 }
