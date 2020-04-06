@@ -10,4 +10,6 @@ export class GameComponent {
         fen: string;
         pgn: string;
     };
+
+    console.log(game);
 }
