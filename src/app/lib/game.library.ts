@@ -50,10 +50,10 @@ export class Board {
         this.content = [[], [], [], [], [], [], [], []];
         this.captured = [];
     }
-    insert_piece(file: File, rank: Rank, piece: Piece): void {
+    insertPiece(file: File, rank: Rank, piece: Piece): void {
         this.content[file][rank] = piece;
     }
-    get_piece(file: File, rank: Rank): Piece {
+    getPiece(file: File, rank: Rank): Piece {
         return this.content[file][rank];
     }
     // toString() {
@@ -85,7 +85,7 @@ export class Game {
     }
 
     // prepares the game object from the fen data
-    load_fen(): void {
+    private load_fen(): void {
         const board: Board = new Board();
 
         this.castlingRights = { K: false, Q: false, k: false, q: false };
@@ -129,28 +129,28 @@ export class Game {
                     } else {
                         switch (this.fen.charAt(i)) {
                             case 'r':
-                                board.insert_piece(
+                                board.insertPiece(
                                     fileIndex,
                                     rankIndex,
                                     new Piece(PieceType.Rook, Color.Black)
                                 );
                                 break;
                             case 'R':
-                                board.insert_piece(
+                                board.insertPiece(
                                     fileIndex,
                                     rankIndex,
                                     new Piece(PieceType.Rook, Color.White)
                                 );
                                 break;
                             case 'n':
-                                board.insert_piece(
+                                board.insertPiece(
                                     fileIndex,
                                     rankIndex,
                                     new Piece(PieceType.Knight, Color.Black)
                                 );
                                 break;
                             case 'N':
-                                board.insert_piece(
+                                board.insertPiece(
                                     fileIndex,
                                     rankIndex,
                                     new Piece(PieceType.Knight, Color.White)
@@ -160,7 +160,7 @@ export class Game {
                                 if (spacesHit > 0) {
                                     this.turn = Color.Black;
                                 } else {
-                                    board.insert_piece(
+                                    board.insertPiece(
                                         fileIndex,
                                         rankIndex,
                                         new Piece(PieceType.Bishop, Color.Black)
@@ -168,7 +168,7 @@ export class Game {
                                 }
                                 break;
                             case 'B':
-                                board.insert_piece(
+                                board.insertPiece(
                                     fileIndex,
                                     rankIndex,
                                     new Piece(PieceType.Bishop, Color.White)
@@ -178,7 +178,7 @@ export class Game {
                                 if (spacesHit > 0) {
                                     this.castlingRights.q = true;
                                 } else {
-                                    board.insert_piece(
+                                    board.insertPiece(
                                         fileIndex,
                                         rankIndex,
                                         new Piece(PieceType.Queen, Color.Black)
@@ -189,7 +189,7 @@ export class Game {
                                 if (spacesHit > 0) {
                                     this.castlingRights.Q = true;
                                 } else {
-                                    board.insert_piece(
+                                    board.insertPiece(
                                         fileIndex,
                                         rankIndex,
                                         new Piece(PieceType.Queen, Color.White)
@@ -200,7 +200,7 @@ export class Game {
                                 if (spacesHit > 0) {
                                     this.castlingRights.k = true;
                                 } else {
-                                    board.insert_piece(
+                                    board.insertPiece(
                                         fileIndex,
                                         rankIndex,
                                         new Piece(PieceType.King, Color.Black)
@@ -211,7 +211,7 @@ export class Game {
                                 if (spacesHit > 0) {
                                     this.castlingRights.K = true;
                                 } else {
-                                    board.insert_piece(
+                                    board.insertPiece(
                                         fileIndex,
                                         rankIndex,
                                         new Piece(PieceType.King, Color.White)
@@ -219,14 +219,14 @@ export class Game {
                                 }
                                 break;
                             case 'p':
-                                board.insert_piece(
+                                board.insertPiece(
                                     fileIndex,
                                     rankIndex,
                                     new Piece(PieceType.Pawn, Color.Black)
                                 );
                                 break;
                             case 'P':
-                                board.insert_piece(
+                                board.insertPiece(
                                     fileIndex,
                                     rankIndex,
                                     new Piece(PieceType.Pawn, Color.White)
@@ -239,5 +239,9 @@ export class Game {
             }
         }
         this.board = board;
+    }
+
+    public getPiece(file: File, rank: Rank): Piece {
+        return this.board.getPiece(file, rank);
     }
 }
