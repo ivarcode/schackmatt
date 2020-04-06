@@ -11,5 +11,11 @@ export class GameComponent {
         pgn: string;
     };
 
-    console.log(game);
+    constructor() {
+        this.game = {
+            fen: '',
+            pgn: ''
+        };
+        console.log(this.game);
+    }
 }
