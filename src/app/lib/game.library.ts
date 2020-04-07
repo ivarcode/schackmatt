@@ -252,7 +252,7 @@ export class Game {
         if (this.board.getPiece(dest)) {
             this.board.captured.push(this.board.getPiece(dest));
         }
-        this.board.insertPiece(dest, this.board.getPiece(src));
-        this.board.insertPiece(src, null);
+        this.insertPiece(dest, this.board.getPiece(src));
+        this.insertPiece(src, null);
     }
 }
