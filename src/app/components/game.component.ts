@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Game } from '../lib/game.library';
+import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 
 @Component({
     selector: 'app-game',
@@ -22,6 +23,16 @@ export class GameComponent implements OnInit {
             x: number;
             y: number;
         };
+        mouseDownOn: {
+            x: number;
+            y: number;
+        };
+        mouseUpOn: {
+            x: number;
+            y: number;
+        };
+        dragging: boolean;
+        draggedPieceIndex: number;
     };
 
     constructor() {
@@ -32,7 +43,11 @@ export class GameComponent implements OnInit {
                 x: -1,
                 y: -1
             },
-            overSquare: null
+            overSquare: null,
+            mouseDownOn: null,
+            mouseUpOn: null,
+            dragging: false,
+            draggedPieceIndex: -1
         };
         console.log(this.game);
     }
@@ -79,7 +94,9 @@ export class GameComponent implements OnInit {
         });
         this.boardCanvas.addEventListener('mouseleave', () => {
             this.CURSOR_DATA.mouseOverBoard = false;
+            this.CURSOR_DATA.currentMousePosition = { x: -1, y: -1 };
             this.CURSOR_DATA.overSquare = null;
+            this.CURSOR_DATA.draggedPieceIndex = -1;
             this.drawBoard();
         });
         this.boardCanvas.addEventListener('mousemove', (events: any) => {
@@ -98,6 +115,37 @@ export class GameComponent implements OnInit {
             }
             this.drawBoard();
         });
+        this.boardCanvas.addEventListener('mousedown', () => {
+            if (this.CURSOR_DATA.overSquare) {
+                this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
+                this.CURSOR_DATA.dragging = true;
+            } else {
+                throw new Error('mouse down not over sq');
+            }
+        });
+        this.boardCanvas.addEventListener('mouseup', () => {
+            if (this.CURSOR_DATA.overSquare) {
+                this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.overSquare;
+                this.CURSOR_DATA.dragging = false;
+                this.CURSOR_DATA.draggedPieceIndex = -1;
+                this.attemptMoveOnBoard();
+            } else {
+                throw new Error('mouse up not over sq');
+            }
+        });
+    }
+
+    attemptMoveOnBoard(): void {
+        this.game.attemptMove(
+            {
+                file: this.CURSOR_DATA.mouseDownOn.x,
+                rank: 7 - this.CURSOR_DATA.mouseDownOn.y
+            },
+            {
+                file: this.CURSOR_DATA.mouseUpOn.x,
+                rank: 7 - this.CURSOR_DATA.mouseUpOn.y
+            }
+        );
     }
 
     getMousePosition(events: any): { x: number; y: number } {
@@ -127,10 +175,17 @@ export class GameComponent implements OnInit {
                 this.refreshCanvasSquare(i, j);
             }
         }
+        if (this.CURSOR_DATA.draggedPieceIndex !== -1) {
+            this.boardContext.drawImage(
+                this.pieceImages[this.CURSOR_DATA.draggedPieceIndex],
+                this.CURSOR_DATA.currentMousePosition.x - 40,
+                this.CURSOR_DATA.currentMousePosition.y - 40
+            );
+        }
     }
 
     refreshCanvasSquare(x: number, y: number): void {
-        const piece = this.game.getPiece(x, y);
+        const piece = this.game.getPiece({ file: x, rank: y });
         if (
             this.CURSOR_DATA.overSquare &&
             this.CURSOR_DATA.overSquare.x === x &&
@@ -143,11 +198,19 @@ export class GameComponent implements OnInit {
             const color = piece.color;
             const pieceType = piece.type;
             const index = (color ? 6 : 0) + pieceType;
-            this.boardContext.drawImage(
-                this.pieceImages[index],
-                x * 80,
-                (7 - y) * 80
-            );
+            if (
+                this.CURSOR_DATA.dragging &&
+                this.CURSOR_DATA.mouseDownOn.x === x &&
+                this.CURSOR_DATA.mouseDownOn.y === 7 - y
+            ) {
+                this.CURSOR_DATA.draggedPieceIndex = index;
+            } else {
+                this.boardContext.drawImage(
+                    this.pieceImages[index],
+                    x * 80,
+                    (7 - y) * 80
+                );
+            }
         }
     }
 
