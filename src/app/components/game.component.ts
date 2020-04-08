@@ -136,6 +136,8 @@ export class GameComponent implements OnInit {
     }
 
     attemptMoveOnBoard(): void {
+        // does not matter what the resulting board is here,
+        // we are just passing the src and dest
         this.game.attemptMove({
             src: {
                 file: this.CURSOR_DATA.mouseDownOn.x,
@@ -144,7 +146,8 @@ export class GameComponent implements OnInit {
             dest: {
                 file: this.CURSOR_DATA.mouseUpOn.x,
                 rank: 7 - this.CURSOR_DATA.mouseUpOn.y
-            }
+            },
+            resultingBoard: null
         });
     }
 
