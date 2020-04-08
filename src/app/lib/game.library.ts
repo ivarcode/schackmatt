@@ -316,7 +316,6 @@ export class Game {
                     switch (p.type) {
                         // Knight
                         case PieceType.Knight:
-                            console.log(p.toString());
                             pattern = [
                                 { x: 2, y: 1 },
                                 { x: 2, y: -1 },
@@ -347,37 +346,37 @@ export class Game {
                             }
                             break;
                         // King
-                        case PieceType.Knight:
-                            console.log(p.toString());
-                            pattern = [
-                                { x: 2, y: 1 },
-                                { x: 2, y: -1 },
-                                { x: -2, y: 1 },
-                                { x: -2, y: -1 },
-                                { x: -1, y: 2 },
-                                { x: -1, y: -2 },
-                                { x: 1, y: 2 },
-                                { x: 1, y: -2 }
-                            ];
-                            for (const pat of pattern) {
-                                const d = {
-                                    file: f + pat.x,
-                                    rank: r + pat.y
-                                };
-                                if (this.isOnBoard(d)) {
-                                    const dp = this.getPiece(d);
-                                    if (!(dp && dp.color === this.turn)) {
-                                        movements.push({
-                                            src: {
-                                                file: f,
-                                                rank: r
-                                            },
-                                            dest: d
-                                        });
-                                    }
-                                }
-                            }
-                            break;
+                        // case PieceType.Knight:
+                        //     console.log(p.toString());
+                        //     pattern = [
+                        //         { x: 2, y: 1 },
+                        //         { x: 2, y: -1 },
+                        //         { x: -2, y: 1 },
+                        //         { x: -2, y: -1 },
+                        //         { x: -1, y: 2 },
+                        //         { x: -1, y: -2 },
+                        //         { x: 1, y: 2 },
+                        //         { x: 1, y: -2 }
+                        //     ];
+                        //     for (const pat of pattern) {
+                        //         const d = {
+                        //             file: f + pat.x,
+                        //             rank: r + pat.y
+                        //         };
+                        //         if (this.isOnBoard(d)) {
+                        //             const dp = this.getPiece(d);
+                        //             if (!(dp && dp.color === this.turn)) {
+                        //                 movements.push({
+                        //                     src: {
+                        //                         file: f,
+                        //                         rank: r
+                        //                     },
+                        //                     dest: d
+                        //                 });
+                        //             }
+                        //         }
+                        //     }
+                        //     break;
                     }
                 }
             }
