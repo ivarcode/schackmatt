@@ -19,6 +19,33 @@ export class Piece {
         this.type = type;
         this.color = color;
     }
+    public toString(): string {
+        let str = null;
+        switch (this.type) {
+            case PieceType.King:
+                str = 'k';
+                break;
+            case PieceType.Queen:
+                str = 'q';
+                break;
+            case PieceType.Bishop:
+                str = 'b';
+                break;
+            case PieceType.Knight:
+                str = 'n';
+                break;
+            case PieceType.Rook:
+                str = 'r';
+                break;
+            case PieceType.Pawn:
+                str = 'p';
+                break;
+        }
+        if (this.color === Color.White) {
+            return str.toUpperCase();
+        }
+        return str;
+    }
 }
 
 export const enum File {
@@ -48,6 +75,11 @@ export interface Square {
     rank: Rank;
 }
 
+export interface Move {
+    src: Square;
+    dest: Square;
+}
+
 export class Board {
     private content: Piece[][];
     public captured: Piece[];
@@ -61,9 +93,16 @@ export class Board {
     public getPiece(sq: Square): Piece {
         return this.content[sq.file][sq.rank];
     }
-    // toString() {
-    //     return this.content;
-    // }
+    public toString(): string {
+        let str = 'board:';
+        for (const i of this.content) {
+            str += '\n    ';
+            for (const j of i) {
+                str += '[' + (j ? j.toString() : ' ') + ']';
+            }
+        }
+        return str;
+    }
 }
 
 export class Game {
@@ -87,6 +126,19 @@ export class Game {
             : 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
         this.pgn = '';
         this.load_fen();
+    }
+
+    public toString(): string {
+        let str = 'GAME\n----\n';
+        str += this.board;
+        str += '\nfen = ' + this.fen;
+        str += '\npgn = ' + this.pgn;
+        str += '\nen passant = ' + this.pgn;
+        str += '\nturn = ' + this.turn;
+        str += '  halfmove = ' + this.halfmove;
+        str += '  fullmove = ' + this.fullmove;
+        str += '\ncastling = ' + JSON.stringify(this.castlingRights);
+        return str + '\n----';
     }
 
     // prepares the game object from the fen data
@@ -167,6 +219,9 @@ export class Game {
                                     );
                                 }
                                 break;
+                            case 'w':
+                                this.turn = Color.White;
+                                break;
                             case 'B':
                                 board.insertPiece(
                                     { file: fileIndex, rank: rankIndex },
@@ -242,17 +297,103 @@ export class Game {
         this.board.insertPiece(sq, piece);
     }
 
-    public attemptMove(src: Square, dest: Square): boolean {
+    public attemptMove(move: Move): boolean {
         // make the move
-        this.makeMove(src, dest);
+        console.log('attempting ', move.src, move.dest);
+        let pieceMovements = this.getPieceMovements();
+        console.log('piece movements', pieceMovements);
+        this.makeMove(move);
         return true;
     }
 
-    private makeMove(src: Square, dest: Square): void {
-        if (this.board.getPiece(dest)) {
-            this.board.captured.push(this.board.getPiece(dest));
+    private getPieceMovements(): Move[] {
+        const movements: Move[] = [];
+        for (let r = 0; r < 8; r++) {
+            for (let f = 0; f < 8; f++) {
+                const p = this.getPiece({ file: f, rank: r });
+                if (p && p.color === this.turn) {
+                    let pattern;
+                    switch (p.type) {
+                        // Knight
+                        case PieceType.Knight:
+                            console.log(p.toString());
+                            pattern = [
+                                { x: 2, y: 1 },
+                                { x: 2, y: -1 },
+                                { x: -2, y: 1 },
+                                { x: -2, y: -1 },
+                                { x: -1, y: 2 },
+                                { x: -1, y: -2 },
+                                { x: 1, y: 2 },
+                                { x: 1, y: -2 }
+                            ];
+                            for (const pat of pattern) {
+                                const d = {
+                                    file: f + pat.x,
+                                    rank: r + pat.y
+                                };
+                                if (this.isOnBoard(d)) {
+                                    const dp = this.getPiece(d);
+                                    if (!(dp && dp.color === this.turn)) {
+                                        movements.push({
+                                            src: {
+                                                file: f,
+                                                rank: r
+                                            },
+                                            dest: d
+                                        });
+                                    }
+                                }
+                            }
+                            break;
+                        // King
+                        case PieceType.Knight:
+                            console.log(p.toString());
+                            pattern = [
+                                { x: 2, y: 1 },
+                                { x: 2, y: -1 },
+                                { x: -2, y: 1 },
+                                { x: -2, y: -1 },
+                                { x: -1, y: 2 },
+                                { x: -1, y: -2 },
+                                { x: 1, y: 2 },
+                                { x: 1, y: -2 }
+                            ];
+                            for (const pat of pattern) {
+                                const d = {
+                                    file: f + pat.x,
+                                    rank: r + pat.y
+                                };
+                                if (this.isOnBoard(d)) {
+                                    const dp = this.getPiece(d);
+                                    if (!(dp && dp.color === this.turn)) {
+                                        movements.push({
+                                            src: {
+                                                file: f,
+                                                rank: r
+                                            },
+                                            dest: d
+                                        });
+                                    }
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
         }
-        this.insertPiece(dest, this.board.getPiece(src));
-        this.insertPiece(src, null);
+        return movements;
+    }
+
+    private makeMove(move: Move): void {
+        if (this.board.getPiece(move.dest)) {
+            this.board.captured.push(this.board.getPiece(move.dest));
+        }
+        this.insertPiece(move.dest, this.board.getPiece(move.src));
+        this.insertPiece(move.src, null);
+    }
+
+    private isOnBoard(d: Square): boolean {
+        return d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0;
     }
 }
