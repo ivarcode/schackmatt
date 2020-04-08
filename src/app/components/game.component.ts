@@ -49,7 +49,7 @@ export class GameComponent implements OnInit {
             dragging: false,
             draggedPieceIndex: -1
         };
-        console.log(this.game);
+        console.log(this.game.toString());
     }
 
     ngOnInit() {
@@ -136,16 +136,16 @@ export class GameComponent implements OnInit {
     }
 
     attemptMoveOnBoard(): void {
-        this.game.attemptMove(
-            {
+        this.game.attemptMove({
+            src: {
                 file: this.CURSOR_DATA.mouseDownOn.x,
                 rank: 7 - this.CURSOR_DATA.mouseDownOn.y
             },
-            {
+            dest: {
                 file: this.CURSOR_DATA.mouseUpOn.x,
                 rank: 7 - this.CURSOR_DATA.mouseUpOn.y
             }
-        );
+        });
     }
 
     getMousePosition(events: any): { x: number; y: number } {
