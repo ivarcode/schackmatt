@@ -78,6 +78,7 @@ export interface Square {
 export interface Move {
     src: Square;
     dest: Square;
+    resultingBoard: Board;
 }
 
 export class Board {
@@ -139,6 +140,11 @@ export class Game {
         str += '  fullmove = ' + this.fullmove;
         str += '\ncastling = ' + JSON.stringify(this.castlingRights);
         return str + '\n----';
+    }
+
+    // pull this out as well as other helpers at some point
+    public squareToString(sq: Square): string {
+        return String.fromCharCode(97 + sq.file) + (sq.rank + 1);
     }
 
     // prepares the game object from the fen data
@@ -294,6 +300,9 @@ export class Game {
     }
 
     private insertPiece(sq: Square, piece: Piece): void {
+        if (this.getPiece(sq) !== null) {
+            this.board.captured.push(this.getPiece(sq));
+        }
         this.board.insertPiece(sq, piece);
     }
 
@@ -301,7 +310,10 @@ export class Game {
         // make the move
         console.log('attempting ', move.src, move.dest);
         let pieceMovements = this.getPieceMovements();
-        console.log('piece movements', pieceMovements);
+        console.log('pm', pieceMovements);
+        // for (const pm of pieceMovements) {
+        //     console.log('pm', pm.resultingBoard.toString());
+        // }
         this.makeMove(move);
         return true;
     }
@@ -314,7 +326,6 @@ export class Game {
                 if (p && p.color === this.turn) {
                     let pattern;
                     switch (p.type) {
-                        // Knight
                         case PieceType.Knight:
                             pattern = [
                                 { x: 2, y: 1 },
@@ -334,49 +345,403 @@ export class Game {
                                 if (this.isOnBoard(d)) {
                                     const dp = this.getPiece(d);
                                     if (!(dp && dp.color === this.turn)) {
+                                        const newBoard = new Game(this.fen)
+                                            .board;
+                                        newBoard.insertPiece(d, p);
+                                        newBoard.insertPiece(
+                                            { file: f, rank: r },
+                                            null
+                                        );
                                         movements.push({
                                             src: {
                                                 file: f,
                                                 rank: r
                                             },
-                                            dest: d
+                                            dest: d,
+                                            resultingBoard: newBoard
                                         });
                                     }
                                 }
                             }
                             break;
-                        // King
-                        // case PieceType.Knight:
-                        //     console.log(p.toString());
-                        //     pattern = [
-                        //         { x: 2, y: 1 },
-                        //         { x: 2, y: -1 },
-                        //         { x: -2, y: 1 },
-                        //         { x: -2, y: -1 },
-                        //         { x: -1, y: 2 },
-                        //         { x: -1, y: -2 },
-                        //         { x: 1, y: 2 },
-                        //         { x: 1, y: -2 }
-                        //     ];
-                        //     for (const pat of pattern) {
-                        //         const d = {
-                        //             file: f + pat.x,
-                        //             rank: r + pat.y
-                        //         };
-                        //         if (this.isOnBoard(d)) {
-                        //             const dp = this.getPiece(d);
-                        //             if (!(dp && dp.color === this.turn)) {
-                        //                 movements.push({
-                        //                     src: {
-                        //                         file: f,
-                        //                         rank: r
-                        //                     },
-                        //                     dest: d
-                        //                 });
-                        //             }
-                        //         }
-                        //     }
-                        //     break;
+                        case PieceType.King:
+                            console.log(p.toString());
+                            pattern = [
+                                { x: 0, y: 1 },
+                                { x: 0, y: -1 },
+                                { x: -1, y: 0 },
+                                { x: 1, y: 0 },
+                                { x: 1, y: 1 },
+                                { x: -1, y: -1 },
+                                { x: -1, y: 1 },
+                                { x: 1, y: -1 }
+                            ];
+                            for (const pat of pattern) {
+                                const d = {
+                                    file: f + pat.x,
+                                    rank: r + pat.y
+                                };
+                                if (this.isOnBoard(d)) {
+                                    const dp = this.getPiece(d);
+                                    if (!(dp && dp.color === this.turn)) {
+                                        const newBoard = new Game(this.fen)
+                                            .board;
+                                        newBoard.insertPiece(d, p);
+                                        newBoard.insertPiece(
+                                            { file: f, rank: r },
+                                            null
+                                        );
+                                        movements.push({
+                                            src: {
+                                                file: f,
+                                                rank: r
+                                            },
+                                            dest: d,
+                                            resultingBoard: newBoard
+                                        });
+                                    }
+                                }
+                            }
+                            break;
+                        case PieceType.Rook:
+                            pattern = [
+                                { x: 0, y: 1 },
+                                { x: 0, y: -1 },
+                                { x: -1, y: 0 },
+                                { x: 1, y: 0 }
+                            ];
+                            for (const pat of pattern) {
+                                let d = {
+                                    file: f + pat.x,
+                                    rank: r + pat.y
+                                };
+                                while (d) {
+                                    if (this.isOnBoard(d)) {
+                                        const dp = this.getPiece(d);
+                                        if (dp) {
+                                            if (dp.color !== this.turn) {
+                                                const newBoard = new Game(
+                                                    this.fen
+                                                ).board;
+                                                newBoard.insertPiece(d, p);
+                                                newBoard.insertPiece(
+                                                    { file: f, rank: r },
+                                                    null
+                                                );
+                                                movements.push({
+                                                    src: {
+                                                        file: f,
+                                                        rank: r
+                                                    },
+                                                    dest: d,
+                                                    resultingBoard: newBoard
+                                                });
+                                            }
+                                            d = null; // break loop
+                                        } else {
+                                            const newBoard = new Game(this.fen)
+                                                .board;
+                                            newBoard.insertPiece(d, p);
+                                            newBoard.insertPiece(
+                                                { file: f, rank: r },
+                                                null
+                                            );
+                                            movements.push({
+                                                src: {
+                                                    file: f,
+                                                    rank: r
+                                                },
+                                                dest: d,
+                                                resultingBoard: newBoard
+                                            });
+                                            d = {
+                                                file: d.file + pat.x,
+                                                rank: d.rank + pat.y
+                                            };
+                                        }
+                                    } else {
+                                        d = null; // break loop
+                                    }
+                                }
+                            }
+                            break;
+                        case PieceType.Bishop:
+                            pattern = [
+                                { x: 1, y: 1 },
+                                { x: -1, y: -1 },
+                                { x: -1, y: 1 },
+                                { x: 1, y: -1 }
+                            ];
+                            for (const pat of pattern) {
+                                let d = {
+                                    file: f + pat.x,
+                                    rank: r + pat.y
+                                };
+                                while (d) {
+                                    if (this.isOnBoard(d)) {
+                                        const dp = this.getPiece(d);
+                                        if (dp) {
+                                            if (dp.color !== this.turn) {
+                                                const newBoard = new Game(
+                                                    this.fen
+                                                ).board;
+                                                newBoard.insertPiece(d, p);
+                                                newBoard.insertPiece(
+                                                    { file: f, rank: r },
+                                                    null
+                                                );
+                                                movements.push({
+                                                    src: {
+                                                        file: f,
+                                                        rank: r
+                                                    },
+                                                    dest: d,
+                                                    resultingBoard: newBoard
+                                                });
+                                            }
+                                            d = null; // break loop
+                                        } else {
+                                            const newBoard = new Game(this.fen)
+                                                .board;
+                                            newBoard.insertPiece(d, p);
+                                            newBoard.insertPiece(
+                                                { file: f, rank: r },
+                                                null
+                                            );
+                                            movements.push({
+                                                src: {
+                                                    file: f,
+                                                    rank: r
+                                                },
+                                                dest: d,
+                                                resultingBoard: newBoard
+                                            });
+                                            d = {
+                                                file: d.file + pat.x,
+                                                rank: d.rank + pat.y
+                                            };
+                                        }
+                                    } else {
+                                        d = null; // break loop
+                                    }
+                                }
+                            }
+                            break;
+                        case PieceType.Queen:
+                            pattern = [
+                                { x: 0, y: 1 },
+                                { x: 0, y: -1 },
+                                { x: -1, y: 0 },
+                                { x: 1, y: 0 },
+                                { x: 1, y: 1 },
+                                { x: -1, y: -1 },
+                                { x: -1, y: 1 },
+                                { x: 1, y: -1 }
+                            ];
+                            for (const pat of pattern) {
+                                let d = {
+                                    file: f + pat.x,
+                                    rank: r + pat.y
+                                };
+                                while (d) {
+                                    if (this.isOnBoard(d)) {
+                                        const dp = this.getPiece(d);
+                                        if (dp) {
+                                            if (dp.color !== this.turn) {
+                                                const newBoard = new Game(
+                                                    this.fen
+                                                ).board;
+                                                newBoard.insertPiece(d, p);
+                                                newBoard.insertPiece(
+                                                    { file: f, rank: r },
+                                                    null
+                                                );
+                                                movements.push({
+                                                    src: {
+                                                        file: f,
+                                                        rank: r
+                                                    },
+                                                    dest: d,
+                                                    resultingBoard: newBoard
+                                                });
+                                            }
+                                            d = null; // break loop
+                                        } else {
+                                            const newBoard = new Game(this.fen)
+                                                .board;
+                                            newBoard.insertPiece(d, p);
+                                            newBoard.insertPiece(
+                                                { file: f, rank: r },
+                                                null
+                                            );
+                                            movements.push({
+                                                src: {
+                                                    file: f,
+                                                    rank: r
+                                                },
+                                                dest: d,
+                                                resultingBoard: newBoard
+                                            });
+                                            d = {
+                                                file: d.file + pat.x,
+                                                rank: d.rank + pat.y
+                                            };
+                                        }
+                                    } else {
+                                        d = null; // break loop
+                                    }
+                                }
+                            }
+                            break;
+                        case PieceType.Pawn:
+                            if (p.color === Color.White) {
+                                let d = {
+                                    file: f,
+                                    rank: r + 1
+                                };
+                                if (this.isOnBoard(d)) {
+                                    let dp = this.getPiece(d);
+                                    if (!dp) {
+                                        console.log('ay');
+                                        let newBoard = new Game(this.fen).board;
+                                        newBoard.insertPiece(d, p);
+                                        newBoard.insertPiece(
+                                            { file: f, rank: r },
+                                            null
+                                        );
+                                        movements.push({
+                                            src: {
+                                                file: f,
+                                                rank: r
+                                            },
+                                            dest: d,
+                                            resultingBoard: newBoard
+                                        });
+                                        if (r === Rank.TWO) {
+                                            d = {
+                                                file: f,
+                                                rank: r + 2
+                                            };
+                                            if (this.isOnBoard(d)) {
+                                                dp = this.getPiece(d);
+                                                if (!dp) {
+                                                    newBoard = new Game(
+                                                        this.fen
+                                                    ).board;
+                                                    newBoard.insertPiece(d, p);
+                                                    newBoard.insertPiece(
+                                                        { file: f, rank: r },
+                                                        null
+                                                    );
+                                                    movements.push({
+                                                        src: {
+                                                            file: f,
+                                                            rank: r
+                                                        },
+                                                        dest: d,
+                                                        resultingBoard: newBoard
+                                                    });
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                d = {
+                                    file: f + 1,
+                                    rank: r + 1
+                                };
+                                if (this.isOnBoard(d)) {
+                                    const dp = this.getPiece(d);
+                                    if (dp && dp.color !== this.turn) {
+                                        const newBoard = new Game(this.fen)
+                                            .board;
+                                        newBoard.insertPiece(d, p);
+                                        newBoard.insertPiece(
+                                            { file: f, rank: r },
+                                            null
+                                        );
+                                        movements.push({
+                                            src: {
+                                                file: f,
+                                                rank: r
+                                            },
+                                            dest: d,
+                                            resultingBoard: newBoard
+                                        });
+                                    } else if (
+                                        this.enPassant ===
+                                        this.squareToString(d)
+                                    ) {
+                                        const newBoard = new Game(this.fen)
+                                            .board;
+                                        newBoard.insertPiece(d, p);
+                                        newBoard.insertPiece(
+                                            { file: f, rank: r },
+                                            null
+                                        );
+                                        newBoard.insertPiece(
+                                            { file: f + 1, rank: r },
+                                            null
+                                        );
+                                        movements.push({
+                                            src: {
+                                                file: f,
+                                                rank: r
+                                            },
+                                            dest: d,
+                                            resultingBoard: newBoard
+                                        });
+                                    }
+                                }
+                                d = {
+                                    file: f - 1,
+                                    rank: r + 1
+                                };
+                                if (this.isOnBoard(d)) {
+                                    const dp = this.getPiece(d);
+                                    if (dp && dp.color !== this.turn) {
+                                        const newBoard = new Game(this.fen)
+                                            .board;
+                                        newBoard.insertPiece(d, p);
+                                        newBoard.insertPiece(
+                                            { file: f, rank: r },
+                                            null
+                                        );
+                                        movements.push({
+                                            src: {
+                                                file: f,
+                                                rank: r
+                                            },
+                                            dest: d,
+                                            resultingBoard: newBoard
+                                        });
+                                    } else if (
+                                        this.enPassant ===
+                                        this.squareToString(d)
+                                    ) {
+                                        const newBoard = new Game(this.fen)
+                                            .board;
+                                        newBoard.insertPiece(d, p);
+                                        newBoard.insertPiece(
+                                            { file: f, rank: r },
+                                            null
+                                        );
+                                        newBoard.insertPiece(
+                                            { file: f - 1, rank: r },
+                                            null
+                                        );
+                                        movements.push({
+                                            src: {
+                                                file: f,
+                                                rank: r
+                                            },
+                                            dest: d,
+                                            resultingBoard: newBoard
+                                        });
+                                    }
+                                }
+                            }
+                            break;
                     }
                 }
             }
