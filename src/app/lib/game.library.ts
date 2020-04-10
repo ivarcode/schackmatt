@@ -318,6 +318,60 @@ export class Game {
         return true;
     }
 
+    public isThreatenedBy(sq: Square, color: Color) {
+        // knight
+        let pattern = [
+            { x: 2, y: 1 },
+            { x: 2, y: -1 },
+            { x: -2, y: 1 },
+            { x: -2, y: -1 },
+            { x: -1, y: 2 },
+            { x: -1, y: -2 },
+            { x: 1, y: 2 },
+            { x: 1, y: -2 }
+        ];
+        for (const pat of pattern) {
+            const d = {
+                file: sq.file + pat.x,
+                rank: sq.rank + pat.y
+            };
+            if (this.isOnBoard(d)) {
+                const dp = this.getPiece(d);
+                if (dp && dp.type === PieceType.Knight && dp.color === color) {
+                    return true;
+                }
+            }
+        }
+        // pawn
+
+        // king
+        pattern = [
+            { x: 0, y: 1 },
+            { x: 0, y: -1 },
+            { x: -1, y: 0 },
+            { x: 1, y: 0 },
+            { x: 1, y: 1 },
+            { x: -1, y: -1 },
+            { x: -1, y: 1 },
+            { x: 1, y: -1 }
+        ];
+        for (const pat of pattern) {
+            const d = {
+                file: sq.file + pat.x,
+                rank: sq.rank + pat.y
+            };
+            if (this.isOnBoard(d)) {
+                const dp = this.getPiece(d);
+                if (dp && dp.type === PieceType.King && dp.color === color) {
+                    return true;
+                }
+            }
+        }
+        // bishop/queen
+
+        // rook/queen
+    }
+
     private getPieceMovements(): Move[] {
         const movements: Move[] = [];
         for (let r = 0; r < 8; r++) {
@@ -365,7 +419,6 @@ export class Game {
                             }
                             break;
                         case PieceType.King:
-                            console.log(p.toString());
                             pattern = [
                                 { x: 0, y: 1 },
                                 { x: 0, y: -1 },
@@ -399,6 +452,33 @@ export class Game {
                                             dest: d,
                                             resultingBoard: newBoard
                                         });
+                                    }
+                                }
+                            }
+                            if (p.color === Color.White) {
+                                if (f === File.e && r === Rank.ONE) {
+                                    // kingside
+                                    if (this.castlingRights.K) {
+                                        const rook = this.getPiece({
+                                            file: File.h,
+                                            rank: Rank.ONE
+                                        });
+                                        if (
+                                            !this.getPiece({
+                                                file: File.f,
+                                                rank: Rank.ONE
+                                            }) &&
+                                            !this.getPiece({
+                                                file: File.g,
+                                                rank: Rank.ONE
+                                            }) &&
+                                            rook &&
+                                            rook.type === PieceType.Rook &&
+                                            rook.color === p.color
+                                        ) {
+                                            // write an incheck function before
+                                            // continuing
+                                        }
                                     }
                                 }
                             }
@@ -595,6 +675,7 @@ export class Game {
                             break;
                         case PieceType.Pawn:
                             if (p.color === Color.White) {
+                                // one sq forward
                                 let d = {
                                     file: f,
                                     rank: r + 1
@@ -602,22 +683,63 @@ export class Game {
                                 if (this.isOnBoard(d)) {
                                     let dp = this.getPiece(d);
                                     if (!dp) {
-                                        console.log('ay');
-                                        let newBoard = new Game(this.fen).board;
-                                        newBoard.insertPiece(d, p);
-                                        newBoard.insertPiece(
-                                            { file: f, rank: r },
-                                            null
-                                        );
-                                        movements.push({
-                                            src: {
-                                                file: f,
-                                                rank: r
-                                            },
-                                            dest: d,
-                                            resultingBoard: newBoard
-                                        });
+                                        if (d.rank === Rank.EIGHT) {
+                                            // promoting
+                                            let newBoard: Board;
+                                            const promoPieces = [
+                                                new Piece(
+                                                    PieceType.Queen,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Rook,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Bishop,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Knight,
+                                                    p.color
+                                                )
+                                            ];
+                                            for (const pP of promoPieces) {
+                                                newBoard = new Game(this.fen)
+                                                    .board;
+                                                newBoard.insertPiece(d, pP);
+                                                newBoard.insertPiece(
+                                                    { file: f, rank: r },
+                                                    null
+                                                );
+                                                movements.push({
+                                                    src: {
+                                                        file: f,
+                                                        rank: r
+                                                    },
+                                                    dest: d,
+                                                    resultingBoard: newBoard
+                                                });
+                                            }
+                                        } else {
+                                            const newBoard = new Game(this.fen)
+                                                .board;
+                                            newBoard.insertPiece(d, p);
+                                            newBoard.insertPiece(
+                                                { file: f, rank: r },
+                                                null
+                                            );
+                                            movements.push({
+                                                src: {
+                                                    file: f,
+                                                    rank: r
+                                                },
+                                                dest: d,
+                                                resultingBoard: newBoard
+                                            });
+                                        }
                                         if (r === Rank.TWO) {
+                                            // two sqs forward
                                             d = {
                                                 file: f,
                                                 rank: r + 2
@@ -625,7 +747,7 @@ export class Game {
                                             if (this.isOnBoard(d)) {
                                                 dp = this.getPiece(d);
                                                 if (!dp) {
-                                                    newBoard = new Game(
+                                                    const newBoard = new Game(
                                                         this.fen
                                                     ).board;
                                                     newBoard.insertPiece(d, p);
@@ -646,28 +768,69 @@ export class Game {
                                         }
                                     }
                                 }
+                                // capture +f
                                 d = {
                                     file: f + 1,
                                     rank: r + 1
                                 };
                                 if (this.isOnBoard(d)) {
                                     const dp = this.getPiece(d);
-                                    if (dp && dp.color !== this.turn) {
-                                        const newBoard = new Game(this.fen)
-                                            .board;
-                                        newBoard.insertPiece(d, p);
-                                        newBoard.insertPiece(
-                                            { file: f, rank: r },
-                                            null
-                                        );
-                                        movements.push({
-                                            src: {
-                                                file: f,
-                                                rank: r
-                                            },
-                                            dest: d,
-                                            resultingBoard: newBoard
-                                        });
+                                    if (dp && dp.color !== p.color) {
+                                        if (d.rank === Rank.EIGHT) {
+                                            // promoting
+                                            let newBoard: Board;
+                                            const promoPieces = [
+                                                new Piece(
+                                                    PieceType.Queen,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Rook,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Bishop,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Knight,
+                                                    p.color
+                                                )
+                                            ];
+                                            for (const pP of promoPieces) {
+                                                newBoard = new Game(this.fen)
+                                                    .board;
+                                                newBoard.insertPiece(d, pP);
+                                                newBoard.insertPiece(
+                                                    { file: f, rank: r },
+                                                    null
+                                                );
+                                                movements.push({
+                                                    src: {
+                                                        file: f,
+                                                        rank: r
+                                                    },
+                                                    dest: d,
+                                                    resultingBoard: newBoard
+                                                });
+                                            }
+                                        } else {
+                                            const newBoard = new Game(this.fen)
+                                                .board;
+                                            newBoard.insertPiece(d, p);
+                                            newBoard.insertPiece(
+                                                { file: f, rank: r },
+                                                null
+                                            );
+                                            movements.push({
+                                                src: {
+                                                    file: f,
+                                                    rank: r
+                                                },
+                                                dest: d,
+                                                resultingBoard: newBoard
+                                            });
+                                        }
                                     } else if (
                                         this.enPassant ===
                                         this.squareToString(d)
@@ -693,18 +856,82 @@ export class Game {
                                         });
                                     }
                                 }
+                                // capture -f
                                 d = {
                                     file: f - 1,
                                     rank: r + 1
                                 };
                                 if (this.isOnBoard(d)) {
                                     const dp = this.getPiece(d);
-                                    if (dp && dp.color !== this.turn) {
+                                    if (dp && dp.color !== p.color) {
+                                        if (d.rank === Rank.EIGHT) {
+                                            // promoting
+                                            let newBoard: Board;
+                                            const promoPieces = [
+                                                new Piece(
+                                                    PieceType.Queen,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Rook,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Bishop,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Knight,
+                                                    p.color
+                                                )
+                                            ];
+                                            for (const pP of promoPieces) {
+                                                newBoard = new Game(this.fen)
+                                                    .board;
+                                                newBoard.insertPiece(d, pP);
+                                                newBoard.insertPiece(
+                                                    { file: f, rank: r },
+                                                    null
+                                                );
+                                                movements.push({
+                                                    src: {
+                                                        file: f,
+                                                        rank: r
+                                                    },
+                                                    dest: d,
+                                                    resultingBoard: newBoard
+                                                });
+                                            }
+                                        } else {
+                                            const newBoard = new Game(this.fen)
+                                                .board;
+                                            newBoard.insertPiece(d, p);
+                                            newBoard.insertPiece(
+                                                { file: f, rank: r },
+                                                null
+                                            );
+                                            movements.push({
+                                                src: {
+                                                    file: f,
+                                                    rank: r
+                                                },
+                                                dest: d,
+                                                resultingBoard: newBoard
+                                            });
+                                        }
+                                    } else if (
+                                        this.enPassant ===
+                                        this.squareToString(d)
+                                    ) {
                                         const newBoard = new Game(this.fen)
                                             .board;
                                         newBoard.insertPiece(d, p);
                                         newBoard.insertPiece(
                                             { file: f, rank: r },
+                                            null
+                                        );
+                                        newBoard.insertPiece(
+                                            { file: f - 1, rank: r },
                                             null
                                         );
                                         movements.push({
@@ -715,6 +942,253 @@ export class Game {
                                             dest: d,
                                             resultingBoard: newBoard
                                         });
+                                    }
+                                }
+                            } else {
+                                // one sq forward
+                                let d = {
+                                    file: f,
+                                    rank: r - 1
+                                };
+                                if (this.isOnBoard(d)) {
+                                    let dp = this.getPiece(d);
+                                    if (!dp) {
+                                        if (d.rank === Rank.ONE) {
+                                            // promoting
+                                            let newBoard: Board;
+                                            const promoPieces = [
+                                                new Piece(
+                                                    PieceType.Queen,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Rook,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Bishop,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Knight,
+                                                    p.color
+                                                )
+                                            ];
+                                            for (const pP of promoPieces) {
+                                                newBoard = new Game(this.fen)
+                                                    .board;
+                                                newBoard.insertPiece(d, pP);
+                                                newBoard.insertPiece(
+                                                    { file: f, rank: r },
+                                                    null
+                                                );
+                                                movements.push({
+                                                    src: {
+                                                        file: f,
+                                                        rank: r
+                                                    },
+                                                    dest: d,
+                                                    resultingBoard: newBoard
+                                                });
+                                            }
+                                        } else {
+                                            const newBoard = new Game(this.fen)
+                                                .board;
+                                            newBoard.insertPiece(d, p);
+                                            newBoard.insertPiece(
+                                                { file: f, rank: r },
+                                                null
+                                            );
+                                            movements.push({
+                                                src: {
+                                                    file: f,
+                                                    rank: r
+                                                },
+                                                dest: d,
+                                                resultingBoard: newBoard
+                                            });
+                                        }
+                                        if (r === Rank.SEVEN) {
+                                            // two sqs forward
+                                            d = {
+                                                file: f,
+                                                rank: r - 2
+                                            };
+                                            if (this.isOnBoard(d)) {
+                                                dp = this.getPiece(d);
+                                                if (!dp) {
+                                                    const newBoard = new Game(
+                                                        this.fen
+                                                    ).board;
+                                                    newBoard.insertPiece(d, p);
+                                                    newBoard.insertPiece(
+                                                        { file: f, rank: r },
+                                                        null
+                                                    );
+                                                    movements.push({
+                                                        src: {
+                                                            file: f,
+                                                            rank: r
+                                                        },
+                                                        dest: d,
+                                                        resultingBoard: newBoard
+                                                    });
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                // capture +f
+                                d = {
+                                    file: f + 1,
+                                    rank: r - 1
+                                };
+                                if (this.isOnBoard(d)) {
+                                    const dp = this.getPiece(d);
+                                    if (dp && dp.color !== p.color) {
+                                        if (d.rank === Rank.ONE) {
+                                            // promoting
+                                            let newBoard: Board;
+                                            const promoPieces = [
+                                                new Piece(
+                                                    PieceType.Queen,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Rook,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Bishop,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Knight,
+                                                    p.color
+                                                )
+                                            ];
+                                            for (const pP of promoPieces) {
+                                                newBoard = new Game(this.fen)
+                                                    .board;
+                                                newBoard.insertPiece(d, pP);
+                                                newBoard.insertPiece(
+                                                    { file: f, rank: r },
+                                                    null
+                                                );
+                                                movements.push({
+                                                    src: {
+                                                        file: f,
+                                                        rank: r
+                                                    },
+                                                    dest: d,
+                                                    resultingBoard: newBoard
+                                                });
+                                            }
+                                        } else {
+                                            const newBoard = new Game(this.fen)
+                                                .board;
+                                            newBoard.insertPiece(d, p);
+                                            newBoard.insertPiece(
+                                                { file: f, rank: r },
+                                                null
+                                            );
+                                            movements.push({
+                                                src: {
+                                                    file: f,
+                                                    rank: r
+                                                },
+                                                dest: d,
+                                                resultingBoard: newBoard
+                                            });
+                                        }
+                                    } else if (
+                                        this.enPassant ===
+                                        this.squareToString(d)
+                                    ) {
+                                        const newBoard = new Game(this.fen)
+                                            .board;
+                                        newBoard.insertPiece(d, p);
+                                        newBoard.insertPiece(
+                                            { file: f, rank: r },
+                                            null
+                                        );
+                                        newBoard.insertPiece(
+                                            { file: f + 1, rank: r },
+                                            null
+                                        );
+                                        movements.push({
+                                            src: {
+                                                file: f,
+                                                rank: r
+                                            },
+                                            dest: d,
+                                            resultingBoard: newBoard
+                                        });
+                                    }
+                                }
+                                // capture -f
+                                d = {
+                                    file: f - 1,
+                                    rank: r - 1
+                                };
+                                if (this.isOnBoard(d)) {
+                                    const dp = this.getPiece(d);
+                                    if (dp && dp.color !== p.color) {
+                                        if (d.rank === Rank.ONE) {
+                                            // promoting
+                                            let newBoard: Board;
+                                            const promoPieces = [
+                                                new Piece(
+                                                    PieceType.Queen,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Rook,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Bishop,
+                                                    p.color
+                                                ),
+                                                new Piece(
+                                                    PieceType.Knight,
+                                                    p.color
+                                                )
+                                            ];
+                                            for (const pP of promoPieces) {
+                                                newBoard = new Game(this.fen)
+                                                    .board;
+                                                newBoard.insertPiece(d, pP);
+                                                newBoard.insertPiece(
+                                                    { file: f, rank: r },
+                                                    null
+                                                );
+                                                movements.push({
+                                                    src: {
+                                                        file: f,
+                                                        rank: r
+                                                    },
+                                                    dest: d,
+                                                    resultingBoard: newBoard
+                                                });
+                                            }
+                                        } else {
+                                            const newBoard = new Game(this.fen)
+                                                .board;
+                                            newBoard.insertPiece(d, p);
+                                            newBoard.insertPiece(
+                                                { file: f, rank: r },
+                                                null
+                                            );
+                                            movements.push({
+                                                src: {
+                                                    file: f,
+                                                    rank: r
+                                                },
+                                                dest: d,
+                                                resultingBoard: newBoard
+                                            });
+                                        }
                                     } else if (
                                         this.enPassant ===
                                         this.squareToString(d)
