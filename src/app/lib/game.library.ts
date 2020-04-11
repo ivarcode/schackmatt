@@ -343,7 +343,50 @@ export class Game {
             }
         }
         // pawn
-
+        if (color === Color.White) {
+            let d = { file: sq.file + 1, rank: sq.rank + 1 };
+            let dp = this.getPiece(d);
+            if (
+                this.isOnBoard(d) &&
+                dp &&
+                dp.type === PieceType.Pawn &&
+                dp.color !== color
+            ) {
+                return true;
+            }
+            d = { file: sq.file - 1, rank: sq.rank + 1 };
+            dp = this.getPiece(d);
+            if (
+                this.isOnBoard(d) &&
+                dp &&
+                dp.type === PieceType.Pawn &&
+                dp.color !== color
+            ) {
+                return true;
+            }
+        }
+        if (color === Color.Black) {
+            let d = { file: sq.file + 1, rank: sq.rank - 1 };
+            let dp = this.getPiece(d);
+            if (
+                this.isOnBoard(d) &&
+                dp &&
+                dp.type === PieceType.Pawn &&
+                dp.color !== color
+            ) {
+                return true;
+            }
+            d = { file: sq.file - 1, rank: sq.rank - 1 };
+            dp = this.getPiece(d);
+            if (
+                this.isOnBoard(d) &&
+                dp &&
+                dp.type === PieceType.Pawn &&
+                dp.color !== color
+            ) {
+                return true;
+            }
+        }
         // king
         pattern = [
             { x: 0, y: 1 },
@@ -368,8 +411,77 @@ export class Game {
             }
         }
         // bishop/queen
-
+        pattern = [
+            { x: 1, y: 1 },
+            { x: -1, y: -1 },
+            { x: -1, y: 1 },
+            { x: 1, y: -1 }
+        ];
+        for (const pat of pattern) {
+            for (let i = 1; i < 8; i++) {
+                const x = pat.x * i;
+                const y = pat.y * i;
+                const d = {
+                    file: sq.file + x,
+                    rank: sq.rank + y
+                };
+                if (this.isOnBoard(d)) {
+                    const dp = this.getPiece(d);
+                    if (dp) {
+                        if (dp.color === color) {
+                            if (
+                                dp.type === PieceType.Queen ||
+                                dp.type === PieceType.Bishop
+                            ) {
+                                return true;
+                            } else {
+                                break;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
         // rook/queen
+        pattern = [
+            { x: 0, y: 1 },
+            { x: 0, y: -1 },
+            { x: -1, y: 0 },
+            { x: 1, y: 0 }
+        ];
+        for (const pat of pattern) {
+            for (let i = 1; i < 8; i++) {
+                const x = pat.x * i;
+                const y = pat.y * i;
+                const d = {
+                    file: sq.file + x,
+                    rank: sq.rank + y
+                };
+                if (this.isOnBoard(d)) {
+                    const dp = this.getPiece(d);
+                    if (dp) {
+                        if (dp.color === color) {
+                            if (
+                                dp.type === PieceType.Queen ||
+                                dp.type === PieceType.Rook
+                            ) {
+                                return true;
+                            } else {
+                                break;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
     }
 
     private getPieceMovements(): Move[] {
