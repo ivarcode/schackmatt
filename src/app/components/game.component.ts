@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Game } from '../lib/game.library';
+import { Game, Square } from '../lib/game.library';
 import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 
 @Component({
@@ -34,6 +34,11 @@ export class GameComponent implements OnInit {
         dragging: boolean;
         draggedPieceIndex: number;
     };
+    private tintSqObjects: {
+        dest: Square;
+        color: string;
+        gA: number;
+    }[];
 
     constructor() {
         this.game = new Game();
@@ -49,6 +54,7 @@ export class GameComponent implements OnInit {
             dragging: false,
             draggedPieceIndex: -1
         };
+        this.tintSqObjects = [];
         console.log(this.game.toString());
     }
 
@@ -96,6 +102,7 @@ export class GameComponent implements OnInit {
             this.CURSOR_DATA.mouseOverBoard = false;
             this.CURSOR_DATA.currentMousePosition = { x: -1, y: -1 };
             this.CURSOR_DATA.overSquare = null;
+            this.tintSqObjects = [];
             this.CURSOR_DATA.draggedPieceIndex = -1;
             this.drawBoard();
         });
@@ -110,8 +117,16 @@ export class GameComponent implements OnInit {
                 y -= y % 80;
                 x /= 80;
                 y /= 80;
-                // ooh tslint taught me shorthand
-                this.CURSOR_DATA.overSquare = { x, y };
+                if (
+                    this.CURSOR_DATA.overSquare === null ||
+                    this.CURSOR_DATA.overSquare.x !== x ||
+                    this.CURSOR_DATA.overSquare.y !== y
+                ) {
+                    console.log('xy', x, y);
+                    // ooh tslint taught me shorthand
+                    this.CURSOR_DATA.overSquare = { x, y };
+                    this.showMoves();
+                }
             }
             this.drawBoard();
         });
@@ -133,6 +148,33 @@ export class GameComponent implements OnInit {
                 throw new Error('mouse up not over sq');
             }
         });
+    }
+
+    showMoves(): void {
+        const pieceMovements = this.game.getPieceMovements();
+        const sq = {
+            file: this.CURSOR_DATA.overSquare.x,
+            rank: 7 - this.CURSOR_DATA.overSquare.y
+        };
+        this.tintSqObjects = [];
+        for (const movement of pieceMovements) {
+            console.log('move', movement);
+            if (
+                movement.src.file === sq.file &&
+                movement.src.rank === sq.rank
+            ) {
+                console.log('trigger');
+
+                this.tintSqObjects.push({
+                    dest: {
+                        file: movement.dest.file,
+                        rank: 7 - movement.dest.rank
+                    },
+                    color: 'green',
+                    gA: 0.01
+                });
+            }
+        }
     }
 
     attemptMoveOnBoard(): void {
@@ -194,9 +236,18 @@ export class GameComponent implements OnInit {
             this.CURSOR_DATA.overSquare.x === x &&
             this.CURSOR_DATA.overSquare.y === 7 - y
         ) {
-            this.tintSquare(x, 7 - y, 'yellow', 0.7);
+            this.tintSquare(x, 7 - y, 'yellow', 0.5);
             this.boardContext.globalAlpha = 1; // reset this to full
         }
+        for (const tintSq of this.tintSqObjects) {
+            this.tintSquare(
+                tintSq.dest.file,
+                tintSq.dest.rank,
+                tintSq.color,
+                tintSq.gA
+            );
+        }
+        this.boardContext.globalAlpha = 1;
         if (piece) {
             const color = piece.color;
             const pieceType = piece.type;

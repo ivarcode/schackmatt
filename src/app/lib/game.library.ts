@@ -484,7 +484,7 @@ export class Game {
         }
     }
 
-    private getPieceMovements(): Move[] {
+    public getPieceMovements(): Move[] {
         const movements: Move[] = [];
         for (let r = 0; r < 8; r++) {
             for (let f = 0; f < 8; f++) {
@@ -567,6 +567,7 @@ export class Game {
                                     }
                                 }
                             }
+                            // castling
                             if (p.color === Color.White) {
                                 if (f === File.e && r === Rank.ONE) {
                                     // kingside
@@ -586,10 +587,315 @@ export class Game {
                                             }) &&
                                             rook &&
                                             rook.type === PieceType.Rook &&
-                                            rook.color === p.color
+                                            rook.color === p.color &&
+                                            !this.isThreatenedBy(
+                                                {
+                                                    file: File.e,
+                                                    rank: Rank.ONE
+                                                },
+                                                Color.Black
+                                            ) &&
+                                            !this.isThreatenedBy(
+                                                {
+                                                    file: File.f,
+                                                    rank: Rank.ONE
+                                                },
+                                                Color.Black
+                                            )
                                         ) {
-                                            // write an incheck function before
-                                            // continuing
+                                            const newBoard = new Game(this.fen)
+                                                .board;
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.g,
+                                                    rank: Rank.ONE
+                                                },
+                                                p
+                                            );
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.f,
+                                                    rank: Rank.ONE
+                                                },
+                                                new Piece(
+                                                    PieceType.Rook,
+                                                    p.color
+                                                )
+                                            );
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.e,
+                                                    rank: Rank.ONE
+                                                },
+                                                null
+                                            );
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.h,
+                                                    rank: Rank.ONE
+                                                },
+                                                null
+                                            );
+                                            movements.push({
+                                                src: {
+                                                    file: File.e,
+                                                    rank: Rank.ONE
+                                                },
+                                                dest: {
+                                                    file: File.g,
+                                                    rank: Rank.ONE
+                                                },
+                                                resultingBoard: newBoard
+                                            });
+                                        }
+                                    }
+                                    // queenside
+                                    if (this.castlingRights.Q) {
+                                        const rook = this.getPiece({
+                                            file: File.a,
+                                            rank: Rank.ONE
+                                        });
+                                        if (
+                                            !this.getPiece({
+                                                file: File.d,
+                                                rank: Rank.ONE
+                                            }) &&
+                                            !this.getPiece({
+                                                file: File.c,
+                                                rank: Rank.ONE
+                                            }) &&
+                                            !this.getPiece({
+                                                file: File.b,
+                                                rank: Rank.ONE
+                                            }) &&
+                                            rook &&
+                                            rook.type === PieceType.Rook &&
+                                            rook.color === p.color &&
+                                            !this.isThreatenedBy(
+                                                {
+                                                    file: File.e,
+                                                    rank: Rank.ONE
+                                                },
+                                                Color.Black
+                                            ) &&
+                                            !this.isThreatenedBy(
+                                                {
+                                                    file: File.d,
+                                                    rank: Rank.ONE
+                                                },
+                                                Color.Black
+                                            )
+                                        ) {
+                                            const newBoard = new Game(this.fen)
+                                                .board;
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.c,
+                                                    rank: Rank.ONE
+                                                },
+                                                p
+                                            );
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.d,
+                                                    rank: Rank.ONE
+                                                },
+                                                new Piece(
+                                                    PieceType.Rook,
+                                                    p.color
+                                                )
+                                            );
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.e,
+                                                    rank: Rank.ONE
+                                                },
+                                                null
+                                            );
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.a,
+                                                    rank: Rank.ONE
+                                                },
+                                                null
+                                            );
+                                            movements.push({
+                                                src: {
+                                                    file: File.e,
+                                                    rank: Rank.ONE
+                                                },
+                                                dest: {
+                                                    file: File.c,
+                                                    rank: Rank.ONE
+                                                },
+                                                resultingBoard: newBoard
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                            if (p.color === Color.Black) {
+                                if (f === File.e && r === Rank.EIGHT) {
+                                    // kingside
+                                    if (this.castlingRights.k) {
+                                        const rook = this.getPiece({
+                                            file: File.h,
+                                            rank: Rank.EIGHT
+                                        });
+                                        if (
+                                            !this.getPiece({
+                                                file: File.f,
+                                                rank: Rank.EIGHT
+                                            }) &&
+                                            !this.getPiece({
+                                                file: File.g,
+                                                rank: Rank.EIGHT
+                                            }) &&
+                                            rook &&
+                                            rook.type === PieceType.Rook &&
+                                            rook.color === p.color &&
+                                            !this.isThreatenedBy(
+                                                {
+                                                    file: File.e,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                Color.White
+                                            ) &&
+                                            !this.isThreatenedBy(
+                                                {
+                                                    file: File.f,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                Color.White
+                                            )
+                                        ) {
+                                            const newBoard = new Game(this.fen)
+                                                .board;
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.g,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                p
+                                            );
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.f,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                new Piece(
+                                                    PieceType.Rook,
+                                                    p.color
+                                                )
+                                            );
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.e,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                null
+                                            );
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.h,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                null
+                                            );
+                                            movements.push({
+                                                src: {
+                                                    file: File.e,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                dest: {
+                                                    file: File.g,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                resultingBoard: newBoard
+                                            });
+                                        }
+                                    }
+                                    // queenside
+                                    if (this.castlingRights.q) {
+                                        const rook = this.getPiece({
+                                            file: File.a,
+                                            rank: Rank.EIGHT
+                                        });
+                                        if (
+                                            !this.getPiece({
+                                                file: File.d,
+                                                rank: Rank.EIGHT
+                                            }) &&
+                                            !this.getPiece({
+                                                file: File.c,
+                                                rank: Rank.EIGHT
+                                            }) &&
+                                            !this.getPiece({
+                                                file: File.b,
+                                                rank: Rank.EIGHT
+                                            }) &&
+                                            rook &&
+                                            rook.type === PieceType.Rook &&
+                                            rook.color === p.color &&
+                                            !this.isThreatenedBy(
+                                                {
+                                                    file: File.e,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                Color.White
+                                            ) &&
+                                            !this.isThreatenedBy(
+                                                {
+                                                    file: File.d,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                Color.White
+                                            )
+                                        ) {
+                                            const newBoard = new Game(this.fen)
+                                                .board;
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.c,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                p
+                                            );
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.d,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                new Piece(
+                                                    PieceType.Rook,
+                                                    p.color
+                                                )
+                                            );
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.e,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                null
+                                            );
+                                            newBoard.insertPiece(
+                                                {
+                                                    file: File.a,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                null
+                                            );
+                                            movements.push({
+                                                src: {
+                                                    file: File.e,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                dest: {
+                                                    file: File.c,
+                                                    rank: Rank.EIGHT
+                                                },
+                                                resultingBoard: newBoard
+                                            });
                                         }
                                     }
                                 }
