@@ -122,7 +122,7 @@ export class GameComponent implements OnInit {
                     this.CURSOR_DATA.overSquare.x !== x ||
                     this.CURSOR_DATA.overSquare.y !== y
                 ) {
-                    console.log('xy', x, y);
+                    // console.log('xy', x, y);
                     // ooh tslint taught me shorthand
                     this.CURSOR_DATA.overSquare = { x, y };
                     this.showMoves();
@@ -158,13 +158,12 @@ export class GameComponent implements OnInit {
         };
         this.tintSqObjects = [];
         for (const movement of pieceMovements) {
-            console.log('move', movement);
+            // console.log('move', movement);
             if (
                 movement.src.file === sq.file &&
                 movement.src.rank === sq.rank
             ) {
-                console.log('trigger');
-
+                // console.log('trigger');
                 this.tintSqObjects.push({
                     dest: {
                         file: movement.dest.file,
