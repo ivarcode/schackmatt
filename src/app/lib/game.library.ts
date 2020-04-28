@@ -126,7 +126,7 @@ export class Game {
             ? fen
             : 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
         this.pgn = '';
-        this.load_fen();
+        this.loadFEN();
     }
 
     public toString(): string {
@@ -148,7 +148,7 @@ export class Game {
     }
 
     // prepares the game object from the fen data
-    private load_fen(): void {
+    private loadFEN(): void {
         const board: Board = new Board();
 
         this.castlingRights = { K: false, Q: false, k: false, q: false };
@@ -308,13 +308,28 @@ export class Game {
 
     public attemptMove(move: Move): boolean {
         // make the move
-        console.log('attempting ', move.src, move.dest);
+        console.log(
+            'attempting ',
+            this.squareToString(move.src),
+            this.squareToString(move.dest)
+        );
         let pieceMovements = this.getPieceMovements();
-        console.log('pm', pieceMovements);
-        // for (const pm of pieceMovements) {
-        //     console.log('pm', pm.resultingBoard.toString());
-        // }
-        this.makeMove(move);
+        // console.log('pm', pieceMovements);
+        for (const pm of pieceMovements) {
+            // console.log('pm', pm.resultingBoard.toString());
+            if (
+                pm.src.file === move.src.file &&
+                pm.src.rank === move.src.rank &&
+                pm.dest.file === move.dest.file &&
+                pm.dest.rank === move.dest.rank
+            ) {
+                // the pm contains the calculated FEN
+                this.makeMove(pm);
+                break;
+            }
+        }
+        // this.makeMove(move);
+        console.log(this.toString());
         return true;
     }
 
@@ -1645,8 +1660,14 @@ export class Game {
         if (this.board.getPiece(move.dest)) {
             this.board.captured.push(this.board.getPiece(move.dest));
         }
-        this.insertPiece(move.dest, this.board.getPiece(move.src));
-        this.insertPiece(move.src, null);
+        // this.insertPiece(move.dest, this.board.getPiece(move.src));
+        // this.insertPiece(move.src, null);
+        console.log('boarrrrd', move.resultingBoard);
+        this.board = move.resultingBoard;
+    }
+
+    private boardToFEN(): string {
+        return '';
     }
 
     private isOnBoard(d: Square): boolean {
