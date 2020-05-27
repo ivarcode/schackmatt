@@ -8,7 +8,8 @@ const routes: Routes = [
         path: 'game'
     },
     {
-        redirectTo: 'game', // to be changed to direct to a live (or random) chess game
+        // to be changed to direct to a live (or random) chess game
+        redirectTo: 'game',
         path: '**'
     }
 ];

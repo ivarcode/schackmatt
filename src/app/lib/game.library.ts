@@ -179,10 +179,10 @@ export class Game {
                         let halfmove = '';
                         for (let r = 0; r < rest.length; r++) {
                             if (rest[r] === ' ') {
+                                halfmove += rest.substr(0, r);
                                 rest = rest.substr(r + 1);
                                 break;
                             }
-                            halfmove += r;
                         }
                         this.halfmove = +halfmove; // fun way to convert to int
                         // fullmove
@@ -285,6 +285,12 @@ export class Game {
                                     { file: fileIndex, rank: rankIndex },
                                     new Piece(PieceType.Pawn, Color.White)
                                 );
+                                break;
+                            default:
+                                // number case
+                                fileIndex +=
+                                    // tslint:disable-next-line: radix
+                                    Number.parseInt(this.fen.charAt(i)) - 1;
                                 break;
                         }
                     }
@@ -1663,27 +1669,189 @@ export class Game {
         // this.insertPiece(move.dest, this.board.getPiece(move.src));
         // this.insertPiece(move.src, null);
         console.log('boarrrrd', move.resultingBoard);
-        this.board = move.resultingBoard;
-        let newFEN = this.getNextFENFromMove(move);
+        const newFEN = this.getNextFENFromMove(move);
+        this.fen = newFEN;
+        this.loadFEN();
+        // this.board = move.resultingBoard;
         console.log('newFEN', newFEN);
-        console.log('mvoe', move);
+        // console.log('mvoe', move);
 
         // this.fen =
     }
 
     private getNextFENFromMove(move: Move): string {
-        let newFEN: string = '';
+        let newFEN = '';
+        // whole board
         for (let i = 0; i < 8; i++) {
+            let empties = 0;
             for (let j = 0; j < 8; j++) {
-                //
+                const piece = move.resultingBoard.getPiece({
+                    file: j,
+                    rank: 7 - i
+                });
+                if (piece) {
+                    if (empties > 0) {
+                        newFEN += empties;
+                        empties = 0;
+                    }
+                    newFEN += this.pieceToCharSymbol(piece);
+                } else {
+                    empties++;
+                }
             }
+            if (empties > 0) {
+                newFEN += empties;
+            }
+            if (i !== 7) {
+                newFEN += '/';
+            }
+        }
+        // switch color
+        if (this.turn === Color.White) {
+            newFEN += ' b ';
+        } else {
+            newFEN += ' w ';
+        }
+        // update castling data
+        if (this.castlingRights.K) {
+            if (
+                (move.src.file === File.e && move.src.rank === Rank.ONE) ||
+                (move.src.file === File.h && move.src.rank === Rank.ONE) ||
+                (move.dest.file === File.e && move.dest.rank === Rank.ONE) ||
+                (move.dest.file === File.h && move.dest.rank === Rank.ONE)
+            ) {
+                this.castlingRights.K = false;
+            }
+        }
+        if (this.castlingRights.Q) {
+            if (
+                (move.src.file === File.e && move.src.rank === Rank.ONE) ||
+                (move.src.file === File.a && move.src.rank === Rank.ONE) ||
+                (move.dest.file === File.e && move.dest.rank === Rank.ONE) ||
+                (move.dest.file === File.a && move.dest.rank === Rank.ONE)
+            ) {
+                this.castlingRights.Q = false;
+            }
+        }
+        if (this.castlingRights.k) {
+            if (
+                (move.src.file === File.e && move.src.rank === Rank.EIGHT) ||
+                (move.src.file === File.h && move.src.rank === Rank.EIGHT) ||
+                (move.dest.file === File.e && move.dest.rank === Rank.EIGHT) ||
+                (move.dest.file === File.h && move.dest.rank === Rank.EIGHT)
+            ) {
+                this.castlingRights.k = false;
+            }
+        }
+        if (this.castlingRights.q) {
+            if (
+                (move.src.file === File.e && move.src.rank === Rank.EIGHT) ||
+                (move.src.file === File.a && move.src.rank === Rank.EIGHT) ||
+                (move.dest.file === File.e && move.dest.rank === Rank.EIGHT) ||
+                (move.dest.file === File.a && move.dest.rank === Rank.EIGHT)
+            ) {
+                this.castlingRights.q = false;
+            }
+        }
+        // add castling data
+        if (this.castlingRights.K) {
+            newFEN += 'K';
+        }
+        if (this.castlingRights.Q) {
+            newFEN += 'Q';
+        }
+        if (this.castlingRights.k) {
+            newFEN += 'k';
+        }
+        if (this.castlingRights.q) {
+            newFEN += 'q';
+        }
+        if (
+            this.castlingRights.K ||
+            this.castlingRights.Q ||
+            this.castlingRights.k ||
+            this.castlingRights.q
+        ) {
+            newFEN += ' ';
+        } else {
+            newFEN += '- ';
+        }
+        // add en passant?
+        if (
+            move.dest.rank === Rank.FOUR &&
+            move.src.rank === Rank.TWO &&
+            move.resultingBoard.getPiece(move.dest).type === PieceType.Pawn &&
+            move.resultingBoard.getPiece(move.dest).color === Color.White
+        ) {
+            newFEN += this.squareToString({
+                file: move.dest.file,
+                rank: Rank.THREE
+            });
+        } else if (
+            move.dest.rank === Rank.FIVE &&
+            move.src.rank === Rank.SEVEN &&
+            move.resultingBoard.getPiece(move.dest).type === PieceType.Pawn &&
+            move.resultingBoard.getPiece(move.dest).color === Color.Black
+        ) {
+            newFEN += this.squareToString({
+                file: move.dest.file,
+                rank: Rank.SIX
+            });
+        } else {
+            newFEN += '-';
+        }
+        newFEN += ' ';
+        // update halfmove
+        if (
+            this.board.getPiece(move.src).type === PieceType.Pawn ||
+            this.board.getPiece(move.dest)
+        ) {
+            newFEN += '0';
+        } else {
+            newFEN += this.halfmove + 1;
+        }
+        newFEN += ' ';
+        // update fullmove
+        if (this.turn === Color.Black) {
+            newFEN += this.fullmove + 1;
+        } else {
+            newFEN += this.fullmove;
         }
         return newFEN;
     }
 
+    // SHOULD CREATE THIS to break up ^ this function
     // private boardToFEN(): string {
     //     return '';
     // }
+
+    private pieceToCharSymbol(piece: Piece): string {
+        let character: string;
+        switch (piece.type) {
+            case PieceType.Bishop:
+                character = 'b';
+                break;
+            case PieceType.King:
+                character = 'k';
+                break;
+            case PieceType.Queen:
+                character = 'q';
+                break;
+            case PieceType.Knight:
+                character = 'n';
+                break;
+            case PieceType.Rook:
+                character = 'r';
+                break;
+            case PieceType.Pawn:
+                character = 'p';
+                break;
+        }
+        if (piece.color === Color.White) {
+            character = character.toUpperCase();
+        }
+        return character;
+    }
 
     private isOnBoard(d: Square): boolean {
         return d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0;
