@@ -1,0 +1,18 @@
+.btnx {
+    font-size: 20px;
+    margin-left: 30px;
+}
+.btn-primary{
+    border-color: black;
+    background-color: rgb(44, 2, 158);
+    
+}
+.card-text{
+    font-size: 18px;
+    color: black;
+}
+.card-title{
+    color: black;
+    font-weight: initial;
+    font-size: 25px;
+}
