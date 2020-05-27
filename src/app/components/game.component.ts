@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Game, Square } from '../lib/game.library';
-import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 
 @Component({
     selector: 'app-game',
