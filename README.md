@@ -1,13 +1,17 @@
 # schackmatt
 
 Developers:
- - fork repo to your account or organization
- - clone repository to your machine
- - install node https://nodejs.org/en/download/
- - run 'npm i' to install necessary packages (this might take some time)
- - run 'ng build'
- - run 'ng serve'
- - should be on localhost:4200/
+
+-   fork repo to your account or organization
+-   clone repository to your machine
+-   install node https://nodejs.org/en/download/
+-   run 'npm i' to install necessary packages (this might take some time)
+-   if you have angular CLI you can:
+    -   run 'ng build'
+    -   run 'ng serve'
+-   else:
+    -   run 'npm run start'
+-   should be on localhost:4200/
 
 Please submit bugs or feature requests in detailed issues.
 
