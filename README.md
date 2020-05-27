@@ -6,12 +6,18 @@ Developers:
 -   clone repository to your machine
 -   install node https://nodejs.org/en/download/
 -   run 'npm i' to install necessary packages (this might take some time)
--   if you have angular CLI you can:
-    -   run 'ng build'
-    -   run 'ng serve'
--   else:
-    -   run 'npm run start'
+-   run 'ng build'
+-   run 'ng serve'
 -   should be on localhost:4200/
+
+To set the upstream (might exist by default):
+
+-   'git remote add upstream <URL HERE>'
+    To merge upstream code with your branch (for example develop):
+-   'git checkout develop'
+-   'git merge upstream/develop'
+
+Developer Discord Server: https://discord.gg/uruXya4
 
 Please submit bugs or feature requests in detailed issues.
 
