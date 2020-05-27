@@ -184,9 +184,9 @@ export class Game {
                             }
                             halfmove += r;
                         }
-                        this.halfmove = +halfmove;
+                        this.halfmove = +halfmove; // fun way to convert to int
                         // fullmove
-                        this.fullmove = +rest;
+                        this.fullmove = +rest; // fun way to convert to int
                         // end initial for loop
                         i = this.fen.length;
                     } else {
@@ -313,7 +313,7 @@ export class Game {
             this.squareToString(move.src),
             this.squareToString(move.dest)
         );
-        let pieceMovements = this.getPieceMovements();
+        const pieceMovements = this.getPieceMovements();
         // console.log('pm', pieceMovements);
         for (const pm of pieceMovements) {
             // console.log('pm', pm.resultingBoard.toString());
@@ -1664,11 +1664,26 @@ export class Game {
         // this.insertPiece(move.src, null);
         console.log('boarrrrd', move.resultingBoard);
         this.board = move.resultingBoard;
+        let newFEN = this.getNextFENFromMove(move);
+        console.log('newFEN', newFEN);
+        console.log('mvoe', move);
+
+        // this.fen =
     }
 
-    private boardToFEN(): string {
-        return '';
+    private getNextFENFromMove(move: Move): string {
+        let newFEN: string = '';
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                //
+            }
+        }
+        return newFEN;
     }
+
+    // private boardToFEN(): string {
+    //     return '';
+    // }
 
     private isOnBoard(d: Square): boolean {
         return d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0;
