@@ -5,18 +5,20 @@ Developers:
 -   fork repo to your account or organization
 -   clone repository to your machine
 -   install node https://nodejs.org/en/download/
--   run 'npm i' to install necessary packages (this might take some time)
--   run 'ng build'
--   run 'ng serve'
+-   run `npm i` to install necessary packages (this might take some time)
+-   run `ng build`
+-   run `ng serve`
 -   should be on localhost:4200/
 
 To set the upstream (might exist by default):
 
 `git remote add upstream <URL HERE>`
-    To merge upstream code with your branch (for example develop):
--   'git checkout develop'
--   'git fetch upstream'
--   'git merge upstream/develop'
+
+To merge upstream code with your branch (for example develop):
+
+`git checkout develop`
+`git fetch upstream`
+`git merge upstream/develop`
 
 Developer Discord Server: https://discord.gg/uruXya4
 
