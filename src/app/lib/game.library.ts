@@ -1663,13 +1663,13 @@ export class Game {
     }
 
     public getLegalMoves(): Move[] {
-        let moves = this.getPieceMovements();
+        const moves = this.getPieceMovements();
         console.log('moves', moves);
-        let sq = this.findKing(this.turn);
-        console.log('FIND KING', this.turn, 'at ', sq);
+        // console.log('FIND KING', this.turn, 'at ', sq);
         for (let i = 0; i < moves.length; i++) {
-            let tempGame = new Game(this.fen);
+            const tempGame = new Game(this.fen);
             tempGame.setBoard(moves[i].resultingBoard);
+            const sq = tempGame.findKing(this.turn);
             if (this.turn === Color.White) {
                 if (tempGame.isThreatenedBy(sq, Color.Black)) {
                     moves.splice(i, 1);
