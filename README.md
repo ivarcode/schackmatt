@@ -23,6 +23,10 @@ To merge upstream code with your branch (for example develop):
 `git fetch upstream`
 `git merge upstream/develop`
 
+General standard for branch names (please follow this if you want to spare me a headache)
+
+`issue-#-some-basic-descriptive-phrase`
+
 Developer Discord Server: https://discord.gg/uruXya4
 
 Please submit bugs or feature requests in detailed issues.
