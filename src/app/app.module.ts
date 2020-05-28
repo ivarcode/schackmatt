@@ -7,6 +7,8 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { GameComponent } from './components/game.component';
 import { AccountComponent } from './components/account/account.component';
+import { TacticsTrainer } from './components/tactics-trainer/tactics-trainer.component';
+import { RepertoireBuilder } from './components/repertoire-builder/repertoire-builder.component';
 
 @NgModule({
     declarations: [
@@ -14,7 +16,9 @@ import { AccountComponent } from './components/account/account.component';
         HeaderComponent,
         FooterComponent,
         GameComponent,
-        AccountComponent
+        AccountComponent,
+        TacticsTrainer,
+        RepertoireBuilder
     ],
     imports: [BrowserModule, AppRoutingModule],
     providers: [],
