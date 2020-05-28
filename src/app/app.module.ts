@@ -7,10 +7,10 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { GameComponent } from './components/game.component';
 import { AccountComponent } from './components/account/account.component';
-import { TacticsTrainer } from './components/tactics-trainer/tactics-trainer.component';
-import { RepertoireBuilder } from './components/repertoire-builder/repertoire-builder.component';
-import { MyStudies } from './components/studies/my-studies/my-studies.component';
-import { PublicStudies } from './components/studies/public-studies/public-studies.component';
+import { TacticsTrainerComponent } from './components/tactics-trainer/tactics-trainer.component';
+import { RepertoireBuilderComponent } from './components/repertoire-builder/repertoire-builder.component';
+import { MyStudiesComponenet } from './components/studies/my-studies/my-studies.component';
+import { PublicStudiesComponent } from './components/studies/public-studies/public-studies.component';
 
 @NgModule({
     declarations: [
@@ -19,13 +19,13 @@ import { PublicStudies } from './components/studies/public-studies/public-studie
         FooterComponent,
         GameComponent,
         AccountComponent,
-        TacticsTrainer,
-        RepertoireBuilder,
-        MyStudies,
-        PublicStudies
+        TacticsTrainerComponent,
+        RepertoireBuilderComponent,
+        MyStudiesComponenet,
+        PublicStudiesComponent
     ],
     imports: [BrowserModule, AppRoutingModule],
     providers: [],
     bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

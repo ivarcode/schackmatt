@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GameComponent } from './components/game.component';
 import { AccountComponent } from './components/account/account.component';
-import { TacticsTrainer } from './components/tactics-trainer/tactics-trainer.component';
-import { RepertoireBuilder } from './components/repertoire-builder/repertoire-builder.component';
-import { MyStudies } from './components/studies/my-studies/my-studies.component';
-import { PublicStudies } from './components/studies/public-studies/public-studies.component';
+import { TacticsTrainerComponent } from './components/tactics-trainer/tactics-trainer.component';
+import { RepertoireBuilderComponent } from './components/repertoire-builder/repertoire-builder.component';
+import { MyStudiesComponenet } from './components/studies/my-studies/my-studies.component';
+import { PublicStudiesComponent } from './components/studies/public-studies/public-studies.component';
 const routes: Routes = [
     {
         component: GameComponent,
@@ -16,19 +16,19 @@ const routes: Routes = [
         path: 'account'
     },
     {
-        component: TacticsTrainer,
+        component: TacticsTrainerComponent,
         path: 'tactics-trainer'
     },
     {
-        component: RepertoireBuilder,
+        component: RepertoireBuilderComponent,
         path: 'repertoire-builder'
     },
     {
-        component: MyStudies,
+        component: MyStudiesComponenet,
         path: 'my-studies'
     },
     {
-        component: PublicStudies,
+        component: PublicStudiesComponent,
         path: 'public-studies'
     },
     {
@@ -41,4 +41,4 @@ const routes: Routes = [
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

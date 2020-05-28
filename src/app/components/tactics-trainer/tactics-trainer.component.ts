@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
     templateUrl: './tactics-trainer.component.html',
     styleUrls: ['./tactics-trainer.component.css']
 })
-export class TacticsTrainer {
-    constructor() { }
+export class TacticsTrainerComponent {
+    constructor() {}
 }
