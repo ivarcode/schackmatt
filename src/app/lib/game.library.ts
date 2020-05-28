@@ -319,7 +319,7 @@ export class Game {
             this.squareToString(move.src),
             this.squareToString(move.dest)
         );
-        const pieceMovements = this.getPieceMovements();
+        const pieceMovements = this.getLegalMoves();
         // console.log('pm', pieceMovements);
         for (const pm of pieceMovements) {
             // console.log('pm', pm.resultingBoard.toString());
@@ -1662,18 +1662,55 @@ export class Game {
         return movements;
     }
 
+    public getLegalMoves(): Move[] {
+        let moves = this.getPieceMovements();
+        console.log('moves', moves);
+        let sq = this.findKing(this.turn);
+        console.log('FIND KING', this.turn, 'at ', sq);
+        for (let i = 0; i < moves.length; i++) {
+            let tempGame = new Game(this.fen);
+            tempGame.setBoard(moves[i].resultingBoard);
+            if (this.turn === Color.White) {
+                if (tempGame.isThreatenedBy(sq, Color.Black)) {
+                    moves.splice(i, 1);
+                    i--;
+                }
+            } else {
+                if (tempGame.isThreatenedBy(sq, Color.White)) {
+                    moves.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+        console.log('moves after checks filtered', moves);
+        return moves;
+    }
+
+    private findKing(color: Color): Square {
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                const sq = { file: i, rank: j };
+                const p = this.getPiece(sq);
+                if (p && p.type === PieceType.King && p.color === color) {
+                    return sq;
+                }
+            }
+        }
+        return null;
+    }
+
     private makeMove(move: Move): void {
         if (this.board.getPiece(move.dest)) {
             this.board.captured.push(this.board.getPiece(move.dest));
         }
         // this.insertPiece(move.dest, this.board.getPiece(move.src));
         // this.insertPiece(move.src, null);
-        console.log('boarrrrd', move.resultingBoard);
+        // console.log('boarrrrd', move.resultingBoard);
         const newFEN = this.getNextFENFromMove(move);
         this.fen = newFEN;
         this.loadFEN();
         // this.board = move.resultingBoard;
-        console.log('newFEN', newFEN);
+        // console.log('newFEN', newFEN);
         // console.log('mvoe', move);
 
         // this.fen =
@@ -1855,5 +1892,9 @@ export class Game {
 
     private isOnBoard(d: Square): boolean {
         return d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0;
+    }
+
+    public setBoard(board: Board): void {
+        this.board = board;
     }
 }
