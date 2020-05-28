@@ -9,6 +9,8 @@ import { GameComponent } from './components/game.component';
 import { AccountComponent } from './components/account/account.component';
 import { TacticsTrainer } from './components/tactics-trainer/tactics-trainer.component';
 import { RepertoireBuilder } from './components/repertoire-builder/repertoire-builder.component';
+import { MyStudies } from './components/studies/my-studies/my-studies.component';
+import { PublicStudies } from './components/studies/public-studies/public-studies.component';
 
 @NgModule({
     declarations: [
@@ -18,7 +20,9 @@ import { RepertoireBuilder } from './components/repertoire-builder/repertoire-bu
         GameComponent,
         AccountComponent,
         TacticsTrainer,
-        RepertoireBuilder
+        RepertoireBuilder,
+        MyStudies,
+        PublicStudies
     ],
     imports: [BrowserModule, AppRoutingModule],
     providers: [],
