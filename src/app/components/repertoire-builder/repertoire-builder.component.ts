@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
     templateUrl: './repertoire-builder.component.html',
     styleUrls: ['./repertoire-builder.component.css']
 })
-export class RepertoireBuilder {
-    constructor() { }
+export class RepertoireBuilderComponent {
+    constructor() {}
 }
