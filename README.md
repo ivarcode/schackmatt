@@ -6,8 +6,11 @@ Developers:
 -   clone repository to your machine
 -   install node https://nodejs.org/en/download/
 -   run `npm i` to install necessary packages (this might take some time)
--   run `ng build`
--   run `ng serve`
+-   if you use Angular CLI
+    -   run `ng build`
+    -   run `ng serve`
+-   if you don't...
+    -   run `npm run start`
 -   should be on localhost:4200/
 
 To set the upstream (might exist by default):
