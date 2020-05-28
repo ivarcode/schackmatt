@@ -366,7 +366,7 @@ export class Game {
             }
         }
         // pawn
-        if (color === Color.White) {
+        if (color === Color.Black) {
             let d = { file: sq.file + 1, rank: sq.rank + 1 };
             let dp;
             if (d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0) {
@@ -375,7 +375,7 @@ export class Game {
                     this.isOnBoard(d) &&
                     dp &&
                     dp.type === PieceType.Pawn &&
-                    dp.color !== color
+                    dp.color === color
                 ) {
                     return true;
                 }
@@ -388,13 +388,13 @@ export class Game {
                     this.isOnBoard(d) &&
                     dp &&
                     dp.type === PieceType.Pawn &&
-                    dp.color !== color
+                    dp.color === color
                 ) {
                     return true;
                 }
             }
         }
-        if (color === Color.Black) {
+        if (color === Color.White) {
             let d = { file: sq.file + 1, rank: sq.rank - 1 };
             let dp;
             if (d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0) {
@@ -403,7 +403,7 @@ export class Game {
                     this.isOnBoard(d) &&
                     dp &&
                     dp.type === PieceType.Pawn &&
-                    dp.color !== color
+                    dp.color === color
                 ) {
                     return true;
                 }
@@ -415,7 +415,7 @@ export class Game {
                     this.isOnBoard(d) &&
                     dp &&
                     dp.type === PieceType.Pawn &&
-                    dp.color !== color
+                    dp.color === color
                 ) {
                     return true;
                 }
