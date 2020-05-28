@@ -316,11 +316,11 @@ export class Game {
 
     public attemptMove(move: Move): boolean {
         // make the move
-        console.log(
-            'attempting ',
-            this.squareToString(move.src),
-            this.squareToString(move.dest)
-        );
+        // console.log(
+        //     'attempting ',
+        //     this.squareToString(move.src),
+        //     this.squareToString(move.dest)
+        // );
         const pieceMovements = this.getLegalMoves();
         // console.log('pm', pieceMovements);
         for (const pm of pieceMovements) {
@@ -337,7 +337,7 @@ export class Game {
             }
         }
         // this.makeMove(move);
-        console.log(this.toString());
+        // console.log(this.toString());
         return true;
     }
 
@@ -1677,7 +1677,7 @@ export class Game {
 
     public getLegalMoves(): Move[] {
         const moves = this.getPieceMovements();
-        console.log('moves', moves);
+        // console.log('moves', moves);
         // console.log('FIND KING', this.turn, 'at ', sq);
         for (let i = 0; i < moves.length; i++) {
             const tempGame = new Game(this.fen);
@@ -1695,7 +1695,7 @@ export class Game {
                 }
             }
         }
-        console.log('moves after checks filtered', moves);
+        // console.log('moves after checks filtered', moves);
         return moves;
     }
 
@@ -1723,9 +1723,9 @@ export class Game {
         this.fen = newFEN;
         this.loadFEN();
 
-        console.log('check?', this.isCheck());
-        console.log('checkmate?', this.isCheckmate());
-        console.log('stalemate?', this.isStalemate());
+        // console.log('check?', this.isCheck());
+        // console.log('checkmate?', this.isCheckmate());
+        // console.log('stalemate?', this.isStalemate());
     }
 
     private isStalemate(): boolean {
@@ -1760,7 +1760,7 @@ export class Game {
         return false;
     }
 
-    private getNextFENFromMove(move: Move): string {
+    public getNextFENFromMove(move: Move): string {
         let newFEN = '';
         // whole board
         for (let i = 0; i < 8; i++) {
@@ -1940,5 +1940,9 @@ export class Game {
 
     public setBoard(board: Board): void {
         this.board = board;
+    }
+
+    public getFEN(): string {
+        return this.fen;
     }
 }
