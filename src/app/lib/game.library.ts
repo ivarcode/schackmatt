@@ -1728,21 +1728,21 @@ export class Game {
         // console.log('stalemate?', this.isStalemate());
     }
 
-    private isStalemate(): boolean {
+    public isStalemate(): boolean {
         if (!this.isCheck() && this.getLegalMoves().length === 0) {
             return true;
         }
         return false;
     }
 
-    private isCheckmate(): boolean {
+    public isCheckmate(): boolean {
         if (this.isCheck() && this.getLegalMoves().length === 0) {
             return true;
         }
         return false;
     }
 
-    private isCheck(): boolean {
+    public isCheck(): boolean {
         if (this.turn === Color.Black) {
             // console.log('finding black king');
             const kingSquare = this.findKing(Color.Black);
