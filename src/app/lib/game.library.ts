@@ -98,8 +98,9 @@ export class Board {
         let str = 'board:';
         for (const i of this.content) {
             str += '\n    ';
-            for (const j of i) {
-                str += '[' + (j ? j.toString() : ' ') + ']';
+            for (let j = 0; j < 8; j++) {
+                const a = i[j];
+                str += '[' + (a ? a.toString() : ' ') + ']';
             }
         }
         return str;
