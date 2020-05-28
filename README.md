@@ -12,7 +12,7 @@ Developers:
 
 To set the upstream (might exist by default):
 
--   'git remote add upstream <URL HERE>'
+`git remote add upstream <URL HERE>`
     To merge upstream code with your branch (for example develop):
 -   'git checkout develop'
 -   'git fetch upstream'
