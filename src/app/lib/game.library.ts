@@ -92,7 +92,8 @@ export class Board {
         this.content[sq.file][sq.rank] = piece;
     }
     public getPiece(sq: Square): Piece {
-        return this.content[sq.file][sq.rank];
+        const p = this.content[sq.file][sq.rank];
+        return p;
     }
     public toString(): string {
         let str = 'board:';
@@ -366,46 +367,57 @@ export class Game {
         // pawn
         if (color === Color.White) {
             let d = { file: sq.file + 1, rank: sq.rank + 1 };
-            let dp = this.getPiece(d);
-            if (
-                this.isOnBoard(d) &&
-                dp &&
-                dp.type === PieceType.Pawn &&
-                dp.color !== color
-            ) {
-                return true;
+            let dp;
+            if (d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0) {
+                dp = this.getPiece(d);
+                if (
+                    this.isOnBoard(d) &&
+                    dp &&
+                    dp.type === PieceType.Pawn &&
+                    dp.color !== color
+                ) {
+                    return true;
+                }
             }
+
             d = { file: sq.file - 1, rank: sq.rank + 1 };
-            dp = this.getPiece(d);
-            if (
-                this.isOnBoard(d) &&
-                dp &&
-                dp.type === PieceType.Pawn &&
-                dp.color !== color
-            ) {
-                return true;
+            if (d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0) {
+                dp = this.getPiece(d);
+                if (
+                    this.isOnBoard(d) &&
+                    dp &&
+                    dp.type === PieceType.Pawn &&
+                    dp.color !== color
+                ) {
+                    return true;
+                }
             }
         }
         if (color === Color.Black) {
             let d = { file: sq.file + 1, rank: sq.rank - 1 };
-            let dp = this.getPiece(d);
-            if (
-                this.isOnBoard(d) &&
-                dp &&
-                dp.type === PieceType.Pawn &&
-                dp.color !== color
-            ) {
-                return true;
+            let dp;
+            if (d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0) {
+                dp = this.getPiece(d);
+                if (
+                    this.isOnBoard(d) &&
+                    dp &&
+                    dp.type === PieceType.Pawn &&
+                    dp.color !== color
+                ) {
+                    return true;
+                }
             }
             d = { file: sq.file - 1, rank: sq.rank - 1 };
-            dp = this.getPiece(d);
-            if (
-                this.isOnBoard(d) &&
-                dp &&
-                dp.type === PieceType.Pawn &&
-                dp.color !== color
-            ) {
-                return true;
+            if (d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0) {
+                dp = this.getPiece(d);
+                if (
+                    this.isOnBoard(d) &&
+                    dp &&
+                    dp.type === PieceType.Pawn &&
+                    dp.color !== color
+                ) {
+                    return true;
+                }
             }
         }
         // king
@@ -1709,11 +1721,42 @@ export class Game {
         const newFEN = this.getNextFENFromMove(move);
         this.fen = newFEN;
         this.loadFEN();
-        // this.board = move.resultingBoard;
-        // console.log('newFEN', newFEN);
-        // console.log('mvoe', move);
 
-        // this.fen =
+        console.log('check?', this.isCheck());
+        console.log('checkmate?', this.isCheckmate());
+        console.log('stalemate?', this.isStalemate());
+    }
+
+    private isStalemate(): boolean {
+        if (!this.isCheck() && this.getLegalMoves().length === 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private isCheckmate(): boolean {
+        if (this.isCheck() && this.getLegalMoves().length === 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private isCheck(): boolean {
+        if (this.turn === Color.Black) {
+            // console.log('finding black king');
+            const kingSquare = this.findKing(Color.Black);
+            console.log('king sq', kingSquare);
+            if (this.isThreatenedBy(kingSquare, Color.White)) {
+                return true;
+            }
+        } else {
+            // console.log('finding white king');
+            const kingSquare = this.findKing(Color.White);
+            if (this.isThreatenedBy(kingSquare, Color.Black)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private getNextFENFromMove(move: Move): string {
