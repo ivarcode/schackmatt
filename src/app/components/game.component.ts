@@ -42,7 +42,7 @@ export class GameComponent implements OnInit {
 
     constructor() {
         this.game = new Game();
-        // this.game = new Game('k7/3Q4/8/2K5/8/8/8/8 w - - 0 1');
+        // this.game = new Game('3r4/2P2N2/8/3Np3/1k6/5N2/6K1/8 w - - 0 1');
         this.CURSOR_DATA = {
             mouseOverBoard: false,
             currentMousePosition: {
@@ -57,6 +57,7 @@ export class GameComponent implements OnInit {
         };
         this.tintSqObjects = [];
         console.log(this.game.toString());
+        console.log(this.game.getLegalMoves());
     }
 
     ngOnInit() {
@@ -194,6 +195,7 @@ export class GameComponent implements OnInit {
         // does not matter what the resulting board is here,
         // we are just passing the src and dest
         this.game.attemptMove({
+            notation: null,
             src: {
                 file: this.CURSOR_DATA.mouseDownOn.x,
                 rank: 7 - this.CURSOR_DATA.mouseDownOn.y
@@ -202,6 +204,7 @@ export class GameComponent implements OnInit {
                 file: this.CURSOR_DATA.mouseUpOn.x,
                 rank: 7 - this.CURSOR_DATA.mouseUpOn.y
             },
+            preMoveFEN: this.game.getFEN(),
             resultingBoard: null
         });
     }
