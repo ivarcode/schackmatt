@@ -138,11 +138,11 @@ export class Game {
         str += this.board;
         str += '\nfen = ' + this.fen;
         str += '\npgn = ' + this.pgn;
-        str += '\nen passant = ' + this.pgn;
-        str += '\nturn = ' + this.turn;
-        str += '  halfmove = ' + this.halfmove;
-        str += '  fullmove = ' + this.fullmove;
-        str += '\ncastling = ' + JSON.stringify(this.castlingRights);
+        // str += '\nen passant = ' + this.enPassant;
+        // str += '\nturn = ' + this.turn;
+        // str += '  halfmove = ' + this.halfmove;
+        // str += '  fullmove = ' + this.fullmove;
+        // str += '\ncastling = ' + JSON.stringify(this.castlingRights);
         return str + '\n----';
     }
 
@@ -1790,7 +1790,7 @@ export class Game {
                 }
             }
             if (conflictMoves.length > 1) {
-                console.log('conflicts', conflictMoves);
+                // console.log('conflicts', conflictMoves);
                 let fileConflict = false;
                 let rankConflict = false;
                 for (const c of conflictMoves) {
@@ -1874,7 +1874,16 @@ export class Game {
         return null;
     }
 
+    private addMoveToPGN(move: Move): void {
+        if (this.turn === Color.White) {
+            this.pgn += ' ' + this.fullmove + '.';
+        }
+        this.pgn += ' ' + move.notation;
+    }
+
     private makeMove(move: Move): void {
+        move.notation = this.getNotation(move);
+        this.addMoveToPGN(move);
         if (this.board.getPiece(move.dest)) {
             this.board.captured.push(this.board.getPiece(move.dest));
         }
@@ -1893,7 +1902,9 @@ export class Game {
         for (const m of legalMoves) {
             m.notation = this.getNotation(m);
         }
-        console.log('legal moves', legalMoves);
+        // console.log('legal moves', legalMoves);
+
+        console.log(this.toString());
     }
 
     public isStalemate(): boolean {
