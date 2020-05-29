@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Game, Square } from '../lib/game.library';
-import { read } from 'fs';
 
 @Component({
     selector: 'app-game',
