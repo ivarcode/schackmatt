@@ -1,5 +1,7 @@
 # schackmatt
 
+This is a website for creating chess training tools. When the site is live the link will be provided.
+
 ### Developers:
 
 -   fork repo to your account or organization
