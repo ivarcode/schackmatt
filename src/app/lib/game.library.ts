@@ -1777,9 +1777,9 @@ export class Game {
                 .toUpperCase();
             notation += piece !== 'P' ? piece : '';
             // if piece src conflict
-            let allMoves = preMoveGame.getLegalMoves();
-            let conflictMoves = [];
-            for (let m of allMoves) {
+            const allMoves = preMoveGame.getLegalMoves();
+            const conflictMoves = [];
+            for (const m of allMoves) {
                 if (
                     preMoveGame.getPiece(m.src).toString().toUpperCase() ===
                         piece &&
@@ -1793,7 +1793,7 @@ export class Game {
                 console.log('conflicts', conflictMoves);
                 let fileConflict = false;
                 let rankConflict = false;
-                for (let c of conflictMoves) {
+                for (const c of conflictMoves) {
                     if (
                         move.src.file === c.src.file &&
                         move.src.rank === c.src.rank
@@ -1840,7 +1840,7 @@ export class Game {
                     move.dest.rank === Rank.EIGHT ||
                     move.dest.rank === Rank.ONE
                 ) {
-                    let promotingTo = move.resultingBoard.getPiece(move.dest);
+                    const promotingTo = move.resultingBoard.getPiece(move.dest);
                     notation += '=' + promotingTo.toString().toUpperCase();
                 }
             }
