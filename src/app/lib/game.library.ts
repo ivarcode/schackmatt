@@ -78,7 +78,9 @@ export interface Square {
 export interface Move {
     src: Square;
     dest: Square;
+    preMoveFEN: string;
     resultingBoard: Board;
+    notation: string;
 }
 
 export class Board {
@@ -553,6 +555,8 @@ export class Game {
                                             null
                                         );
                                         movements.push({
+                                            notation: null,
+                                            preMoveFEN: this.getFEN(),
                                             src: {
                                                 file: f,
                                                 rank: r
@@ -591,6 +595,8 @@ export class Game {
                                             null
                                         );
                                         movements.push({
+                                            notation: null,
+                                            preMoveFEN: this.getFEN(),
                                             src: {
                                                 file: f,
                                                 rank: r
@@ -671,6 +677,8 @@ export class Game {
                                                 null
                                             );
                                             movements.push({
+                                                notation: null,
+                                                preMoveFEN: this.getFEN(),
                                                 src: {
                                                     file: File.e,
                                                     rank: Rank.ONE
@@ -754,6 +762,8 @@ export class Game {
                                                 null
                                             );
                                             movements.push({
+                                                notation: null,
+                                                preMoveFEN: this.getFEN(),
                                                 src: {
                                                     file: File.e,
                                                     rank: Rank.ONE
@@ -837,6 +847,8 @@ export class Game {
                                                 null
                                             );
                                             movements.push({
+                                                notation: null,
+                                                preMoveFEN: this.getFEN(),
                                                 src: {
                                                     file: File.e,
                                                     rank: Rank.EIGHT
@@ -920,6 +932,8 @@ export class Game {
                                                 null
                                             );
                                             movements.push({
+                                                notation: null,
+                                                preMoveFEN: this.getFEN(),
                                                 src: {
                                                     file: File.e,
                                                     rank: Rank.EIGHT
@@ -961,6 +975,8 @@ export class Game {
                                                     null
                                                 );
                                                 movements.push({
+                                                    notation: null,
+                                                    preMoveFEN: this.getFEN(),
                                                     src: {
                                                         file: f,
                                                         rank: r
@@ -979,6 +995,8 @@ export class Game {
                                                 null
                                             );
                                             movements.push({
+                                                notation: null,
+                                                preMoveFEN: this.getFEN(),
                                                 src: {
                                                     file: f,
                                                     rank: r
@@ -1023,6 +1041,8 @@ export class Game {
                                                     null
                                                 );
                                                 movements.push({
+                                                    notation: null,
+                                                    preMoveFEN: this.getFEN(),
                                                     src: {
                                                         file: f,
                                                         rank: r
@@ -1041,6 +1061,8 @@ export class Game {
                                                 null
                                             );
                                             movements.push({
+                                                notation: null,
+                                                preMoveFEN: this.getFEN(),
                                                 src: {
                                                     file: f,
                                                     rank: r
@@ -1089,6 +1111,8 @@ export class Game {
                                                     null
                                                 );
                                                 movements.push({
+                                                    notation: null,
+                                                    preMoveFEN: this.getFEN(),
                                                     src: {
                                                         file: f,
                                                         rank: r
@@ -1107,6 +1131,8 @@ export class Game {
                                                 null
                                             );
                                             movements.push({
+                                                notation: null,
+                                                preMoveFEN: this.getFEN(),
                                                 src: {
                                                     file: f,
                                                     rank: r
@@ -1165,6 +1191,8 @@ export class Game {
                                                     null
                                                 );
                                                 movements.push({
+                                                    notation: null,
+                                                    preMoveFEN: this.getFEN(),
                                                     src: {
                                                         file: f,
                                                         rank: r
@@ -1182,6 +1210,8 @@ export class Game {
                                                 null
                                             );
                                             movements.push({
+                                                notation: null,
+                                                preMoveFEN: this.getFEN(),
                                                 src: {
                                                     file: f,
                                                     rank: r
@@ -1208,6 +1238,8 @@ export class Game {
                                                         null
                                                     );
                                                     movements.push({
+                                                        notation: null,
+                                                        preMoveFEN: this.getFEN(),
                                                         src: {
                                                             file: f,
                                                             rank: r
@@ -1258,6 +1290,8 @@ export class Game {
                                                     null
                                                 );
                                                 movements.push({
+                                                    notation: null,
+                                                    preMoveFEN: this.getFEN(),
                                                     src: {
                                                         file: f,
                                                         rank: r
@@ -1275,6 +1309,8 @@ export class Game {
                                                 null
                                             );
                                             movements.push({
+                                                notation: null,
+                                                preMoveFEN: this.getFEN(),
                                                 src: {
                                                     file: f,
                                                     rank: r
@@ -1299,6 +1335,8 @@ export class Game {
                                             null
                                         );
                                         movements.push({
+                                            notation: null,
+                                            preMoveFEN: this.getFEN(),
                                             src: {
                                                 file: f,
                                                 rank: r
@@ -1346,6 +1384,8 @@ export class Game {
                                                     null
                                                 );
                                                 movements.push({
+                                                    notation: null,
+                                                    preMoveFEN: this.getFEN(),
                                                     src: {
                                                         file: f,
                                                         rank: r
@@ -1363,6 +1403,8 @@ export class Game {
                                                 null
                                             );
                                             movements.push({
+                                                notation: null,
+                                                preMoveFEN: this.getFEN(),
                                                 src: {
                                                     file: f,
                                                     rank: r
@@ -1387,6 +1429,8 @@ export class Game {
                                             null
                                         );
                                         movements.push({
+                                            notation: null,
+                                            preMoveFEN: this.getFEN(),
                                             src: {
                                                 file: f,
                                                 rank: r
@@ -1435,6 +1479,8 @@ export class Game {
                                                     null
                                                 );
                                                 movements.push({
+                                                    notation: null,
+                                                    preMoveFEN: this.getFEN(),
                                                     src: {
                                                         file: f,
                                                         rank: r
@@ -1452,6 +1498,8 @@ export class Game {
                                                 null
                                             );
                                             movements.push({
+                                                notation: null,
+                                                preMoveFEN: this.getFEN(),
                                                 src: {
                                                     file: f,
                                                     rank: r
@@ -1478,6 +1526,8 @@ export class Game {
                                                         null
                                                     );
                                                     movements.push({
+                                                        notation: null,
+                                                        preMoveFEN: this.getFEN(),
                                                         src: {
                                                             file: f,
                                                             rank: r
@@ -1528,6 +1578,8 @@ export class Game {
                                                     null
                                                 );
                                                 movements.push({
+                                                    notation: null,
+                                                    preMoveFEN: this.getFEN(),
                                                     src: {
                                                         file: f,
                                                         rank: r
@@ -1545,6 +1597,8 @@ export class Game {
                                                 null
                                             );
                                             movements.push({
+                                                notation: null,
+                                                preMoveFEN: this.getFEN(),
                                                 src: {
                                                     file: f,
                                                     rank: r
@@ -1569,6 +1623,8 @@ export class Game {
                                             null
                                         );
                                         movements.push({
+                                            notation: null,
+                                            preMoveFEN: this.getFEN(),
                                             src: {
                                                 file: f,
                                                 rank: r
@@ -1616,6 +1672,8 @@ export class Game {
                                                     null
                                                 );
                                                 movements.push({
+                                                    notation: null,
+                                                    preMoveFEN: this.getFEN(),
                                                     src: {
                                                         file: f,
                                                         rank: r
@@ -1633,6 +1691,8 @@ export class Game {
                                                 null
                                             );
                                             movements.push({
+                                                notation: null,
+                                                preMoveFEN: this.getFEN(),
                                                 src: {
                                                     file: f,
                                                     rank: r
@@ -1657,6 +1717,8 @@ export class Game {
                                             null
                                         );
                                         movements.push({
+                                            notation: null,
+                                            preMoveFEN: this.getFEN(),
                                             src: {
                                                 file: f,
                                                 rank: r
@@ -1699,6 +1761,40 @@ export class Game {
         return moves;
     }
 
+    public getNotation(move: Move): string {
+        let notation = null;
+        if (move.notation === null) {
+            notation = '';
+            const preMoveGame = new Game(move.preMoveFEN);
+            // add piece
+            const piece = preMoveGame
+                .getPiece(move.src)
+                .toString()
+                .toUpperCase();
+            notation += piece !== 'P' ? piece : '';
+            // if capture
+            if (preMoveGame.getPiece(move.dest)) {
+                notation += 'x';
+            }
+            // dest
+            notation += this.squareToString(move.dest);
+            // check/checkmate/stalemate
+            const postMoveGame = new Game(preMoveGame.getNextFENFromMove(move));
+            if (postMoveGame.isCheck()) {
+                if (postMoveGame.isCheckmate()) {
+                    notation += '#';
+                } else {
+                    notation += '+';
+                }
+            } else {
+                if (postMoveGame.isStalemate()) {
+                    // do nothing --but we may want to do something here
+                }
+            }
+        }
+        return notation;
+    }
+
     private findKing(color: Color): Square {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
@@ -1726,6 +1822,12 @@ export class Game {
         // console.log('check?', this.isCheck());
         // console.log('checkmate?', this.isCheckmate());
         // console.log('stalemate?', this.isStalemate());
+
+        const legalMoves = this.getLegalMoves();
+        for (const m of legalMoves) {
+            m.notation = this.getNotation(m);
+        }
+        console.log('legal moves', legalMoves);
     }
 
     public isStalemate(): boolean {
@@ -1746,7 +1848,6 @@ export class Game {
         if (this.turn === Color.Black) {
             // console.log('finding black king');
             const kingSquare = this.findKing(Color.Black);
-            console.log('king sq', kingSquare);
             if (this.isThreatenedBy(kingSquare, Color.White)) {
                 return true;
             }
@@ -1900,7 +2001,6 @@ export class Game {
         }
         return newFEN;
     }
-
     // SHOULD CREATE THIS to break up ^ this function
     // private boardToFEN(): string {
     //     return '';
