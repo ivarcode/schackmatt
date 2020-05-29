@@ -1,8 +1,21 @@
-.navbar-brand{
+.navbar-brand {
     font-size: 25px;
     margin-left: 10px;
     margin-right: 10px;
 }
-.nav-link{
+.nav-link {
     font-size: 20px;
+}
+.button {
+    transition-duration: 0.4s;
+    background-color: rgb(35, 35, 78);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-decoration-color: white;
+}
+.button:hover {
+    background-color: rgb(67, 67, 116);
+    color: rgb(67, 67, 116);
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+        0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
