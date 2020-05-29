@@ -1814,7 +1814,7 @@ export class Game {
                 if (fileConflict) {
                     notation += move.src.rank + 1;
                 }
-                if (!fileConflict && !rankConflict) {
+                if (!fileConflict && !rankConflict && piece !== 'P') {
                     notation += this.fileToString(move.src.file);
                 }
             }
@@ -1832,6 +1832,16 @@ export class Game {
                     } else if (move.dest.file === File.c) {
                         notation = '0-0-0';
                     }
+                }
+            }
+            // promotion
+            if (piece === 'P') {
+                if (
+                    move.dest.rank === Rank.EIGHT ||
+                    move.dest.rank === Rank.ONE
+                ) {
+                    let promotingTo = move.resultingBoard.getPiece(move.dest);
+                    notation += '=' + promotingTo.toString().toUpperCase();
                 }
             }
             // check/checkmate/stalemate
