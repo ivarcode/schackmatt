@@ -151,7 +151,7 @@ export class GameComponent implements OnInit {
     }
 
     showMoves(): void {
-        const pieceMovements = this.game.getPieceMovements();
+        const pieceMovements = this.game.getLegalMoves();
         const sq = {
             file: this.CURSOR_DATA.overSquare.x,
             rank: 7 - this.CURSOR_DATA.overSquare.y
