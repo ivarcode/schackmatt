@@ -180,6 +180,7 @@ export class GameComponent implements OnInit {
         // does not matter what the resulting board is here,
         // we are just passing the src and dest
         this.game.attemptMove({
+            notation: null,
             src: {
                 file: this.CURSOR_DATA.mouseDownOn.x,
                 rank: 7 - this.CURSOR_DATA.mouseDownOn.y
@@ -188,6 +189,7 @@ export class GameComponent implements OnInit {
                 file: this.CURSOR_DATA.mouseUpOn.x,
                 rank: 7 - this.CURSOR_DATA.mouseUpOn.y
             },
+            preMoveFEN: this.game.getFEN(),
             resultingBoard: null
         });
     }
