@@ -1,6 +1,6 @@
 # schackmatt
 
-Developers:
+###Developers:
 
 -   fork repo to your account or organization
 -   clone repository to your machine
@@ -13,24 +13,24 @@ Developers:
     -   run `npm run start`
 -   should be on localhost:4200/
 
-To set the upstream (might exist by default):
+###To set the upstream (might exist by default):
 
 `git remote add upstream <URL HERE>`
 
-To merge upstream code with your branch (for example develop):
+###To merge upstream code with your branch (for example develop):
 
 `git checkout develop`
 `git fetch upstream`
 `git merge upstream/develop`
 
-General standard for branch names (please follow this if you want to spare me a headache)
+###General standard for branch names (please follow this if you want to spare me a headache)
 
 `issue-#-some-basic-descriptive-phrase`
 
-Developer Discord Server: https://discord.gg/uruXya4
+###Developer Discord Server: https://discord.gg/uruXya4
 
 Please submit bugs or feature requests in detailed issues.
 
 More will be added to the readme when instructions and details about the site are written up.
 
-CIW
+###- CIW
