@@ -1699,7 +1699,7 @@ export class Game {
         return moves;
     }
 
-    private findKing(color: Color): Square {
+    public findKing(color: Color): Square {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
                 const sq = { file: i, rank: j };
@@ -1944,5 +1944,9 @@ export class Game {
 
     public getFEN(): string {
         return this.fen;
+    }
+
+    public getTurn(): Color {
+        return this.turn;
     }
 }
