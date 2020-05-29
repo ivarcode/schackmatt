@@ -148,7 +148,11 @@ export class Game {
 
     // pull this out as well as other helpers at some point
     public squareToString(sq: Square): string {
-        return String.fromCharCode(97 + sq.file) + (sq.rank + 1);
+        return this.fileToString(sq.file) + (sq.rank + 1);
+    }
+
+    public fileToString(file: File): string {
+        return String.fromCharCode(97 + file);
     }
 
     // prepares the game object from the fen data
@@ -1772,12 +1776,64 @@ export class Game {
                 .toString()
                 .toUpperCase();
             notation += piece !== 'P' ? piece : '';
+            // if piece src conflict
+            let allMoves = preMoveGame.getLegalMoves();
+            let conflictMoves = [];
+            for (let m of allMoves) {
+                if (
+                    preMoveGame.getPiece(m.src).toString().toUpperCase() ===
+                        piece &&
+                    m.dest.file === move.dest.file &&
+                    m.dest.rank === move.dest.rank
+                ) {
+                    conflictMoves.push(m);
+                }
+            }
+            if (conflictMoves.length > 1) {
+                console.log('conflicts', conflictMoves);
+                let fileConflict = false;
+                let rankConflict = false;
+                for (let c of conflictMoves) {
+                    if (
+                        move.src.file === c.src.file &&
+                        move.src.rank === c.src.rank
+                    ) {
+                        // do nothing, this is the piece we are notating
+                    } else {
+                        if (move.src.file === c.src.file) {
+                            fileConflict = true;
+                        }
+                        if (move.src.rank === c.src.rank) {
+                            rankConflict = true;
+                        }
+                    }
+                }
+                if (rankConflict) {
+                    notation += this.fileToString(move.src.file);
+                }
+                if (fileConflict) {
+                    notation += move.src.rank + 1;
+                }
+                if (!fileConflict && !rankConflict) {
+                    notation += this.fileToString(move.src.file);
+                }
+            }
             // if capture
             if (preMoveGame.getPiece(move.dest)) {
                 notation += 'x';
             }
             // dest
             notation += this.squareToString(move.dest);
+            // castling
+            if (piece === 'K') {
+                if (move.src.file === File.e) {
+                    if (move.dest.file === File.g) {
+                        notation = '0-0';
+                    } else if (move.dest.file === File.c) {
+                        notation = '0-0-0';
+                    }
+                }
+            }
             // check/checkmate/stalemate
             const postMoveGame = new Game(preMoveGame.getNextFENFromMove(move));
             if (postMoveGame.isCheck()) {
