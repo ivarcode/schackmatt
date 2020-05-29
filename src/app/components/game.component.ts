@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Game, Square } from '../lib/game.library';
+import { read } from 'fs';
 
 @Component({
     selector: 'app-game',
@@ -147,6 +148,8 @@ export class GameComponent implements OnInit {
             } else {
                 throw new Error('mouse up not over sq');
             }
+            this.drawBoard();
+            this.showMoves();
         });
     }
 
@@ -173,6 +176,17 @@ export class GameComponent implements OnInit {
                     gA: 0.01
                 });
             }
+        }
+        if (this.game.isCheck()) {
+            const kingSq = this.game.findKing(this.game.getTurn());
+            this.tintSqObjects.push({
+                dest: {
+                    file: kingSq.file,
+                    rank: 7 - kingSq.rank
+                },
+                color: 'red',
+                gA: 0.01
+            });
         }
     }
 
