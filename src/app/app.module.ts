@@ -12,6 +12,7 @@ import { RepertoireBuilderComponent } from './components/repertoire-builder/repe
 import { MyStudiesComponent } from './components/studies/my-studies/my-studies.component';
 import { PublicStudiesComponent } from './components/studies/public-studies/public-studies.component';
 import { GameDetailTableComponent } from './components/game-details-table/game-details-table.component';
+import { BookStudyFormat } from './components/studies/books-studies/books-studies.component';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { GameDetailTableComponent } from './components/game-details-table/game-d
         RepertoireBuilderComponent,
         MyStudiesComponent,
         PublicStudiesComponent,
-        GameDetailTableComponent
+        GameDetailTableComponent,
+        BookStudyFormat
     ],
     imports: [BrowserModule, AppRoutingModule],
     providers: [],
