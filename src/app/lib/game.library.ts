@@ -1902,7 +1902,7 @@ export class Game {
         this.fen = newFEN;
         this.loadFEN();
 
-        // console.log(this.toString());
+        console.log(this.toString());
     }
 
     public isStalemate(): boolean {
@@ -2040,20 +2040,70 @@ export class Game {
             move.resultingBoard.getPiece(move.dest).type === PieceType.Pawn &&
             move.resultingBoard.getPiece(move.dest).color === Color.White
         ) {
-            newFEN += this.squareToString({
+            let enPassantSqString = this.squareToString({
                 file: move.dest.file,
                 rank: Rank.THREE
             });
+            let enPassantTestGame = new Game(
+                newFEN + enPassantSqString + ' 0 1'
+            );
+            let arrayOfMovesThatCouldBePlayed = enPassantTestGame.getLegalMoves();
+            console.log('array', arrayOfMovesThatCouldBePlayed);
+            let addEnPassantSqToFEN = false;
+            for (let possibleMove of arrayOfMovesThatCouldBePlayed) {
+                console.log(
+                    enPassantSqString,
+                    this.squareToString(possibleMove.dest)
+                );
+                if (
+                    enPassantSqString ===
+                        this.squareToString(possibleMove.dest) &&
+                    possibleMove.resultingBoard.getPiece(possibleMove.dest)
+                        .type === PieceType.Pawn
+                ) {
+                    addEnPassantSqToFEN = true;
+                }
+            }
+            if (addEnPassantSqToFEN) {
+                newFEN += enPassantSqString;
+            } else {
+                newFEN += '-';
+            }
         } else if (
             move.dest.rank === Rank.FIVE &&
             move.src.rank === Rank.SEVEN &&
             move.resultingBoard.getPiece(move.dest).type === PieceType.Pawn &&
             move.resultingBoard.getPiece(move.dest).color === Color.Black
         ) {
-            newFEN += this.squareToString({
+            let enPassantSqString = this.squareToString({
                 file: move.dest.file,
                 rank: Rank.SIX
             });
+            let enPassantTestGame = new Game(
+                newFEN + enPassantSqString + ' 0 1'
+            );
+            let arrayOfMovesThatCouldBePlayed = enPassantTestGame.getLegalMoves();
+            console.log('array', arrayOfMovesThatCouldBePlayed);
+            let addEnPassantSqToFEN = false;
+            for (let possibleMove of arrayOfMovesThatCouldBePlayed) {
+                console.log(
+                    enPassantSqString,
+                    this.squareToString(possibleMove.dest)
+                );
+                if (
+                    enPassantSqString ===
+                        this.squareToString(possibleMove.dest) &&
+                    possibleMove.resultingBoard.getPiece(possibleMove.dest)
+                        .type === PieceType.Pawn
+                ) {
+                    addEnPassantSqToFEN = true;
+                }
+            }
+            if (addEnPassantSqToFEN) {
+                newFEN += enPassantSqString;
+            } else {
+                newFEN += '-';
+            }
         } else {
             newFEN += '-';
         }
