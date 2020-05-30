@@ -1836,7 +1836,7 @@ export class Game {
         return notation;
     }
 
-    private findKing(color: Color): Square {
+    public findKing(color: Color): Square {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
                 const sq = { file: i, rank: j };
@@ -2152,12 +2152,13 @@ export class Game {
     public getTurn(): Color {
         return this.turn;
     }
+    // ---
 
     // helper function that prints the legal moves of this game object
     public printLegalMovesToConsole(): void {
         let str = 'LEGAL MOVES';
-        let legalMoves = this.getLegalMoves();
-        for (let move of legalMoves) {
+        const legalMoves = this.getLegalMoves();
+        for (const move of legalMoves) {
             move.notation = this.getNotation(move);
             str += '\n  - ' + move.notation;
         }

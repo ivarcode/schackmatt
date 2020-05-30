@@ -42,8 +42,8 @@ export class GameComponent implements OnInit {
     private matchingMoves: any[];
 
     constructor() {
-        this.game = new Game();
-        // this.game = new Game('1k6/8/8/8/1p6/5NN1/2P3N1/1R2K3 w - - 0 1');
+        // this.game = new Game();
+        this.game = new Game('1k6/1p6/8/2P5/5p2/4P3/1K6/8 w - - 0 1');
         this.CURSOR_DATA = {
             mouseOverBoard: false,
             currentMousePosition: {
