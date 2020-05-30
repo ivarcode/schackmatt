@@ -1,3 +1,11 @@
+/**
+ * game.library.spec.ts
+ * test file for the game library
+ * this file is responsible for ensuring all standard game rules work and
+ * no edge cases fall through in the future when updating and refactoring
+ * game library code
+ */
+
 import { Game, File, Rank } from './game.library';
 import { TestBed, async } from '@angular/core/testing';
 
