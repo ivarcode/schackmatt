@@ -38,6 +38,7 @@ export class GameComponent implements OnInit {
         color: string;
         gA: number;
     }[];
+    private isPromoting: boolean;
 
     constructor() {
         this.game = new Game();
@@ -55,6 +56,7 @@ export class GameComponent implements OnInit {
             draggedPieceIndex: -1
         };
         this.tintSqObjects = [];
+        this.isPromoting = false;
         console.log(this.game.toString());
         console.log(this.game.getLegalMoves());
     }
@@ -97,9 +99,11 @@ export class GameComponent implements OnInit {
 
         // listeners
         this.boardCanvas.addEventListener('mouseenter', () => {
+            // just a detector of when the mouse is over the canvas object
             this.CURSOR_DATA.mouseOverBoard = true;
         });
         this.boardCanvas.addEventListener('mouseleave', () => {
+            // when mouse exits the canvas object
             this.CURSOR_DATA.mouseOverBoard = false;
             this.CURSOR_DATA.currentMousePosition = { x: -1, y: -1 };
             this.CURSOR_DATA.overSquare = null;
@@ -108,6 +112,9 @@ export class GameComponent implements OnInit {
             this.drawBoard();
         });
         this.boardCanvas.addEventListener('mousemove', (events: any) => {
+            // this function takes the x and y coordinates of mousedata to
+            // convert that to a square coordinate
+            // we save this in an object to reference when click events happen
             if (this.CURSOR_DATA.mouseOverBoard) {
                 this.CURSOR_DATA.currentMousePosition = this.getMousePosition(
                     events
@@ -132,6 +139,7 @@ export class GameComponent implements OnInit {
             this.drawBoard();
         });
         this.boardCanvas.addEventListener('mousedown', () => {
+            // when mouse is pressed down
             if (this.CURSOR_DATA.overSquare) {
                 this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
                 this.CURSOR_DATA.dragging = true;
@@ -140,6 +148,7 @@ export class GameComponent implements OnInit {
             }
         });
         this.boardCanvas.addEventListener('mouseup', () => {
+            // when mouse is released
             if (this.CURSOR_DATA.overSquare) {
                 this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.overSquare;
                 this.CURSOR_DATA.dragging = false;
@@ -193,6 +202,11 @@ export class GameComponent implements OnInit {
     attemptMoveOnBoard(): void {
         // does not matter what the resulting board is here,
         // we are just passing the src and dest
+        let legalMoves = this.game.getLegalMoves();
+        for (let move of legalMoves) {
+            move.notation = this.game.getNotation(move);
+        }
+        console.log('legalmoves', legalMoves);
         this.game.attemptMove({
             notation: null,
             src: {
