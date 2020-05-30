@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'app-game-details-table',
@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
     styleUrls: ['./game-details-table.component.css']
 })
 export class GameDetailTableComponent {
+    @Input() pgn: string;
+
     constructor() {}
+
+    onInit(): void {}
+
+    change(): void {}
 }
