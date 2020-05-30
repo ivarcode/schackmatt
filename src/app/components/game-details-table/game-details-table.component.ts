@@ -16,11 +16,11 @@ export class GameDetailTableComponent implements OnChanges {
     // ngOnInit() {}
 
     ngOnChanges(changes: SimpleChanges) {
-        console.log('changes', changes);
+        // console.log('changes', changes);
 
         // TODO check if pgn changed
         this.constructPGNArray();
-        console.log(this.pgnArray);
+        // console.log(this.pgnArray);
     }
 
     private constructPGNArray(): void {
