@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Game, Square, Color, Rank } from '../lib/game.library';
+import { GameDetailTableComponent } from './game-details-table/game-details-table.component';
 
 @Component({
     selector: 'app-game',
@@ -225,7 +226,7 @@ export class GameComponent implements OnInit {
         });
     }
 
-    showMoves(): void {
+    private showMoves(): void {
         const pieceMovements = this.game.getLegalMoves();
         const sq = {
             file: this.CURSOR_DATA.overSquare.x,
@@ -264,7 +265,7 @@ export class GameComponent implements OnInit {
         }
     }
 
-    attemptMoveOnBoard(): void {
+    private attemptMoveOnBoard(): void {
         // does not matter what the resulting board is here,
         // we are just passing the src and dest
         let legalMoves = this.game.getLegalMoves();
@@ -313,7 +314,7 @@ export class GameComponent implements OnInit {
         // });
     }
 
-    getMousePosition(events: any): { x: number; y: number } {
+    private getMousePosition(events: any): { x: number; y: number } {
         let obj = this.boardCanvas;
         let top = 0;
         let left = 0;
@@ -329,7 +330,7 @@ export class GameComponent implements OnInit {
         return { x: mX, y: mY };
     }
 
-    drawBoard(): void {
+    private drawBoard(): void {
         this.boardContext.restore();
         this.boardContext.globalAlpha = 1;
         // this.boardContext.fillStyle = 'yellow';
@@ -370,7 +371,7 @@ export class GameComponent implements OnInit {
         }
     }
 
-    refreshCanvasSquare(x: number, y: number): void {
+    private refreshCanvasSquare(x: number, y: number): void {
         const piece = this.game.getPiece({ file: x, rank: y });
         if (
             this.CURSOR_DATA.overSquare &&
@@ -410,9 +411,22 @@ export class GameComponent implements OnInit {
         }
     }
 
-    tintSquare(x: number, y: number, color: string, globalAlpha: number): void {
+    private tintSquare(
+        x: number,
+        y: number,
+        color: string,
+        globalAlpha: number
+    ): void {
         this.boardContext.globalAlpha = globalAlpha;
         this.boardContext.fillStyle = color;
         this.boardContext.fillRect(x * 80, y * 80, 80, 80);
+    }
+
+    public getGame(): Game {
+        return this.game;
+    }
+
+    public changedDataInDetails(): void {
+        console.log('changes happened');
     }
 }

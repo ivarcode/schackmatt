@@ -1,3 +1,9 @@
+#game {
+    padding-left: 20px;
+}
 #board {
+    margin: 20px;
+}
+#game-details {
     margin: 20px;
 }

@@ -2009,17 +2009,17 @@ export class Game {
             move.resultingBoard.getPiece(move.dest).type === PieceType.Pawn &&
             move.resultingBoard.getPiece(move.dest).color === Color.White
         ) {
-            let enPassantSqString = this.squareToString({
+            const enPassantSqString = this.squareToString({
                 file: move.dest.file,
                 rank: Rank.THREE
             });
-            let enPassantTestGame = new Game(
+            const enPassantTestGame = new Game(
                 newFEN + enPassantSqString + ' 0 1'
             );
-            let arrayOfMovesThatCouldBePlayed = enPassantTestGame.getLegalMoves();
-            // console.log('array', arrayOfMovesThatCouldBePlayed);
+            const arrayOfMTCBP = enPassantTestGame.getLegalMoves();
+            // console.log('array', arrayOfMTCBP);
             let addEnPassantSqToFEN = false;
-            for (let possibleMove of arrayOfMovesThatCouldBePlayed) {
+            for (const possibleMove of arrayOfMTCBP) {
                 // console.log(
                 //     enPassantSqString,
                 //     this.squareToString(possibleMove.dest)
@@ -2044,17 +2044,17 @@ export class Game {
             move.resultingBoard.getPiece(move.dest).type === PieceType.Pawn &&
             move.resultingBoard.getPiece(move.dest).color === Color.Black
         ) {
-            let enPassantSqString = this.squareToString({
+            const enPassantSqString = this.squareToString({
                 file: move.dest.file,
                 rank: Rank.SIX
             });
-            let enPassantTestGame = new Game(
+            const enPassantTestGame = new Game(
                 newFEN + enPassantSqString + ' 0 1'
             );
-            let arrayOfMovesThatCouldBePlayed = enPassantTestGame.getLegalMoves();
-            // console.log('array', arrayOfMovesThatCouldBePlayed);
+            const arrayOfMTCBP = enPassantTestGame.getLegalMoves();
+            // console.log('array', arrayOfMTCBP);
             let addEnPassantSqToFEN = false;
-            for (let possibleMove of arrayOfMovesThatCouldBePlayed) {
+            for (const possibleMove of arrayOfMTCBP) {
                 // console.log(
                 //     enPassantSqString,
                 //     this.squareToString(possibleMove.dest)
@@ -2139,6 +2139,9 @@ export class Game {
     }
     public getFEN(): string {
         return this.fen;
+    }
+    public getPGN(): string {
+        return this.pgn;
     }
     public getTurn(): Color {
         return this.turn;
