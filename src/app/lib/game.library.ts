@@ -320,32 +320,32 @@ export class Game {
         this.board.insertPiece(sq, piece);
     }
 
-    public attemptMove(move: Move): boolean {
-        // make the move
-        // console.log(
-        //     'attempting ',
-        //     this.squareToString(move.src),
-        //     this.squareToString(move.dest)
-        // );
-        const pieceMovements = this.getLegalMoves();
-        // console.log('pm', pieceMovements);
-        for (const pm of pieceMovements) {
-            // console.log('pm', pm.resultingBoard.toString());
-            if (
-                pm.src.file === move.src.file &&
-                pm.src.rank === move.src.rank &&
-                pm.dest.file === move.dest.file &&
-                pm.dest.rank === move.dest.rank
-            ) {
-                // the pm contains the calculated FEN
-                this.makeMove(pm);
-                break;
-            }
-        }
-        // this.makeMove(move);
-        // console.log(this.toString());
-        return true;
-    }
+    // public attemptMove(move: Move): boolean {
+    //     // make the move
+    //     // console.log(
+    //     //     'attempting ',
+    //     //     this.squareToString(move.src),
+    //     //     this.squareToString(move.dest)
+    //     // );
+    //     const pieceMovements = this.getLegalMoves();
+    //     // console.log('pm', pieceMovements);
+    //     for (const pm of pieceMovements) {
+    //         // console.log('pm', pm.resultingBoard.toString());
+    //         if (
+    //             pm.src.file === move.src.file &&
+    //             pm.src.rank === move.src.rank &&
+    //             pm.dest.file === move.dest.file &&
+    //             pm.dest.rank === move.dest.rank
+    //         ) {
+    //             // the pm contains the calculated FEN
+    //             this.makeMove(pm);
+    //             break;
+    //         }
+    //     }
+    //     // this.makeMove(move);
+    //     // console.log(this.toString());
+    //     return true;
+    // }
 
     public isThreatenedBy(sq: Square, color: Color) {
         // knight
@@ -1881,9 +1881,19 @@ export class Game {
         this.pgn += ' ' + move.notation;
     }
 
-    private makeMove(move: Move): void {
+    public makeMove(moveNotation: string): void {
+        let move: Move;
+        const legalMoves = this.getLegalMoves();
+        for (const m of legalMoves) {
+            m.notation = this.getNotation(m);
+            if (m.notation === moveNotation) {
+                move = m;
+            }
+        }
+
         move.notation = this.getNotation(move);
         this.addMoveToPGN(move);
+
         if (this.board.getPiece(move.dest)) {
             this.board.captured.push(this.board.getPiece(move.dest));
         }
@@ -1898,10 +1908,6 @@ export class Game {
         // console.log('checkmate?', this.isCheckmate());
         // console.log('stalemate?', this.isStalemate());
 
-        const legalMoves = this.getLegalMoves();
-        for (const m of legalMoves) {
-            m.notation = this.getNotation(m);
-        }
         // console.log('legal moves', legalMoves);
 
         console.log(this.toString());
