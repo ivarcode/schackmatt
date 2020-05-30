@@ -275,11 +275,11 @@ export class GameComponent implements OnInit {
             rank: 7 - this.CURSOR_DATA.overSquare.y
         };
         this.tintSqObjects = [];
-        if (!this.isPromoting) {
+        if (this.twoClickMove.attempting) {
             for (const movement of pieceMovements) {
                 if (
-                    movement.src.file === sq.file &&
-                    movement.src.rank === sq.rank
+                    movement.src.file === this.twoClickMove.source.x &&
+                    movement.src.rank === 7 - this.twoClickMove.source.y
                 ) {
                     this.tintSqObjects.push({
                         dest: {
@@ -292,11 +292,32 @@ export class GameComponent implements OnInit {
                 }
             }
         }
-        if (this.tintSqObjects.length === 0 && this.twoClickMove.attempting) {
+        if (this.CURSOR_DATA.dragging) {
             for (const movement of pieceMovements) {
                 if (
-                    movement.src.file === this.twoClickMove.source.x &&
-                    movement.src.rank === 7 - this.twoClickMove.source.y
+                    movement.src.file === this.CURSOR_DATA.mouseDownOn.x &&
+                    movement.src.rank === 7 - this.CURSOR_DATA.mouseDownOn.y
+                ) {
+                    this.tintSqObjects.push({
+                        dest: {
+                            file: movement.dest.file,
+                            rank: 7 - movement.dest.rank
+                        },
+                        color: 'green',
+                        gA: 0.01
+                    });
+                }
+            }
+        }
+        if (
+            !this.isPromoting &&
+            !this.twoClickMove.attempting &&
+            !this.CURSOR_DATA.dragging
+        ) {
+            for (const movement of pieceMovements) {
+                if (
+                    movement.src.file === sq.file &&
+                    movement.src.rank === sq.rank
                 ) {
                     this.tintSqObjects.push({
                         dest: {
