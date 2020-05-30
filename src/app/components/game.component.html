@@ -1,11 +1,7 @@
 <div id="game" class="row">
-    <div>
-        <canvas id="board" width="640" height="640">canvas</canvas>
-    </div>
-    <div>
-        <app-game-details-table
-            id="game-details"
-            [pgn]="getGame().getPGN()"
-        ></app-game-details-table>
-    </div>
+    <canvas id="board" width="640" height="640">canvas</canvas>
+    <app-game-details-table
+        id="game-details"
+        [pgn]="getGame().getPGN()"
+    ></app-game-details-table>
 </div>

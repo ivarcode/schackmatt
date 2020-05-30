@@ -1,8 +1,8 @@
 <div>
-    <p *ngIf="pgn" style="color: white;">{{ pgn }}</p>
-    <div>
-        <table class="table-format">
-            <th>
+    <!-- <p *ngIf="pgn" style="color: white;">{{ pgn }}</p> -->
+    <div id="table-container">
+        <table id="table">
+            <!-- <th>
                 Moves
             </th>
             <th>
@@ -10,7 +10,7 @@
             </th>
             <th>
                 Black
-            </th>
+            </th> -->
             <tr *ngFor="let line of getPGNArray()">
                 <td>{{ line.number }}</td>
                 <td>{{ line.white }}</td>

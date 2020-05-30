@@ -1,20 +1,24 @@
-table {
-    width: 10%;
-    height: 150px;
-}
-th,
-td {
+#table th,
+#table td {
     border: 1px solid rgb(15, 15, 15);
     padding: 5px;
     text-align: center;
     color: white;
-    height: 50px;
+    height: 30px;
 }
-th {
+#table th {
     background-color: rgb(26, 26, 26);
 }
+#table-container {
+    padding-right: 17px;
+    height: 150px;
+    max-height: 150px;
+    background-color: rgb(240, 26, 26);
+    overflow: auto;
+}
+
 .toggle-button {
-    width: 87px;
+    width: 40px;
 }
 
 tr:nth-child(even) {
