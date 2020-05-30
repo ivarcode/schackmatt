@@ -2147,4 +2147,15 @@ export class Game {
     public getTurn(): Color {
         return this.turn;
     }
+
+    // helper function that prints the legal moves of this game object
+    public printLegalMovesToConsole(): void {
+        let str = 'LEGAL MOVES';
+        let legalMoves = this.getLegalMoves();
+        for (let move of legalMoves) {
+            move.notation = this.getNotation(move);
+            str += '\n  - ' + move.notation;
+        }
+        console.log(str);
+    }
 }

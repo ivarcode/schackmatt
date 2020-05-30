@@ -61,7 +61,7 @@ export class GameComponent implements OnInit {
         this.matchingMoves = [];
 
         // console.log(this.game.toString());
-        // console.log(this.game.getLegalMoves());
+        // this.game.printLegalMovesToConsole();
     }
 
     ngOnInit() {
