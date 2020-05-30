@@ -163,7 +163,9 @@ export class GameComponent implements OnInit {
                     this.twoClickMove.attempting = false;
                     this.twoClickMove.source = null;
                     this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
+                    this.tintSqObjects = [];
                     this.drawBoard();
+                    this.showMoves();
                 } else {
                     this.twoClickMove.attempting = false;
                     this.twoClickMove.source = null;
@@ -275,12 +277,27 @@ export class GameComponent implements OnInit {
         this.tintSqObjects = [];
         if (!this.isPromoting) {
             for (const movement of pieceMovements) {
-                // console.log('move', movement);
                 if (
                     movement.src.file === sq.file &&
                     movement.src.rank === sq.rank
                 ) {
-                    // console.log('trigger');
+                    this.tintSqObjects.push({
+                        dest: {
+                            file: movement.dest.file,
+                            rank: 7 - movement.dest.rank
+                        },
+                        color: 'green',
+                        gA: 0.01
+                    });
+                }
+            }
+        }
+        if (this.tintSqObjects.length === 0 && this.twoClickMove.attempting) {
+            for (const movement of pieceMovements) {
+                if (
+                    movement.src.file === this.twoClickMove.source.x &&
+                    movement.src.rank === 7 - this.twoClickMove.source.y
+                ) {
                     this.tintSqObjects.push({
                         dest: {
                             file: movement.dest.file,
@@ -429,7 +446,7 @@ export class GameComponent implements OnInit {
         if (
             this.twoClickMove.attempting &&
             x === this.twoClickMove.source.x &&
-            y === this.twoClickMove.source.y
+            7 - y === this.twoClickMove.source.y
         ) {
             this.tintSquare(
                 this.twoClickMove.source.x,
@@ -438,16 +455,16 @@ export class GameComponent implements OnInit {
                 0.5
             );
             this.boardContext.globalAlpha = 1; // reset this to full
-            // if (piece) {
-            //     const color = piece.color;
-            //     const pieceType = piece.type;
-            //     const index = (color ? 6 : 0) + pieceType;
-            //     this.boardContext.drawImage(
-            //         this.pieceImages[index],
-            //         x * 80,
-            //         (7 - y) * 80
-            //     );
-            // }
+            if (piece) {
+                const color = piece.color;
+                const pieceType = piece.type;
+                const index = (color ? 6 : 0) + pieceType;
+                this.boardContext.drawImage(
+                    this.pieceImages[index],
+                    x * 80,
+                    (7 - y) * 80
+                );
+            }
         }
         for (const tintSq of this.tintSqObjects) {
             this.tintSquare(
