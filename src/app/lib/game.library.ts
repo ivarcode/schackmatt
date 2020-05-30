@@ -1891,7 +1891,7 @@ export class Game {
             }
         }
 
-        console.log('move', move);
+        // console.log('move', move);
 
         this.addMoveToPGN(move);
 
@@ -1902,7 +1902,7 @@ export class Game {
         this.fen = newFEN;
         this.loadFEN();
 
-        console.log(this.toString());
+        // console.log(this.toString());
     }
 
     public isStalemate(): boolean {

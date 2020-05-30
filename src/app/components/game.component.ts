@@ -62,8 +62,8 @@ export class GameComponent implements OnInit {
         this.isPromoting = false;
         this.matchingMoves = [];
 
-        console.log(this.game.toString());
-        console.log(this.game.getLegalMoves());
+        // console.log(this.game.toString());
+        // console.log(this.game.getLegalMoves());
     }
 
     ngOnInit() {
@@ -165,8 +165,8 @@ export class GameComponent implements OnInit {
                         this.CURSOR_DATA.mouseDownOn.y ===
                             this.CURSOR_DATA.mouseUpOn.y
                     ) {
-                        console.log('cursor', this.CURSOR_DATA.mouseDownOn);
-                        console.log('', this.matchingMoves);
+                        // console.log('cursor', this.CURSOR_DATA.mouseDownOn);
+                        // console.log('', this.matchingMoves);
                         let f = this.CURSOR_DATA.mouseDownOn.x;
                         let r = 7 - this.CURSOR_DATA.mouseDownOn.y;
                         if (f === this.matchingMoves[0].dest.file) {
@@ -291,12 +291,12 @@ export class GameComponent implements OnInit {
             this.game.makeMove(this.matchingMoves[0].notation);
             this.matchingMoves = [];
         } else if (this.matchingMoves.length === 0) {
-            console.log('invalid move attempted');
+            // console.log('invalid move attempted');
         } else {
-            console.log(
-                'matching moves length should be 4 :: is ',
-                this.matchingMoves.length
-            );
+            // console.log(
+            //     'matching moves length should be 4 :: is ',
+            //     this.matchingMoves.length
+            // );
             this.isPromoting = true;
         }
 
