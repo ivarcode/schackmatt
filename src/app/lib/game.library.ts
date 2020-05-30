@@ -1902,7 +1902,7 @@ export class Game {
         this.fen = newFEN;
         this.loadFEN();
 
-        console.log(this.toString());
+        // console.log(this.toString());
     }
 
     public isStalemate(): boolean {
@@ -2048,13 +2048,13 @@ export class Game {
                 newFEN + enPassantSqString + ' 0 1'
             );
             let arrayOfMovesThatCouldBePlayed = enPassantTestGame.getLegalMoves();
-            console.log('array', arrayOfMovesThatCouldBePlayed);
+            // console.log('array', arrayOfMovesThatCouldBePlayed);
             let addEnPassantSqToFEN = false;
             for (let possibleMove of arrayOfMovesThatCouldBePlayed) {
-                console.log(
-                    enPassantSqString,
-                    this.squareToString(possibleMove.dest)
-                );
+                // console.log(
+                //     enPassantSqString,
+                //     this.squareToString(possibleMove.dest)
+                // );
                 if (
                     enPassantSqString ===
                         this.squareToString(possibleMove.dest) &&
@@ -2083,13 +2083,13 @@ export class Game {
                 newFEN + enPassantSqString + ' 0 1'
             );
             let arrayOfMovesThatCouldBePlayed = enPassantTestGame.getLegalMoves();
-            console.log('array', arrayOfMovesThatCouldBePlayed);
+            // console.log('array', arrayOfMovesThatCouldBePlayed);
             let addEnPassantSqToFEN = false;
             for (let possibleMove of arrayOfMovesThatCouldBePlayed) {
-                console.log(
-                    enPassantSqString,
-                    this.squareToString(possibleMove.dest)
-                );
+                // console.log(
+                //     enPassantSqString,
+                //     this.squareToString(possibleMove.dest)
+                // );
                 if (
                     enPassantSqString ===
                         this.squareToString(possibleMove.dest) &&
