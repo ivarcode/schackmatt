@@ -1777,45 +1777,52 @@ export class Game {
                 .toUpperCase();
             notation += piece !== 'P' ? piece : '';
             // if piece src conflict
-            const allMoves = preMoveGame.getLegalMoves();
-            const conflictMoves = [];
-            for (const m of allMoves) {
-                if (
-                    preMoveGame.getPiece(m.src).toString().toUpperCase() ===
-                        piece &&
-                    m.dest.file === move.dest.file &&
-                    m.dest.rank === move.dest.rank
-                ) {
-                    conflictMoves.push(m);
+            if (piece === 'P') {
+                // we always include src file for pawns capturing
+                if (move.src.file !== move.dest.file) {
+                    notation += this.fileToString(move.src.file);
                 }
-            }
-            if (conflictMoves.length > 1) {
-                // console.log('conflicts', conflictMoves);
-                let fileConflict = false;
-                let rankConflict = false;
-                for (const c of conflictMoves) {
+            } else {
+                const allMoves = preMoveGame.getLegalMoves();
+                const conflictMoves = [];
+                for (const m of allMoves) {
                     if (
-                        move.src.file === c.src.file &&
-                        move.src.rank === c.src.rank
+                        preMoveGame.getPiece(m.src).toString().toUpperCase() ===
+                            piece &&
+                        m.dest.file === move.dest.file &&
+                        m.dest.rank === move.dest.rank
                     ) {
-                        // do nothing, this is the piece we are notating
-                    } else {
-                        if (move.src.file === c.src.file) {
-                            fileConflict = true;
-                        }
-                        if (move.src.rank === c.src.rank) {
-                            rankConflict = true;
-                        }
+                        conflictMoves.push(m);
                     }
                 }
-                if (rankConflict) {
-                    notation += this.fileToString(move.src.file);
-                }
-                if (fileConflict) {
-                    notation += move.src.rank + 1;
-                }
-                if (!fileConflict && !rankConflict && piece !== 'P') {
-                    notation += this.fileToString(move.src.file);
+                if (conflictMoves.length > 1) {
+                    // console.log('conflicts', conflictMoves);
+                    let fileConflict = false;
+                    let rankConflict = false;
+                    for (const c of conflictMoves) {
+                        if (
+                            move.src.file === c.src.file &&
+                            move.src.rank === c.src.rank
+                        ) {
+                            // do nothing, this is the piece we are notating
+                        } else {
+                            if (move.src.file === c.src.file) {
+                                fileConflict = true;
+                            }
+                            if (move.src.rank === c.src.rank) {
+                                rankConflict = true;
+                            }
+                        }
+                    }
+                    if (rankConflict) {
+                        notation += this.fileToString(move.src.file);
+                    }
+                    if (fileConflict) {
+                        notation += move.src.rank + 1;
+                    }
+                    if (!fileConflict && !rankConflict) {
+                        notation += this.fileToString(move.src.file);
+                    }
                 }
             }
             // if capture
