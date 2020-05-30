@@ -1,0 +1,22 @@
+table {
+    width: 10%;
+    height: 150px;
+}
+th,
+td {
+    border: 1px solid rgb(15, 15, 15);
+    padding: 5px;
+    text-align: center;
+    color: white;
+    height: 50px;
+}
+th {
+    background-color: rgb(26, 26, 26);
+}
+.toggle-button {
+    width: 87px;
+}
+::-webkit-scrollbar {
+    width: 20px;
+    height: 100px;
+}
