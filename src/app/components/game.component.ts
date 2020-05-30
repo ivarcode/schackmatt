@@ -33,6 +33,13 @@ export class GameComponent implements OnInit {
         dragging: boolean;
         draggedPieceIndex: number;
     };
+    private twoClickMove: {
+        attempting: boolean;
+        source: {
+            x: number;
+            y: number;
+        };
+    };
     private tintSqObjects: {
         dest: Square;
         color: string;
@@ -55,6 +62,10 @@ export class GameComponent implements OnInit {
             mouseUpOn: null,
             dragging: false,
             draggedPieceIndex: -1
+        };
+        this.twoClickMove = {
+            attempting: false,
+            source: null
         };
         this.tintSqObjects = [];
         this.isPromoting = false;
@@ -145,6 +156,18 @@ export class GameComponent implements OnInit {
             // when mouse is pressed down
             if (this.CURSOR_DATA.overSquare) {
                 this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
+                if (this.twoClickMove.attempting) {
+                    this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.mouseDownOn;
+                    this.CURSOR_DATA.mouseDownOn = this.twoClickMove.source;
+                    this.attemptMoveOnBoard();
+                    this.twoClickMove.attempting = false;
+                    this.twoClickMove.source = null;
+                    this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
+                    this.drawBoard();
+                } else {
+                    this.twoClickMove.attempting = false;
+                    this.twoClickMove.source = null;
+                }
                 if (!this.isPromoting) {
                     this.CURSOR_DATA.dragging = true;
                 }
@@ -165,8 +188,8 @@ export class GameComponent implements OnInit {
                     ) {
                         // console.log('cursor', this.CURSOR_DATA.mouseDownOn);
                         // console.log('', this.matchingMoves);
-                        let f = this.CURSOR_DATA.mouseDownOn.x;
-                        let r = 7 - this.CURSOR_DATA.mouseDownOn.y;
+                        const f = this.CURSOR_DATA.mouseDownOn.x;
+                        const r = 7 - this.CURSOR_DATA.mouseDownOn.y;
                         if (f === this.matchingMoves[0].dest.file) {
                             if (this.game.getTurn() === Color.White) {
                                 if (r === Rank.EIGHT) {
@@ -213,9 +236,29 @@ export class GameComponent implements OnInit {
             } else {
                 if (this.CURSOR_DATA.overSquare) {
                     this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.overSquare;
-                    this.CURSOR_DATA.dragging = false;
-                    this.CURSOR_DATA.draggedPieceIndex = -1;
-                    this.attemptMoveOnBoard();
+                    if (
+                        this.CURSOR_DATA.mouseDownOn.x ===
+                            this.CURSOR_DATA.mouseUpOn.x &&
+                        this.CURSOR_DATA.mouseDownOn.y ===
+                            this.CURSOR_DATA.mouseUpOn.y &&
+                        this.game.getPiece({
+                            file: this.CURSOR_DATA.mouseDownOn.x,
+                            rank: 7 - this.CURSOR_DATA.mouseDownOn.y
+                        }) &&
+                        this.game.getPiece({
+                            file: this.CURSOR_DATA.mouseDownOn.x,
+                            rank: 7 - this.CURSOR_DATA.mouseDownOn.y
+                        }).color === this.game.getTurn()
+                    ) {
+                        this.twoClickMove.attempting = true;
+                        this.twoClickMove.source = this.CURSOR_DATA.mouseUpOn;
+                        this.CURSOR_DATA.dragging = false;
+                        this.CURSOR_DATA.draggedPieceIndex = -1;
+                    } else {
+                        this.CURSOR_DATA.dragging = false;
+                        this.CURSOR_DATA.draggedPieceIndex = -1;
+                        this.attemptMoveOnBoard();
+                    }
                 } else {
                     throw new Error('mouse up not over sq');
                 }
@@ -267,15 +310,15 @@ export class GameComponent implements OnInit {
     private attemptMoveOnBoard(): void {
         // does not matter what the resulting board is here,
         // we are just passing the src and dest
-        let legalMoves = this.game.getLegalMoves();
-        for (let move of legalMoves) {
+        const legalMoves = this.game.getLegalMoves();
+        for (const move of legalMoves) {
             move.notation = this.game.getNotation(move);
         }
         // console.log('legalmoves', legalMoves);
 
         // check for queening
 
-        for (let move of legalMoves) {
+        for (const move of legalMoves) {
             if (
                 move.src.file === this.CURSOR_DATA.mouseDownOn.x &&
                 move.src.rank === 7 - this.CURSOR_DATA.mouseDownOn.y &&
@@ -332,8 +375,6 @@ export class GameComponent implements OnInit {
     private drawBoard(): void {
         this.boardContext.restore();
         this.boardContext.globalAlpha = 1;
-        // this.boardContext.fillStyle = 'yellow';
-        // this.boardContext.fillRect(0, 0, 40, 40);
         this.boardContext.drawImage(this.boardImage, 0, 0);
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
@@ -352,7 +393,7 @@ export class GameComponent implements OnInit {
             this.boardContext.fillStyle = 'black';
             this.boardContext.fillRect(0, 0, 640, 640);
             this.boardContext.globalAlpha = 1;
-            let x = this.matchingMoves[0].dest.file;
+            const x = this.matchingMoves[0].dest.file;
             this.boardContext.fillStyle = '#AAAAAA';
             if (this.game.getTurn() === Color.White) {
                 this.boardContext.fillRect(x * 80, 0, 80, 320);
@@ -380,6 +421,14 @@ export class GameComponent implements OnInit {
         ) {
             this.tintSquare(x, 7 - y, 'yellow', 0.5);
             this.boardContext.globalAlpha = 1; // reset this to full
+        }
+        if (this.twoClickMove.attempting) {
+            this.tintSquare(
+                this.twoClickMove.source.x,
+                this.twoClickMove.source.y,
+                'yellow',
+                0.02
+            );
         }
         for (const tintSq of this.tintSqObjects) {
             this.tintSquare(
@@ -425,7 +474,7 @@ export class GameComponent implements OnInit {
         return this.game;
     }
 
-    // do we need this?
+    // do we need this? probably not..
     public changedDataInDetails(): void {
         console.log('changes happened');
     }
