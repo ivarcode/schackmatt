@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Game, Square, Color } from '../lib/game.library';
+import { Game, Square, Color, Rank } from '../lib/game.library';
 
 @Component({
     selector: 'app-game',
@@ -147,20 +147,80 @@ export class GameComponent implements OnInit {
             // when mouse is pressed down
             if (this.CURSOR_DATA.overSquare) {
                 this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
-                this.CURSOR_DATA.dragging = true;
+                if (!this.isPromoting) {
+                    this.CURSOR_DATA.dragging = true;
+                }
             } else {
                 throw new Error('mouse down not over sq');
             }
         });
         this.boardCanvas.addEventListener('mouseup', () => {
             // when mouse is released
-            if (this.CURSOR_DATA.overSquare) {
-                this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.overSquare;
-                this.CURSOR_DATA.dragging = false;
-                this.CURSOR_DATA.draggedPieceIndex = -1;
-                this.attemptMoveOnBoard();
+            if (this.isPromoting) {
+                if (this.CURSOR_DATA.overSquare) {
+                    this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.overSquare;
+                    if (
+                        this.CURSOR_DATA.mouseDownOn.x ===
+                            this.CURSOR_DATA.mouseUpOn.x &&
+                        this.CURSOR_DATA.mouseDownOn.y ===
+                            this.CURSOR_DATA.mouseUpOn.y
+                    ) {
+                        console.log('cursor', this.CURSOR_DATA.mouseDownOn);
+                        console.log('', this.matchingMoves);
+                        let f = this.CURSOR_DATA.mouseDownOn.x;
+                        let r = 7 - this.CURSOR_DATA.mouseDownOn.y;
+                        if (f === this.matchingMoves[0].dest.file) {
+                            if (this.game.getTurn() === Color.White) {
+                                if (r === Rank.EIGHT) {
+                                    this.game.makeMove(
+                                        this.matchingMoves[0].notation
+                                    );
+                                } else if (r === Rank.SEVEN) {
+                                    this.game.makeMove(
+                                        this.matchingMoves[3].notation
+                                    );
+                                } else if (r === Rank.SIX) {
+                                    this.game.makeMove(
+                                        this.matchingMoves[1].notation
+                                    );
+                                } else if (r === Rank.FIVE) {
+                                    this.game.makeMove(
+                                        this.matchingMoves[2].notation
+                                    );
+                                }
+                            } else {
+                                if (r === Rank.ONE) {
+                                    this.game.makeMove(
+                                        this.matchingMoves[0].notation
+                                    );
+                                } else if (r === Rank.TWO) {
+                                    this.game.makeMove(
+                                        this.matchingMoves[3].notation
+                                    );
+                                } else if (r === Rank.THREE) {
+                                    this.game.makeMove(
+                                        this.matchingMoves[1].notation
+                                    );
+                                } else if (r === Rank.FOUR) {
+                                    this.game.makeMove(
+                                        this.matchingMoves[2].notation
+                                    );
+                                }
+                            }
+                        }
+                        this.isPromoting = false;
+                        this.matchingMoves = [];
+                    }
+                }
             } else {
-                throw new Error('mouse up not over sq');
+                if (this.CURSOR_DATA.overSquare) {
+                    this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.overSquare;
+                    this.CURSOR_DATA.dragging = false;
+                    this.CURSOR_DATA.draggedPieceIndex = -1;
+                    this.attemptMoveOnBoard();
+                } else {
+                    throw new Error('mouse up not over sq');
+                }
             }
             this.drawBoard();
             this.showMoves();
@@ -174,21 +234,23 @@ export class GameComponent implements OnInit {
             rank: 7 - this.CURSOR_DATA.overSquare.y
         };
         this.tintSqObjects = [];
-        for (const movement of pieceMovements) {
-            // console.log('move', movement);
-            if (
-                movement.src.file === sq.file &&
-                movement.src.rank === sq.rank
-            ) {
-                // console.log('trigger');
-                this.tintSqObjects.push({
-                    dest: {
-                        file: movement.dest.file,
-                        rank: 7 - movement.dest.rank
-                    },
-                    color: 'green',
-                    gA: 0.01
-                });
+        if (!this.isPromoting) {
+            for (const movement of pieceMovements) {
+                // console.log('move', movement);
+                if (
+                    movement.src.file === sq.file &&
+                    movement.src.rank === sq.rank
+                ) {
+                    // console.log('trigger');
+                    this.tintSqObjects.push({
+                        dest: {
+                            file: movement.dest.file,
+                            rank: 7 - movement.dest.rank
+                        },
+                        color: 'green',
+                        gA: 0.01
+                    });
+                }
             }
         }
         if (this.game.isCheck()) {
@@ -291,9 +353,21 @@ export class GameComponent implements OnInit {
             this.boardContext.globalAlpha = 0.5;
             this.boardContext.fillStyle = 'black';
             this.boardContext.fillRect(0, 0, 640, 640);
+            this.boardContext.globalAlpha = 1;
+            let x = this.matchingMoves[0].dest.file;
+            this.boardContext.fillStyle = '#AAAAAA';
             if (this.game.getTurn() === Color.White) {
-                this.boardContext.globalAlpha = 1;
-                //
+                this.boardContext.fillRect(x * 80, 0, 80, 320);
+                this.boardContext.drawImage(this.pieceImages[1], x * 80, 0);
+                this.boardContext.drawImage(this.pieceImages[3], x * 80, 80);
+                this.boardContext.drawImage(this.pieceImages[4], x * 80, 160);
+                this.boardContext.drawImage(this.pieceImages[2], x * 80, 240);
+            } else {
+                this.boardContext.fillRect(x * 80, 320, 80, 320);
+                this.boardContext.drawImage(this.pieceImages[7], x * 80, 560);
+                this.boardContext.drawImage(this.pieceImages[9], x * 80, 480);
+                this.boardContext.drawImage(this.pieceImages[10], x * 80, 400);
+                this.boardContext.drawImage(this.pieceImages[8], x * 80, 320);
             }
         }
     }
@@ -303,7 +377,8 @@ export class GameComponent implements OnInit {
         if (
             this.CURSOR_DATA.overSquare &&
             this.CURSOR_DATA.overSquare.x === x &&
-            this.CURSOR_DATA.overSquare.y === 7 - y
+            this.CURSOR_DATA.overSquare.y === 7 - y &&
+            !this.isPromoting
         ) {
             this.tintSquare(x, 7 - y, 'yellow', 0.5);
             this.boardContext.globalAlpha = 1; // reset this to full
