@@ -1788,8 +1788,14 @@ export class Game {
                 }
             }
             // if capture
-            if (preMoveGame.getPiece(move.dest)) {
-                notation += 'x';
+            if (piece === 'P') {
+                if (move.src.file !== move.dest.file) {
+                    notation += 'x';
+                }
+            } else {
+                if (preMoveGame.getPiece(move.dest)) {
+                    notation += 'x';
+                }
             }
             // dest
             notation += this.squareToString(move.dest);
