@@ -1,5 +1,8 @@
 .rectangle {
-    width: 150px;
-    height: 200px;
+    width: 225px;
+    height: 300px;
     border: 1px solid black;
+}
+.setposition {
+    text-indent: 100px;
 }
