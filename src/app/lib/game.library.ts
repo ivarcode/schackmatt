@@ -313,40 +313,6 @@ export class Game {
         return this.board.getPiece(sq);
     }
 
-    private insertPiece(sq: Square, piece: Piece): void {
-        if (this.getPiece(sq) !== null) {
-            this.board.captured.push(this.getPiece(sq));
-        }
-        this.board.insertPiece(sq, piece);
-    }
-
-    // public attemptMove(move: Move): boolean {
-    //     // make the move
-    //     // console.log(
-    //     //     'attempting ',
-    //     //     this.squareToString(move.src),
-    //     //     this.squareToString(move.dest)
-    //     // );
-    //     const pieceMovements = this.getLegalMoves();
-    //     // console.log('pm', pieceMovements);
-    //     for (const pm of pieceMovements) {
-    //         // console.log('pm', pm.resultingBoard.toString());
-    //         if (
-    //             pm.src.file === move.src.file &&
-    //             pm.src.rank === move.src.rank &&
-    //             pm.dest.file === move.dest.file &&
-    //             pm.dest.rank === move.dest.rank
-    //         ) {
-    //             // the pm contains the calculated FEN
-    //             this.makeMove(pm);
-    //             break;
-    //         }
-    //     }
-    //     // this.makeMove(move);
-    //     // console.log(this.toString());
-    //     return true;
-    // }
-
     public isThreatenedBy(sq: Square, color: Color) {
         // knight
         let pattern = [
