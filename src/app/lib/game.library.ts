@@ -1845,7 +1845,7 @@ export class Game {
 
     private addMoveToPGN(move: Move): void {
         if (this.turn === Color.White) {
-            this.pgn += ' ' + this.fullmove + '.';
+            this.pgn += (this.fullmove === 1 ? '' : ' ') + this.fullmove + '.';
         }
         this.pgn += ' ' + move.notation;
     }

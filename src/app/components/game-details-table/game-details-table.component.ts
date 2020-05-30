@@ -25,29 +25,31 @@ export class GameDetailTableComponent implements OnChanges {
 
     private constructPGNArray(): void {
         this.pgnArray = [];
-        const split = this.pgn.split(' ');
-        // console.log('split', split);
-        for (let i = 1; i < split.length; i++) {
-            let n = null;
-            let w = null;
-            let b = null;
-            if (i < split.length) {
-                n = split[i];
+        if (this.pgn) {
+            const split = this.pgn.split(' ');
+            // console.log('split', split);
+            for (let i = 0; i < split.length; i++) {
+                let n = null;
+                let w = null;
+                let b = null;
+                if (i < split.length) {
+                    n = split[i];
+                }
+                if (i + 1 < split.length) {
+                    w = split[i + 1];
+                }
+                if (i + 2 < split.length) {
+                    b = split[i + 2];
+                }
+                if (n !== null || n !== undefined) {
+                    this.pgnArray.push({
+                        number: n,
+                        white: w,
+                        black: b
+                    });
+                }
+                i += 2;
             }
-            if (i + 1 < split.length) {
-                w = split[i + 1];
-            }
-            if (i + 2 < split.length) {
-                b = split[i + 2];
-            }
-            if (n !== null || n !== undefined) {
-                this.pgnArray.push({
-                    number: n,
-                    white: w,
-                    black: b
-                });
-            }
-            i += 2;
         }
     }
 
