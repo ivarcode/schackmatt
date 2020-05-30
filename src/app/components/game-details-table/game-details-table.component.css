@@ -11,8 +11,8 @@
 }
 #table-container {
     padding-right: 17px;
-    height: 150px;
-    max-height: 150px;
+    height: 200px;
+    max-height: 200px;
     background-color: rgb(240, 26, 26);
     overflow: auto;
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Game, Square, Color, Rank } from '../lib/game.library';
-import { GameDetailTableComponent } from './game-details-table/game-details-table.component';
 
 @Component({
     selector: 'app-game',
@@ -426,6 +425,7 @@ export class GameComponent implements OnInit {
         return this.game;
     }
 
+    // do we need this?
     public changedDataInDetails(): void {
         console.log('changes happened');
     }
