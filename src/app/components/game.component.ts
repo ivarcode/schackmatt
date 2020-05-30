@@ -43,9 +43,7 @@ export class GameComponent implements OnInit {
 
     constructor() {
         // this.game = new Game();
-        this.game = new Game(
-            'r2qkbnr/pP1bpppp/2n5/8/8/8/PPPP1PPP/RNBQKBNR w KQkq - 1 5'
-        );
+        this.game = new Game('1k6/1p6/8/2P5/5p2/4P3/1K6/8 w - - 0 1');
         this.CURSOR_DATA = {
             mouseOverBoard: false,
             currentMousePosition: {
