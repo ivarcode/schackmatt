@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Game, Square } from '../lib/game.library';
+import { Game, Square, Color } from '../lib/game.library';
 
 @Component({
     selector: 'app-game',
@@ -38,10 +38,14 @@ export class GameComponent implements OnInit {
         color: string;
         gA: number;
     }[];
+    private isPromoting: boolean;
+    private matchingMoves: any[];
 
     constructor() {
-        this.game = new Game();
-        // this.game = new Game('3r4/2P2N2/8/3Np3/1k6/5N2/6K1/8 w - - 0 1');
+        // this.game = new Game();
+        this.game = new Game(
+            'r2qkbnr/pP1bpppp/2n5/8/8/8/PPPP1PPP/RNBQKBNR w KQkq - 1 5'
+        );
         this.CURSOR_DATA = {
             mouseOverBoard: false,
             currentMousePosition: {
@@ -55,6 +59,9 @@ export class GameComponent implements OnInit {
             draggedPieceIndex: -1
         };
         this.tintSqObjects = [];
+        this.isPromoting = false;
+        this.matchingMoves = [];
+
         console.log(this.game.toString());
         console.log(this.game.getLegalMoves());
     }
@@ -97,9 +104,11 @@ export class GameComponent implements OnInit {
 
         // listeners
         this.boardCanvas.addEventListener('mouseenter', () => {
+            // just a detector of when the mouse is over the canvas object
             this.CURSOR_DATA.mouseOverBoard = true;
         });
         this.boardCanvas.addEventListener('mouseleave', () => {
+            // when mouse exits the canvas object
             this.CURSOR_DATA.mouseOverBoard = false;
             this.CURSOR_DATA.currentMousePosition = { x: -1, y: -1 };
             this.CURSOR_DATA.overSquare = null;
@@ -108,6 +117,9 @@ export class GameComponent implements OnInit {
             this.drawBoard();
         });
         this.boardCanvas.addEventListener('mousemove', (events: any) => {
+            // this function takes the x and y coordinates of mousedata to
+            // convert that to a square coordinate
+            // we save this in an object to reference when click events happen
             if (this.CURSOR_DATA.mouseOverBoard) {
                 this.CURSOR_DATA.currentMousePosition = this.getMousePosition(
                     events
@@ -132,6 +144,7 @@ export class GameComponent implements OnInit {
             this.drawBoard();
         });
         this.boardCanvas.addEventListener('mousedown', () => {
+            // when mouse is pressed down
             if (this.CURSOR_DATA.overSquare) {
                 this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
                 this.CURSOR_DATA.dragging = true;
@@ -140,6 +153,7 @@ export class GameComponent implements OnInit {
             }
         });
         this.boardCanvas.addEventListener('mouseup', () => {
+            // when mouse is released
             if (this.CURSOR_DATA.overSquare) {
                 this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.overSquare;
                 this.CURSOR_DATA.dragging = false;
@@ -193,19 +207,50 @@ export class GameComponent implements OnInit {
     attemptMoveOnBoard(): void {
         // does not matter what the resulting board is here,
         // we are just passing the src and dest
-        this.game.attemptMove({
-            notation: null,
-            src: {
-                file: this.CURSOR_DATA.mouseDownOn.x,
-                rank: 7 - this.CURSOR_DATA.mouseDownOn.y
-            },
-            dest: {
-                file: this.CURSOR_DATA.mouseUpOn.x,
-                rank: 7 - this.CURSOR_DATA.mouseUpOn.y
-            },
-            preMoveFEN: this.game.getFEN(),
-            resultingBoard: null
-        });
+        let legalMoves = this.game.getLegalMoves();
+        for (let move of legalMoves) {
+            move.notation = this.game.getNotation(move);
+        }
+        // console.log('legalmoves', legalMoves);
+
+        // check for queening
+
+        for (let move of legalMoves) {
+            if (
+                move.src.file === this.CURSOR_DATA.mouseDownOn.x &&
+                move.src.rank === 7 - this.CURSOR_DATA.mouseDownOn.y &&
+                move.dest.file === this.CURSOR_DATA.mouseUpOn.x &&
+                move.dest.rank === 7 - this.CURSOR_DATA.mouseUpOn.y
+            ) {
+                this.matchingMoves.push(move);
+            }
+        }
+        if (this.matchingMoves.length === 1) {
+            this.game.makeMove(this.matchingMoves[0].notation);
+            this.matchingMoves = [];
+        } else if (this.matchingMoves.length === 0) {
+            console.log('invalid move attempted');
+        } else {
+            console.log(
+                'matching moves length should be 4 :: is ',
+                this.matchingMoves.length
+            );
+            this.isPromoting = true;
+        }
+
+        // this.game.attemptMove({
+        //     notation: null,
+        //     src: {
+        //         file: this.CURSOR_DATA.mouseDownOn.x,
+        //         rank: 7 - this.CURSOR_DATA.mouseDownOn.y
+        //     },
+        //     dest: {
+        //         file: this.CURSOR_DATA.mouseUpOn.x,
+        //         rank: 7 - this.CURSOR_DATA.mouseUpOn.y
+        //     },
+        //     preMoveFEN: this.game.getFEN(),
+        //     resultingBoard: null
+        // });
     }
 
     getMousePosition(events: any): { x: number; y: number } {
@@ -241,6 +286,15 @@ export class GameComponent implements OnInit {
                 this.CURSOR_DATA.currentMousePosition.x - 40,
                 this.CURSOR_DATA.currentMousePosition.y - 40
             );
+        }
+        if (this.isPromoting) {
+            this.boardContext.globalAlpha = 0.5;
+            this.boardContext.fillStyle = 'black';
+            this.boardContext.fillRect(0, 0, 640, 640);
+            if (this.game.getTurn() === Color.White) {
+                this.boardContext.globalAlpha = 1;
+                //
+            }
         }
     }
 
