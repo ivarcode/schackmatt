@@ -1767,7 +1767,7 @@ export class Game {
 
     public getNotation(move: Move): string {
         let notation = null;
-        if (move.notation === null) {
+        if (notation === null) {
             notation = '';
             const preMoveGame = new Game(move.preMoveFEN);
             // add piece
@@ -1891,24 +1891,16 @@ export class Game {
             }
         }
 
-        move.notation = this.getNotation(move);
+        console.log('move', move);
+
         this.addMoveToPGN(move);
 
         if (this.board.getPiece(move.dest)) {
             this.board.captured.push(this.board.getPiece(move.dest));
         }
-        // this.insertPiece(move.dest, this.board.getPiece(move.src));
-        // this.insertPiece(move.src, null);
-        // console.log('boarrrrd', move.resultingBoard);
         const newFEN = this.getNextFENFromMove(move);
         this.fen = newFEN;
         this.loadFEN();
-
-        // console.log('check?', this.isCheck());
-        // console.log('checkmate?', this.isCheckmate());
-        // console.log('stalemate?', this.isStalemate());
-
-        // console.log('legal moves', legalMoves);
 
         console.log(this.toString());
     }
