@@ -309,10 +309,6 @@ export class Game {
         this.board = board;
     }
 
-    public getPiece(sq: Square): Piece {
-        return this.board.getPiece(sq);
-    }
-
     public isThreatenedBy(sq: Square, color: Color) {
         // knight
         let pattern = [
@@ -2099,10 +2095,6 @@ export class Game {
         }
         return newFEN;
     }
-    // SHOULD CREATE THIS to break up ^ this function
-    // private boardToFEN(): string {
-    //     return '';
-    // }
 
     private pieceToCharSymbol(piece: Piece): string {
         let character: string;
@@ -2136,15 +2128,20 @@ export class Game {
         return d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0;
     }
 
+    // board object setter
     public setBoard(board: Board): void {
         this.board = board;
     }
 
+    // GETTERS
+    public getPiece(sq: Square): Piece {
+        return this.board.getPiece(sq);
+    }
     public getFEN(): string {
         return this.fen;
     }
-
     public getTurn(): Color {
         return this.turn;
     }
+    // ---
 }
