@@ -11,6 +11,7 @@ import { TacticsTrainerComponent } from './components/tactics-trainer/tactics-tr
 import { RepertoireBuilderComponent } from './components/repertoire-builder/repertoire-builder.component';
 import { MyStudiesComponent } from './components/studies/my-studies/my-studies.component';
 import { PublicStudiesComponent } from './components/studies/public-studies/public-studies.component';
+import { GameDetailTableComponent } from './components/game-details-table/game-details-table.component';
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import { PublicStudiesComponent } from './components/studies/public-studies/publ
         TacticsTrainerComponent,
         RepertoireBuilderComponent,
         MyStudiesComponent,
-        PublicStudiesComponent
+        PublicStudiesComponent,
+        GameDetailTableComponent
     ],
     imports: [BrowserModule, AppRoutingModule],
     providers: [],
