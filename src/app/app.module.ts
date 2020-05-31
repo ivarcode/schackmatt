@@ -11,7 +11,7 @@ import { AccountComponent } from './components/account/account.component';
 import { TacticsTrainerComponent } from './components/tactics-trainer/tactics-trainer.component';
 import { RepertoireBuilderComponent } from './components/repertoire-builder/repertoire-builder.component';
 import { MyBooksComponent } from './components/studies/my-books/my-books.component';
-import { PublicStudiesComponent } from './components/studies/public-studies/public-studies.component';
+import { PublicBooksComponent } from './components/studies/public-books/public-books.component';
 import { GameDetailTableComponent } from './components/game-details-table/game-details-table.component';
 import { BookThumbnailComponent } from './components/studies/book-thumbnail/book-thumbnail.component';
 
@@ -25,7 +25,7 @@ import { BookThumbnailComponent } from './components/studies/book-thumbnail/book
         TacticsTrainerComponent,
         RepertoireBuilderComponent,
         MyBooksComponent,
-        PublicStudiesComponent,
+        PublicBooksComponent,
         GameDetailTableComponent,
         BookThumbnailComponent
     ],
