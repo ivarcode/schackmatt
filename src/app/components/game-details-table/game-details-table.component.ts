@@ -1,4 +1,11 @@
-import { Component, Input, SimpleChanges, OnChanges } from '@angular/core';
+import {
+    Component,
+    Input,
+    SimpleChanges,
+    OnChanges,
+    Output,
+    EventEmitter
+} from '@angular/core';
 
 @Component({
     selector: 'app-game-details-table',
@@ -7,6 +14,7 @@ import { Component, Input, SimpleChanges, OnChanges } from '@angular/core';
 })
 export class GameDetailTableComponent implements OnChanges {
     @Input() pgn: string;
+    @Output() navigationDataEmitter = new EventEmitter<string>();
     private pgnArray: any[];
 
     constructor() {
@@ -23,11 +31,15 @@ export class GameDetailTableComponent implements OnChanges {
         // console.log(this.pgnArray);
     }
 
+    public emitNavigation(data: string): void {
+        // console.log('emitting', data);
+        this.navigationDataEmitter.emit(data);
+    }
+
     private constructPGNArray(): void {
         this.pgnArray = [];
         if (this.pgn) {
             const split = this.pgn.split(' ');
-            // console.log('split', split);
             for (let i = 0; i < split.length; i++) {
                 let n = null;
                 let w = null;

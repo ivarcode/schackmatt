@@ -12,16 +12,16 @@
                 Black
             </th> -->
             <tr *ngFor="let line of getPGNArray()">
-                <td>{{ line.number }}</td>
-                <td>{{ line.white }}</td>
-                <td>{{ line.black }}</td>
+                <td class="number">{{ line.number }}</td>
+                <td class="move">{{ line.white }}</td>
+                <td class="move">{{ line.black }}</td>
             </tr>
         </table>
     </div>
-    <button class="toggle-button">
+    <button (click)="emitNavigation('back')" class="toggle-button">
         &#60;&#60;
     </button>
-    <button class="toggle-button">
+    <button (click)="emitNavigation('forward')" class="toggle-button">
         &#62;&#62;
     </button>
 </div>
