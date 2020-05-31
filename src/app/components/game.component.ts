@@ -13,6 +13,7 @@ export class GameComponent implements OnInit {
     private boardImage: any;
     private pieceImages: any[];
     private CURSOR_DATA: {
+        mouseIsDown: boolean;
         mouseOverBoard: boolean;
         currentMousePosition: {
             x: number;
@@ -39,6 +40,7 @@ export class GameComponent implements OnInit {
             x: number;
             y: number;
         };
+        preventPromote: boolean;
     };
     private tintSqObjects: {
         dest: Square;
@@ -52,6 +54,7 @@ export class GameComponent implements OnInit {
         // this.game = new Game();
         this.game = new Game('1k6/1p6/8/2P5/5p2/4P3/1K6/8 w - - 0 1');
         this.CURSOR_DATA = {
+            mouseIsDown: false,
             mouseOverBoard: false,
             currentMousePosition: {
                 x: -1,
@@ -65,7 +68,8 @@ export class GameComponent implements OnInit {
         };
         this.twoClickMove = {
             attempting: false,
-            source: null
+            source: null,
+            preventPromote: false
         };
         this.tintSqObjects = [];
         this.isPromoting = false;
@@ -154,6 +158,7 @@ export class GameComponent implements OnInit {
         });
         this.boardCanvas.addEventListener('mousedown', () => {
             // when mouse is pressed down
+            this.CURSOR_DATA.mouseIsDown = true;
             if (this.CURSOR_DATA.overSquare) {
                 this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
                 if (this.twoClickMove.attempting) {
@@ -179,61 +184,69 @@ export class GameComponent implements OnInit {
         });
         this.boardCanvas.addEventListener('mouseup', () => {
             // when mouse is released
+            this.CURSOR_DATA.mouseIsDown = false;
             if (this.isPromoting) {
-                if (this.CURSOR_DATA.overSquare) {
-                    this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.overSquare;
-                    if (
-                        this.CURSOR_DATA.mouseDownOn.x ===
-                            this.CURSOR_DATA.mouseUpOn.x &&
-                        this.CURSOR_DATA.mouseDownOn.y ===
-                            this.CURSOR_DATA.mouseUpOn.y
-                    ) {
-                        // console.log('cursor', this.CURSOR_DATA.mouseDownOn);
-                        // console.log('', this.matchingMoves);
-                        const f = this.CURSOR_DATA.mouseDownOn.x;
-                        const r = 7 - this.CURSOR_DATA.mouseDownOn.y;
-                        if (f === this.matchingMoves[0].dest.file) {
-                            if (this.game.getTurn() === Color.White) {
-                                if (r === Rank.EIGHT) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[0].notation
-                                    );
-                                } else if (r === Rank.SEVEN) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[3].notation
-                                    );
-                                } else if (r === Rank.SIX) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[1].notation
-                                    );
-                                } else if (r === Rank.FIVE) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[2].notation
-                                    );
-                                }
-                            } else {
-                                if (r === Rank.ONE) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[0].notation
-                                    );
-                                } else if (r === Rank.TWO) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[3].notation
-                                    );
-                                } else if (r === Rank.THREE) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[1].notation
-                                    );
-                                } else if (r === Rank.FOUR) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[2].notation
-                                    );
+                if (
+                    !this.twoClickMove.attempting &&
+                    !this.twoClickMove.preventPromote
+                ) {
+                    if (this.CURSOR_DATA.overSquare) {
+                        const overSq = this.CURSOR_DATA.overSquare;
+                        this.CURSOR_DATA.mouseUpOn = overSq;
+                        if (
+                            this.CURSOR_DATA.mouseDownOn.x ===
+                                this.CURSOR_DATA.mouseUpOn.x &&
+                            this.CURSOR_DATA.mouseDownOn.y ===
+                                this.CURSOR_DATA.mouseUpOn.y
+                        ) {
+                            // console.log('', this.matchingMoves);
+                            const f = this.CURSOR_DATA.mouseDownOn.x;
+                            const r = 7 - this.CURSOR_DATA.mouseDownOn.y;
+                            if (f === this.matchingMoves[0].dest.file) {
+                                if (this.game.getTurn() === Color.White) {
+                                    if (r === Rank.EIGHT) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[0].notation
+                                        );
+                                    } else if (r === Rank.SEVEN) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[3].notation
+                                        );
+                                    } else if (r === Rank.SIX) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[1].notation
+                                        );
+                                    } else if (r === Rank.FIVE) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[2].notation
+                                        );
+                                    }
+                                } else {
+                                    if (r === Rank.ONE) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[0].notation
+                                        );
+                                    } else if (r === Rank.TWO) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[3].notation
+                                        );
+                                    } else if (r === Rank.THREE) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[1].notation
+                                        );
+                                    } else if (r === Rank.FOUR) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[2].notation
+                                        );
+                                    }
                                 }
                             }
+                            this.isPromoting = false;
+                            this.matchingMoves = [];
                         }
-                        this.isPromoting = false;
-                        this.matchingMoves = [];
                     }
+                } else {
+                    this.twoClickMove.preventPromote = false;
                 }
             } else {
                 if (this.CURSOR_DATA.overSquare) {
@@ -375,6 +388,11 @@ export class GameComponent implements OnInit {
             //     this.matchingMoves.length
             // );
             this.isPromoting = true;
+            if (this.CURSOR_DATA.mouseIsDown) {
+                this.twoClickMove.preventPromote = true;
+            } else {
+                this.twoClickMove.preventPromote = false;
+            }
         }
 
         // this.game.attemptMove({
