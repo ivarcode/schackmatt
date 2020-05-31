@@ -1,1 +1,6 @@
-<app-books-studies></app-books-studies>
+<app-books-studies [fen]="getFEN()"></app-books-studies>
+<div>
+    <h6 class="fentext">Enter FEN:</h6>
+    <input [(ngModel)]="inputValue" type="text" class="inputbox" />
+    <button (click)="fenSubmit()">Submit</button>
+</div>
