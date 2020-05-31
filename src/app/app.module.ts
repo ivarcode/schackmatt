@@ -13,7 +13,7 @@ import { RepertoireBuilderComponent } from './components/repertoire-builder/repe
 import { MyBooksComponent } from './components/studies/my-books/my-books.component';
 import { PublicStudiesComponent } from './components/studies/public-studies/public-studies.component';
 import { GameDetailTableComponent } from './components/game-details-table/game-details-table.component';
-import { BookStudyFormat } from './components/studies/books-studies/books-studies.component';
+import { BookThumbnailComponent } from './components/studies/book-thumbnail/book-thumbnail.component';
 
 @NgModule({
     declarations: [
@@ -27,7 +27,7 @@ import { BookStudyFormat } from './components/studies/books-studies/books-studie
         MyBooksComponent,
         PublicStudiesComponent,
         GameDetailTableComponent,
-        BookStudyFormat
+        BookThumbnailComponent
     ],
     imports: [BrowserModule, AppRoutingModule, FormsModule],
     providers: [],
