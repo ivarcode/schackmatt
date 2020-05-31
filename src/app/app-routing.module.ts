@@ -5,7 +5,7 @@ import { AccountComponent } from './components/account/account.component';
 import { TacticsTrainerComponent } from './components/tactics-trainer/tactics-trainer.component';
 import { RepertoireBuilderComponent } from './components/repertoire-builder/repertoire-builder.component';
 import { MyBooksComponent } from './components/studies/my-books/my-books.component';
-import { PublicStudiesComponent } from './components/studies/public-studies/public-studies.component';
+import { PublicBooksComponent } from './components/studies/public-books/public-books.component';
 const routes: Routes = [
     {
         component: GameComponent,
@@ -28,8 +28,8 @@ const routes: Routes = [
         path: 'my-books'
     },
     {
-        component: PublicStudiesComponent,
-        path: 'public-studies'
+        component: PublicBooksComponent,
+        path: 'public-books'
     },
     {
         redirectTo: 'game',
