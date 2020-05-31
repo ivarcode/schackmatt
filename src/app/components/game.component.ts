@@ -281,6 +281,10 @@ export class GameComponent implements OnInit {
         });
     }
 
+    public navigationDataEvent(event: string): void {
+        console.log('emitted', event);
+    }
+
     private showMoves(): void {
         const pieceMovements = this.game.getLegalMoves();
         const sq = {
