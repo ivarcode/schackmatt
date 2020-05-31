@@ -1,11 +1,11 @@
 import { Component, Input, SimpleChanges, OnChanges } from '@angular/core';
 
 @Component({
-    selector: 'app-books-studies',
-    templateUrl: './books-studies.component.html',
-    styleUrls: ['./books-studies.component.css']
+    selector: 'app-book-thumbnail',
+    templateUrl: './book-thumbnail.component.html',
+    styleUrls: ['./book-thumbnail.component.css']
 })
-export class BookStudyFormat implements OnChanges {
+export class BookThumbnailComponent implements OnChanges {
     @Input() fen: string;
     constructor() {}
     ngOnChanges(changes: SimpleChanges) {
