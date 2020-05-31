@@ -1,0 +1,14 @@
+.bookbutton {
+    margin-left: 96px;
+    margin-top: 10px;
+}
+.setposition {
+    text-indent: 130px;
+    margin-top: 10px;
+}
+.img {
+    margin-top: 10px;
+    margin-left: 20px;
+    height: 180px;
+    object-fit: contain;
+}

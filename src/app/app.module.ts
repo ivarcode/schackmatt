@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,9 +10,10 @@ import { GameComponent } from './components/game.component';
 import { AccountComponent } from './components/account/account.component';
 import { TacticsTrainerComponent } from './components/tactics-trainer/tactics-trainer.component';
 import { RepertoireBuilderComponent } from './components/repertoire-builder/repertoire-builder.component';
-import { MyStudiesComponent } from './components/studies/my-studies/my-studies.component';
+import { MyBooksComponent } from './components/studies/my-books/my-books.component';
 import { PublicStudiesComponent } from './components/studies/public-studies/public-studies.component';
 import { GameDetailTableComponent } from './components/game-details-table/game-details-table.component';
+import { BookThumbnailComponent } from './components/studies/book-thumbnail/book-thumbnail.component';
 
 @NgModule({
     declarations: [
@@ -22,11 +24,12 @@ import { GameDetailTableComponent } from './components/game-details-table/game-d
         AccountComponent,
         TacticsTrainerComponent,
         RepertoireBuilderComponent,
-        MyStudiesComponent,
+        MyBooksComponent,
         PublicStudiesComponent,
-        GameDetailTableComponent
+        GameDetailTableComponent,
+        BookThumbnailComponent
     ],
-    imports: [BrowserModule, AppRoutingModule],
+    imports: [BrowserModule, AppRoutingModule, FormsModule],
     providers: [],
     bootstrap: [AppComponent]
 })
