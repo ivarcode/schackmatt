@@ -4,7 +4,7 @@ import { GameComponent } from './components/game.component';
 import { AccountComponent } from './components/account/account.component';
 import { TacticsTrainerComponent } from './components/tactics-trainer/tactics-trainer.component';
 import { RepertoireBuilderComponent } from './components/repertoire-builder/repertoire-builder.component';
-import { MyStudiesComponent } from './components/studies/my-studies/my-studies.component';
+import { MyBooksComponent } from './components/studies/my-books/my-books.component';
 import { PublicStudiesComponent } from './components/studies/public-studies/public-studies.component';
 const routes: Routes = [
     {
@@ -24,8 +24,8 @@ const routes: Routes = [
         path: 'repertoire-builder'
     },
     {
-        component: MyStudiesComponent,
-        path: 'my-studies'
+        component: MyBooksComponent,
+        path: 'my-books'
     },
     {
         component: PublicStudiesComponent,

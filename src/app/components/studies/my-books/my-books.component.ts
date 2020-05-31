@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'app-my-studies',
-    templateUrl: './my-studies.component.html',
-    styleUrls: ['./my-studies.component.css']
+    selector: 'app-my-books',
+    templateUrl: './my-books.component.html',
+    styleUrls: ['./my-books.component.css']
 })
-export class MyStudiesComponent {
+export class MyBooksComponent {
     private fen: string;
     inputValue: string = '';
     constructor() {}
