@@ -1,0 +1,10 @@
+.pagebutton {
+    margin-left: 30px;
+    margin-top: 10px;
+}
+.img {
+    margin-top: 10px;
+    margin-left: 20px;
+    height: 180px;
+    object-fit: contain;
+}

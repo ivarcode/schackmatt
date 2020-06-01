@@ -7,6 +7,7 @@ import { RepertoireBuilderComponent } from './components/repertoire-builder/repe
 import { MyBooksComponent } from './components/studies/my-books/my-books.component';
 import { PublicBooksComponent } from './components/studies/public-books/public-books.component';
 import { BookComponent } from './components/studies/book/book.component';
+import { ChapterComponent } from './components/studies/chapter/chapter.component';
 const routes: Routes = [
     {
         component: GameComponent,
@@ -35,6 +36,10 @@ const routes: Routes = [
     {
         component: BookComponent,
         path: 'book'
+    },
+    {
+        component: ChapterComponent,
+        path: 'chapter'
     },
     {
         redirectTo: 'game',
