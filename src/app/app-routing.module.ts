@@ -6,6 +6,7 @@ import { TacticsTrainerComponent } from './components/tactics-trainer/tactics-tr
 import { RepertoireBuilderComponent } from './components/repertoire-builder/repertoire-builder.component';
 import { MyBooksComponent } from './components/studies/my-books/my-books.component';
 import { PublicBooksComponent } from './components/studies/public-books/public-books.component';
+import { BookComponent } from './components/studies/book/book.component';
 const routes: Routes = [
     {
         component: GameComponent,
@@ -30,6 +31,10 @@ const routes: Routes = [
     {
         component: PublicBooksComponent,
         path: 'public-books'
+    },
+    {
+        component: BookComponent,
+        path: 'book'
     },
     {
         redirectTo: 'game',
