@@ -161,6 +161,9 @@ export class GameComponent implements OnInit {
             this.CURSOR_DATA.mouseIsDown = true;
             if (this.CURSOR_DATA.overSquare) {
                 this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
+                if (!this.isPromoting) {
+                    this.CURSOR_DATA.dragging = true;
+                }
                 if (this.twoClickMove.attempting) {
                     this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.mouseDownOn;
                     this.CURSOR_DATA.mouseDownOn = this.twoClickMove.source;
@@ -174,9 +177,6 @@ export class GameComponent implements OnInit {
                 } else {
                     this.twoClickMove.attempting = false;
                     this.twoClickMove.source = null;
-                }
-                if (!this.isPromoting) {
-                    this.CURSOR_DATA.dragging = true;
                 }
             } else {
                 throw new Error('mouse down not over sq');
@@ -279,6 +279,10 @@ export class GameComponent implements OnInit {
             this.drawBoard();
             this.showMoves();
         });
+    }
+
+    public navigationDataEvent(event: string): void {
+        console.log('emitted', event);
     }
 
     private showMoves(): void {
