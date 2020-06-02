@@ -13,9 +13,9 @@ export class StandardGameComponent implements OnInit {
         this.game = new Game();
     }
     ngOnInit() {}
-    public gameDataEvent(event: string): void {
-        console.log('game emit', event);
-    }
+    // public gameDataEvent(event: string): void {
+    //     console.log('game emit', event);
+    // }
     public navigationDataEvent(event: string): void {
         console.log('nav emit', event);
     }
