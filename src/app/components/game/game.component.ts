@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Game, Square, Color, Rank } from '../lib/game.library';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Game, Square, Color, Rank } from '../../lib/game.library';
 
 @Component({
     selector: 'app-game',
@@ -7,7 +7,9 @@ import { Game, Square, Color, Rank } from '../lib/game.library';
     styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
-    private game: Game;
+    @Output() gameDataEmitter = new EventEmitter<string>();
+    @Input() game: Game;
+
     private boardCanvas: any;
     private boardContext: any;
     private boardImage: any;
@@ -51,7 +53,6 @@ export class GameComponent implements OnInit {
     private matchingMoves: any[];
 
     constructor() {
-        this.game = new Game();
         // this.game = new Game('1k6/1p6/8/2P5/5p2/4P3/1K6/8 w - - 0 1');
         this.CURSOR_DATA = {
             mouseIsDown: false,
@@ -279,10 +280,6 @@ export class GameComponent implements OnInit {
             this.drawBoard();
             this.showMoves();
         });
-    }
-
-    public navigationDataEvent(event: string): void {
-        console.log('emitted', event);
     }
 
     private showMoves(): void {

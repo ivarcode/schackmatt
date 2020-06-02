@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
-import { GameComponent } from './components/game.component';
+import { GameComponent } from './components/game/game.component';
 import { AccountComponent } from './components/account/account.component';
 import { TacticsTrainerComponent } from './components/tactics-trainer/tactics-trainer.component';
 import { RepertoireBuilderComponent } from './components/repertoire-builder/repertoire-builder.component';
