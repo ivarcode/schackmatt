@@ -3,5 +3,6 @@
     <app-game-details-table
         id="game-details"
         [pgn]="getGame().getPGN()"
+        (navigationDataEmitter)="navigationDataEvent($event)"
     ></app-game-details-table>
 </div>
