@@ -15,6 +15,7 @@ import {
 export class GameDetailTableComponent implements OnChanges {
     @Input() pgn: string;
     @Output() navigationDataEmitter = new EventEmitter<string>();
+
     private pgnArray: any[];
 
     constructor() {
