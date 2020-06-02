@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { GameComponent } from './components/game.component';
 import { AccountComponent } from './components/account/account.component';
 import { TacticsTrainerComponent } from './components/tactics-trainer/tactics-trainer.component';
 import { RepertoireBuilderComponent } from './components/repertoire-builder/repertoire-builder.component';
@@ -8,9 +7,10 @@ import { MyBooksComponent } from './components/studies/my-books/my-books.compone
 import { PublicBooksComponent } from './components/studies/public-books/public-books.component';
 import { BookComponent } from './components/studies/book/book.component';
 import { ChapterComponent } from './components/studies/chapter/chapter.component';
+import { StandardGameComponent } from './components/standard-game/standard-game.component';
 const routes: Routes = [
     {
-        component: GameComponent,
+        component: StandardGameComponent,
         path: 'game'
     },
     {
