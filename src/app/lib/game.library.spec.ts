@@ -615,22 +615,60 @@ describe('Game', () => {
                 game.makeMove('e3');
                 expect(game.getFEN()).toBe(result);
             });
-            // issue 41
-            // it('should be able to move to e4', () => {
-            //     game = new Game('1k6/8/8/8/8/8/4P3/1K6 w - - 0 1');
-            //     const result = '1k6/8/8/8/4P3/8/8/1K6 b - - 0 1';
-            //     game.makeMove('e4');
-            //     expect(game.getFEN()).toBe(result);
-            // });
+            it('should be able to move to e4', () => {
+                game = new Game('1k6/8/8/8/8/8/4P3/1K6 w - - 0 1');
+                const result = '1k6/8/8/8/4P3/8/8/1K6 b - - 0 1';
+                game.makeMove('e4');
+                expect(game.getFEN()).toBe(result);
+            });
         });
-        // describe('Pawn capture', () => {
-        //     it('should be able to move to exf4', () => {
-        //         game = new Game('1k6/1p6/8/2P5/5p2/4P3/1K6/8 w - - 0 1');
-        //         const result = '1k6/1p6/8/2P5/5P2/8/1K6/8 b - - 0 1';
-        //         console.log(game.getLegalMoves());
-        //         game.makeMove('exf4');
-        //         expect(game.getFEN()).toBe(result);
-        //     });
-        // });
+        describe('Pawn capture', () => {
+            it('should be able to move to exf4', () => {
+                game = new Game('1k6/1p6/8/2P5/5p2/4P3/1K6/8 w - - 0 1');
+                const result = '1k6/1p6/8/2P5/5P2/8/1K6/8 b - - 0 1';
+                console.log(game.getLegalMoves());
+                game.makeMove('exf4');
+                expect(game.getFEN()).toBe(result);
+            });
+        });
+        describe('Pawn capture with promotion', () => {
+            it('should be able to move to exf8 and promote to queen', () => {
+                game = new Game('5p2/1k2P3/8/8/8/8/2K5/8 w - - 0 1');
+                const result = '5Q2/1k6/8/8/8/8/2K5/8 b - - 0 1';
+                console.log(game.getLegalMoves());
+                game.makeMove('exf8=Q');
+                expect(game.getFEN()).toBe(result);
+            });
+            it('should be able to move to exf8 and promote to rook', () => {
+                game = new Game('5p2/1k2P3/8/8/8/8/2K5/8 w - - 0 1');
+                const result = '5R2/1k6/8/8/8/8/2K5/8 b - - 0 1';
+                console.log(game.getLegalMoves());
+                game.makeMove('exf8=R');
+                expect(game.getFEN()).toBe(result);
+            });
+            it('should be able to move to exf8 and promote to knight', () => {
+                game = new Game('5p2/1k2P3/8/8/8/8/2K5/8 w - - 0 1');
+                const result = '5N2/1k6/8/8/8/8/2K5/8 b - - 0 1';
+                console.log(game.getLegalMoves());
+                game.makeMove('exf8=N');
+                expect(game.getFEN()).toBe(result);
+            });
+            it('should be able to move to exf8 and promote to bishop', () => {
+                game = new Game('5p2/1k2P3/8/8/8/8/2K5/8 w - - 0 1');
+                const result = '5B2/1k6/8/8/8/8/2K5/8 b - - 0 1';
+                console.log(game.getLegalMoves());
+                game.makeMove('exf8=B');
+                expect(game.getFEN()).toBe(result);
+            });
+        });
+        describe('Pawn En Passant', () => {
+            it('should be able to move to exf5', () => {
+                game = new Game('8/8/8/4Pp2/2K5/k7/8/8 w - f6 0 2');
+                const result = '8/8/5P2/8/2K5/k7/8/8 b - - 0 2';
+                console.log(game.getLegalMoves());
+                game.makeMove('exf6');
+                expect(game.getFEN()).toBe(result);
+            });
+        });
     });
 });
