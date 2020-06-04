@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/app/lib/game.library';
-import { Opening } from 'src/app/lib/test.library';
+import { Opening } from 'src/app/lib/opening.library';
 
 @Component({
     selector: 'app-standard-game',
