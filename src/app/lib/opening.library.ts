@@ -10,7 +10,11 @@ export class Opening {
             'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
             pgn
         );
-        this.index = this.data;
+        this.index = {
+            definingMove: null,
+            fen: this.data.fen,
+            options: [this.data]
+        };
         console.log('--------');
         console.log('data', this.data);
         console.log(this.getJSONTree(this.data, 1));
@@ -103,6 +107,31 @@ export class Opening {
         // console.log('JSON', JSON.stringify(root));
         return root;
     }
+
+    // returns whether the tree was successfully traversed by the param move
+    // string
+    public traverseIndex(move: string): boolean {
+        for (const i of this.index.options) {
+            if (i.definingMove === move) {
+                this.index = i;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // returns randomly selected from options tree, else null
+    public selectAndTraverseRandomMove(): string {
+        if (this.index.options.length !== 0) {
+            const i = Math.floor(Math.random() * this.index.options.length);
+            const randomMove = this.index.options[i].definingMove;
+            this.traverseIndex(randomMove);
+            return randomMove;
+        }
+        return null;
+    }
+
+    // prints some nice lookin tree
     private getJSONTree(b: Branch, spaces: number): string {
         let s = '';
         s += b.definingMove;
