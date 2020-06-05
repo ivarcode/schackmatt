@@ -1797,9 +1797,9 @@ export class Game {
             if (piece === 'K') {
                 if (move.src.file === File.e) {
                     if (move.dest.file === File.g) {
-                        notation = '0-0';
+                        notation = 'O-O';
                     } else if (move.dest.file === File.c) {
-                        notation = '0-0-0';
+                        notation = 'O-O-O';
                     }
                 }
             }
