@@ -13,3 +13,8 @@ export interface Move {
     resultingBoard: Board;
     notation: string;
 }
+
+export interface GameEvent {
+    type: string;
+    content: string;
+}

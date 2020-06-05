@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Game, Square, Color, Rank } from '../../lib/game.library';
+import { GameEvent } from 'src/app/lib/interface.library';
 
 @Component({
     selector: 'app-game',
@@ -7,7 +8,7 @@ import { Game, Square, Color, Rank } from '../../lib/game.library';
     styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
-    @Output() gameDataEmitter = new EventEmitter<string>();
+    @Output() gameDataEmitter = new EventEmitter<GameEvent>();
     @Input() game: Game;
 
     private boardCanvas: any;
@@ -358,6 +359,9 @@ export class GameComponent implements OnInit {
     }
 
     private attemptMoveOnBoard(): void {
+        // checking the original pgn to see if it changes
+        const originalPGN = this.getGame().getPGN();
+
         // does not matter what the resulting board is here,
         // we are just passing the src and dest
         const legalMoves = this.game.getLegalMoves();
@@ -380,14 +384,18 @@ export class GameComponent implements OnInit {
         }
         if (this.matchingMoves.length === 1) {
             this.game.makeMove(this.matchingMoves[0].notation);
+            // checking if changed
+            if (originalPGN !== this.getGame().getPGN()) {
+                this.gameDataEmitter.emit({
+                    type: 'move',
+                    content: this.matchingMoves[0].notation
+                });
+            }
+            // clearing the matchingMoves array
             this.matchingMoves = [];
         } else if (this.matchingMoves.length === 0) {
             // console.log('invalid move attempted');
         } else {
-            // console.log(
-            //     'matching moves length should be 4 :: is ',
-            //     this.matchingMoves.length
-            // );
             this.isPromoting = true;
             if (this.CURSOR_DATA.mouseIsDown) {
                 this.twoClickMove.preventPromote = true;
@@ -395,20 +403,6 @@ export class GameComponent implements OnInit {
                 this.twoClickMove.preventPromote = false;
             }
         }
-
-        // this.game.attemptMove({
-        //     notation: null,
-        //     src: {
-        //         file: this.CURSOR_DATA.mouseDownOn.x,
-        //         rank: 7 - this.CURSOR_DATA.mouseDownOn.y
-        //     },
-        //     dest: {
-        //         file: this.CURSOR_DATA.mouseUpOn.x,
-        //         rank: 7 - this.CURSOR_DATA.mouseUpOn.y
-        //     },
-        //     preMoveFEN: this.game.getFEN(),
-        //     resultingBoard: null
-        // });
     }
 
     private getMousePosition(events: any): { x: number; y: number } {
@@ -548,10 +542,5 @@ export class GameComponent implements OnInit {
 
     public getGame(): Game {
         return this.game;
-    }
-
-    // do we need this? probably not..
-    public changedDataInDetails(): void {
-        console.log('changes happened');
     }
 }

@@ -7,10 +7,10 @@ import { MyBooksComponent } from './components/studies/my-books/my-books.compone
 import { PublicBooksComponent } from './components/studies/public-books/public-books.component';
 import { BookComponent } from './components/studies/book/book.component';
 import { ChapterComponent } from './components/studies/chapter/chapter.component';
-import { StandardGameComponent } from './components/standard-game/standard-game.component';
+import { OpeningTrainingGameComponent } from './components/opening-training-game/opening-training.component';
 const routes: Routes = [
     {
-        component: StandardGameComponent,
+        component: OpeningTrainingGameComponent,
         path: 'game'
     },
     {
