@@ -27,7 +27,7 @@ export class Opening {
                 j++;
             }
             let a = pgn.substr(i, j - i);
-            console.log('[' + a + ']');
+            // console.log('[' + a + ']');
             // if 1-9
             if (
                 (a.charCodeAt(0) <= 57 && a.charCodeAt(0) >= 49) ||
@@ -51,7 +51,6 @@ export class Opening {
                         if (pgn.charCodeAt(k) === 41) {
                             if (count === 1) {
                                 // )
-                                console.log('poshist', positionHistArray);
                                 currNode.options.push(
                                     this.parsePGN(
                                         null,
@@ -78,8 +77,6 @@ export class Opening {
                 a.charCodeAt(a.length - 1) === 41
                     ? (a = a.substr(0, a.length - 1))
                     : (a = a);
-                // console.log('a', a);
-                console.log('game', game.getFEN(), game, game.getLegalMoves());
                 game.makeMove(a);
                 positionHistArray.push(game.getFEN());
                 const nextNode = {
