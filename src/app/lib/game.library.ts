@@ -1,3 +1,5 @@
+import { Move } from './interface.library';
+
 export const enum PieceType {
     King,
     Queen,
@@ -73,14 +75,6 @@ export const enum Rank {
 export interface Square {
     file: File;
     rank: Rank;
-}
-
-export interface Move {
-    src: Square;
-    dest: Square;
-    preMoveFEN: string;
-    resultingBoard: Board;
-    notation: string;
 }
 
 export class Board {

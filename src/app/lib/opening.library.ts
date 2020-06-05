@@ -1,10 +1,5 @@
 import { Game } from './game.library';
-
-export interface Branch {
-    definingMove: string;
-    fen: string;
-    options: Branch[];
-}
+import { Branch } from './interface.library';
 
 export class Opening {
     data: Branch;
@@ -129,6 +124,3 @@ export class Opening {
         return s;
     }
 }
-
-// EXAMPLE
-// 1. e4 e5 2. Nf3 Nc6 3. c3 Nf6 (3... d5 4. Qa4) 4. d4 *
