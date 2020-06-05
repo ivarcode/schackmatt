@@ -8,7 +8,7 @@ import { Game } from 'src/app/lib/game.library';
 })
 export class PageComponent {
     private game: Game;
-    private title: string;
+    public title: string;
     constructor() {
         this.title = 'Working Title';
         this.game = new Game();
