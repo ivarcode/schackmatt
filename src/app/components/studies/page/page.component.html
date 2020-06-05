@@ -1,3 +1,18 @@
-<div id="game" class="row">
-    <canvas id="board" width="640" height="640">canvas</canvas>
+<div id="title-top-page">
+    <h1 class="user-title">{{ title }}</h1>
+</div>
+<div class="row">
+    <app-game id="game" [game]="getGame()" class="col-sm-8"></app-game>
+    <app-game-details-table
+        id="game-details"
+        [pgn]="getGame().getPGN()"
+        (navigationDataEmitter)="navigationDataEvent($event)"
+        class="col-sm-4"
+    ></app-game-details-table>
+</div>
+<div>
+    <p class="text-center">FEN will go here</p>
+</div>
+<div>
+    <p class="text-center">PGN will go here</p>
 </div>
