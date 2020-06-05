@@ -1,5 +1,9 @@
 <div id="standard-game-container" class="row">
-    <app-game id="game" [game]="getGame()"></app-game>
+    <app-game
+        id="game"
+        [game]="getGame()"
+        (gameDataEmitter)="gameDataEvent($event)"
+    ></app-game>
     <app-game-details-table
         id="game-details"
         [pgn]="getGame().getPGN()"

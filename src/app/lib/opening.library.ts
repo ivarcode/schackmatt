@@ -3,22 +3,22 @@ import { Branch } from './interface.library';
 
 export class Opening {
     data: Branch;
-
-    arr = [];
+    index: Branch;
     constructor(pgn: string) {
         this.data = this.parsePGN(
             null,
             'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
             pgn
         );
+        this.index = this.data;
         console.log('--------');
         console.log('data', this.data);
         console.log(this.getJSONTree(this.data, 1));
     }
     private parsePGN(root: Branch, initPosition: string, pgn: string): Branch {
         // console.log('called with ', pgn);
-        let game = new Game(initPosition);
-        let positionHistArray = [initPosition];
+        const game = new Game(initPosition);
+        const positionHistArray = [initPosition];
         let currNode = root;
         let i = 0;
         while (i <= pgn.length) {
@@ -106,17 +106,10 @@ export class Opening {
     private getJSONTree(b: Branch, spaces: number): string {
         let s = '';
         s += b.definingMove;
-        if (b.options.length > 1) {
-            this.arr.push(spaces);
-        }
         for (const opt of b.options) {
             s += '\n';
             for (let i = 0; i < spaces; i++) {
-                if (this.arr.includes(i)) {
-                    s += '| ';
-                } else {
-                    s += '  ';
-                }
+                s += '  ';
             }
             s += this.getJSONTree(opt, spaces + 1);
         }
