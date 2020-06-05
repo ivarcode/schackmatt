@@ -8,6 +8,7 @@ import { PublicBooksComponent } from './components/studies/public-books/public-b
 import { BookComponent } from './components/studies/book/book.component';
 import { ChapterComponent } from './components/studies/chapter/chapter.component';
 import { StandardGameComponent } from './components/standard-game/standard-game.component';
+import { PageComponent } from './components/studies/page/page.component';
 const routes: Routes = [
     {
         component: StandardGameComponent,
@@ -40,6 +41,10 @@ const routes: Routes = [
     {
         component: ChapterComponent,
         path: 'chapter'
+    },
+    {
+        component: PageComponent,
+        path: 'page'
     },
     {
         redirectTo: 'game',
