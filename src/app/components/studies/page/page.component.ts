@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Game } from 'src/app/lib/game.library';
 
 @Component({
