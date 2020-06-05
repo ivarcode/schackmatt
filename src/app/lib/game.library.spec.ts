@@ -35,22 +35,22 @@ describe('Game', () => {
                 game.makeMove('Kf2');
                 expect(game.getFEN()).toBe(result);
             });
-            it('should be able to move to 0-0', () => {
+            it('should be able to move to O-O', () => {
                 game = new Game(
                     'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1'
                 );
                 const result =
                     'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R4RK1 b kq - 1 1';
-                game.makeMove('0-0');
+                game.makeMove('O-O');
                 expect(game.getFEN()).toBe(result);
             });
-            it('should be able to move to 0-0-0', () => {
+            it('should be able to move to O-O-O', () => {
                 game = new Game(
                     'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1'
                 );
                 const result =
                     'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/2KR3R b kq - 1 1';
-                game.makeMove('0-0-0');
+                game.makeMove('O-O-O');
                 expect(game.getFEN()).toBe(result);
             });
             it('should be able to move to e2', () => {
