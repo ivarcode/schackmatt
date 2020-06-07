@@ -421,7 +421,7 @@ export class GameComponent implements OnInit {
         return { x: mX, y: mY };
     }
 
-    private drawBoard(): void {
+    public drawBoard(): void {
         this.boardContext.restore();
         this.boardContext.globalAlpha = 1;
         this.boardContext.drawImage(this.boardImage, 0, 0);
