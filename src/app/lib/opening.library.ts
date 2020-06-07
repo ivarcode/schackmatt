@@ -190,4 +190,9 @@ export class Opening {
         }
         return s;
     }
+
+    // TODO return stems with no explanation
+    private getBareStems(): number {
+        return 0;
+    }
 }
