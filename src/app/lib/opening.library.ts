@@ -34,15 +34,15 @@ export class Opening {
         let currNode = root;
         let i = 0;
         while (i <= pgn.length) {
-            if (currNode) {
-                console.log(this.getJSONTree(currNode, 1));
-            }
+            // if (currNode) {
+            // console.log(this.getJSONTree(currNode, 1));
+            // }
             let j = i;
             while (pgn.charAt(j) !== ' ' && j < pgn.length) {
                 j++;
             }
             let a = pgn.substr(i, j - i);
-            console.log('[' + a + ']');
+            // console.log('[' + a + ']');
             // if 1-9
             if (
                 (a.charCodeAt(0) <= 57 && a.charCodeAt(0) >= 49) ||
@@ -87,9 +87,8 @@ export class Opening {
                 i = k + 2;
                 // console.log('i is at ', pgn.substr(i, 5));
             } else if (a.charCodeAt(0) === 123) {
-                console.log('comment', currNode.options.length);
+                // console.log('comment', currNode.options.length);
                 // {
-
                 let k = i + 1;
                 let count = 1;
                 while (k < pgn.length) {
@@ -100,10 +99,10 @@ export class Opening {
                             if (count === 1) {
                                 // }
                                 const passPGN = pgn.substr(i + 2, k - i - 3);
-                                console.log(
-                                    'pgn.substr(i+1,k-i)',
-                                    '[' + passPGN + ']'
-                                );
+                                // console.log(
+                                // 'pgn.substr(i+1,k-i)',
+                                // '[' + passPGN + ']'
+                                // );
                                 if (currNode.options.length !== 0) {
                                     currNode.options[
                                         currNode.options.length - 1
@@ -121,7 +120,7 @@ export class Opening {
                 }
                 i = k + 2;
             } else {
-                console.log('normal move');
+                // console.log('normal move');
                 // trimming front and back of ( or )
                 a.charCodeAt(0) === 40 ? (a = a.substr(1)) : (a = a);
                 a.charCodeAt(a.length - 1) === 41
@@ -181,7 +180,7 @@ export class Opening {
     // prints some nice lookin tree
     private getJSONTree(b: Branch, spaces: number): string {
         let s = '';
-        s += b.definingMove + (b.explanation ? ' :: ' + b.explanation : '');
+        s += b.definingMove + (b.explanation ? ' (' + b.explanation + ')' : '');
         for (const opt of b.options) {
             s += '\n';
             for (let i = 0; i < spaces; i++) {
