@@ -192,6 +192,7 @@ export class Opening {
     }
 
     // TODO return stems with no explanation
+    // do i need this?
     private getBareStems(): number {
         return 0;
     }
