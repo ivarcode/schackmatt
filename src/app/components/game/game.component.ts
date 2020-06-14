@@ -205,43 +205,6 @@ export class GameComponent implements OnInit {
                             const r = 7 - this.CURSOR_DATA.mouseDownOn.y;
                             if (f === this.matchingMoves[0].dest.file) {
                                 this.switchCaseRank(r);
-                                // if (this.game.getTurn() === Color.White) {
-                                //     if (r === Rank.EIGHT) {
-                                //         this.game.makeMove(
-                                //             this.matchingMoves[0].notation
-                                //         );
-                                //     } else if (r === Rank.SEVEN) {
-                                //         this.game.makeMove(
-                                //             this.matchingMoves[3].notation
-                                //         );
-                                //     } else if (r === Rank.SIX) {
-                                //         this.game.makeMove(
-                                //             this.matchingMoves[1].notation
-                                //         );
-                                //     } else if (r === Rank.FIVE) {
-                                //         this.game.makeMove(
-                                //             this.matchingMoves[2].notation
-                                //         );
-                                //     }
-                                // } else {
-                                //     if (r === Rank.ONE) {
-                                //         this.game.makeMove(
-                                //             this.matchingMoves[0].notation
-                                //         );
-                                //     } else if (r === Rank.TWO) {
-                                //         this.game.makeMove(
-                                //             this.matchingMoves[3].notation
-                                //         );
-                                //     } else if (r === Rank.THREE) {
-                                //         this.game.makeMove(
-                                //             this.matchingMoves[1].notation
-                                //         );
-                                //     } else if (r === Rank.FOUR) {
-                                //         this.game.makeMove(
-                                //             this.matchingMoves[2].notation
-                                //         );
-                                //     }
-                                // }
                             }
                             this.isPromoting = false;
                             this.matchingMoves = [];
