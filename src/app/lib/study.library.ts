@@ -1,7 +1,7 @@
 import { Game } from './game.library';
 import { Branch } from './interface.library';
 
-export class Opening {
+export class Study {
     data: Branch;
     index: Branch;
     constructor(pgn: string) {

@@ -7,7 +7,7 @@ import { MyBooksComponent } from './components/studies/my-books/my-books.compone
 import { PublicBooksComponent } from './components/studies/public-books/public-books.component';
 import { BookComponent } from './components/studies/book/book.component';
 import { ChapterComponent } from './components/studies/chapter/chapter.component';
-import { OpeningTrainingGameComponent } from './components/opening-training-game/opening-training.component';
+import { OpeningTrainingGameComponent } from './components/opening-training-game/opening-training-game.component';
 const routes: Routes = [
     {
         component: OpeningTrainingGameComponent,
