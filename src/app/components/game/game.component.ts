@@ -293,7 +293,7 @@ export class GameComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        console.log('changes', changes);
+        console.log(changes);
         if (changes.interfaceCommand) {
             if (changes.interfaceCommand.currentValue === 'draw board') {
                 this.drawBoard();
