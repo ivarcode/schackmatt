@@ -17,6 +17,7 @@ import { BookThumbnailComponent } from './components/studies/book-thumbnail/book
 import { BookComponent } from './components/studies/book/book.component';
 import { ChapterComponent } from './components/studies/chapter/chapter.component';
 import { OpeningTrainingGameComponent } from './components/opening-training-game/opening-training-game.component';
+import { PageComponent } from './components/studies/page/page.component';
 
 @NgModule({
     declarations: [
@@ -33,7 +34,8 @@ import { OpeningTrainingGameComponent } from './components/opening-training-game
         BookThumbnailComponent,
         BookComponent,
         ChapterComponent,
-        OpeningTrainingGameComponent
+        OpeningTrainingGameComponent,
+        PageComponent
     ],
     imports: [BrowserModule, AppRoutingModule, FormsModule],
     providers: [],
