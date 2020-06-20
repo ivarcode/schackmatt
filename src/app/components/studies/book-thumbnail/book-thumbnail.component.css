@@ -12,3 +12,6 @@
     height: 180px;
     object-fit: contain;
 }
+.rectangle {
+    width: 100px;
+}
