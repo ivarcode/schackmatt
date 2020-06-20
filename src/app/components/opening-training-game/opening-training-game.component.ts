@@ -28,7 +28,7 @@ export class OpeningTrainingGameComponent implements OnInit {
     public navigationDataEvent(event: string): void {
         console.log('nav emit', event);
         if (event === 'forward') {
-            console.log('toggle one mve forward');
+            this.triggerGameInterfaceCommand(event);
         }
     }
     public gameDataEvent(event: GameEvent): void {
@@ -43,12 +43,17 @@ export class OpeningTrainingGameComponent implements OnInit {
                 if (randomMove !== null) {
                     this.game.makeMove(randomMove);
                 }
-                this.gameInterfaceCommand = 'draw board';
-                setTimeout(() => {
-                    this.gameInterfaceCommand = null;
-                }, 10);
+                this.triggerGameInterfaceCommand('draw board');
             }, 1000);
         }
+    }
+    private triggerGameInterfaceCommand(command: string): void {
+        this.gameInterfaceCommand = command;
+        // using setTimeout because it appears that a slight delay before reset
+        // helps to trigger change detection smoothly (research required?)
+        setTimeout(() => {
+            this.gameInterfaceCommand = null;
+        }, 10);
     }
     public getGame(): Game {
         return this.game;
