@@ -2,6 +2,7 @@
     <app-game
         id="game"
         [game]="getGame()"
+        [interfaceCommand]="getGameInterfaceCommand()"
         (gameDataEmitter)="gameDataEvent($event)"
     ></app-game>
     <app-game-details-table

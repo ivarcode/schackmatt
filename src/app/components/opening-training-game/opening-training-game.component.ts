@@ -11,6 +11,7 @@ import { GameEvent } from 'src/app/lib/interface.library';
 export class OpeningTrainingGameComponent implements OnInit {
     private game: Game;
     private opening: Study;
+    private gameInterfaceCommand: string;
 
     constructor() {
         this.game = new Game();
@@ -26,6 +27,9 @@ export class OpeningTrainingGameComponent implements OnInit {
     }
     public navigationDataEvent(event: string): void {
         console.log('nav emit', event);
+        if (event === 'forward') {
+            console.log('toggle one mve forward');
+        }
     }
     public gameDataEvent(event: GameEvent): void {
         console.log('game emit', event);
@@ -39,12 +43,17 @@ export class OpeningTrainingGameComponent implements OnInit {
                 if (randomMove !== null) {
                     this.game.makeMove(randomMove);
                 }
-                // TODO
-                // if there is a timeout, drawBoard()
+                this.gameInterfaceCommand = 'draw board';
+                setTimeout(() => {
+                    this.gameInterfaceCommand = null;
+                }, 10);
             }, 1000);
         }
     }
     public getGame(): Game {
         return this.game;
+    }
+    public getGameInterfaceCommand(): string {
+        return this.gameInterfaceCommand;
     }
 }

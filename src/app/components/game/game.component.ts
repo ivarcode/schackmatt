@@ -1,4 +1,12 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Output,
+    EventEmitter,
+    Input,
+    SimpleChanges,
+    OnChanges
+} from '@angular/core';
 import { Game, Square, Color, Rank } from '../../lib/game.library';
 import { GameEvent } from 'src/app/lib/interface.library';
 
@@ -7,9 +15,10 @@ import { GameEvent } from 'src/app/lib/interface.library';
     templateUrl: './game.component.html',
     styleUrls: ['./game.component.css']
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnChanges {
     @Output() gameDataEmitter = new EventEmitter<GameEvent>();
     @Input() game: Game;
+    @Input() interfaceCommand: string;
 
     private boardCanvas: any;
     private boardContext: any;
@@ -281,6 +290,15 @@ export class GameComponent implements OnInit {
             this.drawBoard();
             this.showMoves();
         });
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        console.log('changes', changes);
+        if (changes.interfaceCommand) {
+            if (changes.interfaceCommand.currentValue === 'draw board') {
+                this.drawBoard();
+            }
+        }
     }
 
     private showMoves(): void {
