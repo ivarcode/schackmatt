@@ -115,6 +115,7 @@ export class Game {
     private pgn: string;
     private board: Board;
     private turn: Color;
+    private moveHistory: Move[];
     private castlingRights: {
         K: boolean;
         Q: boolean;
@@ -131,6 +132,7 @@ export class Game {
             : 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
         this.pgn = '';
         this.loadFEN();
+        this.moveHistory = [];
     }
 
     public toString(): string {
@@ -1854,6 +1856,7 @@ export class Game {
             this.pgn += (this.fullmove === 1 ? '' : ' ') + this.fullmove + '.';
         }
         this.pgn += ' ' + move.notation;
+        this.moveHistory.push(move);
     }
 
     public makeMove(moveNotation: string): void {
