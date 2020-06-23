@@ -35,16 +35,21 @@ export class OpeningTrainingGameComponent implements OnInit {
         console.log('game emit', event);
         if (event.type === 'move') {
             if (!this.opening.traverseIndex(event.content)) {
-                throw Error('your move was not very good');
+                // throw Error('your move was not very good');
+                setTimeout(() => {
+                    this.game.undoLastMove();
+                    this.triggerGameInterfaceCommand('redraw board');
+                }, 1000);
+            } else {
+                // 1 second timeout
+                setTimeout(() => {
+                    const randMove = this.opening.selectAndTraverseRandomMove();
+                    if (randMove !== null) {
+                        this.game.makeMove(randMove);
+                    }
+                    this.triggerGameInterfaceCommand('redraw board');
+                }, 1000);
             }
-            // 1 second timeout
-            setTimeout(() => {
-                const randomMove = this.opening.selectAndTraverseRandomMove();
-                if (randomMove !== null) {
-                    this.game.makeMove(randomMove);
-                }
-                this.triggerGameInterfaceCommand('new move, draw board');
-            }, 1000);
         }
     }
     private triggerGameInterfaceCommand(command: string): void {

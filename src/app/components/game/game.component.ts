@@ -302,7 +302,7 @@ export class GameComponent implements OnInit, OnChanges {
         console.log(changes);
         if (changes.interfaceCommand && changes.interfaceCommand.currentValue) {
             switch (changes.interfaceCommand.currentValue) {
-                case 'new move, draw board':
+                case 'redraw board':
                     this.displayedMoveIndex++;
                     this.positionHistory.push(this.game.getBoard());
                     this.drawBoard();
