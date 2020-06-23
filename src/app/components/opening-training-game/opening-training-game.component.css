@@ -6,3 +6,13 @@
 #opening-training-alert.alert-warning {
     display: none;
 }
+.opening-trainer-style-alert {
+    height: 275px;
+    width: 225px;
+    margin-top: 440px;
+    left: -225px;
+    border-radius: 15px;
+}
+.quote-font-size {
+    font-size: 15px;
+}
