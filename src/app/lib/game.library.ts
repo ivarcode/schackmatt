@@ -2131,6 +2131,17 @@ export class Game {
         return d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0;
     }
 
+    public undoLastMove(): void {
+        console.log(this.getPGN());
+        console.log(this.getMoveHistory());
+        this.fen = this.moveHistory[this.moveHistory.length - 1].preMoveFEN;
+        this.moveHistory.pop();
+        this.loadFEN();
+        this.pgn = this.getPGNFromMoveHistory();
+        console.log(this.getPGN());
+        console.log(this.getMoveHistory());
+    }
+
     // board object setter
     public setBoard(board: Board): void {
         this.board = board;
@@ -2148,6 +2159,13 @@ export class Game {
     }
     public getPGN(): string {
         return this.pgn;
+    }
+    public getPGNFromMoveHistory(): string {
+        const tempNewGame = new Game();
+        for (const m of this.getMoveHistory()) {
+            tempNewGame.makeMove(m.notation);
+        }
+        return tempNewGame.getPGN();
     }
     public getTurn(): Color {
         return this.turn;
