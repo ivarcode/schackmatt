@@ -2,3 +2,7 @@
     margin: 20px;
     margin-top: 200px;
 }
+
+#opening-training-alert.alert-warning {
+    display: none;
+}

@@ -321,10 +321,10 @@ export class GameComponent implements OnInit, OnChanges {
                     ) {
                         this.displayedMoveIndex++;
                     }
-                    console.log(
-                        'displayed move index is ',
-                        this.displayedMoveIndex
-                    );
+                    // console.log(
+                    //     'displayed move index is ',
+                    //     this.displayedMoveIndex
+                    // );
                     console.log(this.positionHistory[this.displayedMoveIndex]);
                     this.drawBoard();
                     break;
