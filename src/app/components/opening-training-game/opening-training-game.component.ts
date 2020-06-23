@@ -27,7 +27,7 @@ export class OpeningTrainingGameComponent implements OnInit {
     }
     public navigationDataEvent(event: string): void {
         console.log('nav emit', event);
-        if (event === 'forward') {
+        if (event === 'forward' || event === 'back') {
             this.triggerGameInterfaceCommand(event);
         }
     }
@@ -43,7 +43,7 @@ export class OpeningTrainingGameComponent implements OnInit {
                 if (randomMove !== null) {
                     this.game.makeMove(randomMove);
                 }
-                this.triggerGameInterfaceCommand('draw board');
+                this.triggerGameInterfaceCommand('new move, draw board');
             }, 1000);
         }
     }
