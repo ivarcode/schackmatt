@@ -2137,6 +2137,9 @@ export class Game {
     }
 
     // GETTERS
+    public getBoard(): Board {
+        return this.board;
+    }
     public getPiece(sq: Square): Piece {
         return this.board.getPiece(sq);
     }
@@ -2148,6 +2151,9 @@ export class Game {
     }
     public getTurn(): Color {
         return this.turn;
+    }
+    public getMoveHistory(): Move[] {
+        return this.moveHistory;
     }
     // ---
 

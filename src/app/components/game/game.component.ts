@@ -7,7 +7,7 @@ import {
     SimpleChanges,
     OnChanges
 } from '@angular/core';
-import { Game, Square, Color, Rank } from '../../lib/game.library';
+import { Game, Square, Color, Rank, Board } from '../../lib/game.library';
 import { GameEvent } from 'src/app/lib/interface.library';
 
 @Component({
@@ -20,6 +20,8 @@ export class GameComponent implements OnInit, OnChanges {
     @Input() game: Game;
     @Input() interfaceCommand: string;
 
+    private displayedMoveIndex: number;
+    private positionHistory: Board[];
     private boardCanvas: any;
     private boardContext: any;
     private boardImage: any;
@@ -85,12 +87,16 @@ export class GameComponent implements OnInit, OnChanges {
         this.tintSqObjects = [];
         this.isPromoting = false;
         this.matchingMoves = [];
+        this.positionHistory = [];
+        this.displayedMoveIndex = 0;
 
         // console.log(this.game.toString());
         // this.game.printLegalMovesToConsole();
     }
 
     ngOnInit() {
+        this.generatePositionHistory();
+
         this.boardCanvas = document.getElementById('board');
         this.boardCanvas.oncontextmenu = (events: any) => {
             events.preventDefault();
@@ -294,9 +300,39 @@ export class GameComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         console.log(changes);
-        if (changes.interfaceCommand) {
-            if (changes.interfaceCommand.currentValue === 'draw board') {
-                this.drawBoard();
+        if (changes.interfaceCommand && changes.interfaceCommand.currentValue) {
+            switch (changes.interfaceCommand.currentValue) {
+                case 'new move, draw board':
+                    this.displayedMoveIndex++;
+                    this.positionHistory.push(this.game.getBoard());
+                    this.drawBoard();
+                    break;
+                case 'back':
+                    if (this.displayedMoveIndex > 0) {
+                        this.displayedMoveIndex--;
+                    }
+                    console.log(this.positionHistory[this.displayedMoveIndex]);
+                    this.drawBoard();
+                    break;
+                case 'forward':
+                    if (
+                        this.displayedMoveIndex <
+                        this.positionHistory.length - 1
+                    ) {
+                        this.displayedMoveIndex++;
+                    }
+                    console.log(
+                        'displayed move index is ',
+                        this.displayedMoveIndex
+                    );
+                    console.log(this.positionHistory[this.displayedMoveIndex]);
+                    this.drawBoard();
+                    break;
+                default:
+                    throw new Error(
+                        'invalid interface command' +
+                            changes.interfaceCommand.currentValue
+                    );
             }
         }
     }
@@ -402,6 +438,8 @@ export class GameComponent implements OnInit, OnChanges {
         }
         if (this.matchingMoves.length === 1) {
             this.game.makeMove(this.matchingMoves[0].notation);
+            this.positionHistory.push(this.game.getBoard());
+            this.displayedMoveIndex++;
             // checking if changed
             if (originalPGN !== this.getGame().getPGN()) {
                 this.gameDataEmitter.emit({
@@ -480,7 +518,10 @@ export class GameComponent implements OnInit, OnChanges {
     }
 
     private refreshCanvasSquare(x: number, y: number): void {
-        const piece = this.game.getPiece({ file: x, rank: y });
+        const piece = this.positionHistory[this.displayedMoveIndex].getPiece({
+            file: x,
+            rank: y
+        });
         if (
             this.CURSOR_DATA.overSquare &&
             this.CURSOR_DATA.overSquare.x === x &&
@@ -544,6 +585,15 @@ export class GameComponent implements OnInit, OnChanges {
                     (7 - y) * 80
                 );
             }
+        }
+    }
+
+    private generatePositionHistory(): void {
+        const newGame = new Game();
+        this.positionHistory.push(newGame.getBoard());
+        if (this.game.getMoveHistory.length !== 0) {
+            // TODO
+            // generate rest of board positions
         }
     }
 
