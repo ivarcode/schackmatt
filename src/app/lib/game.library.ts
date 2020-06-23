@@ -1,3 +1,5 @@
+import { Move } from './interface.library';
+
 export const enum PieceType {
     King,
     Queen,
@@ -73,14 +75,6 @@ export const enum Rank {
 export interface Square {
     file: File;
     rank: Rank;
-}
-
-export interface Move {
-    src: Square;
-    dest: Square;
-    preMoveFEN: string;
-    resultingBoard: Board;
-    notation: string;
 }
 
 export class Board {
@@ -1805,9 +1799,9 @@ export class Game {
             if (piece === 'K') {
                 if (move.src.file === File.e) {
                     if (move.dest.file === File.g) {
-                        notation = '0-0';
+                        notation = 'O-O';
                     } else if (move.dest.file === File.c) {
-                        notation = '0-0-0';
+                        notation = 'O-O-O';
                     }
                 }
             }
@@ -2137,12 +2131,26 @@ export class Game {
         return d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0;
     }
 
+    public undoLastMove(): void {
+        console.log(this.getPGN());
+        console.log(this.getMoveHistory());
+        this.fen = this.moveHistory[this.moveHistory.length - 1].preMoveFEN;
+        this.moveHistory.pop();
+        this.loadFEN();
+        this.pgn = this.getPGNFromMoveHistory();
+        console.log(this.getPGN());
+        console.log(this.getMoveHistory());
+    }
+
     // board object setter
     public setBoard(board: Board): void {
         this.board = board;
     }
 
     // GETTERS
+    public getBoard(): Board {
+        return this.board;
+    }
     public getPiece(sq: Square): Piece {
         return this.board.getPiece(sq);
     }
@@ -2152,8 +2160,18 @@ export class Game {
     public getPGN(): string {
         return this.pgn;
     }
+    public getPGNFromMoveHistory(): string {
+        const tempNewGame = new Game();
+        for (const m of this.getMoveHistory()) {
+            tempNewGame.makeMove(m.notation);
+        }
+        return tempNewGame.getPGN();
+    }
     public getTurn(): Color {
         return this.turn;
+    }
+    public getMoveHistory(): Move[] {
+        return this.moveHistory;
     }
     // ---
 

@@ -1,0 +1,28 @@
+<div id="standard-game-container" class="row">
+    <app-game
+        id="game"
+        [game]="getGame()"
+        [interfaceCommand]="getGameInterfaceCommand()"
+        (gameDataEmitter)="gameDataEvent($event)"
+    ></app-game>
+    <app-game-details-table
+        id="game-details"
+        [pgn]="getGame().getPGN()"
+        (navigationDataEmitter)="navigationDataEvent($event)"
+    ></app-game-details-table>
+    <div
+        id="opening-training-alert"
+        class="alert {{ getAlertType() }}"
+        role="alert"
+    >
+        <h4 class="alert-heading">{{ getChoiceHeadingMessage() }}</h4>
+        <p>
+            Aww yeah
+        </p>
+        <hr />
+        <p class="mb-0">
+            Whenever you need to, be sure to use margin utilities to keep things
+            nice and tidy.
+        </p>
+    </div>
+</div>
