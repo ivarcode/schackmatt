@@ -29,6 +29,8 @@ This is a website for creating chess training tools. When the site is live the l
 
 `issue-#-some-basic-descriptive-phrase`
 
+### [General standard for formatting](https://github.com/ivarcode/schackmatt/blob/develop/JAVASCRIPT_GUIDELINES.md)
+
 ### Developer Discord Server: https://discord.gg/uruXya4
 
 Please submit bugs or feature requests in detailed issues.
