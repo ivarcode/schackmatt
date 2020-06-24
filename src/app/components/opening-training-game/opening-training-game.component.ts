@@ -42,17 +42,16 @@ export class OpeningTrainingGameComponent implements OnInit {
     public gameDataEvent(event: GameEvent): void {
         console.log('game emit', event);
         if (event.type === 'move') {
+            this.quoteSelector();
             if (!this.opening.traverseIndex(event.content)) {
                 // throw Error('your move was not very good');
                 this.showFailureNotification();
-                this.quoteSelector();
                 setTimeout(() => {
                     this.game.undoLastMove();
                     this.triggerGameInterfaceCommand('redraw board');
                 }, 1000);
             } else {
                 this.showSuccessNotification();
-                this.quoteSelector();
                 // 1 second timeout
                 setTimeout(() => {
                     const randMove = this.opening.selectAndTraverseRandomMove();
