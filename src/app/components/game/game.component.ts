@@ -146,6 +146,10 @@ export class GameComponent implements OnInit, OnChanges {
             this.drawBoard();
         });
         this.boardCanvas.addEventListener('mousemove', (events: any) => {
+            // condition when not on latest move
+            if (this.displayedMoveIndex !== this.game.getMoveHistory().length) {
+                return;
+            }
             // this function takes the x and y coordinates of mousedata to
             // convert that to a square coordinate
             // we save this in an object to reference when click events happen
@@ -173,6 +177,10 @@ export class GameComponent implements OnInit, OnChanges {
             this.drawBoard();
         });
         this.boardCanvas.addEventListener('mousedown', () => {
+            // condition when not on latest move
+            if (this.displayedMoveIndex !== this.game.getMoveHistory().length) {
+                return;
+            }
             // when mouse is pressed down
             this.CURSOR_DATA.mouseIsDown = true;
             if (this.CURSOR_DATA.overSquare) {
@@ -199,6 +207,10 @@ export class GameComponent implements OnInit, OnChanges {
             }
         });
         this.boardCanvas.addEventListener('mouseup', () => {
+            // condition when not on latest move
+            if (this.displayedMoveIndex !== this.game.getMoveHistory().length) {
+                return;
+            }
             // when mouse is released
             this.CURSOR_DATA.mouseIsDown = false;
             if (this.isPromoting) {
