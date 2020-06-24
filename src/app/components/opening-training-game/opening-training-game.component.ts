@@ -43,7 +43,7 @@ export class OpeningTrainingGameComponent implements OnInit {
                 this.showFailureNotification();
                 setTimeout(() => {
                     this.game.undoLastMove();
-                    this.triggerGameInterfaceCommand('redraw board');
+                    this.triggerGameInterfaceCommand('displayMoveIndex--');
                 }, 1000);
             } else {
                 this.showSuccessNotification();
