@@ -14,6 +14,8 @@ export class OpeningTrainingGameComponent implements OnInit {
     private gameInterfaceCommand: string;
     private alertType: string;
     private choiceHeadingMessage: string;
+    private choiceQuote: string;
+    private choiceAuthor: string;
 
     constructor() {
         this.game = new Game();
@@ -28,6 +30,8 @@ export class OpeningTrainingGameComponent implements OnInit {
         );
         this.alertType = 'alert-warning';
         this.choiceHeadingMessage = 'no message';
+        this.choiceAuthor = '';
+        this.choiceQuote = '';
     }
     public navigationDataEvent(event: string): void {
         console.log('nav emit', event);
@@ -38,6 +42,7 @@ export class OpeningTrainingGameComponent implements OnInit {
     public gameDataEvent(event: GameEvent): void {
         console.log('game emit', event);
         if (event.type === 'move') {
+            this.quoteSelector();
             if (!this.opening.traverseIndex(event.content)) {
                 // throw Error('your move was not very good');
                 this.showFailureNotification();
@@ -74,7 +79,19 @@ export class OpeningTrainingGameComponent implements OnInit {
 
     private showFailureNotification(): void {
         this.alertType = 'alert-danger';
-        this.choiceHeadingMessage = 'Crap move m8!';
+        this.choiceHeadingMessage = 'Wrong Move!';
+    }
+
+    private quoteSelector(): void {
+        let quote = {
+            str:
+                '"You must take your opponent into a deep dark forest where ' +
+                '2+2=5, and the path leading out is only wide ' +
+                'enough for one."',
+            by: 'Mikhail Tal'
+        };
+        this.choiceQuote = quote.str;
+        this.choiceAuthor = quote.by;
     }
 
     public getGame(): Game {
@@ -88,5 +105,11 @@ export class OpeningTrainingGameComponent implements OnInit {
     }
     public getChoiceHeadingMessage(): string {
         return this.choiceHeadingMessage;
+    }
+    public getChoiceQuote(): string {
+        return this.choiceQuote;
+    }
+    public getChoiceAuthor(): string {
+        return this.choiceAuthor;
     }
 }
