@@ -5,8 +5,9 @@ export class Study {
     data: Branch;
     index: Branch;
     constructor(pgn: string) {
-        this.data = this.parsePGN(
-            null,
+        this.data = null;
+        this.buildAndParsePGN(
+            this.data,
             'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
             'opening begins here',
             pgn
@@ -22,7 +23,7 @@ export class Study {
         console.log('data', this.data);
         console.log(this.getJSONTree(this.data, 1));
     }
-    private parsePGN(
+    private buildAndParsePGN(
         root: Branch,
         initPosition: string,
         explantation: string,
@@ -136,10 +137,13 @@ export class Study {
                 };
                 if (currNode === null) {
                     currNode = nextNode;
-                    if (root === null) {
-                        root = currNode;
-                    }
+                    // if (root === null) {
+                    //     root = currNode;
+                    // }
                 } else {
+                    // if move doesn't exist already
+                    if (this.moveExistsOnBranch(currNode, a)) {
+                    }
                     if (currNode.options.length !== 0) {
                         // traverse if necessary
                         currNode = currNode.options[0];
