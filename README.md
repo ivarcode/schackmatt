@@ -7,6 +7,7 @@ This is a website for creating chess training tools. When the site is live the l
 -   fork repo to your account or organization
 -   clone repository to your machine
 -   install node https://nodejs.org/en/download/
+-   navigate to the clone repo root in your preferred terminal; eg. `cd ~./git/schackmatt`
 -   run `npm i` to install necessary packages (this might take some time)
 -   if you use Angular CLI
     -   run `ng build`
