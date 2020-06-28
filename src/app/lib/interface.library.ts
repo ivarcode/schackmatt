@@ -19,3 +19,15 @@ export interface GameEvent {
     type: string;
     content: string;
 }
+
+export interface Arrow {
+    color?: string;
+    src: {
+        x: number;
+        y: number;
+    };
+    dest: {
+        x: number;
+        y: number;
+    };
+}

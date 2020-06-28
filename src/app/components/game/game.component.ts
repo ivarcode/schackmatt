@@ -8,7 +8,7 @@ import {
     OnChanges
 } from '@angular/core';
 import { Game, Square, Color, Rank, Board } from '../../lib/game.library';
-import { GameEvent } from 'src/app/lib/interface.library';
+import { GameEvent, Arrow } from 'src/app/lib/interface.library';
 
 @Component({
     selector: 'app-game',
@@ -61,6 +61,7 @@ export class GameComponent implements OnInit, OnChanges {
         color: string;
         gA: number;
     }[];
+    private arrowObjects: Arrow[];
     private isPromoting: boolean;
     private matchingMoves: any[];
 
@@ -85,6 +86,7 @@ export class GameComponent implements OnInit, OnChanges {
             preventPromote: false
         };
         this.tintSqObjects = [];
+        this.arrowObjects = [];
         this.isPromoting = false;
         this.matchingMoves = [];
         this.positionHistory = [];
@@ -200,6 +202,13 @@ export class GameComponent implements OnInit, OnChanges {
             }
         });
         this.boardCanvas.addEventListener('mouseup', () => {
+            this.arrowObjects.push({
+                src: { x: 0, y: 0 },
+                dest: {
+                    x: this.CURSOR_DATA.currentMousePosition.x,
+                    y: this.CURSOR_DATA.currentMousePosition.y
+                }
+            });
             // when mouse is released
             this.CURSOR_DATA.mouseIsDown = false;
             if (this.isPromoting) {
@@ -515,6 +524,9 @@ export class GameComponent implements OnInit, OnChanges {
                 this.boardContext.drawImage(this.pieceImages[8], x * 80, 320);
             }
         }
+        for (let arrow of this.arrowObjects) {
+            this.drawArrow(arrow);
+        }
     }
 
     private refreshCanvasSquare(x: number, y: number): void {
@@ -586,7 +598,6 @@ export class GameComponent implements OnInit, OnChanges {
                 );
             }
         }
-        this.drawArrow();
     }
 
     private generatePositionHistory(): void {
@@ -613,43 +624,57 @@ export class GameComponent implements OnInit, OnChanges {
         return this.game;
     }
 
-    public drawArrow(): void {
-        let xInitial: number;
-        let yInitial: number;
-        let xFinal: number;
-        let yFinal: number;
-
-        xInitial = 150;
-        yInitial = 150;
-        xFinal = 250;
-        yFinal = 250;
-        let arrowTip = this.tipOfArrow(xInitial, yInitial, xFinal, yFinal);
+    public drawArrow(arrow: Arrow): void {
+        let arrowTip = this.tipOfArrow(
+            arrow.src.x,
+            arrow.src.y,
+            arrow.dest.x,
+            arrow.dest.y
+        );
 
         // create the initial line forward in an arrow
         const ctx = this.boardCanvas.getContext('2d');
+        // TODO change this
+        // calling function on every piece refresh or something,
+        // all these are being drawn too many times
+        ctx.globalAlpha = 0.7;
         ctx.beginPath();
-        ctx.strokeStyle = 'red';
+        const arrowColor = arrow.color ? arrow.color : 'green';
+        ctx.strokeStyle = arrowColor;
 
-        //Arrow heads lines that reach the base are being created here
+        // Arrow heads lines that reach the base are being created here
         ctx.moveTo(arrowTip.x, arrowTip.y);
         ctx.lineTo(
-            xFinal + 12,
-            this.getYCordPer(xInitial, yInitial, xFinal, yFinal, xFinal + 12)
+            arrow.dest.x + 12,
+            this.getYCordPerpendicular(
+                arrow.src.x,
+                arrow.src.y,
+                arrow.dest.x,
+                arrow.dest.y,
+                arrow.dest.x + 12
+            )
         );
         ctx.lineTo(
-            xFinal - 12,
-            this.getYCordPer(xInitial, yInitial, xFinal, yFinal, xFinal - 12)
+            arrow.dest.x - 12,
+            this.getYCordPerpendicular(
+                arrow.src.x,
+                arrow.src.y,
+                arrow.dest.x,
+                arrow.dest.y,
+                arrow.dest.x - 12
+            )
         );
-        ctx.fillStyle = 'red';
+        ctx.fillStyle = arrowColor;
         ctx.fill();
 
         // line of the arrowhead
-        ctx.lineWidth = 2;
-        ctx.moveTo(xFinal, yFinal);
-        ctx.lineTo(xInitial, yInitial);
+        ctx.lineWidth = 20;
+        ctx.moveTo(arrow.dest.x, arrow.dest.y);
+        ctx.lineTo(arrow.src.x, arrow.src.y);
         ctx.stroke();
     }
-    private getYCordPer(
+
+    private getYCordPerpendicular(
         xInitial: number,
         yInitial: number,
         xFinal: number,
@@ -668,20 +693,18 @@ export class GameComponent implements OnInit, OnChanges {
 
         return yCord;
     }
+
     private tipOfArrow(
         xInitial: number,
         yInitial: number,
         xFinal: number,
         yFinal: number
     ) {
-        let slope: number;
-        let yCord: number;
-        let b: number;
         let arrowTip = { x: 0, y: 0 };
 
-        slope = (yFinal - yInitial) / (xFinal - xInitial);
-        b = -(slope * xFinal) + yFinal;
-        yCord = slope * (xFinal + 15) + b;
+        let slope = (yFinal - yInitial) / (xFinal - xInitial);
+        let b = -(slope * xFinal) + yFinal;
+        let yCord = slope * (xFinal + 15) + b;
         arrowTip.x = xFinal + 15;
         arrowTip.y = yCord;
         return arrowTip;
