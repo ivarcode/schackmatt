@@ -586,6 +586,7 @@ export class GameComponent implements OnInit, OnChanges {
                 );
             }
         }
+        this.drawArrow();
     }
 
     private generatePositionHistory(): void {
@@ -610,5 +611,79 @@ export class GameComponent implements OnInit, OnChanges {
 
     public getGame(): Game {
         return this.game;
+    }
+
+    public drawArrow(): void {
+        let xInitial: number;
+        let yInitial: number;
+        let xFinal: number;
+        let yFinal: number;
+
+        xInitial = 150;
+        yInitial = 150;
+        xFinal = 250;
+        yFinal = 250;
+        let arrowTip = this.tipOfArrow(xInitial, yInitial, xFinal, yFinal);
+
+        // create the initial line forward in an arrow
+        const ctx = this.boardCanvas.getContext('2d');
+        ctx.beginPath();
+        ctx.strokeStyle = 'red';
+
+        //Arrow heads lines that reach the base are being created here
+        ctx.moveTo(arrowTip.x, arrowTip.y);
+        ctx.lineTo(
+            xFinal + 12,
+            this.getYCordPer(xInitial, yInitial, xFinal, yFinal, xFinal + 12)
+        );
+        ctx.lineTo(
+            xFinal - 12,
+            this.getYCordPer(xInitial, yInitial, xFinal, yFinal, xFinal - 12)
+        );
+        ctx.fillStyle = 'red';
+        ctx.fill();
+
+        // line of the arrowhead
+        ctx.lineWidth = 2;
+        ctx.moveTo(xFinal, yFinal);
+        ctx.lineTo(xInitial, yInitial);
+        ctx.stroke();
+    }
+    private getYCordPer(
+        xInitial: number,
+        yInitial: number,
+        xFinal: number,
+        yFinal: number,
+        xCordTarget: number
+    ): number {
+        let slope: number;
+        let pSlope: number;
+        let pB: number;
+        let yCord: number;
+
+        slope = (yFinal - yInitial) / (xFinal - xInitial);
+        pSlope = -1 / slope;
+        pB = -(pSlope * xFinal) + yFinal;
+        yCord = pSlope * xCordTarget + pB;
+
+        return yCord;
+    }
+    private tipOfArrow(
+        xInitial: number,
+        yInitial: number,
+        xFinal: number,
+        yFinal: number
+    ) {
+        let slope: number;
+        let yCord: number;
+        let b: number;
+        let arrowTip = { x: 0, y: 0 };
+
+        slope = (yFinal - yInitial) / (xFinal - xInitial);
+        b = -(slope * xFinal) + yFinal;
+        yCord = slope * (xFinal + 15) + b;
+        arrowTip.x = xFinal + 15;
+        arrowTip.y = yCord;
+        return arrowTip;
     }
 }
