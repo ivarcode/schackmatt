@@ -1,6 +1,8 @@
 # schackmatt
 
-This is a website for creating chess training tools. When the site is live the link will be provided.
+This is a website for creating chess training tools. The dev site is live, the production site is yet to come.
+
+Dev:  https://schackmatt.net/
 
 ### Developers:
 
