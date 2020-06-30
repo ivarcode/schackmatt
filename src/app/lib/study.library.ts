@@ -1,37 +1,32 @@
 import { Game } from './game.library';
 import { Branch } from './interface.library';
+import { notEqual } from 'assert';
 
 export class Study {
     data: Branch;
     index: Branch;
-    constructor(pgn: string) {
-        this.data = null;
-        this.buildAndParsePGN(
-            this.data,
-            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-            'opening begins here',
-            pgn
-        );
-        this.index = {
+    constructor(pgnArray: string[]) {
+        this.data = {
             definingMove: null,
-            fen: this.data.fen,
-            explanation: null,
-            options: [this.data]
+            fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+            explanation: 'HEAD',
+            options: []
         };
+        // parse all PGN content
+        for (const pgn of pgnArray) {
+            this.buildAndParsePGN(this.data, pgn);
+        }
+        this.index = this.data;
         console.log('--------');
-        console.log('pgn', pgn);
-        console.log('data', this.data);
+        // console.log('pgn', pgnArray);
+        // console.log('data', this.data);
+        // console.log('index', this.index);
         console.log(this.getJSONTree(this.data, 1));
     }
-    private buildAndParsePGN(
-        root: Branch,
-        initPosition: string,
-        explantation: string,
-        pgn: string
-    ): Branch {
+    private buildAndParsePGN(root: Branch, pgn: string): Branch {
         // console.log('called with ', pgn);
-        const game = new Game(initPosition);
-        const positionHistArray = [initPosition];
+        const game = new Game(root.fen);
+        const positionHistArray = [root.fen];
         let currNode = root;
         let i = 0;
         while (i <= pgn.length) {
@@ -67,15 +62,9 @@ export class Study {
                         if (pgn.charCodeAt(k) === 41) {
                             if (count === 1) {
                                 // )
-                                currNode.options.push(
-                                    this.parsePGN(
-                                        null,
-                                        positionHistArray[
-                                            positionHistArray.length - 2
-                                        ],
-                                        null,
-                                        pgn.substr(i + 1, k - i)
-                                    )
+                                this.buildAndParsePGN(
+                                    currNode,
+                                    pgn.substr(i + 1, k - i)
                                 );
                                 break;
                             } else {
@@ -135,27 +124,55 @@ export class Study {
                     explanation: null,
                     options: []
                 };
-                if (currNode === null) {
-                    currNode = nextNode;
-                    // if (root === null) {
-                    //     root = currNode;
-                    // }
-                } else {
-                    // if move doesn't exist already
-                    if (this.moveExistsOnBranch(currNode, a)) {
-                    }
-                    if (currNode.options.length !== 0) {
-                        // traverse if necessary
-                        currNode = currNode.options[0];
-                    }
-                    // add as move
+                // add move to options
+                const alreadyMappedIndex = this.moveMappedToIndex(
+                    currNode,
+                    nextNode.definingMove
+                );
+                // -1 identifies it not existing in index
+                if (alreadyMappedIndex === -1) {
+                    // console.log('added', nextNode);
                     currNode.options.push(nextNode);
+                    currNode = currNode.options[currNode.options.length - 1];
+                } else {
+                    // console.log('added', nextNode);
+                    currNode = currNode.options[alreadyMappedIndex];
                 }
+                // if (currNode === null) {
+                //     currNode = nextNode;
+                //     // if (root === null) {
+                //     //     root = currNode;
+                //     // }
+                // } else {
+                //     // if move doesn't exist already
+                //     if (currNode.options.length !== 0) {
+                //         // traverse if necessary
+                //         currNode = currNode.options[0];
+                //     }
+                //     // add as move
+                //     currNode.options.push(nextNode);
+                // }
                 i = j + 1;
             }
         }
         // console.log('JSON', JSON.stringify(root));
         return root;
+    }
+
+    // returns if move already exists on branch in options
+    // if not, returns null
+    public moveMappedToIndex(node: Branch, move: string): number {
+        for (
+            let optionIndex = 0;
+            optionIndex < node.options.length;
+            optionIndex++
+        ) {
+            if (node.options[optionIndex].definingMove === move) {
+                return optionIndex;
+            }
+        }
+        // not mapped in index
+        return -1;
     }
 
     // returns whether the tree was successfully traversed by the param move
