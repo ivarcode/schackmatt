@@ -1,6 +1,5 @@
 import { Game } from './game.library';
 import { Branch } from './interface.library';
-import { notEqual } from 'assert';
 
 export class Study {
     data: Branch;
