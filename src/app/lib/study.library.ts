@@ -14,19 +14,22 @@ export class Study {
         };
         // parse all PGN content
         for (const pgn of pgnArray) {
+            // console.log('build :: [', pgn, ']');
             this.buildAndParsePGN(this.data, pgn);
         }
         this.index = this.data;
         console.log('--------');
         // console.log('pgn', pgnArray);
-        // console.log('data', this.data);
+        console.log('data', this.data);
         // console.log('index', this.index);
         console.log(this.getJSONTree(this.data, 1));
     }
     private buildAndParsePGN(root: Branch, pgn: string): Branch {
         // console.log('called with ', pgn);
+        // console.log('root', root);
         const game = new Game(root.fen);
         const positionHistArray = [root.fen];
+        let lastNode = null;
         let currNode = root;
         let i = 0;
         while (i <= pgn.length) {
@@ -63,8 +66,8 @@ export class Study {
                             if (count === 1) {
                                 // )
                                 this.buildAndParsePGN(
-                                    currNode,
-                                    pgn.substr(i + 1, k - i)
+                                    lastNode,
+                                    pgn.substr(i + 1, k - i - 1)
                                 );
                                 break;
                             } else {
@@ -130,28 +133,14 @@ export class Study {
                     nextNode.definingMove
                 );
                 // -1 identifies it not existing in index
+                // console.log('added', nextNode);
+                lastNode = currNode;
                 if (alreadyMappedIndex === -1) {
-                    // console.log('added', nextNode);
                     currNode.options.push(nextNode);
                     currNode = currNode.options[currNode.options.length - 1];
                 } else {
-                    // console.log('added', nextNode);
                     currNode = currNode.options[alreadyMappedIndex];
                 }
-                // if (currNode === null) {
-                //     currNode = nextNode;
-                //     // if (root === null) {
-                //     //     root = currNode;
-                //     // }
-                // } else {
-                //     // if move doesn't exist already
-                //     if (currNode.options.length !== 0) {
-                //         // traverse if necessary
-                //         currNode = currNode.options[0];
-                //     }
-                //     // add as move
-                //     currNode.options.push(nextNode);
-                // }
                 i = j + 1;
             }
         }
