@@ -6,7 +6,7 @@ labels: 'enhancement'
 assignees: ''
 ---
 
-**Is your enhancement request related to a problem? Please describe.**
+**Problem / Catalyst**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
 **Describe the enhancement you'd like**
