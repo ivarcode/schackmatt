@@ -6,7 +6,7 @@ labels: 'feature'
 assignees: ''
 ---
 
-**Is your feature request related to a problem? Please describe.**
+**Problem / Catalyst**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
 **Describe the solution you'd like**
