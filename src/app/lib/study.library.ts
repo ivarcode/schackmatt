@@ -2,8 +2,8 @@ import { Game } from './game.library';
 import { Branch } from './interface.library';
 
 export class Study {
-    data: Branch;
-    index: Branch;
+    private data: Branch;
+    private index: Branch;
     constructor(pgnArray: string[]) {
         this.data = {
             definingMove: null,
@@ -169,6 +169,8 @@ export class Study {
         for (const i of this.index.options) {
             if (i.definingMove === move) {
                 this.index = i;
+                // console.log('traversed');
+                this.printOptionsFromBranch(this.getIndex());
                 return true;
             }
         }
@@ -198,6 +200,18 @@ export class Study {
             s += this.getJSONTree(opt, spaces + 1);
         }
         return s;
+    }
+
+    private printOptionsFromBranch(branch: Branch): void {
+        let s = 'options after ' + branch.definingMove + ' :: ';
+        for (const o of branch.options) {
+            s += o.definingMove + ' ';
+        }
+        console.log(s);
+    }
+
+    public getIndex(): Branch {
+        return this.index;
     }
 
     // TODO return stems with no explanation

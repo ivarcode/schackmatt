@@ -11,6 +11,7 @@
         (navigationDataEmitter)="navigationDataEvent($event)"
     ></app-game-details-table>
     <div
+        ng-show="getNotificationVisibility()"
         id="opening-training-alert"
         class="alert {{ getAlertType() }} opening-trainer-style-alert"
         role="alert"

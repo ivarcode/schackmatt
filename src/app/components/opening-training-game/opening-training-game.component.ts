@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/app/lib/game.library';
 import { Study } from 'src/app/lib/study.library';
-import { GameEvent } from 'src/app/lib/interface.library';
+import { GameEvent, Branch } from 'src/app/lib/interface.library';
 import { Openings } from 'src/app/data/openings';
+import { notEqual } from 'assert';
 
 @Component({
     selector: 'app-opening-training-game',
@@ -17,18 +18,19 @@ export class OpeningTrainingGameComponent implements OnInit {
     private choiceHeadingMessage: string;
     private choiceQuote: string;
     private choiceAuthor: string;
+    private notificationVisibility: boolean;
 
     constructor() {
         this.game = new Game();
-    }
-    ngOnInit() {
         // TODO pass in opening as OBJECT
         this.opening = new Study(Openings.openings[0].pgnData);
         this.alertType = 'alert-warning';
         this.choiceHeadingMessage = 'no message';
         this.choiceAuthor = '';
         this.choiceQuote = '';
+        this.notificationVisibility = true;
     }
+    ngOnInit() {}
     public navigationDataEvent(event: string): void {
         console.log('nav emit', event);
         if (event === 'forward' || event === 'back') {
@@ -41,13 +43,19 @@ export class OpeningTrainingGameComponent implements OnInit {
             this.quoteSelector();
             if (!this.opening.traverseIndex(event.content)) {
                 // throw Error('your move was not very good');
-                this.showFailureNotification();
+                this.showNotification(
+                    'alert-failure',
+                    this.opening.getIndex().explanation
+                );
                 setTimeout(() => {
                     this.game.undoLastMove();
                     this.triggerGameInterfaceCommand('displayMoveIndex--');
                 }, 1000);
             } else {
-                this.showSuccessNotification();
+                this.showNotification(
+                    'alert-success',
+                    this.opening.getIndex().explanation
+                );
                 // 1 second timeout
                 setTimeout(() => {
                     const randMove = this.opening.selectAndTraverseRandomMove();
@@ -59,6 +67,7 @@ export class OpeningTrainingGameComponent implements OnInit {
             }
         }
     }
+
     private triggerGameInterfaceCommand(command: string): void {
         this.gameInterfaceCommand = command;
         // using setTimeout because it appears that a slight delay before reset
@@ -68,14 +77,27 @@ export class OpeningTrainingGameComponent implements OnInit {
         }, 10);
     }
 
-    private showSuccessNotification(): void {
-        this.alertType = 'alert-success';
-        this.choiceHeadingMessage = 'Well done!';
+    private showNotification(result: string, explanation?: string): void {
+        this.alertType = result;
+        switch (this.alertType) {
+            case 'alert-success':
+                this.choiceHeadingMessage = 'Well done!';
+                break;
+            case 'alert-danger':
+                this.choiceHeadingMessage = 'Wrong Move!';
+                break;
+            default:
+                this.choiceHeadingMessage = 'unknown value';
+        }
+        if (explanation) {
+            this.choiceQuote = explanation;
+            this.choiceAuthor = null;
+            this.notificationVisibility = true;
+        }
     }
 
-    private showFailureNotification(): void {
-        this.alertType = 'alert-danger';
-        this.choiceHeadingMessage = 'Wrong Move!';
+    public getNotificationVisibility(): boolean {
+        return this.notificationVisibility;
     }
 
     private quoteSelector(): void {

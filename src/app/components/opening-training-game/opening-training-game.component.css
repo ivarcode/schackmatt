@@ -7,8 +7,8 @@
     display: none;
 }
 .opening-trainer-style-alert {
-    height: 275px;
-    width: 225px;
+    max-height: 275px;
+    width: 400px;
     margin-top: 440px;
     left: -225px;
     border-radius: 15px;
