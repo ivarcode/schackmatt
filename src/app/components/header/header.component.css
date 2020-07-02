@@ -1,21 +1,44 @@
 .navbar-brand {
     font-size: 25px;
     margin-left: 10px;
-    margin-right: 10px;
+    margin-right: 30px;
+    color: white;
 }
 .nav-link {
     font-size: 20px;
 }
 .button {
     transition-duration: 0.4s;
-    background-color: rgb(35, 35, 78);
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
-        0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    /* slate grey w light grey scheme code */
+    /* background-color: #33363b;
+    text-decoration-color: white; */
+
+    /* Possible Dark theme */
+    background-color: #3b3b3b;
     text-decoration-color: white;
+
+    /* Dark grey nav Lighter gray background Orange accent */
+    /* background-color: #2b2b2b; */
 }
 .button:hover {
-    background-color: rgb(67, 67, 116);
-    color: rgb(67, 67, 116);
-    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-        0 17px 50px 0 rgba(0, 0, 0, 0.19);
+    /* slate grey w light grey scheme code */
+    /* background-color: #5c626b; */
+
+    /* Possible Dark theme */
+    background-color: #686868;
+
+    /* Dark grey nav Lighter gray background Orange accent */
+    /* background-color: #e96b04; */
+}
+
+nav {
+    height: 50px;
+    /* slate grey w light grey scheme code */
+    /* background-color: #33363b; */
+
+    /* Possible Dark theme */
+    background-color: #3b3b3b;
+
+    /* Dark grey nav Lighter gray background Orange accent */
+    /* background-color: #2b2b2b; */
 }
