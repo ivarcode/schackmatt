@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/app/lib/game.library';
 import { Study } from 'src/app/lib/study.library';
-import { GameEvent, Branch } from 'src/app/lib/interface.library';
+import { GameEvent } from 'src/app/lib/interface.library';
 import { Openings } from 'src/app/data/openings';
-import { notEqual } from 'assert';
 
 @Component({
     selector: 'app-opening-training-game',
