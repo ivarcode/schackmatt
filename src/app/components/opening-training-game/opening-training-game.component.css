@@ -16,3 +16,12 @@
 .quote-font-size {
     font-size: 15px;
 }
+
+#board-overlay {
+    position: fixed;
+    margin: 20px;
+}
+
+#standard-game-container {
+    margin-left: 20px;
+}
