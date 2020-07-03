@@ -18,6 +18,7 @@ import { BookComponent } from './components/studies/book/book.component';
 import { ChapterComponent } from './components/studies/chapter/chapter.component';
 import { OpeningTrainingGameComponent } from './components/opening-training-game/opening-training-game.component';
 import { PageComponent } from './components/studies/page/page.component';
+import { AboutComponent } from './components/about/about.component';
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import { PageComponent } from './components/studies/page/page.component';
         BookComponent,
         ChapterComponent,
         OpeningTrainingGameComponent,
-        PageComponent
+        PageComponent,
+        AboutComponent
     ],
     imports: [BrowserModule, AppRoutingModule, FormsModule],
     providers: [],

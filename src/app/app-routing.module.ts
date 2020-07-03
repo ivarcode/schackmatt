@@ -9,6 +9,7 @@ import { BookComponent } from './components/studies/book/book.component';
 import { ChapterComponent } from './components/studies/chapter/chapter.component';
 import { OpeningTrainingGameComponent } from './components/opening-training-game/opening-training-game.component';
 import { PageComponent } from './components/studies/page/page.component';
+import { AboutComponent } from './components/about/about.component';
 
 const routes: Routes = [
     {
@@ -46,6 +47,10 @@ const routes: Routes = [
     {
         component: PageComponent,
         path: 'page'
+    },
+    {
+        component: AboutComponent,
+        path: 'about'
     },
     {
         redirectTo: 'game',
