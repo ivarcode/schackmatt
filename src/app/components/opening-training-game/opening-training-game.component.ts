@@ -44,7 +44,7 @@ export class OpeningTrainingGameComponent implements OnInit {
             if (!this.opening.traverseIndex(event.content)) {
                 // throw Error('your move was not very good');
                 this.showNotification(
-                    'alert-failure',
+                    'alert-danger',
                     this.opening.getIndex().explanation
                 );
                 setTimeout(() => {
@@ -84,11 +84,12 @@ export class OpeningTrainingGameComponent implements OnInit {
                 this.choiceHeadingMessage = 'Well done!';
                 break;
             case 'alert-danger':
-                this.choiceHeadingMessage = 'Wrong Move!';
+                this.choiceHeadingMessage = 'Wrong move!';
                 break;
             default:
                 this.choiceHeadingMessage = 'unknown value';
         }
+        this.notificationVisibility = false;
         if (explanation) {
             this.choiceQuote = explanation;
             this.choiceAuthor = null;
@@ -111,9 +112,11 @@ export class OpeningTrainingGameComponent implements OnInit {
         this.choiceQuote = quote.str;
         this.choiceAuthor = quote.by;
     }
-
     public getGame(): Game {
         return this.game;
+    }
+    public getOpening(): Study {
+        return this.opening;
     }
     public getGameInterfaceCommand(): string {
         return this.gameInterfaceCommand;

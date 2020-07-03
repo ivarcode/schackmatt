@@ -170,7 +170,7 @@ export class Study {
             if (i.definingMove === move) {
                 this.index = i;
                 // console.log('traversed');
-                this.printOptionsFromBranch(this.getIndex());
+                console.log(this.getOptionsFromBranch(this.getIndex()));
                 return true;
             }
         }
@@ -202,12 +202,12 @@ export class Study {
         return s;
     }
 
-    private printOptionsFromBranch(branch: Branch): void {
-        let s = 'options after ' + branch.definingMove + ' :: ';
+    public getOptionsFromBranch(branch: Branch): string {
+        let s = 'after ' + branch.definingMove + ' options :: ';
         for (const o of branch.options) {
             s += o.definingMove + ' ';
         }
-        console.log(s);
+        return s;
     }
 
     public getIndex(): Branch {
