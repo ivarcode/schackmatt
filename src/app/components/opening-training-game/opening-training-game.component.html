@@ -5,6 +5,7 @@
         [interfaceCommand]="getGameInterfaceCommand()"
         (gameDataEmitter)="gameDataEvent($event)"
     ></app-game>
+    <app-board-overlay id="board-overlay"></app-board-overlay>
     <app-game-details-table
         id="game-details"
         [pgn]="getGame().getPGN()"
