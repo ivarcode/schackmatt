@@ -17,6 +17,14 @@
                 <p class="card-text">
                     {{ boardOverlayData.detailedMessage }}
                 </p>
+                <div
+                    *ngIf="boardOverlayData.displayButtons"
+                    class="row justify-content-center"
+                >
+                    <a (click)="emit('retry opening')" class="btn btn-primary"
+                        >Try another line!
+                    </a>
+                </div>
             </div>
         </div>
     </div>

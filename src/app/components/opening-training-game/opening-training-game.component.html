@@ -3,6 +3,7 @@
         id="board-overlay"
         *ngIf="getShowBoardOverlay()"
         [boardOverlayData]="getBoardOverlayData()"
+        (boardOverlayEmitter)="boardOverlayEvent($event)"
     ></app-board-overlay>
     <app-game
         id="game"
