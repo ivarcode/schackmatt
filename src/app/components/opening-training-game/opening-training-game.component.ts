@@ -48,6 +48,7 @@ export class OpeningTrainingGameComponent implements OnInit {
         };
     }
     ngOnInit() {
+        // this timeout solution is probably not correct...
         setTimeout(() => {
             // TODO pass in opening as OBJECT
             this.opening = new Study(Openings.openings[0].pgnData);

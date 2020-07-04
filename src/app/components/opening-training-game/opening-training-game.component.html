@@ -33,7 +33,11 @@
     </div>
 </div>
 <div id="developer-output">
-    <!-- <p *ngIf="getOpening()">
-        {{ getOpening().getOptionsFromBranch(getOpening().getIndex()) }}
-    </p> -->
+    <p>
+        {{
+            getOpening()
+                ? getOpening().getOptionsFromBranch(getOpening().getIndex())
+                : null
+        }}
+    </p>
 </div>
