@@ -2,8 +2,7 @@
     <app-board-overlay
         id="board-overlay"
         *ngIf="getShowBoardOverlay()"
-        [title]="getBoardOverlayData().title"
-        [displayLoadingMessage]="getBoardOverlayData().displayLoadingMessage"
+        [boardOverlayData]="getBoardOverlayData()"
     ></app-board-overlay>
     <app-game
         id="game"
