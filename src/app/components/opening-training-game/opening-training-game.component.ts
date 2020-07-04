@@ -1,15 +1,8 @@
-import {
-    Component,
-    OnInit,
-    AfterViewInit,
-    AfterContentInit,
-    AfterContentChecked
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/app/lib/game.library';
 import { Study } from 'src/app/lib/study.library';
 import { GameEvent } from 'src/app/lib/interface.library';
 import { Openings } from 'src/app/data/openings';
-import { of, Observable } from 'rxjs';
 
 @Component({
     selector: 'app-opening-training-game',
@@ -30,6 +23,7 @@ export class OpeningTrainingGameComponent implements OnInit {
         title: string;
         displayLoadingMessage: boolean;
         detailedMessage: string;
+        displayButtons: boolean;
     };
 
     constructor() {
@@ -44,14 +38,15 @@ export class OpeningTrainingGameComponent implements OnInit {
         this.boardOverlayData = {
             title: null,
             displayLoadingMessage: true,
-            detailedMessage: 'Please wait.'
+            detailedMessage: 'Please wait.',
+            displayButtons: false
         };
     }
     ngOnInit() {
         // this timeout solution is probably not correct...
         setTimeout(() => {
             // TODO pass in opening as OBJECT
-            this.opening = new Study(Openings.openings[0].pgnData);
+            this.opening = new Study(Openings.openings[1].pgnData);
             this.showBoardOverlay = false;
         }, 200);
     }
@@ -60,6 +55,11 @@ export class OpeningTrainingGameComponent implements OnInit {
         if (event === 'forward' || event === 'back') {
             this.triggerGameInterfaceCommand(event);
         }
+    }
+    public boardOverlayEvent(event: string): void {
+        console.log('board overlay event', event);
+        this.showBoardOverlay = false;
+        // this.opening.setIndex()
     }
     public gameDataEvent(event: GameEvent): void {
         console.log('game emit', event);
@@ -106,7 +106,8 @@ export class OpeningTrainingGameComponent implements OnInit {
             this.boardOverlayData = {
                 title: 'You have completed the line!',
                 displayLoadingMessage: false,
-                detailedMessage: null
+                detailedMessage: null,
+                displayButtons: true
             };
             this.showBoardOverlay = true;
             return true;

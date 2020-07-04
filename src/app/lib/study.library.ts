@@ -4,6 +4,8 @@ import { Branch } from './interface.library';
 export class Study {
     private data: Branch;
     private index: Branch;
+    private rootOfOpening: Branch;
+
     constructor(pgnArray: string[]) {
         this.data = {
             definingMove: null,
@@ -208,6 +210,10 @@ export class Study {
             s += o.definingMove + ' ';
         }
         return s;
+    }
+
+    public setIndex(branch: Branch): void {
+        this.index = branch;
     }
 
     public getIndex(): Branch {

@@ -12,3 +12,8 @@
     float: inline-start;
     margin-right: 10px;
 }
+
+.card .btn-primary {
+    color: white;
+    width: fit-content;
+}
