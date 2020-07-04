@@ -21,7 +21,7 @@ export class Study {
         // console.log('pgn', pgnArray);
         console.log('data', this.data);
         // console.log('index', this.index);
-        console.log(this.getJSONTree(this.data, 1));
+        // console.log(this.getJSONTree(this.data, 1));
     }
     private buildAndParsePGN(root: Branch, pgn: string): Branch {
         // console.log('called with ', pgn);

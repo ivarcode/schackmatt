@@ -1,15 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    AfterViewInit,
+    AfterContentInit,
+    AfterContentChecked
+} from '@angular/core';
 import { Game } from 'src/app/lib/game.library';
 import { Study } from 'src/app/lib/study.library';
 import { GameEvent } from 'src/app/lib/interface.library';
 import { Openings } from 'src/app/data/openings';
+import { of, Observable } from 'rxjs';
 
 @Component({
     selector: 'app-opening-training-game',
     templateUrl: './opening-training-game.component.html',
     styleUrls: ['./opening-training-game.component.css']
 })
-export class OpeningTrainingGameComponent implements OnInit {
+export class OpeningTrainingGameComponent implements OnInit, AfterViewInit {
     private game: Game;
     private opening: Study;
     private gameInterfaceCommand: string;
@@ -19,19 +26,33 @@ export class OpeningTrainingGameComponent implements OnInit {
     private choiceAuthor: string;
     private notificationVisibility: boolean;
     private showBoardOverlay: boolean;
+    private boardOverlayData: {
+        title: string;
+        displayLoadingMessage: boolean;
+    };
 
     constructor() {
         this.game = new Game();
-        // TODO pass in opening as OBJECT
-        this.opening = new Study(Openings.openings[0].pgnData);
+        this.opening = null;
         this.alertType = 'alert-warning';
         this.choiceHeadingMessage = 'no message';
         this.choiceAuthor = '';
         this.choiceQuote = '';
         this.notificationVisibility = false;
-        this.showBoardOverlay = false;
+        this.showBoardOverlay = true;
+        this.boardOverlayData = {
+            title: null,
+            displayLoadingMessage: true
+        };
     }
     ngOnInit() {}
+    ngAfterViewInit() {
+        console.log('aftrer');
+        // TODO pass in opening as OBJECT
+        this.opening = new Study(Openings.openings[0].pgnData);
+        console.log('after that');
+        // this.showBoardOverlay = false;
+    }
     public navigationDataEvent(event: string): void {
         console.log('nav emit', event);
         if (event === 'forward' || event === 'back') {
@@ -57,6 +78,9 @@ export class OpeningTrainingGameComponent implements OnInit {
                     'alert-success',
                     this.opening.getIndex().explanation
                 );
+                if (this.isLineIsOver()) {
+                    return;
+                }
                 // 1 second timeout
                 setTimeout(() => {
                     const randMove = this.opening.selectAndTraverseRandomMove();
@@ -65,8 +89,26 @@ export class OpeningTrainingGameComponent implements OnInit {
                     }
                     this.triggerGameInterfaceCommand('redraw board');
                 }, 1000);
+                if (this.isLineIsOver()) {
+                    return;
+                }
             }
         }
+    }
+
+    // sets boardOverlayData and returns true if line is over
+    private isLineIsOver(): boolean {
+        if (this.opening.getIndex().options.length === 0) {
+            // the line is over!
+            console.log('completed the line');
+            this.boardOverlayData = {
+                title: 'You have completed the line!',
+                displayLoadingMessage: false
+            };
+            this.showBoardOverlay = true;
+            return true;
+        }
+        return false;
     }
 
     private triggerGameInterfaceCommand(command: string): void {
@@ -80,6 +122,7 @@ export class OpeningTrainingGameComponent implements OnInit {
 
     private showNotification(result: string, explanation?: string): void {
         this.alertType = result;
+        this.notificationVisibility = true;
         switch (this.alertType) {
             case 'alert-success':
                 this.choiceHeadingMessage = 'Well done!';
@@ -89,12 +132,14 @@ export class OpeningTrainingGameComponent implements OnInit {
                 break;
             default:
                 this.choiceHeadingMessage = 'unknown value';
+                this.notificationVisibility = false;
         }
-        this.notificationVisibility = false;
         if (explanation) {
             this.choiceQuote = explanation;
             this.choiceAuthor = null;
-            this.notificationVisibility = true;
+        } else {
+            this.choiceQuote = null;
+            this.choiceAuthor = null;
         }
     }
 
@@ -103,6 +148,12 @@ export class OpeningTrainingGameComponent implements OnInit {
     }
     public getShowBoardOverlay(): boolean {
         return this.showBoardOverlay;
+    }
+    public getBoardOverlayData(): {
+        title: string;
+        displayLoadingMessage: boolean;
+    } {
+        return this.boardOverlayData;
     }
 
     private quoteSelector(): void {

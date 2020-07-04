@@ -1,7 +1,9 @@
 <div id="standard-game-container" class="row">
     <app-board-overlay
-        *ngIf="getShowBoardOverlay()"
         id="board-overlay"
+        *ngIf="getShowBoardOverlay()"
+        [title]="getBoardOverlayData().title"
+        [displayLoadingMessage]="getBoardOverlayData().displayLoadingMessage"
     ></app-board-overlay>
     <app-game
         id="game"
@@ -24,13 +26,15 @@
         <p>
             Keep working hard
         </p>
-        <hr />
-        <blockquote class="blockquote">
+        <hr *ngIf="getChoiceQuote()" />
+        <blockquote *ngIf="getChoiceQuote()" class="blockquote">
             <p class="mb-0 quote-font-size">{{ getChoiceQuote() }}</p>
             <footer class="blockquote-footer">{{ getChoiceAuthor() }}</footer>
         </blockquote>
     </div>
 </div>
 <div id="developer-output">
-    <p>{{ getOpening().getOptionsFromBranch(getOpening().getIndex()) }}</p>
+    <!-- <p *ngIf="getOpening()">
+        {{ getOpening().getOptionsFromBranch(getOpening().getIndex()) }}
+    </p> -->
 </div>
