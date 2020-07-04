@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'app-board-overlay',
@@ -6,8 +6,9 @@ import { Component } from '@angular/core';
     styleUrls: ['./board-overlay.component.css']
 })
 export class BoardOverlayComponent {
-    private title: string;
-    private displayLoadingMessage: boolean;
+    @Input() displayLoadingMessage: boolean;
+    @Input() title: string;
+
     constructor() {
         this.displayLoadingMessage = false;
     }
@@ -15,4 +16,7 @@ export class BoardOverlayComponent {
     public getDisplayLoadingMessage(): boolean {
         return this.displayLoadingMessage;
     }
+    // public getTitle(): string {
+    //     return this.title;
+    // }
 }
