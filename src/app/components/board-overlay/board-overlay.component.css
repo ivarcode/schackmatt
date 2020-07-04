@@ -3,3 +3,12 @@
     width: 640px;
     background: rgba(0, 0, 0, 0.3);
 }
+
+#popup-window .card {
+    padding: 10px;
+}
+
+.spinner-border {
+    float: inline-start;
+    margin-right: 10px;
+}

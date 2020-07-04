@@ -18,6 +18,7 @@ export class OpeningTrainingGameComponent implements OnInit {
     private choiceQuote: string;
     private choiceAuthor: string;
     private notificationVisibility: boolean;
+    private showBoardOverlay: boolean;
 
     constructor() {
         this.game = new Game();
@@ -27,7 +28,8 @@ export class OpeningTrainingGameComponent implements OnInit {
         this.choiceHeadingMessage = 'no message';
         this.choiceAuthor = '';
         this.choiceQuote = '';
-        this.notificationVisibility = true;
+        this.notificationVisibility = false;
+        this.showBoardOverlay = false;
     }
     ngOnInit() {}
     public navigationDataEvent(event: string): void {
@@ -98,6 +100,9 @@ export class OpeningTrainingGameComponent implements OnInit {
 
     public getNotificationVisibility(): boolean {
         return this.notificationVisibility;
+    }
+    public getShowBoardOverlay(): boolean {
+        return this.showBoardOverlay;
     }
 
     private quoteSelector(): void {

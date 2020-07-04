@@ -1,5 +1,8 @@
 <div id="standard-game-container" class="row">
-    <app-board-overlay id="board-overlay"></app-board-overlay>
+    <app-board-overlay
+        *ngIf="getShowBoardOverlay()"
+        id="board-overlay"
+    ></app-board-overlay>
     <app-game
         id="game"
         [game]="getGame()"
@@ -12,7 +15,7 @@
         (navigationDataEmitter)="navigationDataEvent($event)"
     ></app-game-details-table>
     <div
-        ng-show="getNotificationVisibility()"
+        *ngIf="getNotificationVisibility()"
         id="opening-training-alert"
         class="alert {{ getAlertType() }} opening-trainer-style-alert"
         role="alert"
