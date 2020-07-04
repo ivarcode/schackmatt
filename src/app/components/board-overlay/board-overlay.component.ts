@@ -6,17 +6,11 @@ import { Component, Input } from '@angular/core';
     styleUrls: ['./board-overlay.component.css']
 })
 export class BoardOverlayComponent {
-    @Input() displayLoadingMessage: boolean;
-    @Input() title: string;
+    @Input() boardOverlayData: {
+        title: string;
+        displayLoadingMessage: boolean;
+        detailedMessage: string;
+    };
 
-    constructor() {
-        this.displayLoadingMessage = false;
-    }
-
-    public getDisplayLoadingMessage(): boolean {
-        return this.displayLoadingMessage;
-    }
-    // public getTitle(): string {
-    //     return this.title;
-    // }
+    constructor() {}
 }

@@ -2,9 +2,9 @@
     <div class="row justify-content-center">
         <div id="popup-window" class="col-sm-6" style="margin-top: 200px;">
             <div class="card text-center">
-                <h5 class="card-title">{{ title }}</h5>
+                <h5 class="card-title">{{ boardOverlayData.title }}</h5>
                 <div
-                    *ngIf="getDisplayLoadingMessage()"
+                    *ngIf="boardOverlayData.displayLoadingMessage"
                     class="row justify-content-center"
                 >
                     <div class="spinner-border text-primary" role="status">
@@ -15,8 +15,7 @@
                     <h4>Loading...</h4>
                 </div>
                 <p class="card-text">
-                    With supporting text below as a natural lead-in to
-                    additional content.
+                    {{ boardOverlayData.detailedMessage }}
                 </p>
             </div>
         </div>

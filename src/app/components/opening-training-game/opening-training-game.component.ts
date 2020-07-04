@@ -16,7 +16,7 @@ import { of, Observable } from 'rxjs';
     templateUrl: './opening-training-game.component.html',
     styleUrls: ['./opening-training-game.component.css']
 })
-export class OpeningTrainingGameComponent implements OnInit, AfterViewInit {
+export class OpeningTrainingGameComponent implements OnInit {
     private game: Game;
     private opening: Study;
     private gameInterfaceCommand: string;
@@ -29,6 +29,7 @@ export class OpeningTrainingGameComponent implements OnInit, AfterViewInit {
     private boardOverlayData: {
         title: string;
         displayLoadingMessage: boolean;
+        detailedMessage: string;
     };
 
     constructor() {
@@ -42,16 +43,16 @@ export class OpeningTrainingGameComponent implements OnInit, AfterViewInit {
         this.showBoardOverlay = true;
         this.boardOverlayData = {
             title: null,
-            displayLoadingMessage: true
+            displayLoadingMessage: true,
+            detailedMessage: 'Please wait.'
         };
     }
-    ngOnInit() {}
-    ngAfterViewInit() {
-        console.log('aftrer');
-        // TODO pass in opening as OBJECT
-        this.opening = new Study(Openings.openings[0].pgnData);
-        console.log('after that');
-        // this.showBoardOverlay = false;
+    ngOnInit() {
+        setTimeout(() => {
+            // TODO pass in opening as OBJECT
+            this.opening = new Study(Openings.openings[0].pgnData);
+            this.showBoardOverlay = false;
+        }, 200);
     }
     public navigationDataEvent(event: string): void {
         console.log('nav emit', event);
@@ -103,7 +104,8 @@ export class OpeningTrainingGameComponent implements OnInit, AfterViewInit {
             console.log('completed the line');
             this.boardOverlayData = {
                 title: 'You have completed the line!',
-                displayLoadingMessage: false
+                displayLoadingMessage: false,
+                detailedMessage: null
             };
             this.showBoardOverlay = true;
             return true;
