@@ -7,5 +7,12 @@ import { Component } from '@angular/core';
 })
 export class BoardOverlayComponent {
     private title: string;
-    constructor() {}
+    private displayLoadingMessage: boolean;
+    constructor() {
+        this.displayLoadingMessage = false;
+    }
+
+    public getDisplayLoadingMessage(): boolean {
+        return this.displayLoadingMessage;
+    }
 }
