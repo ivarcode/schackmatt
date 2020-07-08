@@ -1,15 +1,15 @@
-.staff-photo {
+/* .staff-photo {
     object-fit: cover;
     max-height: 60%;
-}
+} */
 body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
 }
 
 .card {
-    width: 400px;
-    height: 650px;
+    /* width: 400px;
+    height: 650px; */
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     margin: 8px;
 }
@@ -21,24 +21,28 @@ body {
     color: white;
 }
 
-.container {
+.card div {
     padding: 0 16px;
+}
+.card img {
+    /* height: auto; */
+    width: auto;
 }
 
 .title {
     color: grey;
 }
 
-.card .img-top {
+/* .card .img-top {
     display: none;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 99;
-}
-.card:hover .img-top {
+} */
+/* .card:hover .img-top {
     width: 397.5px;
     height: 388.5px;
     object-fit: cover;
     display: inherit;
-}
+} */
