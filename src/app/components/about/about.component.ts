@@ -12,6 +12,7 @@ export class AboutComponent {
         bio: string;
         discord: string;
         url: string;
+        goofyUrl: string;
     }[];
     constructor() {
         this.staffMembers = [
@@ -20,21 +21,24 @@ export class AboutComponent {
                 title: 'Head Developer',
                 bio: 'chess player',
                 discord: 'ivarcode',
-                url: '../../../assets/Cam.png'
+                url: '../../../assets/Cam.png',
+                goofyUrl: '../../../assets/Cam.png'
             },
             {
                 name: 'Nick Groh',
                 title: 'Head of Marketing',
                 bio: 'chess player',
                 discord: 'Ragchess',
-                url: '../../../assets/Nick.png'
+                url: '../../../assets/Nick.png',
+                goofyUrl: '../../../assets/Nick_goofy.png'
             },
             {
                 name: 'Nicolas Holmgren',
                 title: 'Junior Developer',
                 bio: 'chess player',
                 discord: 'Enrico',
-                url: '../../../assets/Nick.png'
+                url: '../../../assets/Nick.png',
+                goofyUrl: '../../../assets/Nick.png'
             }
         ];
     }
