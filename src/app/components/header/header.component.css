@@ -18,17 +18,17 @@
     text-decoration-color: white;
 
     /* Dark grey nav Lighter gray background Orange accent */
-    /* background-color: #2b2b2b; */
+    background-color: #2b2b2b;
 }
 .button:hover {
     /* slate grey w light grey scheme code */
     /* background-color: #5c626b; */
 
     /* Possible Dark theme */
-    background-color: #686868;
+    /* background-color: #686868; */
 
     /* Dark grey nav Lighter gray background Orange accent */
-    /* background-color: #e96b04; */
+    background-color: #e96b04;
 }
 
 nav {
@@ -37,8 +37,8 @@ nav {
     /* background-color: #33363b; */
 
     /* Possible Dark theme */
-    background-color: #3b3b3b;
+    /* background-color: #3b3b3b; */
 
     /* Dark grey nav Lighter gray background Orange accent */
-    /* background-color: #2b2b2b; */
+    background-color: #2b2b2b;
 }
