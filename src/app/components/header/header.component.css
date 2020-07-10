@@ -10,15 +10,15 @@
 .button {
     transition-duration: 0.4s;
     /* slate grey w light grey scheme code */
-    /* background-color: #33363b;
-    text-decoration-color: white; */
+    background-color: #33363b;
 
     /* Possible Dark theme */
-    background-color: #3b3b3b;
-    text-decoration-color: white;
+    /* background-color: #3b3b3b; */
 
     /* Dark grey nav Lighter gray background Orange accent */
-    background-color: #2b2b2b;
+    /* background-color: #2b2b2b; */
+
+    text-decoration-color: white;
 }
 .button:hover {
     /* slate grey w light grey scheme code */
@@ -34,11 +34,11 @@
 nav {
     height: 50px;
     /* slate grey w light grey scheme code */
-    /* background-color: #33363b; */
+    background-color: #33363b;
 
     /* Possible Dark theme */
     /* background-color: #3b3b3b; */
 
     /* Dark grey nav Lighter gray background Orange accent */
-    background-color: #2b2b2b;
+    /* background-color: #2b2b2b; */
 }

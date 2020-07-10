@@ -3,7 +3,7 @@ app-footer {
     bottom: 0;
     right: 0;
     /* slate grey w light grey scheme code */
-    /* background-color: #e6e6e6; */
+    background-color: #e6e6e6;
 
     /* Possible Dark theme looks a little wierd becuase we have no content on the home page
         The lighter grey would be used on areas that would have a higher elevation than the background such as remodeling 
@@ -11,16 +11,16 @@ app-footer {
     /* background-color: #222427; */
 
     /* Dark grey nav Lighter gray background Orange accent */
-    background-color: #3f3f3f;
+    /* background-color: #3f3f3f; */
     width: 100%;
 }
 #router {
     /* slate grey w light grey scheme code */
-    /* background-color: #e6e6e6; */
+    background-color: #e6e6e6;
 
     /* Possible Dark theme */
     /* background-color: #222427; */
 
     /* Dark grey nav Lighter gray background Orange accent */
-    background-color: #3f3f3f;
+    /* background-color: #3f3f3f; */
 }
