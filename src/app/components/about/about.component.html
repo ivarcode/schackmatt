@@ -12,46 +12,15 @@
 <h2 class="ourTeamStyling" style="text-align: center;">Our Team</h2>
 <div class="container">
     <div class="row">
-        <div class="col-7">
+        <div *ngFor="let staff of staffMembers" class="col-sm-4">
             <div class="card">
-                <img class="staff-photo" src="../../../assets/Cam.png" />
-                <div class="container">
-                    <h2>Camden Wagner</h2>
-                    <p class="title">Head Developer</p>
-                    <p>Coder and mediocre chess player</p>
-                    <p>Discord Handle: Ivarcode</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-5">
-            <div class="card">
-                <img
-                    class="staff-photo img-bottom"
-                    src="../../../assets/Nick.png"
-                />
-                <img
-                    class="img-top staff-photo"
-                    src="../../../assets/Nick_goofy.png"
-                />
-                <div class="container text-display">
-                    <h2>Nick Groh</h2>
-                    <p class="title">Head Developer</p>
-                    <p>I love marketing</p>
-                    <p>Discord Handle: Ragchess</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-7">
-            <div class="card">
-                <img class="staff-photo" src="../../../assets/Nick.png" />
-                <div class="container">
-                    <h2>Nicolas Holmgren</h2>
-                    <p class="title">Junior Developer</p>
-                    <p>
-                        I am a 20 yr old undergrad at connecicut college. I will
-                        add more to this later before beta release
-                    </p>
-                    <p>Discord Handle: Enrico</p>
+                <img src="{{ staff.url }}" />
+                <img class="img-top" src="{{ staff.goofyUrl }}" />
+                <div>
+                    <h2>{{ staff.name }}</h2>
+                    <p class="title">{{ staff.title }}</p>
+                    <p>{{ staff.bio }}</p>
+                    <p>Discord Handle: {{ staff.discord }}</p>
                 </div>
             </div>
         </div>
