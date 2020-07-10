@@ -19,6 +19,7 @@ import { ChapterComponent } from './components/studies/chapter/chapter.component
 import { OpeningTrainingGameComponent } from './components/opening-training-game/opening-training-game.component';
 import { PageComponent } from './components/studies/page/page.component';
 import { AboutComponent } from './components/about/about.component';
+import { BoardOverlayComponent } from './components/board-overlay/board-overlay.component';
 
 @NgModule({
     declarations: [
@@ -37,7 +38,8 @@ import { AboutComponent } from './components/about/about.component';
         ChapterComponent,
         OpeningTrainingGameComponent,
         PageComponent,
-        AboutComponent
+        AboutComponent,
+        BoardOverlayComponent
     ],
     imports: [BrowserModule, AppRoutingModule, FormsModule],
     providers: [],

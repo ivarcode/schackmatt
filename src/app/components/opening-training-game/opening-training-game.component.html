@@ -1,4 +1,10 @@
 <div id="standard-game-container" class="row">
+    <app-board-overlay
+        id="board-overlay"
+        *ngIf="getShowBoardOverlay()"
+        [boardOverlayData]="getBoardOverlayData()"
+        (boardOverlayEmitter)="boardOverlayEvent($event)"
+    ></app-board-overlay>
     <app-game
         id="game"
         [game]="getGame()"
@@ -11,6 +17,7 @@
         (navigationDataEmitter)="navigationDataEvent($event)"
     ></app-game-details-table>
     <div
+        *ngIf="getNotificationVisibility()"
         id="opening-training-alert"
         class="alert {{ getAlertType() }} opening-trainer-style-alert"
         role="alert"
@@ -19,10 +26,19 @@
         <p>
             Keep working hard
         </p>
-        <hr />
-        <blockquote class="blockquote">
+        <hr *ngIf="getChoiceQuote()" />
+        <blockquote *ngIf="getChoiceQuote()" class="blockquote">
             <p class="mb-0 quote-font-size">{{ getChoiceQuote() }}</p>
             <footer class="blockquote-footer">{{ getChoiceAuthor() }}</footer>
         </blockquote>
     </div>
+</div>
+<div id="developer-output">
+    <p>
+        {{
+            getOpening()
+                ? getOpening().getOptionsFromBranch(getOpening().getIndex())
+                : null
+        }}
+    </p>
 </div>
