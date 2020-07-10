@@ -1,0 +1,31 @@
+<div id="container">
+    <div class="row justify-content-center">
+        <div id="popup-window" class="col-sm-6" style="margin-top: 200px;">
+            <div class="card text-center">
+                <h5 class="card-title">{{ boardOverlayData.title }}</h5>
+                <div
+                    *ngIf="boardOverlayData.displayLoadingMessage"
+                    class="row justify-content-center"
+                >
+                    <div class="spinner-border text-primary" role="status">
+                        <!-- lol keep this -->
+                        <!-- <h5><span class="sr-only">Loading...</span>Loading...</h5> -->
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <h4>Loading...</h4>
+                </div>
+                <p class="card-text">
+                    {{ boardOverlayData.detailedMessage }}
+                </p>
+                <div
+                    *ngIf="boardOverlayData.displayButtons"
+                    class="row justify-content-center"
+                >
+                    <a (click)="emit('retry opening')" class="btn btn-primary"
+                        >Try another line!
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
