@@ -345,6 +345,7 @@ export class GameComponent implements OnInit, OnChanges {
                         this.setDisplayedMoveIndex(
                             Number.parseInt(value.substr(9), 10)
                         );
+                        this.drawBoard();
                         break;
                     }
                     throw new Error(
@@ -352,6 +353,7 @@ export class GameComponent implements OnInit, OnChanges {
                             changes.interfaceCommand.currentValue
                     );
             }
+            // TODO probably can draw board HERE instead?
         }
     }
 
