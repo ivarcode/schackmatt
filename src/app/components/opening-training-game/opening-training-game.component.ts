@@ -90,7 +90,7 @@ export class OpeningTrainingGameComponent implements OnInit {
                     if (randMove !== null) {
                         this.game.makeMove(randMove);
                     }
-                    this.triggerGameInterfaceCommand('redraw board');
+                    this.triggerGameInterfaceCommand('move made, redraw board');
                 }, 1000);
                 if (this.isLineIsOver()) {
                     return;
@@ -103,6 +103,8 @@ export class OpeningTrainingGameComponent implements OnInit {
      * TODO needs to be rewritten, it is redundant, bad logic. (but does work)
      */
     private traverseToDefiningMove(): void {
+        this.game.makeMove(this.opening.getIndex().options[0].definingMove);
+        let numberOfTraversals = 1;
         this.opening.setIndex(this.opening.getIndex().options[0]);
         console.log('this.opening.getIndex()', this.opening.getIndex());
         while (
@@ -118,12 +120,15 @@ export class OpeningTrainingGameComponent implements OnInit {
             if (expl && expl.substr(0, 16) === 'DEFINING MOVE ::') {
                 break;
             }
+            this.game.makeMove(this.opening.getIndex().options[0].definingMove);
+            numberOfTraversals++;
             this.opening.setIndex(
                 this.opening.getIndex().options.length !== 0
                     ? this.opening.getIndex().options[0]
                     : null
             );
         }
+        this.triggerGameInterfaceCommand('traverse ' + numberOfTraversals);
         console.log('this.opening.getIndex()', this.opening.getIndex());
     }
     // sets boardOverlayData and returns true if line is over
