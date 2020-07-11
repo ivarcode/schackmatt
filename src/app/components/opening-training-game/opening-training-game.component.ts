@@ -48,6 +48,7 @@ export class OpeningTrainingGameComponent implements OnInit {
             // TODO pass in opening as OBJECT
             this.opening = new Study(Openings.openings[1].pgnData);
             this.showBoardOverlay = false;
+            this.traverseToDefiningMove();
         }, 200);
     }
     public navigationDataEvent(event: string): void {
@@ -97,7 +98,34 @@ export class OpeningTrainingGameComponent implements OnInit {
             }
         }
     }
-
+    /**
+     * @description navigates to the move PRIOR to the opening defined move
+     * TODO needs to be rewritten, it is redundant, bad logic. (but does work)
+     */
+    private traverseToDefiningMove(): void {
+        this.opening.setIndex(this.opening.getIndex().options[0]);
+        console.log('this.opening.getIndex()', this.opening.getIndex());
+        while (
+            !this.opening.getIndex().explanation ||
+            this.opening.getIndex().explanation.substr(0, 16) !==
+                'DEFINING MOVE ::'
+        ) {
+            if (this.opening.getIndex().options.length === 0) {
+                throw new Error('no defining move in this tree');
+            }
+            const expl = this.opening.getIndex().options[0].explanation;
+            console.log(expl);
+            if (expl && expl.substr(0, 16) === 'DEFINING MOVE ::') {
+                break;
+            }
+            this.opening.setIndex(
+                this.opening.getIndex().options.length !== 0
+                    ? this.opening.getIndex().options[0]
+                    : null
+            );
+        }
+        console.log('this.opening.getIndex()', this.opening.getIndex());
+    }
     // sets boardOverlayData and returns true if line is over
     private isLineIsOver(): boolean {
         if (this.opening.getIndex().options.length === 0) {
