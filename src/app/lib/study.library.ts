@@ -1,10 +1,22 @@
 import { Game } from './game.library';
 import { Branch } from './interface.library';
 
+export const moveClassificationKey = {
+    '!': 'Good move',
+    '!!': 'Brilliant move',
+    '?': 'Mistake',
+    '??': 'Blunder',
+    '!?': 'Interesting move',
+    '?!': 'Dubious move'
+};
+
 export class Study {
     private data: Branch;
     private index: Branch;
-    private rootOfOpening: Branch;
+
+    // this is not really the opening object, thought this didn't belong
+    // at some point though, maybe this could be an optional?
+    // private rootOfOpening: Branch;
 
     constructor(pgnArray: string[]) {
         this.data = {
@@ -93,16 +105,16 @@ export class Study {
                             if (count === 1) {
                                 // }
                                 const passPGN = pgn.substr(i + 2, k - i - 3);
-                                // console.log(
-                                // 'pgn.substr(i+1,k-i)',
-                                // '[' + passPGN + ']'
-                                // );
+                                console.log(
+                                    'pgn.substr(i+1,k-i)',
+                                    '[' + passPGN + ']'
+                                );
                                 if (currNode.options.length !== 0) {
                                     currNode.options[
                                         currNode.options.length - 1
-                                    ].explanation = passPGN;
+                                    ].explanation += passPGN;
                                 } else {
-                                    currNode.explanation = passPGN;
+                                    currNode.explanation += passPGN;
                                 }
                                 break;
                             } else {
@@ -120,12 +132,18 @@ export class Study {
                 a.charCodeAt(a.length - 1) === 41
                     ? (a = a.substr(0, a.length - 1))
                     : (a = a);
-                game.makeMove(a);
+                console.log('|' + a + '|');
+                const classificationObj = this.getClassificationObjectOfMove(a);
+                game.makeMove(classificationObj.notation);
                 positionHistArray.push(game.getFEN());
                 const nextNode = {
-                    definingMove: a,
+                    definingMove: classificationObj.notation,
                     fen: positionHistArray[positionHistArray.length - 1],
-                    explanation: null,
+                    explanation: classificationObj.classification
+                        ? moveClassificationKey[
+                              classificationObj.classification
+                          ]
+                        : '',
                     options: []
                 };
                 // add move to options
@@ -147,6 +165,24 @@ export class Study {
         }
         // console.log('JSON', JSON.stringify(root));
         return root;
+    }
+
+    private getClassificationObjectOfMove(
+        notationParam: string
+    ): { notation: string; classification: string } {
+        for (let i = 0; i < notationParam.length; i++) {
+            const c = notationParam.charAt(i);
+            if (c === '?' || c === '!') {
+                return {
+                    notation: notationParam.substr(0, i),
+                    classification: notationParam.substr(i)
+                };
+            }
+        }
+        return {
+            notation: notationParam,
+            classification: null
+        };
     }
 
     // returns if move already exists on branch in options
