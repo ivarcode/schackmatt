@@ -1,26 +1,29 @@
 #table th,
 #table td {
-    border: 1px solid rgb(15, 15, 15);
+    border: 1px solid #26272b;
     padding: 5px;
     text-align: center;
     color: white;
     height: 30px;
 }
 #table th {
-    background-color: rgb(26, 26, 26);
+    background-color: #33363b;
+}
+#table td {
+    color: black;
 }
 #table-container {
-    width: 200px;
-    height: 200px;
-    max-height: 200px;
-    background-color: rgb(26, 26, 26);
+    width: 350px;
+    height: 800px;
+    max-height: 550px;
+    background-color: #60646b86;
     overflow: auto;
 }
 td.number {
     width: 30px;
 }
 td.move {
-    width: 80px;
+    width: 160px;
 }
 
 .toggle-button {
@@ -32,12 +35,18 @@ td.move {
     color: white;
     width: 40px;
 }
+.th-move {
+    width: 160px;
+}
+.th-number {
+    width: 30px;
+}
 
 tr:nth-child(even) {
-    background-color: rgb(65, 65, 65);
+    background-color: rgb(211, 211, 211);
 }
 tr:nth-child(odd) {
-    background-color: rgb(44, 44, 44);
+    background-color: rgb(185, 185, 185);
 }
 
 ::-webkit-scrollbar {
