@@ -46,7 +46,8 @@ export class OpeningTrainingGameComponent implements OnInit {
         // this timeout solution is probably not correct...
         setTimeout(() => {
             // TODO pass in opening as OBJECT
-            this.opening = new Study(Openings.openings[1].pgnData);
+            this.opening = new Study(Openings.openings[0].pgnData);
+            // this.opening = new Study(Openings.openings[1].pgnData);
             this.showBoardOverlay = false;
             this.traverseToDefiningMove();
         }, 200);
