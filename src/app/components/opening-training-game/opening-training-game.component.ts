@@ -46,8 +46,8 @@ export class OpeningTrainingGameComponent implements OnInit {
         // this timeout solution is probably not correct...
         setTimeout(() => {
             // TODO pass in opening as OBJECT
-            this.opening = new Study(Openings.openings[0].pgnData);
-            // this.opening = new Study(Openings.openings[1].pgnData);
+            // this.opening = new Study(Openings.openings[0].pgnData);
+            this.opening = new Study(Openings.openings[1].pgnData);
             this.showBoardOverlay = false;
             this.traverseToDefiningMove();
         }, 200);
@@ -60,15 +60,30 @@ export class OpeningTrainingGameComponent implements OnInit {
     }
     public boardOverlayEvent(event: string): void {
         console.log('board overlay event', event);
+        switch (event) {
+            case 'retry opening':
+                console.log('resetting opening');
+                this.traverseToDefiningMove();
+                break;
+            default:
+                break;
+        }
         this.showBoardOverlay = false;
         // this.opening.setIndex()
     }
+
     public gameDataEvent(event: GameEvent): void {
         console.log('game emit', event);
         if (event.type === 'move') {
             this.quoteSelector();
-            if (!this.opening.traverseIndex(event.content)) {
-                // throw Error('your move was not very good');
+            console.log('played', this.opening.getIndex());
+            if (
+                !this.opening.traverseIndex(event.content) ||
+                this.opening.getIndex().classification === '?' ||
+                this.opening.getIndex().classification === '??'
+            ) {
+                // if the move is not in the study branch OR
+                // if the move is classified as not ideal
                 this.showNotification(
                     'alert-danger',
                     this.opening.getIndex().explanation
@@ -92,21 +107,24 @@ export class OpeningTrainingGameComponent implements OnInit {
                         this.game.makeMove(randMove);
                     }
                     this.triggerGameInterfaceCommand('move made, redraw board');
+                    setTimeout(() => {
+                        if (this.isLineIsOver()) {
+                            return;
+                        }
+                    }, 1000);
                 }, 1000);
-                if (this.isLineIsOver()) {
-                    return;
-                }
             }
         }
     }
+
     /**
      * @description navigates to the move PRIOR to the opening defined move
      * TODO needs to be rewritten, it is redundant, bad logic. (but does work)
      */
     private traverseToDefiningMove(): void {
-        this.game.makeMove(this.opening.getIndex().options[0].definingMove);
+        this.game.makeMove(this.opening.getRoot().options[0].definingMove);
         let numberOfTraversals = 1;
-        this.opening.setIndex(this.opening.getIndex().options[0]);
+        this.opening.setIndex(this.opening.getRoot().options[0]);
         console.log('this.opening.getIndex()', this.opening.getIndex());
         while (
             !this.opening.getIndex().explanation ||

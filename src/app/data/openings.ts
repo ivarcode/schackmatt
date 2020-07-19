@@ -22,7 +22,7 @@ export const Openings = {
             ECO: 'C44',
             name: 'Ponziani Opening: Jaenisch Counterattack',
             pgnData: [
-                '1. e4 e5 2. Nf3 Nc6 3. c3 { DEFINING MOVE :: Hi, this is a message about the Ponziani (our example) opening! } 3... Nf6 4. d4 { CORRECT :: message about why this is the right move! } 4... Nxe4 5. Qd2?? { BLUNDER :: (obviously) } *'
+                '1. e4 e5 2. Nf3 Nc6 3. c3 { DEFINING MOVE :: Hi, this is a message about the Ponziani (our example) opening! } 3... Nf6 4. d4 { CORRECT :: message about why this is the right move! } 4... Nxe4 *'
             ]
         }
     ]
