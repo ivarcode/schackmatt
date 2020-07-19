@@ -1,30 +1,53 @@
 import { Game } from './game.library';
 import { Branch } from './interface.library';
 
+export const moveClassificationKey = {
+    '!': 'Good move',
+    '!!': 'Brilliant move',
+    '?': 'Mistake',
+    '??': 'Blunder',
+    '!?': 'Interesting move',
+    '?!': 'Dubious move'
+};
+
 export class Study {
-    private data: Branch;
+    private root: Branch;
     private index: Branch;
-    private rootOfOpening: Branch;
+
+    // this is not really the opening object, thought this didn't belong
+    // at some point though, maybe this could be an optional?
+    // private rootOfOpening: Branch;
 
     constructor(pgnArray: string[]) {
-        this.data = {
+        this.root = {
             definingMove: null,
             fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+            classification: null,
             explanation: 'HEAD',
             options: []
         };
         // parse all PGN content
         for (const pgn of pgnArray) {
             // console.log('build :: [', pgn, ']');
-            this.buildAndParsePGN(this.data, pgn);
+            this.buildAndParsePGN(this.root, pgn);
         }
-        this.index = this.data;
+        this.index = this.root;
         console.log('--------');
         // console.log('pgn', pgnArray);
-        console.log('data', this.data);
+        console.log('root', this.root);
         // console.log('index', this.index);
-        // console.log(this.getJSONTree(this.data, 1));
+        console.log(this.getJSONTree(this.root, 1));
+        console.log('total moves in study :: ', this.getTotalMoves(this.root));
     }
+
+    private getTotalMoves(branch: Branch): number {
+        let totalMoves = 1;
+        for (const o of branch.options) {
+            totalMoves += this.getTotalMoves(o);
+        }
+        return totalMoves;
+    }
+
     private buildAndParsePGN(root: Branch, pgn: string): Branch {
         // console.log('called with ', pgn);
         // console.log('root', root);
@@ -94,15 +117,15 @@ export class Study {
                                 // }
                                 const passPGN = pgn.substr(i + 2, k - i - 3);
                                 // console.log(
-                                // 'pgn.substr(i+1,k-i)',
-                                // '[' + passPGN + ']'
+                                //     'pgn.substr(i+1,k-i)',
+                                //     '[' + passPGN + ']'
                                 // );
                                 if (currNode.options.length !== 0) {
                                     currNode.options[
                                         currNode.options.length - 1
-                                    ].explanation = passPGN;
+                                    ].explanation += passPGN;
                                 } else {
-                                    currNode.explanation = passPGN;
+                                    currNode.explanation += passPGN;
                                 }
                                 break;
                             } else {
@@ -120,12 +143,19 @@ export class Study {
                 a.charCodeAt(a.length - 1) === 41
                     ? (a = a.substr(0, a.length - 1))
                     : (a = a);
-                game.makeMove(a);
+                // console.log('|' + a + '|');
+                const classificationObj = this.getClassificationObjectOfMove(a);
+                game.makeMove(classificationObj.notation);
                 positionHistArray.push(game.getFEN());
                 const nextNode = {
-                    definingMove: a,
+                    definingMove: classificationObj.notation,
                     fen: positionHistArray[positionHistArray.length - 1],
-                    explanation: null,
+                    classification: classificationObj.classification,
+                    explanation: classificationObj.classification
+                        ? moveClassificationKey[
+                              classificationObj.classification
+                          ]
+                        : '',
                     options: []
                 };
                 // add move to options
@@ -147,6 +177,24 @@ export class Study {
         }
         // console.log('JSON', JSON.stringify(root));
         return root;
+    }
+
+    private getClassificationObjectOfMove(
+        notationParam: string
+    ): { notation: string; classification: string } {
+        for (let i = 0; i < notationParam.length; i++) {
+            const c = notationParam.charAt(i);
+            if (c === '?' || c === '!') {
+                return {
+                    notation: notationParam.substr(0, i),
+                    classification: notationParam.substr(i)
+                };
+            }
+        }
+        return {
+            notation: notationParam,
+            classification: null
+        };
     }
 
     // returns if move already exists on branch in options
@@ -218,6 +266,10 @@ export class Study {
 
     public getIndex(): Branch {
         return this.index;
+    }
+
+    public getRoot(): Branch {
+        return this.root;
     }
 
     // TODO return stems with no explanation

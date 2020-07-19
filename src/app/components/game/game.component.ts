@@ -313,7 +313,7 @@ export class GameComponent implements OnInit, OnChanges {
         // console.log(changes);
         if (changes.interfaceCommand && changes.interfaceCommand.currentValue) {
             switch (changes.interfaceCommand.currentValue) {
-                case 'redraw board':
+                case 'move made, redraw board':
                     this.displayedMoveIndex++;
                     this.drawBoard();
                     break;
@@ -340,12 +340,25 @@ export class GameComponent implements OnInit, OnChanges {
                     this.drawBoard();
                     break;
                 default:
+                    const value = changes.interfaceCommand.currentValue;
+                    if (value.substr(0, 9) === 'traverse ') {
+                        this.setDisplayedMoveIndex(
+                            Number.parseInt(value.substr(9), 10)
+                        );
+                        this.drawBoard();
+                        break;
+                    }
                     throw new Error(
                         'invalid interface command' +
                             changes.interfaceCommand.currentValue
                     );
             }
+            // TODO probably can draw board HERE instead?
         }
+    }
+
+    public setDisplayedMoveIndex(index: number): void {
+        this.displayedMoveIndex = index;
     }
 
     private showMoves(): void {
