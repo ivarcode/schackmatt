@@ -36,7 +36,17 @@ export class Study {
         console.log('data', this.data);
         // console.log('index', this.index);
         console.log(this.getJSONTree(this.data, 1));
+        console.log('total moves in study :: ', this.getTotalMoves(this.data));
     }
+
+    private getTotalMoves(branch: Branch): number {
+        let totalMoves = 1;
+        for (const o of branch.options) {
+            totalMoves += this.getTotalMoves(o);
+        }
+        return totalMoves;
+    }
+
     private buildAndParsePGN(root: Branch, pgn: string): Branch {
         // console.log('called with ', pgn);
         // console.log('root', root);
