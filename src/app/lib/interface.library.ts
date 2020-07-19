@@ -3,6 +3,7 @@ import { Board, Square } from './game.library';
 export interface Branch {
     definingMove: string;
     fen: string;
+    classification: string;
     explanation: string;
     options: Branch[];
 }

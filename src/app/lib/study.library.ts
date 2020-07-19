@@ -11,7 +11,7 @@ export const moveClassificationKey = {
 };
 
 export class Study {
-    private data: Branch;
+    private root: Branch;
     private index: Branch;
 
     // this is not really the opening object, thought this didn't belong
@@ -19,24 +19,25 @@ export class Study {
     // private rootOfOpening: Branch;
 
     constructor(pgnArray: string[]) {
-        this.data = {
+        this.root = {
             definingMove: null,
             fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+            classification: null,
             explanation: 'HEAD',
             options: []
         };
         // parse all PGN content
         for (const pgn of pgnArray) {
             // console.log('build :: [', pgn, ']');
-            this.buildAndParsePGN(this.data, pgn);
+            this.buildAndParsePGN(this.root, pgn);
         }
-        this.index = this.data;
+        this.index = this.root;
         console.log('--------');
         // console.log('pgn', pgnArray);
-        console.log('data', this.data);
+        console.log('root', this.root);
         // console.log('index', this.index);
-        console.log(this.getJSONTree(this.data, 1));
-        console.log('total moves in study :: ', this.getTotalMoves(this.data));
+        console.log(this.getJSONTree(this.root, 1));
+        console.log('total moves in study :: ', this.getTotalMoves(this.root));
     }
 
     private getTotalMoves(branch: Branch): number {
@@ -115,10 +116,10 @@ export class Study {
                             if (count === 1) {
                                 // }
                                 const passPGN = pgn.substr(i + 2, k - i - 3);
-                                console.log(
-                                    'pgn.substr(i+1,k-i)',
-                                    '[' + passPGN + ']'
-                                );
+                                // console.log(
+                                //     'pgn.substr(i+1,k-i)',
+                                //     '[' + passPGN + ']'
+                                // );
                                 if (currNode.options.length !== 0) {
                                     currNode.options[
                                         currNode.options.length - 1
@@ -142,13 +143,14 @@ export class Study {
                 a.charCodeAt(a.length - 1) === 41
                     ? (a = a.substr(0, a.length - 1))
                     : (a = a);
-                console.log('|' + a + '|');
+                // console.log('|' + a + '|');
                 const classificationObj = this.getClassificationObjectOfMove(a);
                 game.makeMove(classificationObj.notation);
                 positionHistArray.push(game.getFEN());
                 const nextNode = {
                     definingMove: classificationObj.notation,
                     fen: positionHistArray[positionHistArray.length - 1],
+                    classification: classificationObj.classification,
                     explanation: classificationObj.classification
                         ? moveClassificationKey[
                               classificationObj.classification
@@ -264,6 +266,10 @@ export class Study {
 
     public getIndex(): Branch {
         return this.index;
+    }
+
+    public getRoot(): Branch {
+        return this.root;
     }
 
     // TODO return stems with no explanation
