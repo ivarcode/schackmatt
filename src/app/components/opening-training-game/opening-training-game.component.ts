@@ -63,6 +63,7 @@ export class OpeningTrainingGameComponent implements OnInit {
         switch (event) {
             case 'retry opening':
                 console.log('resetting opening');
+                this.game = new Game();
                 this.traverseToDefiningMove();
                 break;
             default:
