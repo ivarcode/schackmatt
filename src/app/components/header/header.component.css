@@ -4,6 +4,9 @@
     margin-right: 30px;
     color: white;
 }
+.navbar-brand:hover {
+    color: #ff7e15;
+}
 .nav-link {
     font-size: 20px;
 }

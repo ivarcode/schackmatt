@@ -53,7 +53,7 @@ const routes: Routes = [
         path: 'about'
     },
     {
-        redirectTo: 'game',
+        redirectTo: 'opening-training-game',
         path: '**'
     }
 ];
