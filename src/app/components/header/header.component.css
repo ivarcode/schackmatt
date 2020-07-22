@@ -42,3 +42,7 @@ nav {
     /* Dark grey nav Lighter gray background Orange accent */
     /* background-color: #2b2b2b; */
 }
+.nav-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
