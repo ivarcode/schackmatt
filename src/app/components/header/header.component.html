@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light">
     <a class="navbar-brand" href="#">Complete Chess Trainer</a>
     <button
         class="navbar-toggler"
@@ -14,24 +14,30 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a
-                    class="button button:hover nav-link"
-                    href="#"
-                    style="color: white;"
+            <li class="nav-item active nav-disabled">
+                <a class="button nav-link" href="#" style="color: white;"
                     >Home <span class="sr-only">(current)</span></a
                 >
             </li>
             <li class="nav-item">
                 <a
+                    routerLink="/opening-training-game"
+                    routerLinkActive="active"
+                    class="button nav-link"
+                    style="color: white;"
+                    >Opening Trainer
+                </a>
+            </li>
+            <li class="nav-item nav-disabled">
+                <a
                     routerLink="/repertoire-builder"
                     routerLinkActive="active"
-                    class="button button:hover nav-link"
+                    class="button nav-link"
                     style="color: white;"
                     >Repertoire Builder</a
                 >
             </li>
-            <li class="button button:hover nav-item dropdown">
+            <li class="button nav-item dropdown nav-disabled">
                 <a
                     class="nav-link dropdown-toggle"
                     href="#"
@@ -48,14 +54,14 @@
                     <a
                         routerLink="/my-books"
                         routerLinkActive="active"
-                        class="button button:hover dropdown-item"
+                        class="button dropdown-item"
                         style="color: white;"
                         >My Books</a
                     >
                     <a
                         routerLink="/public-books"
                         routerLinkActive="active"
-                        class="button button:hover dropdown-item"
+                        class="button dropdown-item"
                         style="color: white;"
                         >Public Books</a
                     >
@@ -66,20 +72,20 @@
             <!-- <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
             </li> -->
-            <li class="nav-item">
+            <li class="nav-item nav-disabled">
                 <a
                     routerLink="/tactics-trainer"
                     routerLinkActive="active"
-                    class="button button:hover nav-link"
+                    class="button nav-link"
                     style="color: white;"
                     >Tactics Trainer</a
                 >
             </li>
-            <li class="nav-item">
+            <li class="nav-item nav-disabled">
                 <a
                     routerLink="/account"
                     routerLinkActive="active"
-                    class="button button:hover nav-link"
+                    class="button nav-link"
                     style="color: white;"
                     >Account
                 </a>
@@ -88,7 +94,7 @@
                 <a
                     routerLink="/about"
                     routerLinkActive="active"
-                    class="button button:hover nav-link"
+                    class="button nav-link"
                     style="color: white;"
                     >About
                 </a>

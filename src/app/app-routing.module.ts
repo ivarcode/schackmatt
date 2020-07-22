@@ -14,7 +14,7 @@ import { AboutComponent } from './components/about/about.component';
 const routes: Routes = [
     {
         component: OpeningTrainingGameComponent,
-        path: 'game'
+        path: 'opening-training-game'
     },
     {
         component: AccountComponent,
@@ -53,7 +53,7 @@ const routes: Routes = [
         path: 'about'
     },
     {
-        redirectTo: 'game',
+        redirectTo: 'opening-training-game',
         path: '**'
     }
 ];
