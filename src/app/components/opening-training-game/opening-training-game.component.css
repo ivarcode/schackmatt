@@ -1,6 +1,6 @@
 #game-details {
-    margin: 20px;
-    margin-top: 200px;
+    margin: 10px;
+    margin-top: 50px;
 }
 
 #opening-training-alert.alert-warning {
@@ -8,20 +8,26 @@
 }
 .opening-trainer-style-alert {
     max-height: 275px;
-    width: 400px;
+    width: 200px;
     margin-top: 440px;
-    left: -225px;
+    left: 50px;
+    bottom: 100px;
     border-radius: 15px;
+    margin-left: 0px;
 }
 .quote-font-size {
     font-size: 15px;
 }
 
 #board-overlay {
+    margin-left: 20px;
+    margin-top: 20px;
     position: fixed;
-    margin: 20px;
 }
 
 #standard-game-container {
     margin: 0px;
+}
+.board-pos {
+    margin-left: 300px;
 }
