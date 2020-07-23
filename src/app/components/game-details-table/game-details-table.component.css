@@ -3,11 +3,11 @@
     border: 1px solid #26272b;
     padding: 5px;
     text-align: center;
-    color: white;
     height: 30px;
 }
 #table th {
     background-color: #33363b;
+    color: white;
 }
 #table td {
     color: black;
