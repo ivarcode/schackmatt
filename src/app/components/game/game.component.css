@@ -1,6 +1,8 @@
 #game {
     margin: 0px;
+    max-width: 800px;
+    /* margin: 0 auto; */
 }
 #board {
-    margin: 20px;
+    padding: 20px;
 }

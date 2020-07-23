@@ -1,3 +1,11 @@
+.staff-photo {
+    object-fit: cover;
+    max-height: 60%;
+}
+.ourTeamStyling {
+    font-size: 48px;
+    color: #e96b04;
+}
 body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
@@ -11,8 +19,9 @@ body {
 .about-section {
     padding: 50px;
     text-align: center;
-    background-color: #474e5d;
+    background-color: #40444b;
     color: white;
+    font-size: 22px;
 }
 
 .card div {
