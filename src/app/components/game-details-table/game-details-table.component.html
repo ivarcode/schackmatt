@@ -2,15 +2,15 @@
     <!-- <p *ngIf="pgn" style="color: white;">{{ pgn }}</p> -->
     <div id="table-container">
         <table id="table">
-            <!-- <th>
+            <th class="th-number">
                 Moves
             </th>
-            <th>
+            <th class="th-move">
                 White
             </th>
-            <th>
+            <th class="th-move">
                 Black
-            </th> -->
+            </th>
             <tr *ngFor="let line of getPGNArray()">
                 <td class="number">{{ line.number }}</td>
                 <td class="move">{{ line.white }}</td>

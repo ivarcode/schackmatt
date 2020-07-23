@@ -1,36 +1,43 @@
 <div id="standard-game-container" class="row">
-    <app-board-overlay
-        id="board-overlay"
-        *ngIf="getShowBoardOverlay()"
-        [boardOverlayData]="getBoardOverlayData()"
-        (boardOverlayEmitter)="boardOverlayEvent($event)"
-    ></app-board-overlay>
-    <app-game
-        id="game"
-        [game]="getGame()"
-        [interfaceCommand]="getGameInterfaceCommand()"
-        (gameDataEmitter)="gameDataEvent($event)"
-    ></app-game>
-    <app-game-details-table
-        id="game-details"
-        [pgn]="getGame().getPGN()"
-        (navigationDataEmitter)="navigationDataEvent($event)"
-    ></app-game-details-table>
-    <div
-        *ngIf="getNotificationVisibility()"
-        id="opening-training-alert"
-        class="alert {{ getAlertType() }} opening-trainer-style-alert"
-        role="alert"
-    >
-        <h4 class="alert-heading">{{ getChoiceHeadingMessage() }}</h4>
-        <p>
-            Keep working hard
-        </p>
-        <hr *ngIf="getChoiceQuote()" />
-        <blockquote *ngIf="getChoiceQuote()" class="blockquote">
-            <p class="mb-0 quote-font-size">{{ getChoiceQuote() }}</p>
-            <footer class="blockquote-footer">{{ getChoiceAuthor() }}</footer>
-        </blockquote>
+    <div class="col-sm-8">
+        <app-board-overlay
+            id="board-overlay"
+            *ngIf="getShowBoardOverlay()"
+            [boardOverlayData]="getBoardOverlayData()"
+            (boardOverlayEmitter)="boardOverlayEvent($event)"
+        ></app-board-overlay>
+        <app-game
+            id="game"
+            [game]="getGame()"
+            [interfaceCommand]="getGameInterfaceCommand()"
+            (gameDataEmitter)="gameDataEvent($event)"
+        ></app-game>
+    </div>
+    <div class="break-div col-sm-4"></div>
+    <div class="col-sm-4">
+        <app-game-details-table
+            id="game-details"
+            [pgn]="getGame().getPGN()"
+            (navigationDataEmitter)="navigationDataEvent($event)"
+        ></app-game-details-table>
+        <div
+            *ngIf="getNotificationVisibility()"
+            id="opening-training-alert"
+            class="alert {{ getAlertType() }}"
+            role="alert"
+        >
+            <h4 class="alert-heading">{{ getChoiceHeadingMessage() }}</h4>
+            <p>
+                Keep working hard
+            </p>
+            <hr *ngIf="getChoiceQuote()" />
+            <blockquote *ngIf="getChoiceQuote()" class="blockquote">
+                <p class="mb-0 quote-font-size">{{ getChoiceQuote() }}</p>
+                <footer class="blockquote-footer">
+                    {{ getChoiceAuthor() }}
+                </footer>
+            </blockquote>
+        </div>
     </div>
 </div>
 <div id="developer-output">
