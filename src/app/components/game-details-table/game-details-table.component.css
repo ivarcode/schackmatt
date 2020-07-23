@@ -14,8 +14,9 @@
 }
 #table-container {
     width: 350px;
-    height: 800px;
-    max-height: 550px;
+    height: 300px;
+    /* height: auto;
+    max-height: 300px; */
     background-color: #60646b86;
     overflow: auto;
 }

@@ -2,14 +2,12 @@
     margin: 10px;
     margin-top: 50px;
 }
-
 #opening-training-alert.alert-warning {
     display: none;
 }
-.opening-trainer-style-alert {
+#opening-trainer-alert {
     max-height: 275px;
     width: 200px;
-    margin-top: 440px;
     left: 50px;
     bottom: 100px;
     border-radius: 15px;
@@ -20,14 +18,26 @@
 }
 
 #board-overlay {
-    margin-left: 20px;
-    margin-top: 20px;
-    position: fixed;
+    /* margin: 0 auto; */
+    margin: 0px;
+    padding: 20px;
+    position: absolute;
 }
 
 #standard-game-container {
     margin: 0px;
 }
-.board-pos {
-    margin-left: 300px;
+
+.break-div {
+    display: none;
+}
+
+@media screen and (max-width: 1100px) and (min-width: 1082px) {
+    .break-div {
+        display: inline-block;
+    }
+}
+
+.col-sm-8 {
+    max-width: 800px;
 }
