@@ -1,0 +1,28 @@
+<div class="about-section">
+    <h1>About Us</h1>
+    <p>
+        Our mission is to provide a tool for chess players to learn and develop
+        their game.
+    </p>
+    <h1>Contact Us</h1>
+    <p>Dummy email</p>
+    <p>Git Repo</p>
+</div>
+
+<h2 class="ourTeamStyling" style="text-align: center;">Our Team</h2>
+<div class="container">
+    <div class="row">
+        <div *ngFor="let staff of staffMembers" class="col-sm-4">
+            <div class="card">
+                <img src="{{ staff.url }}" />
+                <img class="img-top" src="{{ staff.goofyUrl }}" />
+                <div>
+                    <h2>{{ staff.name }}</h2>
+                    <p class="title">{{ staff.title }}</p>
+                    <p>{{ staff.bio }}</p>
+                    <p>Discord Handle: {{ staff.discord }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

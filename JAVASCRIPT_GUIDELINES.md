@@ -35,7 +35,7 @@ This is a writeup for how the developers of this application plan to use javascr
     `===` is a literal comparison while `==` is checking for equality. This means that if you want to compare `a` to `b`...
 
     - if `a` and `b` should point to the same reference in memory use `===`
-    - if `a` and `b` only need to be equivalent in value
+    - if `a` and `b` only need to be equivalent in value `==`
 
     ```
     1 == true // true
@@ -49,7 +49,7 @@ This is a writeup for how the developers of this application plan to use javascr
     a === b // true
 
     let a = { x: 'value' };
-    let b = { b: 'value' };
+    let b = { x: 'value' };
     a === b // false
     ```
 
