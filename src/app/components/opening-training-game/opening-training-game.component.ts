@@ -151,6 +151,7 @@ export class OpeningTrainingGameComponent implements OnInit {
         this.triggerGameInterfaceCommand('traverse ' + numberOfTraversals);
         console.log('this.opening.getIndex()', this.opening.getIndex());
     }
+
     // sets boardOverlayData and returns true if line is over
     private isLineIsOver(): boolean {
         if (this.opening.getIndex().options.length === 0) {
