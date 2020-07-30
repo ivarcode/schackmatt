@@ -27,9 +27,9 @@
             role="alert"
         >
             <h4 class="alert-heading">{{ getChoiceHeadingMessage() }}</h4>
-            <!-- <p>
-                Keep working hard
-            </p> -->
+            <p>
+                {{ getChoiceSubMessage() }}
+            </p>
             <hr *ngIf="getChoiceQuote()" />
             <blockquote *ngIf="getChoiceQuote()" class="blockquote">
                 <p class="mb-0 quote-font-size">{{ getChoiceQuote() }}</p>

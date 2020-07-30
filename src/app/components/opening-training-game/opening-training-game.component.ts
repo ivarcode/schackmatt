@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/app/lib/game.library';
-import { Study } from 'src/app/lib/study.library';
-import { GameEvent } from 'src/app/lib/interface.library';
+import { Study, moveClassificationKey } from 'src/app/lib/study.library';
+import { GameEvent, Branch } from 'src/app/lib/interface.library';
 import { Openings } from 'src/app/data/openings';
 
 @Component({
@@ -15,6 +15,7 @@ export class OpeningTrainingGameComponent implements OnInit {
     private gameInterfaceCommand: string;
     private alertType: string;
     private choiceHeadingMessage: string;
+    private choiceSubMessage: string;
     private choiceQuote: string;
     private choiceAuthor: string;
     private notificationVisibility: boolean;
@@ -31,6 +32,7 @@ export class OpeningTrainingGameComponent implements OnInit {
         this.opening = null;
         this.alertType = 'alert-warning';
         this.choiceHeadingMessage = 'no message';
+        this.choiceSubMessage = 'none';
         this.choiceAuthor = '';
         this.choiceQuote = '';
         this.notificationVisibility = false;
@@ -85,19 +87,13 @@ export class OpeningTrainingGameComponent implements OnInit {
             ) {
                 // if the move is not in the study branch OR
                 // if the move is classified as not ideal
-                this.showNotification(
-                    'alert-danger',
-                    this.opening.getIndex().explanation
-                );
+                this.showNotification('alert-danger', this.opening.getIndex());
                 setTimeout(() => {
                     this.game.undoLastMove();
                     this.triggerGameInterfaceCommand('displayMoveIndex--');
                 }, 1000);
             } else {
-                this.showNotification(
-                    'alert-success',
-                    this.opening.getIndex().explanation
-                );
+                this.showNotification('alert-success', this.opening.getIndex());
                 if (this.isLineIsOver()) {
                     return;
                 }
@@ -178,7 +174,7 @@ export class OpeningTrainingGameComponent implements OnInit {
         }, 10);
     }
 
-    private showNotification(result: string, explanation?: string): void {
+    private showNotification(result: string, index?: Branch): void {
         this.alertType = result;
         this.notificationVisibility = true;
         switch (this.alertType) {
@@ -192,13 +188,34 @@ export class OpeningTrainingGameComponent implements OnInit {
                 this.choiceHeadingMessage = 'unknown value';
                 this.notificationVisibility = false;
         }
-        if (explanation) {
-            this.choiceQuote = explanation;
+        if (index.explanation) {
+            let explObj = this.getExplanationObject(index);
+            this.choiceSubMessage = explObj.head;
+            this.choiceQuote = explObj.body;
             this.choiceAuthor = null;
         } else {
             this.choiceQuote = null;
             this.choiceAuthor = null;
         }
+    }
+
+    private getExplanationObject(
+        branch: Branch
+    ): {
+        head: string;
+        body: string;
+    } {
+        const ret = {
+            head: null,
+            body: null
+        };
+        if (branch.explanation && branch.classification) {
+            ret.head = moveClassificationKey[branch.classification];
+            ret.body = branch.explanation.substr(
+                moveClassificationKey[branch.classification].length + 1
+            );
+        }
+        return ret;
     }
 
     public getNotificationVisibility(): boolean {
@@ -239,6 +256,9 @@ export class OpeningTrainingGameComponent implements OnInit {
     }
     public getChoiceHeadingMessage(): string {
         return this.choiceHeadingMessage;
+    }
+    public getChoiceSubMessage(): string {
+        return this.choiceSubMessage;
     }
     public getChoiceQuote(): string {
         return this.choiceQuote;
