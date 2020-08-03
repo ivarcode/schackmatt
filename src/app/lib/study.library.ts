@@ -156,7 +156,8 @@ export class Study {
                               classificationObj.classification
                           ]
                         : '',
-                    options: []
+                    options: [],
+                    ticks: 0
                 };
                 // add move to options
                 const alreadyMappedIndex = this.moveMappedToIndex(
@@ -177,6 +178,30 @@ export class Study {
         }
         // console.log('JSON', JSON.stringify(root));
         return root;
+    }
+
+    public developerData(branch: Branch): string[] {
+        const str = [];
+        for (const op of branch.options) {
+            str.push(
+                op.definingMove +
+                    ' completed ' +
+                    this.getTickValueOf(op).toFixed(3)
+            );
+        }
+        return str;
+    }
+
+    private getTickValueOf(branch: Branch): number {
+        let total = 0;
+        if (branch.options.length !== 0) {
+            for (const op of branch.options) {
+                total += this.getTickValueOf(op);
+            }
+            branch.ticks = total / branch.options.length;
+        }
+        // console.log('total', total);
+        return branch.ticks;
     }
 
     private getClassificationObjectOfMove(
@@ -219,6 +244,9 @@ export class Study {
         for (const i of this.index.options) {
             if (i.definingMove === move) {
                 this.index = i;
+                // tracking the move was made
+                this.index.ticks = 1;
+                console.log('this.index.tcks', this.index, this.index.ticks);
                 // console.log('traversed');
                 console.log(this.getOptionsFromBranch(this.getIndex()));
                 return true;
@@ -228,10 +256,25 @@ export class Study {
     }
 
     // returns randomly selected from options tree, else null
-    public selectAndTraverseRandomMove(): string {
-        if (this.index.options.length !== 0) {
-            const i = Math.floor(Math.random() * this.index.options.length);
-            const randomMove = this.index.options[i].definingMove;
+    public selectNextTickMove(): string {
+        let leastPlayedOptions = [];
+        let leastValue = 1;
+        for (let option of this.index.options) {
+            let v = this.getTickValueOf(option);
+            if (v === leastValue) {
+                leastPlayedOptions.push(option);
+            } else if (v < leastValue) {
+                leastValue = v;
+                leastPlayedOptions = [option];
+            }
+        }
+        return this.selectAndTraverseRandomMove(leastPlayedOptions);
+    }
+
+    private selectAndTraverseRandomMove(options: Branch[]): string {
+        if (options.length !== 0) {
+            const i = Math.floor(Math.random() * options.length);
+            const randomMove = options[i].definingMove;
             this.traverseIndex(randomMove);
             return randomMove;
         }

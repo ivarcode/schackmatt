@@ -48,8 +48,8 @@ export class OpeningTrainingGameComponent implements OnInit {
         // this timeout solution is probably not correct...
         setTimeout(() => {
             // TODO pass in opening as OBJECT
-            // this.opening = new Study(Openings.openings[0].pgnData);
-            this.opening = new Study(Openings.openings[1].pgnData);
+            this.opening = new Study(Openings.openings[0].pgnData);
+            // this.opening = new Study(Openings.openings[2].pgnData);
             this.showBoardOverlay = false;
             this.traverseToDefiningMove();
         }, 200);
@@ -99,7 +99,7 @@ export class OpeningTrainingGameComponent implements OnInit {
                 }
                 // 1 second timeout
                 setTimeout(() => {
-                    const randMove = this.opening.selectAndTraverseRandomMove();
+                    const randMove = this.opening.selectNextTickMove();
                     if (randMove !== null) {
                         this.game.makeMove(randMove);
                     }
@@ -189,7 +189,7 @@ export class OpeningTrainingGameComponent implements OnInit {
                 this.notificationVisibility = false;
         }
         if (index.explanation) {
-            let explObj = this.getExplanationObject(index);
+            const explObj = this.getExplanationObject(index);
             this.choiceSubMessage = explObj.head;
             this.choiceQuote = explObj.body;
             this.choiceAuthor = null;
@@ -232,7 +232,7 @@ export class OpeningTrainingGameComponent implements OnInit {
     }
 
     private quoteSelector(): void {
-        let quote = {
+        const quote = {
             str:
                 '"You must take your opponent into a deep dark forest where ' +
                 '2+2=5, and the path leading out is only wide ' +

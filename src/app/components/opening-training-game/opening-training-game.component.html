@@ -40,12 +40,16 @@
         </div>
     </div>
 </div>
-<div id="developer-output">
+<div *ngIf="getOpening()" id="developer-output">
     <p>
         {{
             getOpening()
                 ? getOpening().getOptionsFromBranch(getOpening().getIndex())
                 : null
         }}
+    </p>
+    <hr />
+    <p *ngFor="let s of getOpening().developerData(getOpening().getIndex())">
+        {{ s }}
     </p>
 </div>

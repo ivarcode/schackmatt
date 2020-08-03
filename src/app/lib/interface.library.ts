@@ -6,6 +6,8 @@ export interface Branch {
     classification: string;
     explanation: string;
     options: Branch[];
+    // only bein used for tracking the number of checks
+    ticks?: number;
 }
 
 export interface Move {

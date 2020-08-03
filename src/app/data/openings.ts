@@ -24,6 +24,13 @@ export const Openings = {
             pgnData: [
                 '1. e4 e5 2. Nf3 Nc6 3. c3 { DEFINING MOVE :: Hi, this is a message about the Ponziani (our example) opening! } 3... Nf6 4. d4 { CORRECT :: message about why this is the right move! } 4... Nxe4 5. Qd2?? *'
             ]
+        },
+        {
+            ECO: 'boop',
+            name: 'beep',
+            pgnData: [
+                '1. e4 e5 2. Nf3 Nc6 3. c3 { DEFINING MOVE :: Hi, this is a message about the Ponziani (our example) opening! } 3... Nf6 4. d4 { CORRECT :: message about why this is the right move! } 4... Nxe4 5. Qb3 (5. Qd3) Nd2 *'
+            ]
         }
     ]
 };
