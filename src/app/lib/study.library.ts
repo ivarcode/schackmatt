@@ -145,7 +145,8 @@ export class Study {
                     : (a = a);
                 // console.log('|' + a + '|');
                 const classificationObj = this.getClassificationObjectOfMove(a);
-                game.makeMove(classificationObj.notation);
+                // don't make move because doing this is tasking on cpu
+                // game.makeMove(classificationObj.notation);
                 positionHistArray.push(game.getFEN());
                 const nextNode = {
                     definingMove: classificationObj.notation,
