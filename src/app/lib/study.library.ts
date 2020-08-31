@@ -10,34 +10,49 @@ export const moveClassificationKey = {
     '?!': 'Dubious move'
 };
 
+export interface Chapter {
+    title: string;
+    root: Branch;
+    index: Branch;
+}
+
 export class Study {
-    private root: Branch;
-    private index: Branch;
+    private _chapters: Chapter[];
 
     // this is not really the opening object, thought this didn't belong
     // at some point though, maybe this could be an optional?
     // private rootOfOpening: Branch;
 
-    constructor(pgnArray: string[]) {
-        this.root = {
-            definingMove: null,
-            fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-            classification: null,
-            explanation: 'HEAD',
-            options: []
-        };
-        // parse all PGN content
-        for (const pgn of pgnArray) {
-            // console.log('build :: [', pgn, ']');
-            this.buildAndParsePGN(this.root, pgn);
-        }
-        this.index = this.root;
+    constructor(pgnArray: string[][]) {
+        this._chapters = [];
+        pgnArray.forEach((chap) => {
+            let c = {
+                title: chap[0],
+                root: {
+                    definingMove: null,
+                    fen:
+                        'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+                    classification: null,
+                    explanation: 'HEAD',
+                    options: []
+                },
+                index: null
+            };
+            // parse all PGN content
+            this.buildAndParsePGN(c.root, chap[1]);
+            c.index = c.root;
+            this._chapters.push(c);
+        });
+
         console.log('--------');
         // console.log('pgn', pgnArray);
-        console.log('root', this.root);
+        console.log('root', this._chapters[0].root);
         // console.log('index', this.index);
-        console.log(this.getJSONTree(this.root, 1));
-        console.log('total moves in study :: ', this.getTotalMoves(this.root));
+        console.log(this.getJSONTree(this._chapters[0].root, 1));
+        console.log(
+            'total moves in study :: ',
+            this.getTotalMoves(this._chapters[0].root)
+        );
     }
 
     private getTotalMoves(branch: Branch): number {
