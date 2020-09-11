@@ -1,4 +1,13 @@
 <div id="standard-game-container" class="row">
+    <div class="col-sm-4" *ngIf="getOpening() && getOpening().isParsed()">
+        <div *ngFor="let chapter of getOpening().getChapters()">
+            <button
+                (click)="getOpening().setCurrentChapter(chapter); resetBoard()"
+            >
+                {{ chapter.title }}
+            </button>
+        </div>
+    </div>
     <div class="col-sm-8">
         <app-board-overlay
             id="board-overlay"
@@ -44,12 +53,20 @@
     <p>
         {{
             getOpening()
-                ? getOpening().getOptionsFromBranch(getOpening().getIndex())
+                ? getOpening().getOptionsFromBranch(
+                      getOpening().getCurrentChapter().index
+                  )
                 : null
         }}
     </p>
     <hr />
-    <p *ngFor="let s of getOpening().developerData(getOpening().getIndex())">
+    <p
+        *ngFor="
+            let s of getOpening().developerData(
+                getOpening().getCurrentChapter().index
+            )
+        "
+    >
         {{ s }}
     </p>
 </div>

@@ -18,12 +18,11 @@ export interface Chapter {
 
 export class Study {
     private _chapters: Chapter[];
-
-    // this is not really the opening object, thought this didn't belong
-    // at some point though, maybe this could be an optional?
-    // private rootOfOpening: Branch;
+    private _currentChapter: Chapter;
+    private _parsed;
 
     constructor(pgnArray: string[][]) {
+        this._parsed = false;
         this._chapters = [];
         pgnArray.forEach((chap) => {
             let c = {
@@ -44,8 +43,11 @@ export class Study {
             this._chapters.push(c);
         });
 
+        this._currentChapter = this._chapters[0];
+
         console.log('--------');
         // console.log('pgn', pgnArray);
+        console.log('', this._chapters);
         console.log('root', this._chapters[0].root);
         // console.log('index', this.index);
         console.log(this.getJSONTree(this._chapters[0].root, 1));
@@ -53,6 +55,7 @@ export class Study {
             'total moves in study :: ',
             this.getTotalMoves(this._chapters[0].root)
         );
+        this._parsed = true;
     }
 
     private getTotalMoves(branch: Branch): number {
@@ -257,14 +260,20 @@ export class Study {
     // returns whether the tree was successfully traversed by the param move
     // string
     public traverseIndex(move: string): boolean {
-        for (const i of this.index.options) {
+        for (const i of this.getCurrentChapter().index.options) {
             if (i.definingMove === move) {
-                this.index = i;
+                this.getCurrentChapter().index = i;
                 // tracking the move was made
-                this.index.ticks = 1;
-                console.log('this.index.tcks', this.index, this.index.ticks);
+                this.getCurrentChapter().index.ticks = 1;
+                console.log(
+                    'this.index.tcks',
+                    this.getCurrentChapter().index,
+                    this.getCurrentChapter().index.ticks
+                );
                 // console.log('traversed');
-                console.log(this.getOptionsFromBranch(this.getIndex()));
+                console.log(
+                    this.getOptionsFromBranch(this.getCurrentChapter().index)
+                );
                 return true;
             }
         }
@@ -275,7 +284,7 @@ export class Study {
     public selectNextTickMove(): string {
         let leastPlayedOptions = [];
         let leastValue = 1;
-        for (let option of this.index.options) {
+        for (let option of this.getCurrentChapter().index.options) {
             let v = this.getTickValueOf(option);
             if (v === leastValue) {
                 leastPlayedOptions.push(option);
@@ -319,16 +328,36 @@ export class Study {
         return s;
     }
 
-    public setIndex(branch: Branch): void {
-        this.index = branch;
+    // public setIndex(chap: Chapter, branch: Branch): void {
+    //     chap.index = branch;
+    // }
+
+    // public getIndex(chap: Chapter): Branch {
+    //     return chap.index;
+    // }
+
+    // public getRoot(chap: Chapter): Branch {
+    //     return chap.root;
+    // }
+
+    public getCurrentChapter(): Chapter {
+        return this._currentChapter;
     }
 
-    public getIndex(): Branch {
-        return this.index;
+    public setCurrentChapter(chapter: Chapter): void {
+        console.log('set to', chapter);
+        this._currentChapter = chapter;
     }
 
-    public getRoot(): Branch {
-        return this.root;
+    public getChapters(): Chapter[] {
+        if (!this._parsed) {
+            return [];
+        }
+        return this._chapters;
+    }
+
+    public isParsed(): boolean {
+        return this._parsed;
     }
 
     // TODO return stems with no explanation

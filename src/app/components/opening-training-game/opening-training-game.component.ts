@@ -60,6 +60,10 @@ export class OpeningTrainingGameComponent implements OnInit {
             this.triggerGameInterfaceCommand(event);
         }
     }
+    public resetBoard(): void {
+        this.game = new Game();
+        this.traverseToDefiningMove();
+    }
     public boardOverlayEvent(event: string): void {
         console.log('board overlay event', event);
         switch (event) {
@@ -72,28 +76,34 @@ export class OpeningTrainingGameComponent implements OnInit {
                 break;
         }
         this.showBoardOverlay = false;
-        // this.opening.setIndex()
+        // this.opening.getCurrentChapter().index=()
     }
 
     public gameDataEvent(event: GameEvent): void {
         console.log('game emit', event);
         if (event.type === 'move') {
             this.quoteSelector();
-            console.log('played', this.opening.getIndex());
+            console.log('played', this.opening.getCurrentChapter().index);
             if (
                 !this.opening.traverseIndex(event.content) ||
-                this.opening.getIndex().classification === '?' ||
-                this.opening.getIndex().classification === '??'
+                this.opening.getCurrentChapter().index.classification === '?' ||
+                this.opening.getCurrentChapter().index.classification === '??'
             ) {
                 // if the move is not in the study branch OR
                 // if the move is classified as not ideal
-                this.showNotification('alert-danger', this.opening.getIndex());
+                this.showNotification(
+                    'alert-danger',
+                    this.opening.getCurrentChapter().index
+                );
                 setTimeout(() => {
                     this.game.undoLastMove();
                     this.triggerGameInterfaceCommand('displayMoveIndex--');
                 }, 1000);
             } else {
-                this.showNotification('alert-success', this.opening.getIndex());
+                this.showNotification(
+                    'alert-success',
+                    this.opening.getCurrentChapter().index
+                );
                 if (this.isLineIsOver()) {
                     return;
                 }
@@ -118,39 +128,49 @@ export class OpeningTrainingGameComponent implements OnInit {
      * @description navigates to the move PRIOR to the opening defined move
      * TODO needs to be rewritten, it is redundant, bad logic. (but does work)
      */
-    private traverseToDefiningMove(): void {
-        this.game.makeMove(this.opening.getRoot().options[0].definingMove);
+    public traverseToDefiningMove(): void {
+        this.game.makeMove(
+            this.opening.getCurrentChapter().root.options[0].definingMove
+        );
         let numberOfTraversals = 1;
-        this.opening.setIndex(this.opening.getRoot().options[0]);
-        console.log('this.opening.getIndex()', this.opening.getIndex());
+        this.opening.getCurrentChapter().index = this.opening.getCurrentChapter().root.options[0];
+        console.log(
+            'this.opening.getCurrentChapter().index',
+            this.opening.getCurrentChapter().index
+        );
         while (
-            !this.opening.getIndex().explanation ||
-            this.opening.getIndex().explanation.substr(0, 16) !==
+            !this.opening.getCurrentChapter().index.explanation ||
+            this.opening.getCurrentChapter().index.explanation.substr(0, 16) !==
                 'DEFINING MOVE ::'
         ) {
-            if (this.opening.getIndex().options.length === 0) {
+            if (this.opening.getCurrentChapter().index.options.length === 0) {
                 throw new Error('no defining move in this tree');
             }
-            const expl = this.opening.getIndex().options[0].explanation;
+            const expl = this.opening.getCurrentChapter().index.options[0]
+                .explanation;
             console.log(expl);
             if (expl && expl.substr(0, 16) === 'DEFINING MOVE ::') {
                 break;
             }
-            this.game.makeMove(this.opening.getIndex().options[0].definingMove);
-            numberOfTraversals++;
-            this.opening.setIndex(
-                this.opening.getIndex().options.length !== 0
-                    ? this.opening.getIndex().options[0]
-                    : null
+            this.game.makeMove(
+                this.opening.getCurrentChapter().index.options[0].definingMove
             );
+            numberOfTraversals++;
+            this.opening.getCurrentChapter().index =
+                this.opening.getCurrentChapter().index.options.length !== 0
+                    ? this.opening.getCurrentChapter().index.options[0]
+                    : null;
         }
         this.triggerGameInterfaceCommand('traverse ' + numberOfTraversals);
-        console.log('this.opening.getIndex()', this.opening.getIndex());
+        console.log(
+            'this.opening.getCurrentChapter().index',
+            this.opening.getCurrentChapter().index
+        );
     }
 
     // sets boardOverlayData and returns true if line is over
     private isLineIsOver(): boolean {
-        if (this.opening.getIndex().options.length === 0) {
+        if (this.opening.getCurrentChapter().index.options.length === 0) {
             // the line is over!
             console.log('completed the line');
             this.boardOverlayData = {
