@@ -3,6 +3,7 @@ import { Game } from 'src/app/lib/game.library';
 import { Study, moveClassificationKey } from 'src/app/lib/study.library';
 import { GameEvent, Branch } from 'src/app/lib/interface.library';
 import { Openings } from 'src/app/data/openings';
+import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 
 @Component({
     selector: 'app-opening-training-game',
@@ -195,6 +196,7 @@ export class OpeningTrainingGameComponent implements OnInit {
     }
 
     private showNotification(result: string, index?: Branch): void {
+        console.log(result,index);
         this.alertType = result;
         this.notificationVisibility = true;
         switch (this.alertType) {
@@ -210,12 +212,13 @@ export class OpeningTrainingGameComponent implements OnInit {
         }
         if (index.explanation) {
             const explObj = this.getExplanationObject(index);
+            console.log(explObj);
             this.choiceSubMessage = explObj.head;
             this.choiceQuote = explObj.body;
-            this.choiceAuthor = null;
+            // this.choiceAuthor = null;
         } else {
             this.choiceQuote = null;
-            this.choiceAuthor = null;
+            // this.choiceAuthor = null;
         }
     }
 
@@ -231,9 +234,11 @@ export class OpeningTrainingGameComponent implements OnInit {
         };
         if (branch.explanation && branch.classification) {
             ret.head = moveClassificationKey[branch.classification];
-            ret.body = branch.explanation.substr(
-                moveClassificationKey[branch.classification].length + 1
-            );
+            // ret.body = branch.explanation.substr(
+            //     moveClassificationKey[branch.classification].length + 1
+            // );
+        } else {
+            ret.body = branch.explanation;
         }
         return ret;
     }

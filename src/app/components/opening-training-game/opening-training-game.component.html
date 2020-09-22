@@ -1,5 +1,5 @@
 <div id="standard-game-container" class="row">
-    <div class="col-sm-4" *ngIf="getOpening() && getOpening().isParsed()">
+    <div class="col-sm-2" *ngIf="getOpening() && getOpening().isParsed()">
         <div *ngFor="let chapter of getOpening().getChapters()">
             <button
                 (click)="getOpening().setCurrentChapter(chapter); resetBoard()"
@@ -22,8 +22,8 @@
             (gameDataEmitter)="gameDataEvent($event)"
         ></app-game>
     </div>
-    <div class="break-div col-sm-4"></div>
-    <div class="col-sm-4">
+    <!-- <div class="break-div col-sm-4"></div> -->
+    <div class="col-sm-2">
         <app-game-details-table
             id="game-details"
             [pgn]="getGame().getPGN()"
@@ -42,9 +42,9 @@
             <hr *ngIf="getChoiceQuote()" />
             <blockquote *ngIf="getChoiceQuote()" class="blockquote">
                 <p class="mb-0 quote-font-size">{{ getChoiceQuote() }}</p>
-                <footer class="blockquote-footer">
+                <!-- <footer class="blockquote-footer">
                     {{ getChoiceAuthor() }}
-                </footer>
+                </footer> -->
             </blockquote>
         </div>
     </div>
