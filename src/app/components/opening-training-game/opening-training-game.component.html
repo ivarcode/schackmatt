@@ -1,12 +1,12 @@
 <div id="standard-game-container" class="row">
     <div class="col-sm-2" *ngIf="getOpening() && getOpening().isParsed()">
-        <div *ngFor="let chapter of getOpening().getChapters()">
+        <!-- <div *ngFor="let chapter of getOpening().getChapters()">
             <button
                 (click)="getOpening().setCurrentChapter(chapter); resetBoard()"
             >
                 {{ chapter.title }}
             </button>
-        </div>
+        </div> -->
     </div>
     <div class="col-sm-8">
         <app-board-overlay
@@ -49,7 +49,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="getOpening()" id="developer-output">
+<!-- <div *ngIf="getOpening()" id="developer-output">
     <p>
         {{
             getOpening()
@@ -69,4 +69,4 @@
     >
         {{ s }}
     </p>
-</div>
+</div> -->
