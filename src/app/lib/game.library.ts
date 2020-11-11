@@ -1909,6 +1909,8 @@ export class Game {
     }
 
     public getNextFENFromMove(move: Move): string {
+        // TODO first part of this function can utilize
+        // this.getBoardString
         let newFEN = '';
         // whole board
         for (let i = 0; i < 8; i++) {
@@ -2145,6 +2147,45 @@ export class Game {
     // board object setter
     public setBoard(board: Board): void {
         this.board = board;
+    }
+
+    // updates the pieces positions in the FEN from the board state
+    public updateFENPiecesPositionsFromBoard(): void {
+        let boardString = this.getBoardString(this.board);
+        let fenArray = this.getFEN().split(' ');
+        console.log('fenArray', fenArray);
+        fenArray[0] = boardString;
+        this.fen = fenArray.join(' ');
+    }
+
+    // TODO
+    public getBoardString(board: Board): string {
+        let boardString = '';
+        for (let i = 0; i < 8; i++) {
+            let empties = 0;
+            for (let j = 0; j < 8; j++) {
+                const piece = board.getPiece({
+                    file: j,
+                    rank: 7 - i
+                });
+                if (piece) {
+                    if (empties > 0) {
+                        boardString += empties;
+                        empties = 0;
+                    }
+                    boardString += this.pieceToCharSymbol(piece);
+                } else {
+                    empties++;
+                }
+            }
+            if (empties > 0) {
+                boardString += empties;
+            }
+            if (i !== 7) {
+                boardString += '/';
+            }
+        }
+        return boardString;
     }
 
     // GETTERS
