@@ -214,6 +214,8 @@ export class GameComponent implements OnInit, OnChanges {
             // when mouse is released
             this.CURSOR_DATA.mouseIsDown = false;
             if (this.isPromoting) {
+                console.log('ispromo');
+
                 if (
                     !this.twoClickMove.attempting &&
                     !this.twoClickMove.preventPromote
@@ -227,7 +229,7 @@ export class GameComponent implements OnInit, OnChanges {
                             this.CURSOR_DATA.mouseDownOn.y ===
                                 this.CURSOR_DATA.mouseUpOn.y
                         ) {
-                            // console.log('', this.matchingMoves);
+                            console.log('', this.matchingMoves);
                             const f = this.CURSOR_DATA.mouseDownOn.x;
                             const r = 7 - this.CURSOR_DATA.mouseDownOn.y;
                             if (f === this.matchingMoves[0].dest.file) {
@@ -236,36 +238,84 @@ export class GameComponent implements OnInit, OnChanges {
                                         this.game.makeMove(
                                             this.matchingMoves[0].notation
                                         );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[0]
+                                                .notation
+                                        });
                                     } else if (r === Rank.SEVEN) {
                                         this.game.makeMove(
                                             this.matchingMoves[3].notation
                                         );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[3]
+                                                .notation
+                                        });
                                     } else if (r === Rank.SIX) {
                                         this.game.makeMove(
                                             this.matchingMoves[1].notation
                                         );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[1]
+                                                .notation
+                                        });
                                     } else if (r === Rank.FIVE) {
                                         this.game.makeMove(
                                             this.matchingMoves[2].notation
                                         );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[2]
+                                                .notation
+                                        });
                                     }
                                 } else {
                                     if (r === Rank.ONE) {
                                         this.game.makeMove(
                                             this.matchingMoves[0].notation
                                         );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[0]
+                                                .notation
+                                        });
                                     } else if (r === Rank.TWO) {
                                         this.game.makeMove(
                                             this.matchingMoves[3].notation
                                         );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[3]
+                                                .notation
+                                        });
                                     } else if (r === Rank.THREE) {
                                         this.game.makeMove(
                                             this.matchingMoves[1].notation
                                         );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[1]
+                                                .notation
+                                        });
                                     } else if (r === Rank.FOUR) {
                                         this.game.makeMove(
                                             this.matchingMoves[2].notation
                                         );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[2]
+                                                .notation
+                                        });
                                     }
                                 }
                             }
