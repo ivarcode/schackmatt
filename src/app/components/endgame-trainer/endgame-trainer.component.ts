@@ -54,7 +54,7 @@ export class EndgameTrainerComponent implements OnInit {
             new Piece(PieceType.King, Color.Black)
         );
         this.game.updateFENPiecesPositionsFromBoard();
-        console.log(this.game);
+        // console.log(this.game);
     }
 
     public gameDataEvent(event: GameEvent) {

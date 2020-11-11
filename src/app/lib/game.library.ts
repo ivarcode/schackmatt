@@ -1863,7 +1863,7 @@ export class Game {
             }
         }
 
-        console.log('move', move);
+        // console.log('move', move);
 
         this.addMoveToPGN(move);
 
@@ -1874,7 +1874,7 @@ export class Game {
         this.fen = newFEN;
         this.loadFEN();
 
-        console.log(this.toString());
+        // console.log(this.toString());
     }
 
     public isStalemate(): boolean {
@@ -2153,7 +2153,7 @@ export class Game {
     public updateFENPiecesPositionsFromBoard(): void {
         let boardString = this.getBoardString(this.board);
         let fenArray = this.getFEN().split(' ');
-        console.log('fenArray', fenArray);
+        // console.log('fenArray', fenArray);
         fenArray[0] = boardString;
         this.fen = fenArray.join(' ');
     }
