@@ -10,8 +10,13 @@ import { ChapterComponent } from './components/studies/chapter/chapter.component
 import { OpeningTrainingGameComponent } from './components/opening-training-game/opening-training-game.component';
 import { PageComponent } from './components/studies/page/page.component';
 import { AboutComponent } from './components/about/about.component';
+import { EndgameTrainerComponent } from './components/endgame-trainer/endgame-trainer.component';
 
 const routes: Routes = [
+    {
+        component: EndgameTrainerComponent,
+        path: 'endgame-trainer'
+    },
     {
         component: OpeningTrainingGameComponent,
         path: 'opening-training-game'
@@ -53,7 +58,7 @@ const routes: Routes = [
         path: 'about'
     },
     {
-        redirectTo: 'opening-training-game',
+        redirectTo: 'endgame-trainer',
         path: '**'
     }
 ];
