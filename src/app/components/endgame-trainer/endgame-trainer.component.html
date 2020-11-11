@@ -1,0 +1,18 @@
+<div id="standard-game-container" class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <!-- <app-board-overlay
+            id="board-overlay"
+            *ngIf="getShowBoardOverlay()"
+            [boardOverlayData]="getBoardOverlayData()"
+            (boardOverlayEmitter)="boardOverlayEvent($event)"
+        ></app-board-overlay> -->
+        <app-game
+            id="game"
+            [game]="game"
+            [interfaceCommand]="interfaceCommand"
+            (gameDataEmitter)="gameDataEvent($event)"
+        ></app-game>
+    </div>
+    <div class="col-sm-2"></div>
+</div>
