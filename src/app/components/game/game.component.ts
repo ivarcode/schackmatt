@@ -365,6 +365,9 @@ export class GameComponent implements OnInit, OnChanges {
                     this.displayedMoveIndex++;
                     this.drawBoard();
                     break;
+                case 'redraw board':
+                    this.drawBoard();
+                    break;
                 case 'back':
                     if (this.displayedMoveIndex > 0) {
                         this.displayedMoveIndex--;

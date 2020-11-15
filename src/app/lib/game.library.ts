@@ -91,6 +91,19 @@ export class Board {
         const p = this.content[sq.file][sq.rank];
         return p;
     }
+    public findPiece(piece: Piece): Square[] {
+        let sqArray: Square[] = [];
+        for (let rank = Rank.ONE; rank < Rank.EIGHT; rank++) {
+            for (let file = File.a; file < File.h; file++) {
+                const sq = { file, rank };
+                const p = this.getPiece(sq);
+                if (p && p.color === piece.color && p.type === piece.type) {
+                    sqArray.push(sq);
+                }
+            }
+        }
+        return sqArray;
+    }
     public toString(): string {
         let str = 'board:';
         for (const i of this.content) {
