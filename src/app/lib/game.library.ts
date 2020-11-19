@@ -165,7 +165,7 @@ export class Game {
     }
 
     // prepares the game object from the fen data
-    private loadFEN(): void {
+    public loadFEN(): void {
         const board: Board = new Board();
 
         this.castlingRights = { K: false, Q: false, k: false, q: false };
@@ -2199,6 +2199,11 @@ export class Game {
             }
         }
         return boardString;
+    }
+
+    // SETTERS
+    public setFEN(fen: string): void {
+        this.fen = fen;
     }
 
     // GETTERS

@@ -1,4 +1,4 @@
-import { Component, OnInit, ɵCurrencyIndex } from '@angular/core';
+import { Component, OnInit, ViewChild, ɵCurrencyIndex } from '@angular/core';
 import {
     Board,
     Color,
@@ -9,6 +9,7 @@ import {
     Rank
 } from 'src/app/lib/game.library';
 import { GameEvent, Move } from 'src/app/lib/interface.library';
+import { GameComponent } from '../game/game.component';
 
 @Component({
     selector: 'app-endgame-trainer',
@@ -16,6 +17,7 @@ import { GameEvent, Move } from 'src/app/lib/interface.library';
     styleUrls: ['./endgame-trainer.component.css']
 })
 export class EndgameTrainerComponent implements OnInit {
+    @ViewChild('gameComponent') _gameComponent: GameComponent;
     private _game: Game;
     private _interfaceCommand: string;
     // TODO not any
@@ -88,6 +90,7 @@ export class EndgameTrainerComponent implements OnInit {
     }
 
     ngOnInit() {
+        this._game = new Game();
         // start with an empty board
         this.setupEndgameTrainingSet(this.currentTrainingSet);
         // console.log(this.game);
@@ -95,7 +98,8 @@ export class EndgameTrainerComponent implements OnInit {
 
     private setupEndgameTrainingSet(set): void {
         let emptyBoardFEN = '8/8/8/8/8/8/8/8 w - - 0 1';
-        this._game = new Game(emptyBoardFEN);
+        this._game.setFEN(emptyBoardFEN);
+        this._game.loadFEN();
         let board = this.game.getBoard();
         set.boardSetup(board);
         this.game.updateFENPiecesPositionsFromBoard();
@@ -108,6 +112,11 @@ export class EndgameTrainerComponent implements OnInit {
             setTimeout(() => {
                 alert('good job!');
                 this.setupEndgameTrainingSet(this.currentTrainingSet);
+                console.log('g', this.game);
+                this._gameComponent.setDisplayedMoveIndex(0);
+                setTimeout(() => {
+                    this.triggerInterfaceCommand('redraw board');
+                }, 10);
             }, 2000);
         } else if (
             // trigger black's move if white's is correct
