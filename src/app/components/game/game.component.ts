@@ -722,4 +722,8 @@ export class GameComponent implements OnInit, OnChanges {
     public getGame(): Game {
         return this.game;
     }
+
+    public setInitPosition(board: Board): void {
+        this.initPosition = board;
+    }
 }

@@ -93,8 +93,8 @@ export class Board {
     }
     public findPiece(piece: Piece): Square[] {
         let sqArray: Square[] = [];
-        for (let rank = Rank.ONE; rank < Rank.EIGHT; rank++) {
-            for (let file = File.a; file < File.h; file++) {
+        for (let rank = Rank.ONE; rank <= Rank.EIGHT; rank++) {
+            for (let file = File.a; file <= File.h; file++) {
                 const sq = { file, rank };
                 const p = this.getPiece(sq);
                 if (p && p.color === piece.color && p.type === piece.type) {
@@ -2232,6 +2232,11 @@ export class Game {
     public getMoveHistory(): Move[] {
         return this.moveHistory;
     }
+
+    public setMoveHistory(mh: Move[]): void {
+        this.moveHistory = mh;
+    }
+
     // ---
 
     // helper function that prints the legal moves of this game object

@@ -78,6 +78,8 @@ export class EndgameTrainerComponent implements OnInit {
                     let blackPawns = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     );
+                    console.log('balck pawns', blackPawns);
+
                     if (blackPawns.length === 0) {
                         return true;
                     }
@@ -93,7 +95,7 @@ export class EndgameTrainerComponent implements OnInit {
         this._game = new Game();
         // start with an empty board
         this.setupEndgameTrainingSet(this.currentTrainingSet);
-        // console.log(this.game);
+        console.log(this.game);
     }
 
     private setupEndgameTrainingSet(set): void {
@@ -112,11 +114,14 @@ export class EndgameTrainerComponent implements OnInit {
             setTimeout(() => {
                 alert('good job!');
                 this.setupEndgameTrainingSet(this.currentTrainingSet);
-                console.log('g', this.game);
+                // do we even need this?
+                this.game.setMoveHistory([]);
+                this._gameComponent.setInitPosition(this.game.getBoard());
                 this._gameComponent.setDisplayedMoveIndex(0);
                 setTimeout(() => {
+                    console.log('g', this.game);
                     this.triggerInterfaceCommand('redraw board');
-                }, 10);
+                }, 1000);
             }, 2000);
         } else if (
             // trigger black's move if white's is correct
