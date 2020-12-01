@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, ɵCurrencyIndex } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
     Board,
     Color,
-    File,
     Game,
     Piece,
     PieceType,
@@ -94,10 +93,10 @@ export class EndgameTrainerComponent implements OnInit {
         this.setupEndgameTrainingSet(this.currentTrainingSet);
     }
 
-    private setupEndgameTrainingSet(set): void {
+    private setupEndgameTrainingSet(set: any): void {
         let emptyBoardFEN = '8/8/8/8/8/8/8/8 w - - 0 1';
-        this._game.setFEN(emptyBoardFEN);
-        this._game.loadFEN();
+        this.game.setFEN(emptyBoardFEN);
+        this.game.loadFEN();
         let board = this.game.getBoard();
         set.boardSetup(board);
         this.game.updateFENPiecesPositionsFromBoard();
