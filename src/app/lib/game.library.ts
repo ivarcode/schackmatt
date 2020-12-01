@@ -1869,17 +1869,13 @@ export class Game {
     public makeMove(moveNotation: string): void {
         let move: Move;
         const legalMoves = this.getLegalMoves();
-        console.log('legalmo', legalMoves);
-
         for (const m of legalMoves) {
             m.notation = this.getNotation(m);
             if (m.notation === moveNotation) {
                 move = m;
             }
         }
-
-        console.log('move', move);
-
+        // console.log('move', move);
         this.addMoveToPGN(move);
 
         if (this.board.getPiece(move.dest)) {
@@ -1888,7 +1884,6 @@ export class Game {
         const newFEN = this.getNextFENFromMove(move);
         this.fen = newFEN;
         this.loadFEN();
-
         // console.log(this.toString());
     }
 
@@ -2149,16 +2144,14 @@ export class Game {
     }
 
     public undoLastMove(): void {
-        console.log(this.getPGN());
-        console.log(this.getMoveHistory());
+        // console.log(this.getPGN());
+        // console.log(this.getMoveHistory());
         this.fen = this.moveHistory[this.moveHistory.length - 1].preMoveFEN;
         this.moveHistory.pop();
         this.loadFEN();
-        console.log(this.moveHistory);
-
         this.pgn = this.getPGNFromMoveHistory(this.moveHistory[0].preMoveFEN);
-        console.log(this.getPGN());
-        console.log(this.getMoveHistory());
+        // console.log(this.getPGN());
+        // console.log(this.getMoveHistory());
     }
 
     // board object setter
@@ -2228,8 +2221,6 @@ export class Game {
         // have to start with this fen ...
         const tempNewGame = new Game(fen);
         for (const m of this.getMoveHistory()) {
-            console.log('m', m);
-
             tempNewGame.makeMove(m.notation);
         }
         return tempNewGame.getPGN();

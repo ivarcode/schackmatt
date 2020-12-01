@@ -1,3 +1,9 @@
 #standard-game-container {
     margin: 0px;
 }
+
+#title {
+    margin-top: 20px;
+    margin-left: 50px;
+    margin-right: 50px;
+}

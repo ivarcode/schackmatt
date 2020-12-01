@@ -1,6 +1,11 @@
 <div id="standard-game-container" class="row">
     <div class="col-sm-2"></div>
     <div class="col-sm-8">
+        <div class="row">
+            <h2 id="title" *ngIf="currentTrainingSet">
+                {{ currentTrainingSet.name }}
+            </h2>
+        </div>
         <!-- <app-board-overlay
             id="board-overlay"
             *ngIf="getShowBoardOverlay()"

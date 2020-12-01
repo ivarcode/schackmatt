@@ -27,7 +27,7 @@ export class EndgameTrainerComponent implements OnInit {
     constructor() {
         this._endgameTrainingSets = [
             {
-                name: 'King & Pawn Box-rule',
+                name: 'Understanding the Square',
                 boardSetup: (board: Board): void => {
                     // random rank between 3 & 5 inclusive
                     let r = Math.floor(Math.random() * 3) + 2;
