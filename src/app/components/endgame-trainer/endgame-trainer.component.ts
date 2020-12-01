@@ -78,8 +78,6 @@ export class EndgameTrainerComponent implements OnInit {
                     let blackPawns = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     );
-                    console.log('balck pawns', blackPawns);
-
                     if (blackPawns.length === 0) {
                         return true;
                     }
@@ -87,7 +85,6 @@ export class EndgameTrainerComponent implements OnInit {
                 }
             }
         ];
-
         this._currentTrainingSet = this._endgameTrainingSets[0];
     }
 
@@ -95,7 +92,6 @@ export class EndgameTrainerComponent implements OnInit {
         this._game = new Game();
         // start with an empty board
         this.setupEndgameTrainingSet(this.currentTrainingSet);
-        console.log(this.game);
     }
 
     private setupEndgameTrainingSet(set): void {
@@ -119,29 +115,40 @@ export class EndgameTrainerComponent implements OnInit {
                 this._gameComponent.setInitPosition(this.game.getBoard());
                 this._gameComponent.setDisplayedMoveIndex(0);
                 setTimeout(() => {
-                    console.log('g', this.game);
                     this.triggerInterfaceCommand('redraw board');
                 }, 1000);
             }, 2000);
-        } else if (
-            // trigger black's move if white's is correct
-            this.currentTrainingSet.moveValidator(this.game.getBoard(), event)
-        ) {
-            let pawnLocation = this.game
-                .getBoard()
-                .findPiece(new Piece(PieceType.Pawn, Color.Black))[0];
-            let dest = {
-                file: pawnLocation.file,
-                rank: pawnLocation.rank - 1
-            };
-            let moveNotation = this.game.squareToString(dest);
-            if (dest.rank === Rank.ONE) {
-                moveNotation += '=Q+';
+        } else {
+            if (
+                // trigger black's move if white's is correct
+                this.currentTrainingSet.moveValidator(
+                    this.game.getBoard(),
+                    event
+                )
+            ) {
+                let pawnLocation = this.game
+                    .getBoard()
+                    .findPiece(new Piece(PieceType.Pawn, Color.Black))[0];
+                let dest = {
+                    file: pawnLocation.file,
+                    rank: pawnLocation.rank - 1
+                };
+                let moveNotation = this.game.squareToString(dest);
+                if (dest.rank === Rank.ONE) {
+                    moveNotation += '=Q+';
+                }
+                setTimeout(() => {
+                    this.game.makeMove(moveNotation);
+                    this.triggerInterfaceCommand('move made, redraw board');
+                }, 1000);
+            } else {
+                // move is wrong
+                setTimeout(() => {
+                    this.game.undoLastMove();
+                    this.triggerInterfaceCommand('back');
+                    console.log('game state', this.game);
+                }, 1000);
             }
-            setTimeout(() => {
-                this.game.makeMove(moveNotation);
-                this.triggerInterfaceCommand('move made, redraw board');
-            }, 1000);
         }
     }
 
