@@ -6,12 +6,12 @@
                 {{ currentTrainingSet.name }}
             </h2>
         </div>
-        <!-- <app-board-overlay
+        <app-board-overlay
             id="board-overlay"
-            *ngIf="getShowBoardOverlay()"
+            *ngIf="showBoardOverlay"
             [boardOverlayData]="getBoardOverlayData()"
             (boardOverlayEmitter)="boardOverlayEvent($event)"
-        ></app-board-overlay> -->
+        ></app-board-overlay>
         <app-game
             #gameComponent
             id="game"

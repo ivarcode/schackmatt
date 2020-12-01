@@ -19,14 +19,19 @@ export class EndgameTrainerComponent implements OnInit {
     @ViewChild('gameComponent') _gameComponent: GameComponent;
     private _game: Game;
     private _interfaceCommand: string;
+    private _showBoardOverlay: boolean;
+
     // TODO not any
     private _endgameTrainingSets: any[];
     private _currentTrainingSet: any;
 
     constructor() {
+        this._showBoardOverlay = false;
         this._endgameTrainingSets = [
             {
                 name: 'Understanding the Square',
+                info:
+                    'Count the number of squares the black pawn is away from the queening square.  Then count the same number of squares either left or right TOWARDS the white king.  Using these two sides, complete the square (you can always complete a square with this method).\nIf the white king can step into the square before the black pawn gets to move, the white king is in time to stop the pawn from queening.',
                 boardSetup: (board: Board): void => {
                     // random rank between 3 & 5 inclusive
                     let r = Math.floor(Math.random() * 3) + 2;
@@ -169,5 +174,8 @@ export class EndgameTrainerComponent implements OnInit {
     // TODO not any
     get currentTrainingSet(): any {
         return this._currentTrainingSet;
+    }
+    get showBoardOverlay(): boolean {
+        return this._showBoardOverlay;
     }
 }
