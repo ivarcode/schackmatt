@@ -1869,6 +1869,8 @@ export class Game {
     public makeMove(moveNotation: string): void {
         let move: Move;
         const legalMoves = this.getLegalMoves();
+        console.log('legalmo', legalMoves);
+
         for (const m of legalMoves) {
             m.notation = this.getNotation(m);
             if (m.notation === moveNotation) {
@@ -1876,7 +1878,7 @@ export class Game {
             }
         }
 
-        // console.log('move', move);
+        console.log('move', move);
 
         this.addMoveToPGN(move);
 
@@ -2152,7 +2154,9 @@ export class Game {
         this.fen = this.moveHistory[this.moveHistory.length - 1].preMoveFEN;
         this.moveHistory.pop();
         this.loadFEN();
-        this.pgn = this.getPGNFromMoveHistory();
+        console.log(this.moveHistory);
+
+        this.pgn = this.getPGNFromMoveHistory(this.moveHistory[0].preMoveFEN);
         console.log(this.getPGN());
         console.log(this.getMoveHistory());
     }
@@ -2219,9 +2223,13 @@ export class Game {
     public getPGN(): string {
         return this.pgn;
     }
-    public getPGNFromMoveHistory(): string {
-        const tempNewGame = new Game();
+    public getPGNFromMoveHistory(fen: string): string {
+        // TODO MUST REFACTOR THIS LOL
+        // have to start with this fen ...
+        const tempNewGame = new Game(fen);
         for (const m of this.getMoveHistory()) {
+            console.log('m', m);
+
             tempNewGame.makeMove(m.notation);
         }
         return tempNewGame.getPGN();
