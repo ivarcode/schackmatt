@@ -11,7 +11,7 @@ export class BoardOverlayComponent {
         title: string;
         displayLoadingMessage: boolean;
         detailedMessage: string;
-        displayButtons: boolean;
+        displayButtons: string[];
     };
 
     constructor() {}

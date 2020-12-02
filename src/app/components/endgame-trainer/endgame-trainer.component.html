@@ -9,7 +9,7 @@
         <app-board-overlay
             id="board-overlay"
             *ngIf="showBoardOverlay"
-            [boardOverlayData]="getBoardOverlayData()"
+            [boardOverlayData]="boardOverlayData"
             (boardOverlayEmitter)="boardOverlayEvent($event)"
         ></app-board-overlay>
         <app-game

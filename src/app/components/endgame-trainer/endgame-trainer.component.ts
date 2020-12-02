@@ -20,6 +20,12 @@ export class EndgameTrainerComponent implements OnInit {
     private _game: Game;
     private _interfaceCommand: string;
     private _showBoardOverlay: boolean;
+    private _boardOverlayData: {
+        title: string;
+        displayLoadingMessage: boolean;
+        detailedMessage: string;
+        displayButtons: string[];
+    };
 
     // TODO not any
     private _endgameTrainingSets: any[];
@@ -27,6 +33,12 @@ export class EndgameTrainerComponent implements OnInit {
 
     constructor() {
         this._showBoardOverlay = false;
+        this._boardOverlayData = {
+            title: 'Well done!',
+            displayLoadingMessage: false,
+            detailedMessage: 'You completed this exercise successfully!',
+            displayButtons: ['Retry Exercise']
+        };
         this._endgameTrainingSets = [
             {
                 name: 'Understanding the Square',
@@ -107,12 +119,10 @@ export class EndgameTrainerComponent implements OnInit {
         this.game.updateFENPiecesPositionsFromBoard();
     }
 
-    public gameDataEvent(event: GameEvent) {
-        console.log(event);
-        if (this.currentTrainingSet.completed(this.game.getBoard())) {
-            // reset
-            setTimeout(() => {
-                alert('good job!');
+    public boardOverlayEvent(event: string): void {
+        console.log('board overlay event', event);
+        switch (event) {
+            case 'Retry Exercise':
                 this.setupEndgameTrainingSet(this.currentTrainingSet);
                 // do we even need this?
                 this.game.setMoveHistory([]);
@@ -120,8 +130,21 @@ export class EndgameTrainerComponent implements OnInit {
                 this._gameComponent.setDisplayedMoveIndex(0);
                 setTimeout(() => {
                     this.triggerInterfaceCommand('redraw board');
-                }, 1000);
-            }, 2000);
+                }, 500);
+                break;
+            default:
+                break;
+        }
+        this._showBoardOverlay = false;
+    }
+
+    public gameDataEvent(event: GameEvent) {
+        console.log(event);
+        if (this.currentTrainingSet.completed(this.game.getBoard())) {
+            // reset
+            setTimeout(() => {
+                this._showBoardOverlay = true;
+            }, 1500);
         } else {
             if (
                 // trigger black's move if white's is correct
@@ -177,5 +200,9 @@ export class EndgameTrainerComponent implements OnInit {
     }
     get showBoardOverlay(): boolean {
         return this._showBoardOverlay;
+    }
+    // TODO not any
+    get boardOverlayData(): any {
+        return this._boardOverlayData;
     }
 }
