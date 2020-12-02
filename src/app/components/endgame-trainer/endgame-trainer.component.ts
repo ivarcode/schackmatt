@@ -26,6 +26,7 @@ export class EndgameTrainerComponent implements OnInit {
         detailedMessage: string;
         displayButtons: string[];
     };
+    private _colorToPlay: Color;
 
     // TODO not any
     private _endgameTrainingSets: any[];
@@ -117,6 +118,7 @@ export class EndgameTrainerComponent implements OnInit {
         let board = this.game.getBoard();
         set.boardSetup(board);
         this.game.updateFENPiecesPositionsFromBoard();
+        this._colorToPlay = this.game.getTurn();
     }
 
     public boardOverlayEvent(event: string): void {
@@ -204,5 +206,12 @@ export class EndgameTrainerComponent implements OnInit {
     // TODO not any
     get boardOverlayData(): any {
         return this._boardOverlayData;
+    }
+    get colorToPlay(): Color {
+        return this._colorToPlay;
+    }
+    // TODO colorToString utility function
+    get colorToPlayToString(): string {
+        return this.colorToPlay ? 'black' : 'white';
     }
 }

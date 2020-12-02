@@ -14,3 +14,8 @@
     padding: 20px;
     position: absolute;
 }
+
+#which-color-to-play-alert {
+    margin-left: 30px;
+    height: 60px;
+}
