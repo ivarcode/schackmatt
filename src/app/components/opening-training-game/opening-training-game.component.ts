@@ -25,7 +25,7 @@ export class OpeningTrainingGameComponent implements OnInit {
         title: string;
         displayLoadingMessage: boolean;
         detailedMessage: string;
-        displayButtons: boolean;
+        displayButtons: string[];
     };
 
     constructor() {
@@ -42,7 +42,7 @@ export class OpeningTrainingGameComponent implements OnInit {
             title: null,
             displayLoadingMessage: true,
             detailedMessage: 'Please wait.',
-            displayButtons: false
+            displayButtons: []
         };
     }
     ngOnInit() {
@@ -178,7 +178,7 @@ export class OpeningTrainingGameComponent implements OnInit {
                 title: 'You have completed the line!',
                 displayLoadingMessage: false,
                 detailedMessage: null,
-                displayButtons: true
+                displayButtons: ['retry opening']
             };
             this.showBoardOverlay = true;
             return true;
@@ -196,7 +196,7 @@ export class OpeningTrainingGameComponent implements OnInit {
     }
 
     private showNotification(result: string, index?: Branch): void {
-        console.log(result,index);
+        console.log(result, index);
         this.alertType = result;
         this.notificationVisibility = true;
         switch (this.alertType) {

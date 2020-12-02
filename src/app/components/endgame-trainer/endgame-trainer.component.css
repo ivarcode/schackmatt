@@ -1,0 +1,21 @@
+#standard-game-container {
+    margin: 0px;
+}
+
+#title {
+    margin-top: 20px;
+    margin-left: 50px;
+    /* margin-right: 50px; */
+}
+
+#board-overlay {
+    /* margin: 0 auto; */
+    margin: 0px;
+    padding: 20px;
+    position: absolute;
+}
+
+#which-color-to-play-alert {
+    margin-left: 30px;
+    height: 60px;
+}
