@@ -2147,9 +2147,10 @@ export class Game {
         // console.log(this.getPGN());
         // console.log(this.getMoveHistory());
         this.fen = this.moveHistory[this.moveHistory.length - 1].preMoveFEN;
+        let firstMove = this.moveHistory[0];
         this.moveHistory.pop();
         this.loadFEN();
-        this.pgn = this.getPGNFromMoveHistory(this.moveHistory[0].preMoveFEN);
+        this.pgn = this.getPGNFromMoveHistory(firstMove.preMoveFEN);
         // console.log(this.getPGN());
         // console.log(this.getMoveHistory());
     }
