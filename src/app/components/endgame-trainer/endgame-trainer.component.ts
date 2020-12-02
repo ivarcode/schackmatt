@@ -43,8 +43,10 @@ export class EndgameTrainerComponent implements OnInit {
         this._endgameTrainingSets = [
             {
                 name: 'Understanding the Square',
-                info:
-                    'Count the number of squares the black pawn is away from the queening square.  Then count the same number of squares either left or right TOWARDS the white king.  Using these two sides, complete the square (you can always complete a square with this method).\nIf the white king can step into the square before the black pawn gets to move, the white king is in time to stop the pawn from queening.',
+                info: [
+                    'Count the number of squares the black pawn is away from the queening square.  Then count the same number of squares either left or right TOWARDS the white king.  Using these two sides, complete the square (you can always complete a square with this method).',
+                    'If the white king can step into the square before the black pawn gets to move, the white king is in time to stop the pawn from queening.'
+                ],
                 boardSetup: (board: Board): void => {
                     // random rank between 3 & 5 inclusive
                     let r = Math.floor(Math.random() * 3) + 2;

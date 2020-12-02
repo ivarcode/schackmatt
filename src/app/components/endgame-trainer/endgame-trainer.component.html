@@ -7,23 +7,33 @@
             </h2>
         </div>
         <div class="row">
-            <app-board-overlay
-                id="board-overlay"
-                *ngIf="showBoardOverlay"
-                [boardOverlayData]="boardOverlayData"
-                (boardOverlayEmitter)="boardOverlayEvent($event)"
-            ></app-board-overlay>
-            <app-game
-                #gameComponent
-                id="game"
-                [game]="game"
-                [interfaceCommand]="interfaceCommand"
-                (gameDataEmitter)="gameDataEvent($event)"
-            ></app-game>
-            <div id="which-color-to-play-alert" class="alert alert-primary">
-                <h4 class="alert-heading">
-                    You play {{ colorToPlayToString }}
-                </h4>
+            <div class="col-sm-auto">
+                <app-board-overlay
+                    id="board-overlay"
+                    *ngIf="showBoardOverlay"
+                    [boardOverlayData]="boardOverlayData"
+                    (boardOverlayEmitter)="boardOverlayEvent($event)"
+                ></app-board-overlay>
+                <app-game
+                    #gameComponent
+                    id="game"
+                    [game]="game"
+                    [interfaceCommand]="interfaceCommand"
+                    (gameDataEmitter)="gameDataEvent($event)"
+                ></app-game>
+            </div>
+            <div class="col-sm-auto">
+                <div id="which-color-to-play-alert" class="alert alert-primary">
+                    <h4 class="alert-heading">
+                        You play {{ colorToPlayToString }}
+                    </h4>
+                </div>
+                <h5
+                    *ngFor="let p of currentTrainingSet.info"
+                    style="width: 300px"
+                >
+                    {{ p }}
+                </h5>
             </div>
         </div>
     </div>
