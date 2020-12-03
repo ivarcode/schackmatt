@@ -31,15 +31,15 @@ export class AboutComponent {
                 discord: 'Ragchess',
                 url: '../../../assets/Nick.png',
                 goofyUrl: '../../../assets/Nick_goofy.png'
-            },
-            {
-                name: 'Nicolas Holmgren',
-                title: 'Junior Developer',
-                bio: 'chess player',
-                discord: 'Enrico',
-                url: '../../../assets/Nick.png',
-                goofyUrl: '../../../assets/Nick.png'
             }
+            // {
+            //     name: 'Nicolas Holmgren',
+            //     title: 'Junior Developer',
+            //     bio: 'chess player',
+            //     discord: 'Enrico',
+            //     url: '../../../assets/Nick.png',
+            //     goofyUrl: '../../../assets/Nick.png'
+            // }
         ];
     }
 }
