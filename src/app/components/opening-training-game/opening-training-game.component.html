@@ -1,5 +1,18 @@
 <div id="standard-game-container" class="row">
+    <div class="col-sm-2" *ngIf="getOpening() && getOpening().isParsed()">
+        <!-- <div *ngFor="let chapter of getOpening().getChapters()">
+            <button
+                (click)="getOpening().setCurrentChapter(chapter); resetBoard()"
+            >
+                {{ chapter.title }}
+            </button>
+        </div> -->
+    </div>
     <div class="col-sm-8">
+        <div class="row" style="background-color:rgb(209, 195, 0)">
+            <h2>This feature is in <strong>BETA</strong> and is not yet complete.</h2>
+            <h5>Feel free to play around, but do not expect full functionality at this time.</h5>
+        </div>
         <app-board-overlay
             id="board-overlay"
             *ngIf="getShowBoardOverlay()"
@@ -13,8 +26,8 @@
             (gameDataEmitter)="gameDataEvent($event)"
         ></app-game>
     </div>
-    <div class="break-div col-sm-4"></div>
-    <div class="col-sm-4">
+    <!-- <div class="break-div col-sm-4"></div> -->
+    <div class="col-sm-2">
         <app-game-details-table
             id="game-details"
             [pgn]="getGame().getPGN()"
@@ -28,24 +41,36 @@
         >
             <h4 class="alert-heading">{{ getChoiceHeadingMessage() }}</h4>
             <p>
-                Keep working hard
+                {{ getChoiceSubMessage() }}
             </p>
             <hr *ngIf="getChoiceQuote()" />
             <blockquote *ngIf="getChoiceQuote()" class="blockquote">
                 <p class="mb-0 quote-font-size">{{ getChoiceQuote() }}</p>
-                <footer class="blockquote-footer">
+                <!-- <footer class="blockquote-footer">
                     {{ getChoiceAuthor() }}
-                </footer>
+                </footer> -->
             </blockquote>
         </div>
     </div>
 </div>
-<div id="developer-output">
+<!-- <div *ngIf="getOpening()" id="developer-output">
     <p>
         {{
             getOpening()
-                ? getOpening().getOptionsFromBranch(getOpening().getIndex())
+                ? getOpening().getOptionsFromBranch(
+                      getOpening().getCurrentChapter().index
+                  )
                 : null
         }}
     </p>
-</div>
+    <hr />
+    <p
+        *ngFor="
+            let s of getOpening().developerData(
+                getOpening().getCurrentChapter().index
+            )
+        "
+    >
+        {{ s }}
+    </p>
+</div> -->

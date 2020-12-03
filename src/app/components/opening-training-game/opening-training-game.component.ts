@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/app/lib/game.library';
-import { Study } from 'src/app/lib/study.library';
-import { GameEvent } from 'src/app/lib/interface.library';
+import { Study, moveClassificationKey } from 'src/app/lib/study.library';
+import { GameEvent, Branch } from 'src/app/lib/interface.library';
 import { Openings } from 'src/app/data/openings';
+import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 
 @Component({
     selector: 'app-opening-training-game',
@@ -15,6 +16,7 @@ export class OpeningTrainingGameComponent implements OnInit {
     private gameInterfaceCommand: string;
     private alertType: string;
     private choiceHeadingMessage: string;
+    private choiceSubMessage: string;
     private choiceQuote: string;
     private choiceAuthor: string;
     private notificationVisibility: boolean;
@@ -23,7 +25,7 @@ export class OpeningTrainingGameComponent implements OnInit {
         title: string;
         displayLoadingMessage: boolean;
         detailedMessage: string;
-        displayButtons: boolean;
+        displayButtons: string[];
     };
 
     constructor() {
@@ -31,6 +33,7 @@ export class OpeningTrainingGameComponent implements OnInit {
         this.opening = null;
         this.alertType = 'alert-warning';
         this.choiceHeadingMessage = 'no message';
+        this.choiceSubMessage = 'none';
         this.choiceAuthor = '';
         this.choiceQuote = '';
         this.notificationVisibility = false;
@@ -39,15 +42,15 @@ export class OpeningTrainingGameComponent implements OnInit {
             title: null,
             displayLoadingMessage: true,
             detailedMessage: 'Please wait.',
-            displayButtons: false
+            displayButtons: []
         };
     }
     ngOnInit() {
         // this timeout solution is probably not correct...
         setTimeout(() => {
             // TODO pass in opening as OBJECT
-            // this.opening = new Study(Openings.openings[0].pgnData);
-            this.opening = new Study(Openings.openings[1].pgnData);
+            this.opening = new Study(Openings.openings[0].pgnData);
+            // this.opening = new Study(Openings.openings[2].pgnData);
             this.showBoardOverlay = false;
             this.traverseToDefiningMove();
         }, 200);
@@ -57,6 +60,10 @@ export class OpeningTrainingGameComponent implements OnInit {
         if (event === 'forward' || event === 'back') {
             this.triggerGameInterfaceCommand(event);
         }
+    }
+    public resetBoard(): void {
+        this.game = new Game();
+        this.traverseToDefiningMove();
     }
     public boardOverlayEvent(event: string): void {
         console.log('board overlay event', event);
@@ -70,24 +77,24 @@ export class OpeningTrainingGameComponent implements OnInit {
                 break;
         }
         this.showBoardOverlay = false;
-        // this.opening.setIndex()
+        // this.opening.getCurrentChapter().index=()
     }
 
     public gameDataEvent(event: GameEvent): void {
         console.log('game emit', event);
         if (event.type === 'move') {
             this.quoteSelector();
-            console.log('played', this.opening.getIndex());
+            console.log('played', this.opening.getCurrentChapter().index);
             if (
                 !this.opening.traverseIndex(event.content) ||
-                this.opening.getIndex().classification === '?' ||
-                this.opening.getIndex().classification === '??'
+                this.opening.getCurrentChapter().index.classification === '?' ||
+                this.opening.getCurrentChapter().index.classification === '??'
             ) {
                 // if the move is not in the study branch OR
                 // if the move is classified as not ideal
                 this.showNotification(
                     'alert-danger',
-                    this.opening.getIndex().explanation
+                    this.opening.getCurrentChapter().index
                 );
                 setTimeout(() => {
                     this.game.undoLastMove();
@@ -96,14 +103,14 @@ export class OpeningTrainingGameComponent implements OnInit {
             } else {
                 this.showNotification(
                     'alert-success',
-                    this.opening.getIndex().explanation
+                    this.opening.getCurrentChapter().index
                 );
                 if (this.isLineIsOver()) {
                     return;
                 }
                 // 1 second timeout
                 setTimeout(() => {
-                    const randMove = this.opening.selectAndTraverseRandomMove();
+                    const randMove = this.opening.selectNextTickMove();
                     if (randMove !== null) {
                         this.game.makeMove(randMove);
                     }
@@ -122,45 +129,56 @@ export class OpeningTrainingGameComponent implements OnInit {
      * @description navigates to the move PRIOR to the opening defined move
      * TODO needs to be rewritten, it is redundant, bad logic. (but does work)
      */
-    private traverseToDefiningMove(): void {
-        this.game.makeMove(this.opening.getRoot().options[0].definingMove);
+    public traverseToDefiningMove(): void {
+        this.game.makeMove(
+            this.opening.getCurrentChapter().root.options[0].definingMove
+        );
         let numberOfTraversals = 1;
-        this.opening.setIndex(this.opening.getRoot().options[0]);
-        console.log('this.opening.getIndex()', this.opening.getIndex());
+        this.opening.getCurrentChapter().index = this.opening.getCurrentChapter().root.options[0];
+        console.log(
+            'this.opening.getCurrentChapter().index',
+            this.opening.getCurrentChapter().index
+        );
         while (
-            !this.opening.getIndex().explanation ||
-            this.opening.getIndex().explanation.substr(0, 16) !==
+            !this.opening.getCurrentChapter().index.explanation ||
+            this.opening.getCurrentChapter().index.explanation.substr(0, 16) !==
                 'DEFINING MOVE ::'
         ) {
-            if (this.opening.getIndex().options.length === 0) {
+            if (this.opening.getCurrentChapter().index.options.length === 0) {
                 throw new Error('no defining move in this tree');
             }
-            const expl = this.opening.getIndex().options[0].explanation;
+            const expl = this.opening.getCurrentChapter().index.options[0]
+                .explanation;
             console.log(expl);
             if (expl && expl.substr(0, 16) === 'DEFINING MOVE ::') {
                 break;
             }
-            this.game.makeMove(this.opening.getIndex().options[0].definingMove);
-            numberOfTraversals++;
-            this.opening.setIndex(
-                this.opening.getIndex().options.length !== 0
-                    ? this.opening.getIndex().options[0]
-                    : null
+            this.game.makeMove(
+                this.opening.getCurrentChapter().index.options[0].definingMove
             );
+            numberOfTraversals++;
+            this.opening.getCurrentChapter().index =
+                this.opening.getCurrentChapter().index.options.length !== 0
+                    ? this.opening.getCurrentChapter().index.options[0]
+                    : null;
         }
         this.triggerGameInterfaceCommand('traverse ' + numberOfTraversals);
-        console.log('this.opening.getIndex()', this.opening.getIndex());
+        console.log(
+            'this.opening.getCurrentChapter().index',
+            this.opening.getCurrentChapter().index
+        );
     }
+
     // sets boardOverlayData and returns true if line is over
     private isLineIsOver(): boolean {
-        if (this.opening.getIndex().options.length === 0) {
+        if (this.opening.getCurrentChapter().index.options.length === 0) {
             // the line is over!
             console.log('completed the line');
             this.boardOverlayData = {
                 title: 'You have completed the line!',
                 displayLoadingMessage: false,
                 detailedMessage: null,
-                displayButtons: true
+                displayButtons: ['retry opening']
             };
             this.showBoardOverlay = true;
             return true;
@@ -177,7 +195,8 @@ export class OpeningTrainingGameComponent implements OnInit {
         }, 10);
     }
 
-    private showNotification(result: string, explanation?: string): void {
+    private showNotification(result: string, index?: Branch): void {
+        console.log(result, index);
         this.alertType = result;
         this.notificationVisibility = true;
         switch (this.alertType) {
@@ -191,13 +210,37 @@ export class OpeningTrainingGameComponent implements OnInit {
                 this.choiceHeadingMessage = 'unknown value';
                 this.notificationVisibility = false;
         }
-        if (explanation) {
-            this.choiceQuote = explanation;
-            this.choiceAuthor = null;
+        if (index.explanation) {
+            const explObj = this.getExplanationObject(index);
+            console.log(explObj);
+            this.choiceSubMessage = explObj.head;
+            this.choiceQuote = explObj.body;
+            // this.choiceAuthor = null;
         } else {
             this.choiceQuote = null;
-            this.choiceAuthor = null;
+            // this.choiceAuthor = null;
         }
+    }
+
+    private getExplanationObject(
+        branch: Branch
+    ): {
+        head: string;
+        body: string;
+    } {
+        const ret = {
+            head: null,
+            body: null
+        };
+        if (branch.explanation && branch.classification) {
+            ret.head = moveClassificationKey[branch.classification];
+            // ret.body = branch.explanation.substr(
+            //     moveClassificationKey[branch.classification].length + 1
+            // );
+        } else {
+            ret.body = branch.explanation;
+        }
+        return ret;
     }
 
     public getNotificationVisibility(): boolean {
@@ -214,7 +257,7 @@ export class OpeningTrainingGameComponent implements OnInit {
     }
 
     private quoteSelector(): void {
-        let quote = {
+        const quote = {
             str:
                 '"You must take your opponent into a deep dark forest where ' +
                 '2+2=5, and the path leading out is only wide ' +
@@ -238,6 +281,9 @@ export class OpeningTrainingGameComponent implements OnInit {
     }
     public getChoiceHeadingMessage(): string {
         return this.choiceHeadingMessage;
+    }
+    public getChoiceSubMessage(): string {
+        return this.choiceSubMessage;
     }
     public getChoiceQuote(): string {
         return this.choiceQuote;

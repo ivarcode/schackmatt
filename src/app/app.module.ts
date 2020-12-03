@@ -20,6 +20,7 @@ import { OpeningTrainingGameComponent } from './components/opening-training-game
 import { PageComponent } from './components/studies/page/page.component';
 import { AboutComponent } from './components/about/about.component';
 import { BoardOverlayComponent } from './components/board-overlay/board-overlay.component';
+import { EndgameTrainerComponent } from './components/endgame-trainer/endgame-trainer.component';
 
 @NgModule({
     declarations: [
@@ -39,7 +40,8 @@ import { BoardOverlayComponent } from './components/board-overlay/board-overlay.
         OpeningTrainingGameComponent,
         PageComponent,
         AboutComponent,
-        BoardOverlayComponent
+        BoardOverlayComponent,
+        EndgameTrainerComponent
     ],
     imports: [BrowserModule, AppRoutingModule, FormsModule],
     providers: [],

@@ -1,6 +1,6 @@
 <div id="container">
     <div class="row justify-content-center">
-        <div id="popup-window" class="col-sm-6" style="margin-top: 200px;">
+        <div id="popup-window" class="col-sm-6" style="margin-top: 200px">
             <div class="card text-center">
                 <h5 class="card-title">{{ boardOverlayData.title }}</h5>
                 <div
@@ -21,8 +21,10 @@
                     *ngIf="boardOverlayData.displayButtons"
                     class="row justify-content-center"
                 >
-                    <a (click)="emit('retry opening')" class="btn btn-primary"
-                        >Try another line!
+                    <a
+                        (click)="emit(boardOverlayData.displayButtons[0])"
+                        class="btn btn-primary"
+                        >{{ boardOverlayData.displayButtons[0] }}
                     </a>
                 </div>
             </div>

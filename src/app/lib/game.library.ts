@@ -91,6 +91,19 @@ export class Board {
         const p = this.content[sq.file][sq.rank];
         return p;
     }
+    public findPiece(piece: Piece): Square[] {
+        let sqArray: Square[] = [];
+        for (let rank = Rank.ONE; rank <= Rank.EIGHT; rank++) {
+            for (let file = File.a; file <= File.h; file++) {
+                const sq = { file, rank };
+                const p = this.getPiece(sq);
+                if (p && p.color === piece.color && p.type === piece.type) {
+                    sqArray.push(sq);
+                }
+            }
+        }
+        return sqArray;
+    }
     public toString(): string {
         let str = 'board:';
         for (const i of this.content) {
@@ -152,7 +165,7 @@ export class Game {
     }
 
     // prepares the game object from the fen data
-    private loadFEN(): void {
+    public loadFEN(): void {
         const board: Board = new Board();
 
         this.castlingRights = { K: false, Q: false, k: false, q: false };
@@ -1862,9 +1875,7 @@ export class Game {
                 move = m;
             }
         }
-
         // console.log('move', move);
-
         this.addMoveToPGN(move);
 
         if (this.board.getPiece(move.dest)) {
@@ -1873,7 +1884,6 @@ export class Game {
         const newFEN = this.getNextFENFromMove(move);
         this.fen = newFEN;
         this.loadFEN();
-
         // console.log(this.toString());
     }
 
@@ -1909,6 +1919,8 @@ export class Game {
     }
 
     public getNextFENFromMove(move: Move): string {
+        // TODO first part of this function can utilize
+        // this.getBoardString
         let newFEN = '';
         // whole board
         for (let i = 0; i < 8; i++) {
@@ -2132,19 +2144,64 @@ export class Game {
     }
 
     public undoLastMove(): void {
-        console.log(this.getPGN());
-        console.log(this.getMoveHistory());
+        // console.log(this.getPGN());
+        // console.log(this.getMoveHistory());
         this.fen = this.moveHistory[this.moveHistory.length - 1].preMoveFEN;
+        let firstMove = this.moveHistory[0];
         this.moveHistory.pop();
         this.loadFEN();
-        this.pgn = this.getPGNFromMoveHistory();
-        console.log(this.getPGN());
-        console.log(this.getMoveHistory());
+        this.pgn = this.getPGNFromMoveHistory(firstMove.preMoveFEN);
+        // console.log(this.getPGN());
+        // console.log(this.getMoveHistory());
     }
 
     // board object setter
     public setBoard(board: Board): void {
         this.board = board;
+    }
+
+    // updates the pieces positions in the FEN from the board state
+    public updateFENPiecesPositionsFromBoard(): void {
+        let boardString = this.getBoardString(this.board);
+        let fenArray = this.getFEN().split(' ');
+        // console.log('fenArray', fenArray);
+        fenArray[0] = boardString;
+        this.fen = fenArray.join(' ');
+    }
+
+    // TODO
+    public getBoardString(board: Board): string {
+        let boardString = '';
+        for (let i = 0; i < 8; i++) {
+            let empties = 0;
+            for (let j = 0; j < 8; j++) {
+                const piece = board.getPiece({
+                    file: j,
+                    rank: 7 - i
+                });
+                if (piece) {
+                    if (empties > 0) {
+                        boardString += empties;
+                        empties = 0;
+                    }
+                    boardString += this.pieceToCharSymbol(piece);
+                } else {
+                    empties++;
+                }
+            }
+            if (empties > 0) {
+                boardString += empties;
+            }
+            if (i !== 7) {
+                boardString += '/';
+            }
+        }
+        return boardString;
+    }
+
+    // SETTERS
+    public setFEN(fen: string): void {
+        this.fen = fen;
     }
 
     // GETTERS
@@ -2160,8 +2217,10 @@ export class Game {
     public getPGN(): string {
         return this.pgn;
     }
-    public getPGNFromMoveHistory(): string {
-        const tempNewGame = new Game();
+    public getPGNFromMoveHistory(fen: string): string {
+        // TODO MUST REFACTOR THIS LOL
+        // have to start with this fen ...
+        const tempNewGame = new Game(fen);
         for (const m of this.getMoveHistory()) {
             tempNewGame.makeMove(m.notation);
         }
@@ -2173,6 +2232,11 @@ export class Game {
     public getMoveHistory(): Move[] {
         return this.moveHistory;
     }
+
+    public setMoveHistory(mh: Move[]): void {
+        this.moveHistory = mh;
+    }
+
     // ---
 
     // helper function that prints the legal moves of this game object
