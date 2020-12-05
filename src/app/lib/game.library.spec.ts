@@ -7,12 +7,12 @@
  */
 
 import { Game, File, Rank } from './game.library';
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 
 describe('Game', () => {
     let game: Game;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         // like if we wanted to test services?
         // TestBed.configureTestingModule({
         //     declarations: [],
