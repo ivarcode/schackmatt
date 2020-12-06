@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { Game, Square, Color, Rank, Board } from '../../lib/game.library';
 import { GameDisplayOptions, GameEvent } from 'src/app/lib/interface.library';
+import { fileToString } from 'src/app/lib/util.library';
 
 @Component({
     selector: 'app-game',
@@ -618,8 +619,14 @@ export class GameComponent implements OnInit, OnChanges {
                 if (i === 7) {
                     // right side
                     this.boardContext.fillText('' + (8 - j), 625, j * 80 + 20);
-                } else if (i === 7) {
+                }
+                if (j === 7) {
                     // bottom row
+                    this.boardContext.fillText(
+                        fileToString(i),
+                        i * 80 + 7,
+                        632
+                    );
                 }
             }
         }
