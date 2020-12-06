@@ -8,7 +8,7 @@ import {
     OnChanges
 } from '@angular/core';
 import { Game, Square, Color, Rank, Board } from '../../lib/game.library';
-import { GameEvent } from 'src/app/lib/interface.library';
+import { GameDisplayOptions, GameEvent } from 'src/app/lib/interface.library';
 
 @Component({
     selector: 'app-game',
@@ -19,6 +19,7 @@ export class GameComponent implements OnInit, OnChanges {
     @Output() gameDataEmitter = new EventEmitter<GameEvent>();
     @Input() game: Game;
     @Input() interfaceCommand: string;
+    @Input() gameDisplayOptions: GameDisplayOptions;
 
     private displayedMoveIndex: number;
     private boardCanvas: any;
@@ -596,6 +597,15 @@ export class GameComponent implements OnInit, OnChanges {
         this.boardContext.restore();
         this.boardContext.globalAlpha = 1;
         this.boardContext.drawImage(this.boardImage, 0, 0);
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                this.boardContext.fillStyle =
+                    (i + j) % 2 === 0
+                        ? this.gameDisplayOptions.colorScheme.light
+                        : this.gameDisplayOptions.colorScheme.dark;
+                this.boardContext.fillRect(i * 80, j * 80, 80, 80);
+            }
+        }
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
                 this.refreshCanvasSquare(i, j);

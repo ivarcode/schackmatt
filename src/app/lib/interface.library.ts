@@ -22,3 +22,11 @@ export interface GameEvent {
     type: string;
     content: string;
 }
+
+export interface GameDisplayOptions {
+    showCoordinates: boolean;
+    colorScheme: {
+        light: string;
+        dark: string;
+    };
+}

@@ -7,7 +7,11 @@ import {
     PieceType,
     Rank
 } from 'src/app/lib/game.library';
-import { GameEvent, Move } from 'src/app/lib/interface.library';
+import {
+    GameDisplayOptions,
+    GameEvent,
+    Move
+} from 'src/app/lib/interface.library';
 import { GameComponent } from '../game/game.component';
 
 @Component({
@@ -17,6 +21,7 @@ import { GameComponent } from '../game/game.component';
 })
 export class EndgameTrainerComponent implements OnInit {
     @ViewChild('gameComponent') _gameComponent: GameComponent;
+    private _gameDisplayOptions: GameDisplayOptions;
     private _game: Game;
     private _interfaceCommand: string;
     private _showBoardOverlay: boolean;
@@ -34,6 +39,13 @@ export class EndgameTrainerComponent implements OnInit {
 
     constructor() {
         this._showBoardOverlay = false;
+        this._gameDisplayOptions = {
+            showCoordinates: true,
+            colorScheme: {
+                light: '#f0d9b9',
+                dark: '#b58868'
+            }
+        };
         this._boardOverlayData = {
             title: 'Well done!',
             displayLoadingMessage: false,
@@ -215,5 +227,8 @@ export class EndgameTrainerComponent implements OnInit {
     // TODO colorToString utility function
     get colorToPlayToString(): string {
         return this.colorToPlay ? 'black' : 'white';
+    }
+    get gameDisplayOptions(): GameDisplayOptions {
+        return this._gameDisplayOptions;
     }
 }
