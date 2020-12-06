@@ -597,6 +597,7 @@ export class GameComponent implements OnInit, OnChanges {
         this.boardContext.restore();
         this.boardContext.globalAlpha = 1;
         this.boardContext.drawImage(this.boardImage, 0, 0);
+        this.boardContext.font = '15px Arial';
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
                 this.boardContext.fillStyle =
@@ -609,6 +610,17 @@ export class GameComponent implements OnInit, OnChanges {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
                 this.refreshCanvasSquare(i, j);
+            }
+        }
+        this.boardContext.fillStyle = 'black';
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                if (i === 7) {
+                    // right side
+                    this.boardContext.fillText('' + (8 - j), 625, j * 80 + 20);
+                } else if (i === 7) {
+                    // bottom row
+                }
             }
         }
         this.boardContext.globalAlpha = 1;
