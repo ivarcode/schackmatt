@@ -618,14 +618,14 @@ export class GameComponent implements OnInit, OnChanges {
             for (let j = 0; j < 8; j++) {
                 if (i === 7) {
                     // right side
-                    this.boardContext.fillText('' + (8 - j), 625, j * 80 + 20);
+                    this.boardContext.fillText('' + (8 - j), 628, j * 80 + 15);
                 }
                 if (j === 7) {
                     // bottom row
                     this.boardContext.fillText(
                         fileToString(i),
-                        i * 80 + 7,
-                        632
+                        i * 80 + 5,
+                        635
                     );
                 }
             }
