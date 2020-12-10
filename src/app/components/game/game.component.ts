@@ -613,20 +613,32 @@ export class GameComponent implements OnInit, OnChanges {
                 this.refreshCanvasSquare(i, j);
             }
         }
-        this.boardContext.fillStyle = 'black';
-        for (let i = 0; i < 8; i++) {
-            for (let j = 0; j < 8; j++) {
-                if (i === 7) {
-                    // right side
-                    this.boardContext.fillText('' + (8 - j), 628, j * 80 + 15);
-                }
-                if (j === 7) {
-                    // bottom row
-                    this.boardContext.fillText(
-                        fileToString(i),
-                        i * 80 + 5,
-                        635
-                    );
+        if (this.gameDisplayOptions.showCoordinates) {
+            for (let i = 0; i < 8; i++) {
+                for (let j = 0; j < 8; j++) {
+                    if ((i + j) % 2 === 0) {
+                        // light sq
+                        this.boardContext.fillStyle = this.gameDisplayOptions.colorScheme.dark;
+                    } else {
+                        // dark sq
+                        this.boardContext.fillStyle = this.gameDisplayOptions.colorScheme.light;
+                    }
+                    if (i === 7) {
+                        // right side
+                        this.boardContext.fillText(
+                            '' + (8 - j),
+                            628,
+                            j * 80 + 15
+                        );
+                    }
+                    if (j === 7) {
+                        // bottom row
+                        this.boardContext.fillText(
+                            fileToString(i),
+                            i * 80 + 5,
+                            635
+                        );
+                    }
                 }
             }
         }
