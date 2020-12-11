@@ -175,9 +175,16 @@ export class EndgameTrainerComponent implements OnInit {
             } else {
                 // move is wrong
                 setTimeout(() => {
-                    this.game.undoLastMove();
+                    let lastMove = this.game.undoLastMove();
+                    console.log('last move', lastMove);
+
                     this.triggerInterfaceCommand('back');
-                    // this._gameComponent.flashSq?
+                    this._gameComponent.flashSquare(
+                        lastMove.dest,
+                        'red',
+                        500,
+                        5
+                    );
                     console.log('game state', this.game);
                 }, 1000);
             }
