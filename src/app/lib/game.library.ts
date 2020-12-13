@@ -1,4 +1,5 @@
 import { Move } from './interface.library';
+import { fileToString, squareToString } from './util.library';
 
 export const enum PieceType {
     King,
@@ -153,15 +154,6 @@ export class Game {
         // str += '  fullmove = ' + this.fullmove;
         // str += '\ncastling = ' + JSON.stringify(this.castlingRights);
         return str + '\n----';
-    }
-
-    // pull this out as well as other helpers at some point
-    public squareToString(sq: Square): string {
-        return this.fileToString(sq.file) + (sq.rank + 1);
-    }
-
-    public fileToString(file: File): string {
-        return String.fromCharCode(97 + file);
     }
 
     // prepares the game object from the fen data
@@ -1295,8 +1287,7 @@ export class Game {
                                             });
                                         }
                                     } else if (
-                                        this.enPassant ===
-                                        this.squareToString(d)
+                                        this.enPassant === squareToString(d)
                                     ) {
                                         const newBoard = new Game(this.fen)
                                             .board;
@@ -1389,8 +1380,7 @@ export class Game {
                                             });
                                         }
                                     } else if (
-                                        this.enPassant ===
-                                        this.squareToString(d)
+                                        this.enPassant === squareToString(d)
                                     ) {
                                         const newBoard = new Game(this.fen)
                                             .board;
@@ -1583,8 +1573,7 @@ export class Game {
                                             });
                                         }
                                     } else if (
-                                        this.enPassant ===
-                                        this.squareToString(d)
+                                        this.enPassant === squareToString(d)
                                     ) {
                                         const newBoard = new Game(this.fen)
                                             .board;
@@ -1677,8 +1666,7 @@ export class Game {
                                             });
                                         }
                                     } else if (
-                                        this.enPassant ===
-                                        this.squareToString(d)
+                                        this.enPassant === squareToString(d)
                                     ) {
                                         const newBoard = new Game(this.fen)
                                             .board;
@@ -1751,7 +1739,7 @@ export class Game {
             if (piece === 'P') {
                 // we always include src file for pawns capturing
                 if (move.src.file !== move.dest.file) {
-                    notation += this.fileToString(move.src.file);
+                    notation += fileToString(move.src.file);
                 }
             } else {
                 const allMoves = preMoveGame.getLegalMoves();
@@ -1786,13 +1774,13 @@ export class Game {
                         }
                     }
                     if (rankConflict) {
-                        notation += this.fileToString(move.src.file);
+                        notation += fileToString(move.src.file);
                     }
                     if (fileConflict) {
                         notation += move.src.rank + 1;
                     }
                     if (!fileConflict && !rankConflict) {
-                        notation += this.fileToString(move.src.file);
+                        notation += fileToString(move.src.file);
                     }
                 }
             }
@@ -1807,7 +1795,7 @@ export class Game {
                 }
             }
             // dest
-            notation += this.squareToString(move.dest);
+            notation += squareToString(move.dest);
             // castling
             if (piece === 'K') {
                 if (move.src.file === File.e) {
@@ -2024,7 +2012,7 @@ export class Game {
             move.resultingBoard.getPiece(move.dest).type === PieceType.Pawn &&
             move.resultingBoard.getPiece(move.dest).color === Color.White
         ) {
-            const enPassantSqString = this.squareToString({
+            const enPassantSqString = squareToString({
                 file: move.dest.file,
                 rank: Rank.THREE
             });
@@ -2037,11 +2025,10 @@ export class Game {
             for (const possibleMove of arrayOfMTCBP) {
                 // console.log(
                 //     enPassantSqString,
-                //     this.squareToString(possibleMove.dest)
+                //     squareToString(possibleMove.dest)
                 // );
                 if (
-                    enPassantSqString ===
-                        this.squareToString(possibleMove.dest) &&
+                    enPassantSqString === squareToString(possibleMove.dest) &&
                     possibleMove.resultingBoard.getPiece(possibleMove.dest)
                         .type === PieceType.Pawn
                 ) {
@@ -2059,7 +2046,7 @@ export class Game {
             move.resultingBoard.getPiece(move.dest).type === PieceType.Pawn &&
             move.resultingBoard.getPiece(move.dest).color === Color.Black
         ) {
-            const enPassantSqString = this.squareToString({
+            const enPassantSqString = squareToString({
                 file: move.dest.file,
                 rank: Rank.SIX
             });
@@ -2072,11 +2059,10 @@ export class Game {
             for (const possibleMove of arrayOfMTCBP) {
                 // console.log(
                 //     enPassantSqString,
-                //     this.squareToString(possibleMove.dest)
+                //     squareToString(possibleMove.dest)
                 // );
                 if (
-                    enPassantSqString ===
-                        this.squareToString(possibleMove.dest) &&
+                    enPassantSqString === squareToString(possibleMove.dest) &&
                     possibleMove.resultingBoard.getPiece(possibleMove.dest)
                         .type === PieceType.Pawn
                 ) {

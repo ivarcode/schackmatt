@@ -8,6 +8,7 @@ import {
     Rank
 } from 'src/app/lib/game.library';
 import { GameEvent, Move } from 'src/app/lib/interface.library';
+import { squareToString } from 'src/app/lib/util.library';
 import { GameComponent } from '../game/game.component';
 
 @Component({
@@ -77,6 +78,20 @@ export class EndgameTrainerComponent implements OnInit {
                         new Piece(PieceType.King, Color.Black)
                     );
                 },
+                getMove: (board: Board): string => {
+                    let pawnLocation = board.findPiece(
+                        new Piece(PieceType.Pawn, Color.Black)
+                    )[0];
+                    let dest = {
+                        file: pawnLocation.file,
+                        rank: pawnLocation.rank - 1
+                    };
+                    let moveNotation = squareToString(dest);
+                    if (dest.rank === Rank.ONE) {
+                        moveNotation += '=Q+';
+                    }
+                    return moveNotation;
+                },
                 moveValidator: (board: Board, move: Move): boolean => {
                     let pawnLocation = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
@@ -114,7 +129,7 @@ export class EndgameTrainerComponent implements OnInit {
     }
 
     private setupEndgameTrainingSet(set: any): void {
-        let emptyBoardFEN = '8/8/8/8/8/8/8/8 w - - 0 1';
+        let emptyBoardFEN = '8/8/8/8/8/8/8/8 b - - 0 1';
         this.game.setFEN(emptyBoardFEN);
         this.game.loadFEN();
         let board = this.game.getBoard();
@@ -157,17 +172,9 @@ export class EndgameTrainerComponent implements OnInit {
                     event
                 )
             ) {
-                let pawnLocation = this.game
-                    .getBoard()
-                    .findPiece(new Piece(PieceType.Pawn, Color.Black))[0];
-                let dest = {
-                    file: pawnLocation.file,
-                    rank: pawnLocation.rank - 1
-                };
-                let moveNotation = this.game.squareToString(dest);
-                if (dest.rank === Rank.ONE) {
-                    moveNotation += '=Q+';
-                }
+                let moveNotation = this.currentTrainingSet.getMove(
+                    this.game.getBoard()
+                ).notation;
                 setTimeout(() => {
                     this.game.makeMove(moveNotation);
                     this.triggerInterfaceCommand('move made, redraw board');
