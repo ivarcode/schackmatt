@@ -2,8 +2,8 @@
     <div class="col-sm-2"></div>
     <div class="col-sm-10">
         <div class="row">
-            <h2 id="title" *ngIf="currentTrainingSet">
-                {{ currentTrainingSet.name }}
+            <h2 id="title" *ngIf="currentExercise">
+                {{ currentExercise.name }}
             </h2>
         </div>
         <div class="row">
@@ -28,10 +28,7 @@
                         You play {{ colorToPlayToString }}
                     </h4>
                 </div>
-                <h5
-                    *ngFor="let p of currentTrainingSet.info"
-                    style="width: 300px"
-                >
+                <h5 *ngFor="let p of currentExercise.info" style="width: 300px">
                     {{ p }}
                 </h5>
             </div>

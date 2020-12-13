@@ -1,4 +1,4 @@
-import { File, Square } from './game.library';
+import { File, Rank, Square } from './game.library';
 
 export function fileToString(file: File): string {
     return String.fromCharCode(97 + file);
@@ -6,4 +6,29 @@ export function fileToString(file: File): string {
 
 export function squareToString(sq: Square): string {
     return fileToString(sq.file) + (sq.rank + 1);
+}
+
+export function randomRankInclusivelyBetween(
+    minRank: Rank,
+    maxRank: Rank
+): Rank {
+    return randomNumberInclusivelyBetween(minRank + 0, maxRank + 0);
+}
+export function randomFileInclusivelyBetween(
+    minFile: File,
+    maxFile: File
+): File {
+    return randomNumberInclusivelyBetween(minFile + 0, maxFile + 0);
+}
+function randomNumberInclusivelyBetween(min: number, max: number): number {
+    if (max <= min) {
+        console.error(max + ' is not greater than ' + min);
+    }
+    if (max > 7) {
+        console.error(max + ' is too large');
+    }
+    if (min < 0) {
+        console.error(min + ' is too small');
+    }
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
