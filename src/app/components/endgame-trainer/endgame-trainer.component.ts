@@ -123,10 +123,6 @@ export class EndgameTrainerComponent implements OnInit {
     }
 
     ngOnInit() {
-        setInterval(() => {
-            console.log(this._gameComponent.getDisplayedMoveIndex());
-            console.log(this.game);
-        }, 1000);
         this._game = new Game();
         // start with an empty board
         this.setupEndgameTrainingSet(this.currentTrainingSet);
@@ -142,13 +138,10 @@ export class EndgameTrainerComponent implements OnInit {
         let firstMoveNotation = this.currentTrainingSet.getMove(
             this.game.getBoard()
         );
-        console.log('first', firstMoveNotation);
-
         setTimeout(() => {
             this.game.makeMove(firstMoveNotation);
             this.triggerInterfaceCommand('move made, redraw board');
             this._colorToPlay = this.game.getTurn();
-            console.log('dsp', this._gameComponent.getDisplayedMoveIndex());
         }, 1000);
     }
 
@@ -195,20 +188,20 @@ export class EndgameTrainerComponent implements OnInit {
             } else {
                 // move is wrong
                 setTimeout(() => {
-                    console.log(
-                        'wrong move at ',
-                        this._gameComponent.getDisplayedMoveIndex()
-                    );
                     let lastMove = this.game.undoLastMove();
-                    console.log('game', this.game);
+
                     this.triggerInterfaceCommand('back');
-                    this._gameComponent.drawBoard();
-                    this._gameComponent.flashSquare(
-                        lastMove.dest,
-                        'red',
-                        200,
-                        3
-                    );
+                    // this timeout is because of the trigger command's timeout
+                    // can be removed when we do #117
+                    setTimeout(() => {
+                        this._gameComponent.drawBoard();
+                        this._gameComponent.flashSquare(
+                            lastMove.dest,
+                            'red',
+                            200,
+                            3
+                        );
+                    }, 100);
                 }, 1000);
             }
         }
