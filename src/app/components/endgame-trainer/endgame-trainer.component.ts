@@ -144,14 +144,87 @@ export class EndgameTrainerComponent implements OnInit {
                         { file: f, rank: r },
                         new Piece(PieceType.King, Color.Black)
                     );
-                    if (Math.abs(f - 4) > Math.abs(r - 4)) {
+                    if (Math.abs(f - 3.5) > Math.abs(r - 3.5)) {
                         // file is wider
+                        let rookRank =
+                            r > Rank.FOUR
+                                ? randomRankInclusivelyBetween(
+                                      Rank.ONE,
+                                      Rank.TWO
+                                  )
+                                : randomRankInclusivelyBetween(
+                                      Rank.SIX,
+                                      Rank.EIGHT
+                                  );
+                        let kingRank =
+                            r > Rank.FOUR
+                                ? randomRankInclusivelyBetween(
+                                      Rank.THREE,
+                                      Rank.EIGHT
+                                  )
+                                : randomRankInclusivelyBetween(
+                                      Rank.ONE,
+                                      Rank.FIVE
+                                  );
+                        if (f > 3) {
+                            // right target
+                            let rookPosition: Square = {
+                                file: randomFileInclusivelyBetween(
+                                    File.a,
+                                    f - 2
+                                ),
+                                rank: rookRank
+                            };
+                            board.insertPiece(
+                                rookPosition,
+                                new Piece(PieceType.Rook, Color.White)
+                            );
+                            let whiteKingPosition: Square = {
+                                file: randomFileInclusivelyBetween(
+                                    File.a,
+                                    f - 2
+                                ),
+                                rank: kingRank
+                            };
+                            board.insertPiece(
+                                whiteKingPosition,
+                                new Piece(PieceType.King, Color.White)
+                            );
+                        } else {
+                            // left target
+                            let rookPosition: Square = {
+                                file: randomFileInclusivelyBetween(
+                                    f + 2,
+                                    File.h
+                                ),
+                                rank: rookRank
+                            };
+                            board.insertPiece(
+                                rookPosition,
+                                new Piece(PieceType.Rook, Color.White)
+                            );
+                            let whiteKingPosition: Square = {
+                                file: randomFileInclusivelyBetween(
+                                    f + 2,
+                                    File.h
+                                ),
+                                rank: kingRank
+                            };
+                            board.insertPiece(
+                                whiteKingPosition,
+                                new Piece(PieceType.King, Color.White)
+                            );
+                        }
                     } else {
                         // rank is wider
                         let rookFile =
                             f > File.d
                                 ? randomFileInclusivelyBetween(File.a, File.c)
                                 : randomFileInclusivelyBetween(File.f, File.h);
+                        let kingFile =
+                            f > File.d
+                                ? randomFileInclusivelyBetween(File.d, File.h)
+                                : randomFileInclusivelyBetween(File.a, File.e);
                         if (r > 3) {
                             // top target
                             let rookPosition: Square = {
@@ -166,7 +239,7 @@ export class EndgameTrainerComponent implements OnInit {
                                 new Piece(PieceType.Rook, Color.White)
                             );
                             let whiteKingPosition: Square = {
-                                file: f,
+                                file: kingFile,
                                 rank: randomRankInclusivelyBetween(
                                     Rank.ONE,
                                     r - 2
@@ -178,17 +251,42 @@ export class EndgameTrainerComponent implements OnInit {
                             );
                         } else {
                             // bottom target
+                            let rookPosition: Square = {
+                                file: rookFile,
+                                rank: randomRankInclusivelyBetween(
+                                    r + 2,
+                                    Rank.EIGHT
+                                )
+                            };
+                            board.insertPiece(
+                                rookPosition,
+                                new Piece(PieceType.Rook, Color.White)
+                            );
+                            let whiteKingPosition: Square = {
+                                file: kingFile,
+                                rank: randomRankInclusivelyBetween(
+                                    r + 2,
+                                    Rank.EIGHT
+                                )
+                            };
+                            board.insertPiece(
+                                whiteKingPosition,
+                                new Piece(PieceType.King, Color.White)
+                            );
                         }
                     }
                 },
                 (board: Board): string => {
                     // nextMove
+                    return 'boogalooga';
                 },
                 (board: Board, move: Move): boolean => {
                     // moveValidator
+                    return false;
                 },
                 (board: Board): boolean => {
                     // complete
+                    return false;
                 }
             )
         );
