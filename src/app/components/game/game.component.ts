@@ -8,7 +8,8 @@ import {
     OnChanges
 } from '@angular/core';
 import { Game, Square, Color, Rank, Board } from '../../lib/game.library';
-import { GameEvent } from 'src/app/lib/interface.library';
+import { GameDisplayOptions, GameEvent } from 'src/app/lib/interface.library';
+import { fileToString } from 'src/app/lib/util.library';
 
 @Component({
     selector: 'app-game',
@@ -19,6 +20,7 @@ export class GameComponent implements OnInit, OnChanges {
     @Output() gameDataEmitter = new EventEmitter<GameEvent>();
     @Input() game: Game;
     @Input() interfaceCommand: string;
+    @Input() gameDisplayOptions: GameDisplayOptions;
 
     private displayedMoveIndex: number;
     private boardCanvas: any;
@@ -596,9 +598,48 @@ export class GameComponent implements OnInit, OnChanges {
         this.boardContext.restore();
         this.boardContext.globalAlpha = 1;
         this.boardContext.drawImage(this.boardImage, 0, 0);
+        this.boardContext.font = '15px Arial';
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                this.boardContext.fillStyle =
+                    (i + j) % 2 === 0
+                        ? this.gameDisplayOptions.colorScheme.light
+                        : this.gameDisplayOptions.colorScheme.dark;
+                this.boardContext.fillRect(i * 80, j * 80, 80, 80);
+            }
+        }
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
                 this.refreshCanvasSquare(i, j);
+            }
+        }
+        if (this.gameDisplayOptions.showCoordinates) {
+            for (let i = 0; i < 8; i++) {
+                for (let j = 0; j < 8; j++) {
+                    if ((i + j) % 2 === 0) {
+                        // light sq
+                        this.boardContext.fillStyle = this.gameDisplayOptions.colorScheme.dark;
+                    } else {
+                        // dark sq
+                        this.boardContext.fillStyle = this.gameDisplayOptions.colorScheme.light;
+                    }
+                    if (i === 7) {
+                        // right side
+                        this.boardContext.fillText(
+                            '' + (8 - j),
+                            628,
+                            j * 80 + 15
+                        );
+                    }
+                    if (j === 7) {
+                        // bottom row
+                        this.boardContext.fillText(
+                            fileToString(i),
+                            i * 80 + 5,
+                            635
+                        );
+                    }
+                }
             }
         }
         this.boardContext.globalAlpha = 1;

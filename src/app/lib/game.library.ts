@@ -1,4 +1,5 @@
 import { Move } from './interface.library';
+import { fileToString } from './util.library';
 
 export const enum PieceType {
     King,
@@ -157,11 +158,7 @@ export class Game {
 
     // pull this out as well as other helpers at some point
     public squareToString(sq: Square): string {
-        return this.fileToString(sq.file) + (sq.rank + 1);
-    }
-
-    public fileToString(file: File): string {
-        return String.fromCharCode(97 + file);
+        return fileToString(sq.file) + (sq.rank + 1);
     }
 
     // prepares the game object from the fen data
@@ -1751,7 +1748,7 @@ export class Game {
             if (piece === 'P') {
                 // we always include src file for pawns capturing
                 if (move.src.file !== move.dest.file) {
-                    notation += this.fileToString(move.src.file);
+                    notation += fileToString(move.src.file);
                 }
             } else {
                 const allMoves = preMoveGame.getLegalMoves();
@@ -1786,13 +1783,13 @@ export class Game {
                         }
                     }
                     if (rankConflict) {
-                        notation += this.fileToString(move.src.file);
+                        notation += fileToString(move.src.file);
                     }
                     if (fileConflict) {
                         notation += move.src.rank + 1;
                     }
                     if (!fileConflict && !rankConflict) {
-                        notation += this.fileToString(move.src.file);
+                        notation += fileToString(move.src.file);
                     }
                 }
             }
