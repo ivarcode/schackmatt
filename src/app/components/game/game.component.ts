@@ -459,6 +459,10 @@ export class GameComponent implements OnInit, OnChanges {
         this.displayedMoveIndex = index;
     }
 
+    public getDisplayedMoveIndex(): number {
+        return this.displayedMoveIndex;
+    }
+
     private showMoves(): void {
         const pieceMovements = this.game.getLegalMoves();
         const sq = {
@@ -753,10 +757,10 @@ export class GameComponent implements OnInit, OnChanges {
             gA: 0.5
         };
         this.tintSqData.push(redTint);
-        // this.drawBoard();
+        this.drawBoard();
         setTimeout(() => {
             this.tintSqData.splice(this.tintSqData.indexOf(redTint));
-            // this.drawBoard();
+            this.drawBoard();
             setTimeout(() => {
                 this.flashSquare(sq, color, milliDuration, times - 1);
             }, milliDuration);
