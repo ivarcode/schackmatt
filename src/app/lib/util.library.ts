@@ -8,6 +8,12 @@ export function squareToString(sq: Square): string {
     return fileToString(sq.file) + (sq.rank + 1);
 }
 
+export function randomRank(): Rank {
+    return Math.floor(Math.random() * 8);
+}
+export function randomFile(): File {
+    return Math.floor(Math.random() * 8);
+}
 export function randomRankInclusivelyBetween(
     minRank: Rank,
     maxRank: Rank

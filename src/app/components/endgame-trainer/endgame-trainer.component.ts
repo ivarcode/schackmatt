@@ -7,11 +7,14 @@ import {
     Piece,
     PieceType,
     File,
-    Rank
+    Rank,
+    Square
 } from 'src/app/lib/game.library';
 import { GameEvent, Move } from 'src/app/lib/interface.library';
 import {
+    randomFile,
     randomFileInclusivelyBetween,
+    randomRank,
     randomRankInclusivelyBetween,
     squareToString
 } from 'src/app/lib/util.library';
@@ -135,6 +138,48 @@ export class EndgameTrainerComponent implements OnInit {
                 [],
                 (board: Board): void => {
                     // setup
+                    let f = randomFile();
+                    let r = randomRank();
+                    board.insertPiece(
+                        { file: f, rank: r },
+                        new Piece(PieceType.King, Color.Black)
+                    );
+                    if (Math.abs(f - 4) > Math.abs(r - 4)) {
+                        // file is wider
+                    } else {
+                        // rank is wider
+                        let rookFile =
+                            f > File.d
+                                ? randomFileInclusivelyBetween(File.a, File.c)
+                                : randomFileInclusivelyBetween(File.f, File.h);
+                        if (r > 3) {
+                            // top target
+                            let rookPosition: Square = {
+                                file: rookFile,
+                                rank: randomRankInclusivelyBetween(
+                                    Rank.ONE,
+                                    r - 2
+                                )
+                            };
+                            board.insertPiece(
+                                rookPosition,
+                                new Piece(PieceType.Rook, Color.White)
+                            );
+                            let whiteKingPosition: Square = {
+                                file: f,
+                                rank: randomRankInclusivelyBetween(
+                                    Rank.ONE,
+                                    r - 2
+                                )
+                            };
+                            board.insertPiece(
+                                whiteKingPosition,
+                                new Piece(PieceType.King, Color.White)
+                            );
+                        } else {
+                            // bottom target
+                        }
+                    }
                 },
                 (board: Board): string => {
                     // nextMove
