@@ -58,7 +58,7 @@ export class EndgameTrainerComponent implements OnInit {
                     board.insertPiece(
                         {
                             file: f,
-                            rank: r
+                            rank: r + 1
                         },
                         new Piece(PieceType.Pawn, Color.Black)
                     );
@@ -123,6 +123,10 @@ export class EndgameTrainerComponent implements OnInit {
     }
 
     ngOnInit() {
+        setInterval(() => {
+            console.log(this._gameComponent.getDisplayedMoveIndex());
+            console.log(this.game);
+        }, 1000);
         this._game = new Game();
         // start with an empty board
         this.setupEndgameTrainingSet(this.currentTrainingSet);
@@ -135,19 +139,28 @@ export class EndgameTrainerComponent implements OnInit {
         let board = this.game.getBoard();
         set.boardSetup(board);
         this.game.updateFENPiecesPositionsFromBoard();
-        this._colorToPlay = this.game.getTurn();
+        let firstMoveNotation = this.currentTrainingSet.getMove(
+            this.game.getBoard()
+        );
+        console.log('first', firstMoveNotation);
+
+        setTimeout(() => {
+            this.game.makeMove(firstMoveNotation);
+            this.triggerInterfaceCommand('move made, redraw board');
+            this._colorToPlay = this.game.getTurn();
+            console.log('dsp', this._gameComponent.getDisplayedMoveIndex());
+        }, 1000);
     }
 
     public boardOverlayEvent(event: string): void {
         console.log('board overlay event', event);
         switch (event) {
             case 'Retry Exercise':
-                this.setupEndgameTrainingSet(this.currentTrainingSet);
-                // do we even need this?
                 this.game.setMoveHistory([]);
                 this._gameComponent.setInitPosition(this.game.getBoard());
                 this._gameComponent.setDisplayedMoveIndex(0);
                 setTimeout(() => {
+                    this.setupEndgameTrainingSet(this.currentTrainingSet);
                     this.triggerInterfaceCommand('redraw board');
                 }, 500);
                 break;
@@ -174,7 +187,7 @@ export class EndgameTrainerComponent implements OnInit {
             ) {
                 let moveNotation = this.currentTrainingSet.getMove(
                     this.game.getBoard()
-                ).notation;
+                );
                 setTimeout(() => {
                     this.game.makeMove(moveNotation);
                     this.triggerInterfaceCommand('move made, redraw board');
@@ -182,11 +195,14 @@ export class EndgameTrainerComponent implements OnInit {
             } else {
                 // move is wrong
                 setTimeout(() => {
-                    this._gameComponent.setDisplayedMoveIndex(
-                        this._gameComponent.getDisplayedMoveIndex() - 1
+                    console.log(
+                        'wrong move at ',
+                        this._gameComponent.getDisplayedMoveIndex()
                     );
                     let lastMove = this.game.undoLastMove();
+                    console.log('game', this.game);
                     this.triggerInterfaceCommand('back');
+                    this._gameComponent.drawBoard();
                     this._gameComponent.flashSquare(
                         lastMove.dest,
                         'red',

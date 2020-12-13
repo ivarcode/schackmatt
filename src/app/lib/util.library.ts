@@ -5,5 +5,5 @@ export function fileToString(file: File): string {
 }
 
 export function squareToString(sq: Square): string {
-    return this.fileToString(sq.file) + (sq.rank + 1);
+    return fileToString(sq.file) + (sq.rank + 1);
 }
