@@ -125,7 +125,10 @@ export class EndgameTrainerComponent implements OnInit {
                     let blackPawns = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     );
-                    if (blackPawns.length === 0) {
+                    let blackQueens = board.findPiece(
+                        new Piece(PieceType.Queen, Color.Black)
+                    );
+                    if (blackPawns.length === 0 && blackQueens.length === 0) {
                         return true;
                     }
                     return false;
