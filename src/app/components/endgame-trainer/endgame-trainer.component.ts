@@ -138,15 +138,13 @@ export class EndgameTrainerComponent implements OnInit {
         this._endgameExercises.push(
             new Exercise(
                 'King and Rook vs King',
-                [],
+                ['needs explanation here', 'info'],
                 (board: Board): void => {
                     // setup
                     let f = randomFile();
                     let r = randomRank();
-                    board.insertPiece(
-                        { file: f, rank: r },
-                        new Piece(PieceType.King, Color.Black)
-                    );
+                    let sf: File;
+                    let sr: Rank;
                     if (Math.abs(f - 3.5) > Math.abs(r - 3.5)) {
                         // file is wider
                         let rookRank =
@@ -278,6 +276,10 @@ export class EndgameTrainerComponent implements OnInit {
                             );
                         }
                     }
+                    board.insertPiece(
+                        { file: sf, rank: sr },
+                        new Piece(PieceType.King, Color.Black)
+                    );
                 },
                 (board: Board): string => {
                     // nextMove

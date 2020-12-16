@@ -3,6 +3,7 @@ export class Exercise {
     private _info: string[];
     private _setup: Function;
     private _nextMove: Function;
+    private _specificFirstMove: string;
     private _moveValidator: Function;
     private _complete: Function;
 
@@ -33,6 +34,9 @@ export class Exercise {
     }
     set nextMove(nM: Function) {
         this._nextMove = nM;
+    }
+    set specificFirstMove(sfm: string) {
+        this._specificFirstMove = sfm;
     }
     set moveValidator(mV: Function) {
         this._moveValidator = mV;
@@ -67,6 +71,13 @@ export class Exercise {
      */
     get nextMove(): Function {
         return this._nextMove;
+    }
+    /**
+     * @description value can be set by the setup function to indicate a specific first
+     * move
+     */
+    get specificFirstMove(): string {
+        return this._specificFirstMove;
     }
     /**
      * @param board - resulting board
