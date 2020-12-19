@@ -143,8 +143,6 @@ export class EndgameTrainerComponent implements OnInit {
                     // setup
                     let f = randomFile();
                     let r = randomRank();
-                    let sf: File;
-                    let sr: Rank;
                     if (Math.abs(f - 3.5) > Math.abs(r - 3.5)) {
                         // file is wider
                         let rookRank =
@@ -277,7 +275,7 @@ export class EndgameTrainerComponent implements OnInit {
                         }
                     }
                     board.insertPiece(
-                        { file: sf, rank: sr },
+                        { file: f, rank: r },
                         new Piece(PieceType.King, Color.Black)
                     );
                 },
