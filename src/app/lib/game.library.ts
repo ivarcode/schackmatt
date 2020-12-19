@@ -1,4 +1,5 @@
 import { Move } from './interface.library';
+import { Square } from './square.library';
 import { fileToString } from './util.library';
 
 export const enum PieceType {
@@ -15,6 +16,8 @@ export const enum Color {
     Black
 }
 
+// TODO pull all classes that aren't game OUT
+// and all const enums into interface or util or something
 export class Piece {
     type: PieceType;
     color: Color;
@@ -73,11 +76,6 @@ export const enum Rank {
     EIGHT
 }
 
-export interface Square {
-    file: File;
-    rank: Rank;
-}
-
 export class Board {
     private content: Piece[][];
     public captured: Piece[];
@@ -96,7 +94,7 @@ export class Board {
         let sqArray: Square[] = [];
         for (let rank = Rank.ONE; rank <= Rank.EIGHT; rank++) {
             for (let file = File.a; file <= File.h; file++) {
-                const sq = { file, rank };
+                const sq = new Square(file, rank);
                 const p = this.getPiece(sq);
                 if (p && p.color === piece.color && p.type === piece.type) {
                     sqArray.push(sq);
@@ -156,11 +154,6 @@ export class Game {
         return str + '\n----';
     }
 
-    // pull this out as well as other helpers at some point
-    public squareToString(sq: Square): string {
-        return fileToString(sq.file) + (sq.rank + 1);
-    }
-
     // prepares the game object from the fen data
     public loadFEN(): void {
         const board: Board = new Board();
@@ -207,25 +200,25 @@ export class Game {
                         switch (this.fen.charAt(i)) {
                             case 'r':
                                 board.insertPiece(
-                                    { file: fileIndex, rank: rankIndex },
+                                    new Square(fileIndex, rankIndex),
                                     new Piece(PieceType.Rook, Color.Black)
                                 );
                                 break;
                             case 'R':
                                 board.insertPiece(
-                                    { file: fileIndex, rank: rankIndex },
+                                    new Square(fileIndex, rankIndex),
                                     new Piece(PieceType.Rook, Color.White)
                                 );
                                 break;
                             case 'n':
                                 board.insertPiece(
-                                    { file: fileIndex, rank: rankIndex },
+                                    new Square(fileIndex, rankIndex),
                                     new Piece(PieceType.Knight, Color.Black)
                                 );
                                 break;
                             case 'N':
                                 board.insertPiece(
-                                    { file: fileIndex, rank: rankIndex },
+                                    new Square(fileIndex, rankIndex),
                                     new Piece(PieceType.Knight, Color.White)
                                 );
                                 break;
@@ -234,7 +227,7 @@ export class Game {
                                     this.turn = Color.Black;
                                 } else {
                                     board.insertPiece(
-                                        { file: fileIndex, rank: rankIndex },
+                                        new Square(fileIndex, rankIndex),
                                         new Piece(PieceType.Bishop, Color.Black)
                                     );
                                 }
@@ -244,7 +237,7 @@ export class Game {
                                 break;
                             case 'B':
                                 board.insertPiece(
-                                    { file: fileIndex, rank: rankIndex },
+                                    new Square(fileIndex, rankIndex),
                                     new Piece(PieceType.Bishop, Color.White)
                                 );
                                 break;
@@ -253,7 +246,7 @@ export class Game {
                                     this.castlingRights.q = true;
                                 } else {
                                     board.insertPiece(
-                                        { file: fileIndex, rank: rankIndex },
+                                        new Square(fileIndex, rankIndex),
                                         new Piece(PieceType.Queen, Color.Black)
                                     );
                                 }
@@ -263,7 +256,7 @@ export class Game {
                                     this.castlingRights.Q = true;
                                 } else {
                                     board.insertPiece(
-                                        { file: fileIndex, rank: rankIndex },
+                                        new Square(fileIndex, rankIndex),
                                         new Piece(PieceType.Queen, Color.White)
                                     );
                                 }
@@ -273,7 +266,7 @@ export class Game {
                                     this.castlingRights.k = true;
                                 } else {
                                     board.insertPiece(
-                                        { file: fileIndex, rank: rankIndex },
+                                        new Square(fileIndex, rankIndex),
                                         new Piece(PieceType.King, Color.Black)
                                     );
                                 }
@@ -283,20 +276,20 @@ export class Game {
                                     this.castlingRights.K = true;
                                 } else {
                                     board.insertPiece(
-                                        { file: fileIndex, rank: rankIndex },
+                                        new Square(fileIndex, rankIndex),
                                         new Piece(PieceType.King, Color.White)
                                     );
                                 }
                                 break;
                             case 'p':
                                 board.insertPiece(
-                                    { file: fileIndex, rank: rankIndex },
+                                    new Square(fileIndex, rankIndex),
                                     new Piece(PieceType.Pawn, Color.Black)
                                 );
                                 break;
                             case 'P':
                                 board.insertPiece(
-                                    { file: fileIndex, rank: rankIndex },
+                                    new Square(fileIndex, rankIndex),
                                     new Piece(PieceType.Pawn, Color.White)
                                 );
                                 break;
@@ -328,10 +321,7 @@ export class Game {
             { x: 1, y: -2 }
         ];
         for (const pat of pattern) {
-            const d = {
-                file: sq.file + pat.x,
-                rank: sq.rank + pat.y
-            };
+            const d = new Square(sq.file + pat.x, sq.rank + pat.y);
             if (this.isOnBoard(d)) {
                 const dp = this.getPiece(d);
                 if (dp && dp.type === PieceType.Knight && dp.color === color) {
@@ -341,7 +331,7 @@ export class Game {
         }
         // pawn
         if (color === Color.Black) {
-            let d = { file: sq.file + 1, rank: sq.rank + 1 };
+            let d = new Square(sq.file + 1, sq.rank + 1);
             let dp;
             if (d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0) {
                 dp = this.getPiece(d);
@@ -355,7 +345,7 @@ export class Game {
                 }
             }
 
-            d = { file: sq.file - 1, rank: sq.rank + 1 };
+            d = new Square(sq.file - 1, sq.rank + 1);
             if (d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0) {
                 dp = this.getPiece(d);
                 if (
@@ -369,7 +359,7 @@ export class Game {
             }
         }
         if (color === Color.White) {
-            let d = { file: sq.file + 1, rank: sq.rank - 1 };
+            let d = new Square(sq.file + 1, sq.rank - 1);
             let dp;
             if (d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0) {
                 dp = this.getPiece(d);
@@ -382,7 +372,7 @@ export class Game {
                     return true;
                 }
             }
-            d = { file: sq.file - 1, rank: sq.rank - 1 };
+            d = new Square(sq.file - 1, sq.rank - 1);
             if (d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0) {
                 dp = this.getPiece(d);
                 if (
@@ -407,10 +397,7 @@ export class Game {
             { x: 1, y: -1 }
         ];
         for (const pat of pattern) {
-            const d = {
-                file: sq.file + pat.x,
-                rank: sq.rank + pat.y
-            };
+            const d = new Square(sq.file + pat.x, sq.rank + pat.y);
             if (this.isOnBoard(d)) {
                 const dp = this.getPiece(d);
                 if (dp && dp.type === PieceType.King && dp.color === color) {
@@ -429,10 +416,7 @@ export class Game {
             for (let i = 1; i < 8; i++) {
                 const x = pat.x * i;
                 const y = pat.y * i;
-                const d = {
-                    file: sq.file + x,
-                    rank: sq.rank + y
-                };
+                const d = new Square(sq.file + x, sq.rank + y);
                 if (this.isOnBoard(d)) {
                     const dp = this.getPiece(d);
                     if (dp) {
@@ -465,10 +449,7 @@ export class Game {
             for (let i = 1; i < 8; i++) {
                 const x = pat.x * i;
                 const y = pat.y * i;
-                const d = {
-                    file: sq.file + x,
-                    rank: sq.rank + y
-                };
+                const d = new Square(sq.file + x, sq.rank + y);
                 if (this.isOnBoard(d)) {
                     const dp = this.getPiece(d);
                     if (dp) {
@@ -496,7 +477,7 @@ export class Game {
         const movements: Move[] = [];
         for (let r = 0; r < 8; r++) {
             for (let f = 0; f < 8; f++) {
-                const p = this.getPiece({ file: f, rank: r });
+                const p = this.getPiece(new Square(f, r));
                 if (p && p.color === this.turn) {
                     let pattern;
                     switch (p.type) {
@@ -512,10 +493,7 @@ export class Game {
                                 { x: 1, y: -2 }
                             ];
                             for (const pat of pattern) {
-                                const d = {
-                                    file: f + pat.x,
-                                    rank: r + pat.y
-                                };
+                                const d = new Square(f + pat.x, r + pat.y);
                                 if (this.isOnBoard(d)) {
                                     const dp = this.getPiece(d);
                                     if (!(dp && dp.color === this.turn)) {
@@ -523,15 +501,15 @@ export class Game {
                                             .board;
                                         newBoard.insertPiece(d, p);
                                         newBoard.insertPiece(
-                                            { file: f, rank: r },
+                                            new Square(f, r),
                                             null
                                         );
                                         movements.push({
                                             notation: null,
                                             preMoveFEN: this.getFEN(),
                                             src: {
-                                                file: f,
-                                                rank: r
+                                                f,
+                                                r
                                             },
                                             dest: d,
                                             resultingBoard: newBoard
@@ -552,10 +530,7 @@ export class Game {
                                 { x: 1, y: -1 }
                             ];
                             for (const pat of pattern) {
-                                const d = {
-                                    file: f + pat.x,
-                                    rank: r + pat.y
-                                };
+                                const d = new Square(f + pat.x, r + pat.y);
                                 if (this.isOnBoard(d)) {
                                     const dp = this.getPiece(d);
                                     if (!(dp && dp.color === this.turn)) {
@@ -563,15 +538,15 @@ export class Game {
                                             .board;
                                         newBoard.insertPiece(d, p);
                                         newBoard.insertPiece(
-                                            { file: f, rank: r },
+                                            new Square(f, r),
                                             null
                                         );
                                         movements.push({
                                             notation: null,
                                             preMoveFEN: this.getFEN(),
                                             src: {
-                                                file: f,
-                                                rank: r
+                                                f,
+                                                r
                                             },
                                             dest: d,
                                             resultingBoard: newBoard
@@ -584,166 +559,123 @@ export class Game {
                                 if (f === File.e && r === Rank.ONE) {
                                     // kingside
                                     if (this.castlingRights.K) {
-                                        const rook = this.getPiece({
-                                            file: File.h,
-                                            rank: Rank.ONE
-                                        });
+                                        const rook = this.getPiece(
+                                            new Square(File.h, Rank.ONE)
+                                        );
                                         if (
-                                            !this.getPiece({
-                                                file: File.f,
-                                                rank: Rank.ONE
-                                            }) &&
-                                            !this.getPiece({
-                                                file: File.g,
-                                                rank: Rank.ONE
-                                            }) &&
+                                            !this.getPiece(
+                                                new Square(File.f, Rank.ONE)
+                                            ) &&
+                                            !this.getPiece(
+                                                new Square(File.g, Rank.ONE)
+                                            ) &&
                                             rook &&
                                             rook.type === PieceType.Rook &&
                                             rook.color === p.color &&
                                             !this.isThreatenedBy(
-                                                {
-                                                    file: File.e,
-                                                    rank: Rank.ONE
-                                                },
+                                                new Square(File.e, Rank.ONE),
                                                 Color.Black
                                             ) &&
                                             !this.isThreatenedBy(
-                                                {
-                                                    file: File.f,
-                                                    rank: Rank.ONE
-                                                },
+                                                new Square(File.f, Rank.ONE),
                                                 Color.Black
                                             )
                                         ) {
                                             const newBoard = new Game(this.fen)
                                                 .board;
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.g,
-                                                    rank: Rank.ONE
-                                                },
+                                                new Square(File.g, Rank.ONE),
                                                 p
                                             );
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.f,
-                                                    rank: Rank.ONE
-                                                },
+                                                new Square(File.f, Rank.ONE),
                                                 new Piece(
                                                     PieceType.Rook,
                                                     p.color
                                                 )
                                             );
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.e,
-                                                    rank: Rank.ONE
-                                                },
+                                                new Square(File.e, Rank.ONE),
                                                 null
                                             );
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.h,
-                                                    rank: Rank.ONE
-                                                },
+                                                new Square(File.h, Rank.ONE),
                                                 null
                                             );
                                             movements.push({
                                                 notation: null,
                                                 preMoveFEN: this.getFEN(),
-                                                src: {
-                                                    file: File.e,
-                                                    rank: Rank.ONE
-                                                },
-                                                dest: {
-                                                    file: File.g,
-                                                    rank: Rank.ONE
-                                                },
+                                                src: new Square(
+                                                    File.e,
+                                                    Rank.ONE
+                                                ),
+                                                dest: new Square(
+                                                    File.g,
+                                                    Rank.ONE
+                                                ),
                                                 resultingBoard: newBoard
                                             });
                                         }
                                     }
                                     // queenside
                                     if (this.castlingRights.Q) {
-                                        const rook = this.getPiece({
-                                            file: File.a,
-                                            rank: Rank.ONE
-                                        });
+                                        const rook = this.getPiece(
+                                            new Square(File.a, Rank.ONE)
+                                        );
                                         if (
-                                            !this.getPiece({
-                                                file: File.d,
-                                                rank: Rank.ONE
-                                            }) &&
-                                            !this.getPiece({
-                                                file: File.c,
-                                                rank: Rank.ONE
-                                            }) &&
-                                            !this.getPiece({
-                                                file: File.b,
-                                                rank: Rank.ONE
-                                            }) &&
+                                            !this.getPiece(
+                                                new Square(File.d, Rank.ONE)
+                                            ) &&
+                                            !this.getPiece(
+                                                new Square(File.c, Rank.ONE)
+                                            ) &&
+                                            !this.getPiece(
+                                                new Square(File.b, Rank.ONE)
+                                            ) &&
                                             rook &&
                                             rook.type === PieceType.Rook &&
                                             rook.color === p.color &&
                                             !this.isThreatenedBy(
-                                                {
-                                                    file: File.e,
-                                                    rank: Rank.ONE
-                                                },
+                                                new Square(File.e, Rank.ONE),
                                                 Color.Black
                                             ) &&
                                             !this.isThreatenedBy(
-                                                {
-                                                    file: File.d,
-                                                    rank: Rank.ONE
-                                                },
+                                                new Square(File.d, Rank.ONE),
                                                 Color.Black
                                             )
                                         ) {
                                             const newBoard = new Game(this.fen)
                                                 .board;
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.c,
-                                                    rank: Rank.ONE
-                                                },
+                                                new Square(File.c, Rank.ONE),
                                                 p
                                             );
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.d,
-                                                    rank: Rank.ONE
-                                                },
+                                                new Square(File.d, Rank.ONE),
                                                 new Piece(
                                                     PieceType.Rook,
                                                     p.color
                                                 )
                                             );
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.e,
-                                                    rank: Rank.ONE
-                                                },
+                                                new Square(File.e, Rank.ONE),
                                                 null
                                             );
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.a,
-                                                    rank: Rank.ONE
-                                                },
+                                                new Square(File.a, Rank.ONE),
                                                 null
                                             );
                                             movements.push({
                                                 notation: null,
                                                 preMoveFEN: this.getFEN(),
-                                                src: {
-                                                    file: File.e,
-                                                    rank: Rank.ONE
-                                                },
-                                                dest: {
-                                                    file: File.c,
-                                                    rank: Rank.ONE
-                                                },
+                                                src: new Square(
+                                                    File.e,
+                                                    Rank.ONE
+                                                ),
+                                                dest: new Square(
+                                                    File.c,
+                                                    Rank.ONE
+                                                ),
                                                 resultingBoard: newBoard
                                             });
                                         }
@@ -754,166 +686,123 @@ export class Game {
                                 if (f === File.e && r === Rank.EIGHT) {
                                     // kingside
                                     if (this.castlingRights.k) {
-                                        const rook = this.getPiece({
-                                            file: File.h,
-                                            rank: Rank.EIGHT
-                                        });
+                                        const rook = this.getPiece(
+                                            new Square(File.h, Rank.EIGHT)
+                                        );
                                         if (
-                                            !this.getPiece({
-                                                file: File.f,
-                                                rank: Rank.EIGHT
-                                            }) &&
-                                            !this.getPiece({
-                                                file: File.g,
-                                                rank: Rank.EIGHT
-                                            }) &&
+                                            !this.getPiece(
+                                                new Square(File.f, Rank.EIGHT)
+                                            ) &&
+                                            !this.getPiece(
+                                                new Square(File.g, Rank.EIGHT)
+                                            ) &&
                                             rook &&
                                             rook.type === PieceType.Rook &&
                                             rook.color === p.color &&
                                             !this.isThreatenedBy(
-                                                {
-                                                    file: File.e,
-                                                    rank: Rank.EIGHT
-                                                },
+                                                new Square(File.e, Rank.EIGHT),
                                                 Color.White
                                             ) &&
                                             !this.isThreatenedBy(
-                                                {
-                                                    file: File.f,
-                                                    rank: Rank.EIGHT
-                                                },
+                                                new Square(File.f, Rank.EIGHT),
                                                 Color.White
                                             )
                                         ) {
                                             const newBoard = new Game(this.fen)
                                                 .board;
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.g,
-                                                    rank: Rank.EIGHT
-                                                },
+                                                new Square(File.g, Rank.EIGHT),
                                                 p
                                             );
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.f,
-                                                    rank: Rank.EIGHT
-                                                },
+                                                new Square(File.f, Rank.EIGHT),
                                                 new Piece(
                                                     PieceType.Rook,
                                                     p.color
                                                 )
                                             );
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.e,
-                                                    rank: Rank.EIGHT
-                                                },
+                                                new Square(File.e, Rank.EIGHT),
                                                 null
                                             );
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.h,
-                                                    rank: Rank.EIGHT
-                                                },
+                                                new Square(File.h, Rank.EIGHT),
                                                 null
                                             );
                                             movements.push({
                                                 notation: null,
                                                 preMoveFEN: this.getFEN(),
-                                                src: {
-                                                    file: File.e,
-                                                    rank: Rank.EIGHT
-                                                },
-                                                dest: {
-                                                    file: File.g,
-                                                    rank: Rank.EIGHT
-                                                },
+                                                src: new Square(
+                                                    File.e,
+                                                    Rank.EIGHT
+                                                ),
+                                                dest: new Square(
+                                                    File.g,
+                                                    Rank.EIGHT
+                                                ),
                                                 resultingBoard: newBoard
                                             });
                                         }
                                     }
                                     // queenside
                                     if (this.castlingRights.q) {
-                                        const rook = this.getPiece({
-                                            file: File.a,
-                                            rank: Rank.EIGHT
-                                        });
+                                        const rook = this.getPiece(
+                                            new Square(File.a, Rank.EIGHT)
+                                        );
                                         if (
-                                            !this.getPiece({
-                                                file: File.d,
-                                                rank: Rank.EIGHT
-                                            }) &&
-                                            !this.getPiece({
-                                                file: File.c,
-                                                rank: Rank.EIGHT
-                                            }) &&
-                                            !this.getPiece({
-                                                file: File.b,
-                                                rank: Rank.EIGHT
-                                            }) &&
+                                            !this.getPiece(
+                                                new Square(File.d, Rank.EIGHT)
+                                            ) &&
+                                            !this.getPiece(
+                                                new Square(File.c, Rank.EIGHT)
+                                            ) &&
+                                            !this.getPiece(
+                                                new Square(File.b, Rank.EIGHT)
+                                            ) &&
                                             rook &&
                                             rook.type === PieceType.Rook &&
                                             rook.color === p.color &&
                                             !this.isThreatenedBy(
-                                                {
-                                                    file: File.e,
-                                                    rank: Rank.EIGHT
-                                                },
+                                                new Square(File.e, Rank.EIGHT),
                                                 Color.White
                                             ) &&
                                             !this.isThreatenedBy(
-                                                {
-                                                    file: File.d,
-                                                    rank: Rank.EIGHT
-                                                },
+                                                new Square(File.d, Rank.EIGHT),
                                                 Color.White
                                             )
                                         ) {
                                             const newBoard = new Game(this.fen)
                                                 .board;
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.c,
-                                                    rank: Rank.EIGHT
-                                                },
+                                                new Square(File.c, Rank.EIGHT),
                                                 p
                                             );
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.d,
-                                                    rank: Rank.EIGHT
-                                                },
+                                                new Square(File.d, Rank.EIGHT),
                                                 new Piece(
                                                     PieceType.Rook,
                                                     p.color
                                                 )
                                             );
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.e,
-                                                    rank: Rank.EIGHT
-                                                },
+                                                new Square(File.e, Rank.EIGHT),
                                                 null
                                             );
                                             newBoard.insertPiece(
-                                                {
-                                                    file: File.a,
-                                                    rank: Rank.EIGHT
-                                                },
+                                                new Square(File.a, Rank.EIGHT),
                                                 null
                                             );
                                             movements.push({
                                                 notation: null,
                                                 preMoveFEN: this.getFEN(),
-                                                src: {
-                                                    file: File.e,
-                                                    rank: Rank.EIGHT
-                                                },
-                                                dest: {
-                                                    file: File.c,
-                                                    rank: Rank.EIGHT
-                                                },
+                                                src: new Square(
+                                                    File.e,
+                                                    Rank.EIGHT
+                                                ),
+                                                dest: new Square(
+                                                    File.c,
+                                                    Rank.EIGHT
+                                                ),
                                                 resultingBoard: newBoard
                                             });
                                         }
@@ -929,10 +818,7 @@ export class Game {
                                 { x: 1, y: 0 }
                             ];
                             for (const pat of pattern) {
-                                let d = {
-                                    file: f + pat.x,
-                                    rank: r + pat.y
-                                };
+                                let d = new Square(f + pat.x, r + pat.y);
                                 while (d) {
                                     if (this.isOnBoard(d)) {
                                         const dp = this.getPiece(d);
@@ -943,16 +829,13 @@ export class Game {
                                                 ).board;
                                                 newBoard.insertPiece(d, p);
                                                 newBoard.insertPiece(
-                                                    { file: f, rank: r },
+                                                    new Square(f, r),
                                                     null
                                                 );
                                                 movements.push({
                                                     notation: null,
                                                     preMoveFEN: this.getFEN(),
-                                                    src: {
-                                                        file: f,
-                                                        rank: r
-                                                    },
+                                                    src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
                                                 });
@@ -963,23 +846,20 @@ export class Game {
                                                 .board;
                                             newBoard.insertPiece(d, p);
                                             newBoard.insertPiece(
-                                                { file: f, rank: r },
+                                                new Square(f, r),
                                                 null
                                             );
                                             movements.push({
                                                 notation: null,
                                                 preMoveFEN: this.getFEN(),
-                                                src: {
-                                                    file: f,
-                                                    rank: r
-                                                },
+                                                src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
                                             });
-                                            d = {
-                                                file: d.file + pat.x,
-                                                rank: d.rank + pat.y
-                                            };
+                                            d = new Square(
+                                                d.file + pat.x,
+                                                d.rank + pat.y
+                                            );
                                         }
                                     } else {
                                         d = null; // break loop
@@ -995,10 +875,7 @@ export class Game {
                                 { x: 1, y: -1 }
                             ];
                             for (const pat of pattern) {
-                                let d = {
-                                    file: f + pat.x,
-                                    rank: r + pat.y
-                                };
+                                let d = new Square(f + pat.x, r + pat.y);
                                 while (d) {
                                     if (this.isOnBoard(d)) {
                                         const dp = this.getPiece(d);
@@ -1009,16 +886,13 @@ export class Game {
                                                 ).board;
                                                 newBoard.insertPiece(d, p);
                                                 newBoard.insertPiece(
-                                                    { file: f, rank: r },
+                                                    new Square(f, r),
                                                     null
                                                 );
                                                 movements.push({
                                                     notation: null,
                                                     preMoveFEN: this.getFEN(),
-                                                    src: {
-                                                        file: f,
-                                                        rank: r
-                                                    },
+                                                    src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
                                                 });
@@ -1029,23 +903,20 @@ export class Game {
                                                 .board;
                                             newBoard.insertPiece(d, p);
                                             newBoard.insertPiece(
-                                                { file: f, rank: r },
+                                                new Square(f, r),
                                                 null
                                             );
                                             movements.push({
                                                 notation: null,
                                                 preMoveFEN: this.getFEN(),
-                                                src: {
-                                                    file: f,
-                                                    rank: r
-                                                },
+                                                src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
                                             });
-                                            d = {
-                                                file: d.file + pat.x,
-                                                rank: d.rank + pat.y
-                                            };
+                                            d = new Square(
+                                                d.file + pat.x,
+                                                d.rank + pat.y
+                                            );
                                         }
                                     } else {
                                         d = null; // break loop
@@ -1065,10 +936,7 @@ export class Game {
                                 { x: 1, y: -1 }
                             ];
                             for (const pat of pattern) {
-                                let d = {
-                                    file: f + pat.x,
-                                    rank: r + pat.y
-                                };
+                                let d = new Square(f + pat.x, r + pat.y);
                                 while (d) {
                                     if (this.isOnBoard(d)) {
                                         const dp = this.getPiece(d);
@@ -1079,16 +947,13 @@ export class Game {
                                                 ).board;
                                                 newBoard.insertPiece(d, p);
                                                 newBoard.insertPiece(
-                                                    { file: f, rank: r },
+                                                    new Square(f, r),
                                                     null
                                                 );
                                                 movements.push({
                                                     notation: null,
                                                     preMoveFEN: this.getFEN(),
-                                                    src: {
-                                                        file: f,
-                                                        rank: r
-                                                    },
+                                                    src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
                                                 });
@@ -1099,23 +964,20 @@ export class Game {
                                                 .board;
                                             newBoard.insertPiece(d, p);
                                             newBoard.insertPiece(
-                                                { file: f, rank: r },
+                                                new Square(f, r),
                                                 null
                                             );
                                             movements.push({
                                                 notation: null,
                                                 preMoveFEN: this.getFEN(),
-                                                src: {
-                                                    file: f,
-                                                    rank: r
-                                                },
+                                                src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
                                             });
-                                            d = {
-                                                file: d.file + pat.x,
-                                                rank: d.rank + pat.y
-                                            };
+                                            d = new Square(
+                                                d.file + pat.x,
+                                                d.rank + pat.y
+                                            );
                                         }
                                     } else {
                                         d = null; // break loop
@@ -1126,10 +988,7 @@ export class Game {
                         case PieceType.Pawn:
                             if (p.color === Color.White) {
                                 // one sq forward
-                                let d = {
-                                    file: f,
-                                    rank: r + 1
-                                };
+                                let d = new Square(f, r + 1);
                                 if (this.isOnBoard(d)) {
                                     let dp = this.getPiece(d);
                                     if (!dp) {
@@ -1159,16 +1018,13 @@ export class Game {
                                                     .board;
                                                 newBoard.insertPiece(d, pP);
                                                 newBoard.insertPiece(
-                                                    { file: f, rank: r },
+                                                    new Square(f, r),
                                                     null
                                                 );
                                                 movements.push({
                                                     notation: null,
                                                     preMoveFEN: this.getFEN(),
-                                                    src: {
-                                                        file: f,
-                                                        rank: r
-                                                    },
+                                                    src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
                                                 });
@@ -1178,26 +1034,20 @@ export class Game {
                                                 .board;
                                             newBoard.insertPiece(d, p);
                                             newBoard.insertPiece(
-                                                { file: f, rank: r },
+                                                new Square(f, r),
                                                 null
                                             );
                                             movements.push({
                                                 notation: null,
                                                 preMoveFEN: this.getFEN(),
-                                                src: {
-                                                    file: f,
-                                                    rank: r
-                                                },
+                                                src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
                                             });
                                         }
                                         if (r === Rank.TWO) {
                                             // two sqs forward
-                                            d = {
-                                                file: f,
-                                                rank: r + 2
-                                            };
+                                            d = new Square(f, r + 2);
                                             if (this.isOnBoard(d)) {
                                                 dp = this.getPiece(d);
                                                 if (!dp) {
@@ -1206,16 +1056,13 @@ export class Game {
                                                     ).board;
                                                     newBoard.insertPiece(d, p);
                                                     newBoard.insertPiece(
-                                                        { file: f, rank: r },
+                                                        new Square(f, r),
                                                         null
                                                     );
                                                     movements.push({
                                                         notation: null,
                                                         preMoveFEN: this.getFEN(),
-                                                        src: {
-                                                            file: f,
-                                                            rank: r
-                                                        },
+                                                        src: new Square(f, r),
                                                         dest: d,
                                                         resultingBoard: newBoard
                                                     });
@@ -1225,10 +1072,7 @@ export class Game {
                                     }
                                 }
                                 // capture +f
-                                d = {
-                                    file: f + 1,
-                                    rank: r + 1
-                                };
+                                d = new Square(f + 1, r + 1);
                                 if (this.isOnBoard(d)) {
                                     const dp = this.getPiece(d);
                                     if (dp && dp.color !== p.color) {
@@ -1258,16 +1102,13 @@ export class Game {
                                                     .board;
                                                 newBoard.insertPiece(d, pP);
                                                 newBoard.insertPiece(
-                                                    { file: f, rank: r },
+                                                    new Square(f, r),
                                                     null
                                                 );
                                                 movements.push({
                                                     notation: null,
                                                     preMoveFEN: this.getFEN(),
-                                                    src: {
-                                                        file: f,
-                                                        rank: r
-                                                    },
+                                                    src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
                                                 });
@@ -1277,52 +1118,42 @@ export class Game {
                                                 .board;
                                             newBoard.insertPiece(d, p);
                                             newBoard.insertPiece(
-                                                { file: f, rank: r },
+                                                new Square(f, r),
                                                 null
                                             );
                                             movements.push({
                                                 notation: null,
                                                 preMoveFEN: this.getFEN(),
-                                                src: {
-                                                    file: f,
-                                                    rank: r
-                                                },
+                                                src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
                                             });
                                         }
                                     } else if (
-                                        this.enPassant ===
-                                        this.squareToString(d)
+                                        this.enPassant === d.toString()
                                     ) {
                                         const newBoard = new Game(this.fen)
                                             .board;
                                         newBoard.insertPiece(d, p);
                                         newBoard.insertPiece(
-                                            { file: f, rank: r },
+                                            new Square(f, r),
                                             null
                                         );
                                         newBoard.insertPiece(
-                                            { file: f + 1, rank: r },
+                                            new Square(f + 1, r),
                                             null
                                         );
                                         movements.push({
                                             notation: null,
                                             preMoveFEN: this.getFEN(),
-                                            src: {
-                                                file: f,
-                                                rank: r
-                                            },
+                                            src: new Square(f, r),
                                             dest: d,
                                             resultingBoard: newBoard
                                         });
                                     }
                                 }
                                 // capture -f
-                                d = {
-                                    file: f - 1,
-                                    rank: r + 1
-                                };
+                                d = new Square(f - 1, r + 1);
                                 if (this.isOnBoard(d)) {
                                     const dp = this.getPiece(d);
                                     if (dp && dp.color !== p.color) {
@@ -1352,16 +1183,13 @@ export class Game {
                                                     .board;
                                                 newBoard.insertPiece(d, pP);
                                                 newBoard.insertPiece(
-                                                    { file: f, rank: r },
+                                                    new Square(f, r),
                                                     null
                                                 );
                                                 movements.push({
                                                     notation: null,
                                                     preMoveFEN: this.getFEN(),
-                                                    src: {
-                                                        file: f,
-                                                        rank: r
-                                                    },
+                                                    src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
                                                 });
@@ -1371,42 +1199,35 @@ export class Game {
                                                 .board;
                                             newBoard.insertPiece(d, p);
                                             newBoard.insertPiece(
-                                                { file: f, rank: r },
+                                                new Square(f, r),
                                                 null
                                             );
                                             movements.push({
                                                 notation: null,
                                                 preMoveFEN: this.getFEN(),
-                                                src: {
-                                                    file: f,
-                                                    rank: r
-                                                },
+                                                src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
                                             });
                                         }
                                     } else if (
-                                        this.enPassant ===
-                                        this.squareToString(d)
+                                        this.enPassant === d.toString()
                                     ) {
                                         const newBoard = new Game(this.fen)
                                             .board;
                                         newBoard.insertPiece(d, p);
                                         newBoard.insertPiece(
-                                            { file: f, rank: r },
+                                            new Square(f, r),
                                             null
                                         );
                                         newBoard.insertPiece(
-                                            { file: f - 1, rank: r },
+                                            new Square(f - 1, r),
                                             null
                                         );
                                         movements.push({
                                             notation: null,
                                             preMoveFEN: this.getFEN(),
-                                            src: {
-                                                file: f,
-                                                rank: r
-                                            },
+                                            src: new Square(f, r),
                                             dest: d,
                                             resultingBoard: newBoard
                                         });
@@ -1414,10 +1235,7 @@ export class Game {
                                 }
                             } else {
                                 // one sq forward
-                                let d = {
-                                    file: f,
-                                    rank: r - 1
-                                };
+                                let d = new Square(f, r - 1);
                                 if (this.isOnBoard(d)) {
                                     let dp = this.getPiece(d);
                                     if (!dp) {
@@ -1447,16 +1265,13 @@ export class Game {
                                                     .board;
                                                 newBoard.insertPiece(d, pP);
                                                 newBoard.insertPiece(
-                                                    { file: f, rank: r },
+                                                    new Square(f, r),
                                                     null
                                                 );
                                                 movements.push({
                                                     notation: null,
                                                     preMoveFEN: this.getFEN(),
-                                                    src: {
-                                                        file: f,
-                                                        rank: r
-                                                    },
+                                                    src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
                                                 });
@@ -1466,26 +1281,20 @@ export class Game {
                                                 .board;
                                             newBoard.insertPiece(d, p);
                                             newBoard.insertPiece(
-                                                { file: f, rank: r },
+                                                new Square(f, r),
                                                 null
                                             );
                                             movements.push({
                                                 notation: null,
                                                 preMoveFEN: this.getFEN(),
-                                                src: {
-                                                    file: f,
-                                                    rank: r
-                                                },
+                                                src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
                                             });
                                         }
                                         if (r === Rank.SEVEN) {
                                             // two sqs forward
-                                            d = {
-                                                file: f,
-                                                rank: r - 2
-                                            };
+                                            d = new Square(f, r - 2);
                                             if (this.isOnBoard(d)) {
                                                 dp = this.getPiece(d);
                                                 if (!dp) {
@@ -1494,16 +1303,13 @@ export class Game {
                                                     ).board;
                                                     newBoard.insertPiece(d, p);
                                                     newBoard.insertPiece(
-                                                        { file: f, rank: r },
+                                                        new Square(f, r),
                                                         null
                                                     );
                                                     movements.push({
                                                         notation: null,
                                                         preMoveFEN: this.getFEN(),
-                                                        src: {
-                                                            file: f,
-                                                            rank: r
-                                                        },
+                                                        src: new Square(f, r),
                                                         dest: d,
                                                         resultingBoard: newBoard
                                                     });
@@ -1513,10 +1319,7 @@ export class Game {
                                     }
                                 }
                                 // capture +f
-                                d = {
-                                    file: f + 1,
-                                    rank: r - 1
-                                };
+                                d = new Square(f + 1, r - 1);
                                 if (this.isOnBoard(d)) {
                                     const dp = this.getPiece(d);
                                     if (dp && dp.color !== p.color) {
@@ -1546,16 +1349,13 @@ export class Game {
                                                     .board;
                                                 newBoard.insertPiece(d, pP);
                                                 newBoard.insertPiece(
-                                                    { file: f, rank: r },
+                                                    new Square(f, r),
                                                     null
                                                 );
                                                 movements.push({
                                                     notation: null,
                                                     preMoveFEN: this.getFEN(),
-                                                    src: {
-                                                        file: f,
-                                                        rank: r
-                                                    },
+                                                    src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
                                                 });
@@ -1565,52 +1365,42 @@ export class Game {
                                                 .board;
                                             newBoard.insertPiece(d, p);
                                             newBoard.insertPiece(
-                                                { file: f, rank: r },
+                                                new Square(f, r),
                                                 null
                                             );
                                             movements.push({
                                                 notation: null,
                                                 preMoveFEN: this.getFEN(),
-                                                src: {
-                                                    file: f,
-                                                    rank: r
-                                                },
+                                                src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
                                             });
                                         }
                                     } else if (
-                                        this.enPassant ===
-                                        this.squareToString(d)
+                                        this.enPassant === d.toString()
                                     ) {
                                         const newBoard = new Game(this.fen)
                                             .board;
                                         newBoard.insertPiece(d, p);
                                         newBoard.insertPiece(
-                                            { file: f, rank: r },
+                                            new Square(f, r),
                                             null
                                         );
                                         newBoard.insertPiece(
-                                            { file: f + 1, rank: r },
+                                            new Square(f + 1, r),
                                             null
                                         );
                                         movements.push({
                                             notation: null,
                                             preMoveFEN: this.getFEN(),
-                                            src: {
-                                                file: f,
-                                                rank: r
-                                            },
+                                            src: new Square(f, r),
                                             dest: d,
                                             resultingBoard: newBoard
                                         });
                                     }
                                 }
                                 // capture -f
-                                d = {
-                                    file: f - 1,
-                                    rank: r - 1
-                                };
+                                d = new Square(f - 1, r - 1);
                                 if (this.isOnBoard(d)) {
                                     const dp = this.getPiece(d);
                                     if (dp && dp.color !== p.color) {
@@ -1640,16 +1430,13 @@ export class Game {
                                                     .board;
                                                 newBoard.insertPiece(d, pP);
                                                 newBoard.insertPiece(
-                                                    { file: f, rank: r },
+                                                    new Square(f, r),
                                                     null
                                                 );
                                                 movements.push({
                                                     notation: null,
                                                     preMoveFEN: this.getFEN(),
-                                                    src: {
-                                                        file: f,
-                                                        rank: r
-                                                    },
+                                                    src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
                                                 });
@@ -1659,42 +1446,35 @@ export class Game {
                                                 .board;
                                             newBoard.insertPiece(d, p);
                                             newBoard.insertPiece(
-                                                { file: f, rank: r },
+                                                new Square(f, r),
                                                 null
                                             );
                                             movements.push({
                                                 notation: null,
                                                 preMoveFEN: this.getFEN(),
-                                                src: {
-                                                    file: f,
-                                                    rank: r
-                                                },
+                                                src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
                                             });
                                         }
                                     } else if (
-                                        this.enPassant ===
-                                        this.squareToString(d)
+                                        this.enPassant === d.toString()
                                     ) {
                                         const newBoard = new Game(this.fen)
                                             .board;
                                         newBoard.insertPiece(d, p);
                                         newBoard.insertPiece(
-                                            { file: f, rank: r },
+                                            new Square(f, r),
                                             null
                                         );
                                         newBoard.insertPiece(
-                                            { file: f - 1, rank: r },
+                                            new Square(f - 1, r),
                                             null
                                         );
                                         movements.push({
                                             notation: null,
                                             preMoveFEN: this.getFEN(),
-                                            src: {
-                                                file: f,
-                                                rank: r
-                                            },
+                                            src: new Square(f, r),
                                             dest: d,
                                             resultingBoard: newBoard
                                         });
@@ -1804,7 +1584,7 @@ export class Game {
                 }
             }
             // dest
-            notation += this.squareToString(move.dest);
+            notation += move.dest.toString();
             // castling
             if (piece === 'K') {
                 if (move.src.file === File.e) {
@@ -1845,7 +1625,7 @@ export class Game {
     public findKing(color: Color): Square {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
-                const sq = { file: i, rank: j };
+                const sq = new Square(i, j);
                 const p = this.getPiece(sq);
                 if (p && p.type === PieceType.King && p.color === color) {
                     return sq;
@@ -1923,10 +1703,9 @@ export class Game {
         for (let i = 0; i < 8; i++) {
             let empties = 0;
             for (let j = 0; j < 8; j++) {
-                const piece = move.resultingBoard.getPiece({
-                    file: j,
-                    rank: 7 - i
-                });
+                const piece = move.resultingBoard.getPiece(
+                    new Square(j, 7 - i)
+                );
                 if (piece) {
                     if (empties > 0) {
                         newFEN += empties;
@@ -2021,10 +1800,10 @@ export class Game {
             move.resultingBoard.getPiece(move.dest).type === PieceType.Pawn &&
             move.resultingBoard.getPiece(move.dest).color === Color.White
         ) {
-            const enPassantSqString = this.squareToString({
-                file: move.dest.file,
-                rank: Rank.THREE
-            });
+            const enPassantSqString = new Square(
+                move.dest.file,
+                Rank.THREE
+            ).toString();
             const enPassantTestGame = new Game(
                 newFEN + enPassantSqString + ' 0 1'
             );
@@ -2037,8 +1816,7 @@ export class Game {
                 //     this.squareToString(possibleMove.dest)
                 // );
                 if (
-                    enPassantSqString ===
-                        this.squareToString(possibleMove.dest) &&
+                    enPassantSqString === possibleMove.dest.toString() &&
                     possibleMove.resultingBoard.getPiece(possibleMove.dest)
                         .type === PieceType.Pawn
                 ) {
@@ -2056,10 +1834,10 @@ export class Game {
             move.resultingBoard.getPiece(move.dest).type === PieceType.Pawn &&
             move.resultingBoard.getPiece(move.dest).color === Color.Black
         ) {
-            const enPassantSqString = this.squareToString({
-                file: move.dest.file,
-                rank: Rank.SIX
-            });
+            const enPassantSqString = new Square(
+                move.dest.file,
+                Rank.SIX
+            ).toString();
             const enPassantTestGame = new Game(
                 newFEN + enPassantSqString + ' 0 1'
             );
@@ -2072,8 +1850,7 @@ export class Game {
                 //     this.squareToString(possibleMove.dest)
                 // );
                 if (
-                    enPassantSqString ===
-                        this.squareToString(possibleMove.dest) &&
+                    enPassantSqString === possibleMove.dest.toString() &&
                     possibleMove.resultingBoard.getPiece(possibleMove.dest)
                         .type === PieceType.Pawn
                 ) {
@@ -2172,10 +1949,7 @@ export class Game {
         for (let i = 0; i < 8; i++) {
             let empties = 0;
             for (let j = 0; j < 8; j++) {
-                const piece = board.getPiece({
-                    file: j,
-                    rank: 7 - i
-                });
+                const piece = board.getPiece(new Square(j, 7 - i));
                 if (piece) {
                     if (empties > 0) {
                         boardString += empties;
