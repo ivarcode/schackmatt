@@ -12,6 +12,7 @@ import {
     GameEvent,
     Move
 } from 'src/app/lib/interface.library';
+import { Square } from 'src/app/lib/square.library';
 import { GameComponent } from '../game/game.component';
 
 @Component({
@@ -67,25 +68,16 @@ export class EndgameTrainerComponent implements OnInit {
                         f += 4;
                     }
                     board.insertPiece(
-                        {
-                            file: f,
-                            rank: r
-                        },
+                        new Square(f, r),
                         new Piece(PieceType.Pawn, Color.Black)
                     );
                     board.insertPiece(
-                        {
-                            // calculated position of King
-                            file: f > 1 ? f - (r + 1) : f + (r + 1),
-                            rank: r + 1
-                        },
+                        // calculated position of King
+                        new Square(f > 1 ? f - (r + 1) : f + (r + 1), r + 1),
                         new Piece(PieceType.King, Color.White)
                     );
                     board.insertPiece(
-                        {
-                            file: Math.floor(Math.random() * 8),
-                            rank: r + 3
-                        },
+                        new Square(Math.floor(Math.random() * 8), r + 3),
                         new Piece(PieceType.King, Color.Black)
                     );
                 },
@@ -176,7 +168,7 @@ export class EndgameTrainerComponent implements OnInit {
                     file: pawnLocation.file,
                     rank: pawnLocation.rank - 1
                 };
-                let moveNotation = this.game.squareToString(dest);
+                let moveNotation = dest.toString();
                 if (dest.rank === Rank.ONE) {
                     moveNotation += '=Q+';
                 }

@@ -507,10 +507,7 @@ export class Game {
                                         movements.push({
                                             notation: null,
                                             preMoveFEN: this.getFEN(),
-                                            src: {
-                                                f,
-                                                r
-                                            },
+                                            src: new Square(f, r),
                                             dest: d,
                                             resultingBoard: newBoard
                                         });
@@ -544,10 +541,7 @@ export class Game {
                                         movements.push({
                                             notation: null,
                                             preMoveFEN: this.getFEN(),
-                                            src: {
-                                                f,
-                                                r
-                                            },
+                                            src: new Square(f, r),
                                             dest: d,
                                             resultingBoard: newBoard
                                         });
