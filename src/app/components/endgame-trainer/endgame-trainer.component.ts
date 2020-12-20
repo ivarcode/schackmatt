@@ -13,8 +13,7 @@ import {
     randomFile,
     randomFileInclusivelyBetween,
     randomRank,
-    randomRankInclusivelyBetween,
-    squareToString
+    randomRankInclusivelyBetween
 } from 'src/app/lib/util.library';
 import {
     GameDisplayOptions,
@@ -100,7 +99,7 @@ export class EndgameTrainerComponent implements OnInit {
                         file: pawnLocation.file,
                         rank: pawnLocation.rank - 1
                     };
-                    let moveNotation = squareToString(dest);
+                    let moveNotation = dest.toString();
                     if (dest.rank === Rank.ONE) {
                         moveNotation += '=Q+';
                     }
@@ -262,7 +261,7 @@ export class EndgameTrainerComponent implements OnInit {
                         }
                     }
                     board.insertPiece(
-                        { file: f, rank: r },
+                        new Square(f, r),
                         new Piece(PieceType.King, Color.Black)
                     );
                 },
