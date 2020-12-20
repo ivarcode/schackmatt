@@ -7,8 +7,10 @@ import {
     SimpleChanges,
     OnChanges
 } from '@angular/core';
-import { Game, Square, Color, Rank, Board } from '../../lib/game.library';
-import { GameEvent } from 'src/app/lib/interface.library';
+import { Game, Color, Rank, Board } from '../../lib/game.library';
+import { GameDisplayOptions, GameEvent } from 'src/app/lib/interface.library';
+import { fileToString } from 'src/app/lib/util.library';
+import { Square } from 'src/app/lib/square.library';
 
 @Component({
     selector: 'app-game',
@@ -19,6 +21,7 @@ export class GameComponent implements OnInit, OnChanges {
     @Output() gameDataEmitter = new EventEmitter<GameEvent>();
     @Input() game: Game;
     @Input() interfaceCommand: string;
+    @Input() gameDisplayOptions: GameDisplayOptions;
 
     private displayedMoveIndex: number;
     private boardCanvas: any;
@@ -262,14 +265,18 @@ export class GameComponent implements OnInit, OnChanges {
                         this.CURSOR_DATA.mouseUpOn.x &&
                     this.CURSOR_DATA.mouseDownOn.y ===
                         this.CURSOR_DATA.mouseUpOn.y &&
-                    this.game.getPiece({
-                        file: this.CURSOR_DATA.mouseDownOn.x,
-                        rank: 7 - this.CURSOR_DATA.mouseDownOn.y
-                    }) &&
-                    this.game.getPiece({
-                        file: this.CURSOR_DATA.mouseDownOn.x,
-                        rank: 7 - this.CURSOR_DATA.mouseDownOn.y
-                    }).color === this.game.getTurn()
+                    this.game.getPiece(
+                        new Square(
+                            this.CURSOR_DATA.mouseDownOn.x,
+                            7 - this.CURSOR_DATA.mouseDownOn.y
+                        )
+                    ) &&
+                    this.game.getPiece(
+                        new Square(
+                            this.CURSOR_DATA.mouseDownOn.x,
+                            7 - this.CURSOR_DATA.mouseDownOn.y
+                        )
+                    ).color === this.game.getTurn()
                 ) {
                     this.twoClickMove.attempting = true;
                     this.twoClickMove.source = this.CURSOR_DATA.mouseUpOn;
@@ -477,10 +484,10 @@ export class GameComponent implements OnInit, OnChanges {
                     movement.src.rank === 7 - this.twoClickMove.source.y
                 ) {
                     this.tintSqFromMouseObjects.push({
-                        dest: {
-                            file: movement.dest.file,
-                            rank: 7 - movement.dest.rank
-                        },
+                        dest: new Square(
+                            movement.dest.file,
+                            7 - movement.dest.rank
+                        ),
                         color: 'green',
                         gA: 0.01
                     });
@@ -494,10 +501,10 @@ export class GameComponent implements OnInit, OnChanges {
                     movement.src.rank === 7 - this.CURSOR_DATA.mouseDownOn.y
                 ) {
                     this.tintSqFromMouseObjects.push({
-                        dest: {
-                            file: movement.dest.file,
-                            rank: 7 - movement.dest.rank
-                        },
+                        dest: new Square(
+                            movement.dest.file,
+                            7 - movement.dest.rank
+                        ),
                         color: 'green',
                         gA: 0.01
                     });
@@ -515,10 +522,10 @@ export class GameComponent implements OnInit, OnChanges {
                     movement.src.rank === sq.rank
                 ) {
                     this.tintSqFromMouseObjects.push({
-                        dest: {
-                            file: movement.dest.file,
-                            rank: 7 - movement.dest.rank
-                        },
+                        dest: new Square(
+                            movement.dest.file,
+                            7 - movement.dest.rank
+                        ),
                         color: 'green',
                         gA: 0.01
                     });
@@ -528,10 +535,7 @@ export class GameComponent implements OnInit, OnChanges {
         if (this.game.isCheck()) {
             const kingSq = this.game.findKing(this.game.getTurn());
             this.tintSqFromMouseObjects.push({
-                dest: {
-                    file: kingSq.file,
-                    rank: 7 - kingSq.rank
-                },
+                dest: new Square(kingSq.file, 7 - kingSq.rank),
                 color: 'red',
                 gA: 0.01
             });
@@ -606,9 +610,48 @@ export class GameComponent implements OnInit, OnChanges {
         this.boardContext.restore();
         this.boardContext.globalAlpha = 1;
         this.boardContext.drawImage(this.boardImage, 0, 0);
+        this.boardContext.font = '15px Arial';
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                this.boardContext.fillStyle =
+                    (i + j) % 2 === 0
+                        ? this.gameDisplayOptions.colorScheme.light
+                        : this.gameDisplayOptions.colorScheme.dark;
+                this.boardContext.fillRect(i * 80, j * 80, 80, 80);
+            }
+        }
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
                 this.refreshCanvasSquare(i, j);
+            }
+        }
+        if (this.gameDisplayOptions.showCoordinates) {
+            for (let i = 0; i < 8; i++) {
+                for (let j = 0; j < 8; j++) {
+                    if ((i + j) % 2 === 0) {
+                        // light sq
+                        this.boardContext.fillStyle = this.gameDisplayOptions.colorScheme.dark;
+                    } else {
+                        // dark sq
+                        this.boardContext.fillStyle = this.gameDisplayOptions.colorScheme.light;
+                    }
+                    if (i === 7) {
+                        // right side
+                        this.boardContext.fillText(
+                            '' + (8 - j),
+                            628,
+                            j * 80 + 15
+                        );
+                    }
+                    if (j === 7) {
+                        // bottom row
+                        this.boardContext.fillText(
+                            fileToString(i),
+                            i * 80 + 5,
+                            635
+                        );
+                    }
+                }
             }
         }
         this.boardContext.globalAlpha = 1;
@@ -645,13 +688,12 @@ export class GameComponent implements OnInit, OnChanges {
     private refreshCanvasSquare(x: number, y: number): void {
         const piece =
             this.displayedMoveIndex === 0
-                ? this.initPosition.getPiece({ file: x, rank: y })
+                ? this.initPosition.getPiece(new Square(x, y))
                 : this.game
                       .getMoveHistory()
-                      [this.displayedMoveIndex - 1].resultingBoard.getPiece({
-                          file: x,
-                          rank: y
-                      });
+                      [this.displayedMoveIndex - 1].resultingBoard.getPiece(
+                          new Square(x, y)
+                      );
         if (
             this.CURSOR_DATA.overSquare &&
             this.CURSOR_DATA.overSquare.x === x &&
@@ -752,7 +794,7 @@ export class GameComponent implements OnInit, OnChanges {
             return;
         }
         let redTint = {
-            dest: { file: sq.file, rank: 7 - sq.rank },
+            dest: new Square(sq.file, 7 - sq.rank),
             color: color,
             gA: 0.5
         };

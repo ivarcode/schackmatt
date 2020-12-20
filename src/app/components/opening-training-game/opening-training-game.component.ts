@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/app/lib/game.library';
 import { Study, moveClassificationKey } from 'src/app/lib/study.library';
-import { GameEvent, Branch } from 'src/app/lib/interface.library';
+import {
+    GameEvent,
+    Branch,
+    GameDisplayOptions
+} from 'src/app/lib/interface.library';
 import { Openings } from 'src/app/data/openings';
-import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 
 @Component({
     selector: 'app-opening-training-game',
@@ -12,6 +15,7 @@ import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 })
 export class OpeningTrainingGameComponent implements OnInit {
     private game: Game;
+    private _gameDisplayOptions: GameDisplayOptions;
     private opening: Study;
     private gameInterfaceCommand: string;
     private alertType: string;
@@ -30,6 +34,13 @@ export class OpeningTrainingGameComponent implements OnInit {
 
     constructor() {
         this.game = new Game();
+        this._gameDisplayOptions = {
+            showCoordinates: true,
+            colorScheme: {
+                light: '#f0d9b9',
+                dark: '#b58868'
+            }
+        };
         this.opening = null;
         this.alertType = 'alert-warning';
         this.choiceHeadingMessage = 'no message';
@@ -290,5 +301,8 @@ export class OpeningTrainingGameComponent implements OnInit {
     }
     public getChoiceAuthor(): string {
         return this.choiceAuthor;
+    }
+    get gameDisplayOptions(): GameDisplayOptions {
+        return this._gameDisplayOptions;
     }
 }

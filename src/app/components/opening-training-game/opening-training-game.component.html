@@ -9,9 +9,15 @@
         </div> -->
     </div>
     <div class="col-sm-8">
-        <div class="row" style="background-color:rgb(209, 195, 0)">
-            <h2>This feature is in <strong>BETA</strong> and is not yet complete.</h2>
-            <h5>Feel free to play around, but do not expect full functionality at this time.</h5>
+        <div class="row" style="background-color: rgb(209, 195, 0)">
+            <h2>
+                This feature is in <strong>BETA</strong> and is not yet
+                complete.
+            </h2>
+            <h5>
+                Feel free to play around, but do not expect full functionality
+                at this time.
+            </h5>
         </div>
         <app-board-overlay
             id="board-overlay"
@@ -22,6 +28,7 @@
         <app-game
             id="game"
             [game]="getGame()"
+            [gameDisplayOptions]="gameDisplayOptions"
             [interfaceCommand]="getGameInterfaceCommand()"
             (gameDataEmitter)="gameDataEvent($event)"
         ></app-game>

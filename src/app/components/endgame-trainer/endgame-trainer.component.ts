@@ -7,10 +7,8 @@ import {
     Piece,
     PieceType,
     File,
-    Rank,
-    Square
+    Rank
 } from 'src/app/lib/game.library';
-import { GameEvent, Move } from 'src/app/lib/interface.library';
 import {
     randomFile,
     randomFileInclusivelyBetween,
@@ -18,6 +16,12 @@ import {
     randomRankInclusivelyBetween,
     squareToString
 } from 'src/app/lib/util.library';
+import {
+    GameDisplayOptions,
+    GameEvent,
+    Move
+} from 'src/app/lib/interface.library';
+import { Square } from 'src/app/lib/square.library';
 import { GameComponent } from '../game/game.component';
 
 @Component({
@@ -27,6 +31,7 @@ import { GameComponent } from '../game/game.component';
 })
 export class EndgameTrainerComponent implements OnInit {
     @ViewChild('gameComponent') _gameComponent: GameComponent;
+    private _gameDisplayOptions: GameDisplayOptions;
     private _game: Game;
     private _interfaceCommand: string;
     private _showBoardOverlay: boolean;
@@ -44,6 +49,13 @@ export class EndgameTrainerComponent implements OnInit {
 
     constructor() {
         this._showBoardOverlay = false;
+        this._gameDisplayOptions = {
+            showCoordinates: true,
+            colorScheme: {
+                light: '#f0d9b9',
+                dark: '#b58868'
+            }
+        };
         this._boardOverlayData = {
             title: 'Well done!',
             displayLoadingMessage: false,
@@ -66,25 +78,16 @@ export class EndgameTrainerComponent implements OnInit {
                         f += 4;
                     }
                     board.insertPiece(
-                        {
-                            file: f,
-                            rank: r + 1
-                        },
+                        new Square(f, r + 1),
                         new Piece(PieceType.Pawn, Color.Black)
                     );
                     board.insertPiece(
-                        {
-                            // calculated position of King
-                            file: f > 1 ? f - (r + 1) : f + (r + 1),
-                            rank: r + 1
-                        },
+                        // calculated position of King
+                        new Square(f > 1 ? f - (r + 1) : f + (r + 1), r + 1),
                         new Piece(PieceType.King, Color.White)
                     );
                     board.insertPiece(
-                        {
-                            file: Math.floor(Math.random() * 8),
-                            rank: r + 3
-                        },
+                        new Square(Math.floor(Math.random() * 8), r + 3),
                         new Piece(PieceType.King, Color.Black)
                     );
                 },
@@ -167,48 +170,40 @@ export class EndgameTrainerComponent implements OnInit {
                                   );
                         if (f > 3) {
                             // right target
-                            let rookPosition: Square = {
-                                file: randomFileInclusivelyBetween(
-                                    File.a,
-                                    f - 2
-                                ),
-                                rank: rookRank
-                            };
+                            let rookPosition = new Square(
+                                randomFileInclusivelyBetween(File.a, f - 2),
+                                rookRank
+                            );
+
                             board.insertPiece(
                                 rookPosition,
                                 new Piece(PieceType.Rook, Color.White)
                             );
-                            let whiteKingPosition: Square = {
-                                file: randomFileInclusivelyBetween(
-                                    File.a,
-                                    f - 2
-                                ),
-                                rank: kingRank
-                            };
+                            let whiteKingPosition = new Square(
+                                randomFileInclusivelyBetween(File.a, f - 2),
+                                kingRank
+                            );
+
                             board.insertPiece(
                                 whiteKingPosition,
                                 new Piece(PieceType.King, Color.White)
                             );
                         } else {
                             // left target
-                            let rookPosition: Square = {
-                                file: randomFileInclusivelyBetween(
-                                    f + 2,
-                                    File.h
-                                ),
-                                rank: rookRank
-                            };
+                            let rookPosition = new Square(
+                                randomFileInclusivelyBetween(f + 2, File.h),
+                                rookRank
+                            );
+
                             board.insertPiece(
                                 rookPosition,
                                 new Piece(PieceType.Rook, Color.White)
                             );
-                            let whiteKingPosition: Square = {
-                                file: randomFileInclusivelyBetween(
-                                    f + 2,
-                                    File.h
-                                ),
-                                rank: kingRank
-                            };
+                            let whiteKingPosition = new Square(
+                                randomFileInclusivelyBetween(f + 2, File.h),
+                                kingRank
+                            );
+
                             board.insertPiece(
                                 whiteKingPosition,
                                 new Piece(PieceType.King, Color.White)
@@ -226,48 +221,40 @@ export class EndgameTrainerComponent implements OnInit {
                                 : randomFileInclusivelyBetween(File.a, File.e);
                         if (r > 3) {
                             // top target
-                            let rookPosition: Square = {
-                                file: rookFile,
-                                rank: randomRankInclusivelyBetween(
-                                    Rank.ONE,
-                                    r - 2
-                                )
-                            };
+                            let rookPosition = new Square(
+                                rookFile,
+                                randomRankInclusivelyBetween(Rank.ONE, r - 2)
+                            );
+
                             board.insertPiece(
                                 rookPosition,
                                 new Piece(PieceType.Rook, Color.White)
                             );
-                            let whiteKingPosition: Square = {
-                                file: kingFile,
-                                rank: randomRankInclusivelyBetween(
-                                    Rank.ONE,
-                                    r - 2
-                                )
-                            };
+                            let whiteKingPosition = new Square(
+                                kingFile,
+                                randomRankInclusivelyBetween(Rank.ONE, r - 2)
+                            );
+
                             board.insertPiece(
                                 whiteKingPosition,
                                 new Piece(PieceType.King, Color.White)
                             );
                         } else {
                             // bottom target
-                            let rookPosition: Square = {
-                                file: rookFile,
-                                rank: randomRankInclusivelyBetween(
-                                    r + 2,
-                                    Rank.EIGHT
-                                )
-                            };
+                            let rookPosition = new Square(
+                                rookFile,
+                                randomRankInclusivelyBetween(r + 2, Rank.EIGHT)
+                            );
+
                             board.insertPiece(
                                 rookPosition,
                                 new Piece(PieceType.Rook, Color.White)
                             );
-                            let whiteKingPosition: Square = {
-                                file: kingFile,
-                                rank: randomRankInclusivelyBetween(
-                                    r + 2,
-                                    Rank.EIGHT
-                                )
-                            };
+                            let whiteKingPosition = new Square(
+                                kingFile,
+                                randomRankInclusivelyBetween(r + 2, Rank.EIGHT)
+                            );
+
                             board.insertPiece(
                                 whiteKingPosition,
                                 new Piece(PieceType.King, Color.White)
@@ -410,5 +397,8 @@ export class EndgameTrainerComponent implements OnInit {
     // TODO colorToString utility function
     get colorToPlayToString(): string {
         return this.colorToPlay ? 'black' : 'white';
+    }
+    get gameDisplayOptions(): GameDisplayOptions {
+        return this._gameDisplayOptions;
     }
 }

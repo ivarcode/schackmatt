@@ -1,4 +1,5 @@
-import { Board, Square } from './game.library';
+import { Board } from './game.library';
+import { Square } from './square.library';
 
 export interface Branch {
     definingMove: string;
@@ -21,4 +22,12 @@ export interface Move {
 export interface GameEvent {
     type: string;
     content: string;
+}
+
+export interface GameDisplayOptions {
+    showCoordinates: boolean;
+    colorScheme: {
+        light: string;
+        dark: string;
+    };
 }
