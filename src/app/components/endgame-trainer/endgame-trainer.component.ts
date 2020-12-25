@@ -97,10 +97,10 @@ export class EndgameTrainerComponent implements OnInit {
                     let pawnLocation = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     )[0];
-                    let dest = {
-                        file: pawnLocation.file,
-                        rank: pawnLocation.rank - 1
-                    };
+                    let dest = new Square(
+                        pawnLocation.file,
+                        pawnLocation.rank - 1
+                    );
                     let moveNotation = dest.toString();
                     if (dest.rank === Rank.ONE) {
                         moveNotation += '=Q+';
@@ -278,9 +278,15 @@ export class EndgameTrainerComponent implements OnInit {
                         console.log(game.getLegalMoves());
                         let moves = game.getLegalMoves();
                         let validMoves = [];
-                        let kingPos = game.findKing(Color.Black);
                         for (let m of moves) {
-                            // if (m.)
+                            if (
+                                Math.abs(m.src.file - 3.5) >
+                                Math.abs(m.src.rank - 3.5)
+                            ) {
+                                // file sided
+                            } else {
+                                // rank sided
+                            }
                         }
                     }
                     return 'boogalooga';
@@ -324,6 +330,7 @@ export class EndgameTrainerComponent implements OnInit {
         console.log('board overlay event', event);
         switch (event) {
             case 'Retry Exercise':
+                this.triggerInterfaceCommand('redraw board');
                 this.game.setMoveHistory([]);
                 this._gameComponent.setInitPosition(this.game.getBoard());
                 this._gameComponent.setDisplayedMoveIndex(0);
