@@ -69,8 +69,9 @@ export class EndgameTrainerComponent implements OnInit {
                     'Count the number of squares the black pawn is away from the queening square.  Then count the same number of squares either left or right TOWARDS the white king.  Using these two sides, complete the square (you can always complete a square with this method).',
                     'If the white king can step into the square before the black pawn gets to move, the white king is in time to stop the pawn from queening.'
                 ],
-                (board: Board): void => {
+                (game: Game): void => {
                     // setup
+                    let board = game.getBoard();
                     let r = randomRankInclusivelyBetween(Rank.THREE, Rank.FIVE);
                     let f = randomFileInclusivelyBetween(File.a, File.d);
                     if (f > 1) {
@@ -90,8 +91,9 @@ export class EndgameTrainerComponent implements OnInit {
                         new Piece(PieceType.King, Color.Black)
                     );
                 },
-                (board: Board): string => {
+                (game: Game): string => {
                     // nextMove
+                    let board = game.getBoard();
                     let pawnLocation = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     )[0];
@@ -105,8 +107,9 @@ export class EndgameTrainerComponent implements OnInit {
                     }
                     return moveNotation;
                 },
-                (board: Board, move: Move): boolean => {
+                (game: Game, move: Move): boolean => {
                     // moveValidator
+                    let board = game.getBoard();
                     let pawnLocation = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     )[0];
@@ -122,8 +125,9 @@ export class EndgameTrainerComponent implements OnInit {
                     }
                     return false;
                 },
-                (board: Board): boolean => {
+                (game: Game): boolean => {
                     // complete
+                    let board = game.getBoard();
                     let blackPawns = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     );
@@ -141,8 +145,9 @@ export class EndgameTrainerComponent implements OnInit {
             new Exercise(
                 'King and Rook vs King',
                 ['needs explanation here', 'info'],
-                (board: Board): void => {
+                (game: Game): void => {
                     // setup
+                    let board = game.getBoard();
                     let f = randomFile();
                     let r = randomRank();
                     if (Math.abs(f - 3.5) > Math.abs(r - 3.5)) {
@@ -265,16 +270,29 @@ export class EndgameTrainerComponent implements OnInit {
                         new Piece(PieceType.King, Color.Black)
                     );
                 },
-                (board: Board): string => {
+                (game: Game): string => {
                     // nextMove
+                    let board = game.getBoard();
+                    console.log('movehist', game.getMoveHistory());
+                    if (game.getMoveHistory().length === 0) {
+                        console.log(game.getLegalMoves());
+                        let moves = game.getLegalMoves();
+                        let validMoves = [];
+                        let kingPos = game.findKing(Color.Black);
+                        for (let m of moves) {
+                            // if (m.)
+                        }
+                    }
                     return 'boogalooga';
                 },
-                (board: Board, move: Move): boolean => {
+                (game: Game, move: Move): boolean => {
                     // moveValidator
+                    let board = game.getBoard();
                     return false;
                 },
-                (board: Board): boolean => {
+                (game: Game): boolean => {
                     // complete
+                    let board = game.getBoard();
                     return false;
                 }
             )
@@ -292,12 +310,9 @@ export class EndgameTrainerComponent implements OnInit {
         let emptyBoardFEN = '8/8/8/8/8/8/8/8 b - - 0 1';
         this.game.setFEN(emptyBoardFEN);
         this.game.loadFEN();
-        let board = this.game.getBoard();
-        exercise.setup(board);
+        exercise.setup(this.game);
         this.game.updateFENPiecesPositionsFromBoard();
-        let firstMoveNotation = this.currentExercise.nextMove(
-            this.game.getBoard()
-        );
+        let firstMoveNotation = this.currentExercise.nextMove(this.game);
         setTimeout(() => {
             this.game.makeMove(firstMoveNotation);
             this.triggerInterfaceCommand('move made, redraw board');
@@ -325,7 +340,7 @@ export class EndgameTrainerComponent implements OnInit {
 
     public gameDataEvent(event: GameEvent) {
         console.log(event);
-        if (this.currentExercise.complete(this.game.getBoard())) {
+        if (this.currentExercise.complete(this.game)) {
             // reset
             setTimeout(() => {
                 this._showBoardOverlay = true;
@@ -333,11 +348,9 @@ export class EndgameTrainerComponent implements OnInit {
         } else {
             if (
                 // trigger black's move if white's is correct
-                this.currentExercise.moveValidator(this.game.getBoard(), event)
+                this.currentExercise.moveValidator(this.game, event)
             ) {
-                let moveNotation = this.currentExercise.nextMove(
-                    this.game.getBoard()
-                );
+                let moveNotation = this.currentExercise.nextMove(this.game);
                 setTimeout(() => {
                     this.game.makeMove(moveNotation);
                     this.triggerInterfaceCommand('move made, redraw board');
