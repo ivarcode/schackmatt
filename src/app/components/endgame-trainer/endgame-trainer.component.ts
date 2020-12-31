@@ -341,8 +341,7 @@ export class EndgameTrainerComponent implements OnInit {
                 },
                 (game: Game): boolean => {
                     // complete
-                    let board = game.getBoard();
-                    return false;
+                    return game.isCheckmate();
                 }
             )
         );
