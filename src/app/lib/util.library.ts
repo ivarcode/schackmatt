@@ -22,7 +22,10 @@ export function randomFileInclusivelyBetween(
 ): File {
     return randomNumberInclusivelyBetween(minFile + 0, maxFile + 0);
 }
-function randomNumberInclusivelyBetween(min: number, max: number): number {
+export function randomNumberInclusivelyBetween(
+    min: number,
+    max: number
+): number {
     if (max <= min) {
         console.error(max + ' is not greater than ' + min);
     }
@@ -33,4 +36,13 @@ function randomNumberInclusivelyBetween(min: number, max: number): number {
         console.error(min + ' is too small');
     }
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export function pickRandom(array: any[]): any {
+    if (array.length === 0) {
+        console.error('No content in array.');
+    } else if (array.length === 1) {
+        return array[0];
+    }
+    return array[Math.floor(Math.random() * array.length)];
 }
