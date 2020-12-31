@@ -1807,7 +1807,7 @@ export class Game {
             for (const possibleMove of arrayOfMTCBP) {
                 // console.log(
                 //     enPassantSqString,
-                //     this.squareToString(possibleMove.dest)
+                //     squareToString(possibleMove.dest)
                 // );
                 if (
                     enPassantSqString === possibleMove.dest.toString() &&
@@ -1841,7 +1841,7 @@ export class Game {
             for (const possibleMove of arrayOfMTCBP) {
                 // console.log(
                 //     enPassantSqString,
-                //     this.squareToString(possibleMove.dest)
+                //     squareToString(possibleMove.dest)
                 // );
                 if (
                     enPassantSqString === possibleMove.dest.toString() &&
@@ -1911,16 +1911,17 @@ export class Game {
         return d.file < 8 && d.file >= 0 && d.rank < 8 && d.rank >= 0;
     }
 
-    public undoLastMove(): void {
+    public undoLastMove(): Move {
         // console.log(this.getPGN());
         // console.log(this.getMoveHistory());
         this.fen = this.moveHistory[this.moveHistory.length - 1].preMoveFEN;
         let firstMove = this.moveHistory[0];
-        this.moveHistory.pop();
+        let m = this.moveHistory.pop();
         this.loadFEN();
         this.pgn = this.getPGNFromMoveHistory(firstMove.preMoveFEN);
         // console.log(this.getPGN());
         // console.log(this.getMoveHistory());
+        return m;
     }
 
     // board object setter
