@@ -303,7 +303,7 @@ export class EndgameTrainerComponent implements OnInit {
                 }
             )
         );
-        this._currentExercise = this._endgameExercises[1];
+        this._currentExercise = this._endgameExercises[0];
     }
 
     ngOnInit() {
@@ -318,6 +318,10 @@ export class EndgameTrainerComponent implements OnInit {
         this.game.loadFEN();
         exercise.setup(this.game);
         this.game.updateFENPiecesPositionsFromBoard();
+        if (this._gameComponent) {
+            console.log('com');
+            this.triggerInterfaceCommand('redraw board');
+        }
         let firstMoveNotation = this.currentExercise.nextMove(this.game);
         setTimeout(() => {
             this.game.makeMove(firstMoveNotation);
@@ -330,10 +334,10 @@ export class EndgameTrainerComponent implements OnInit {
         console.log('board overlay event', event);
         switch (event) {
             case 'Retry Exercise':
-                this.triggerInterfaceCommand('redraw board');
                 this.game.setMoveHistory([]);
                 this._gameComponent.setInitPosition(this.game.getBoard());
                 this._gameComponent.setDisplayedMoveIndex(0);
+                this.triggerInterfaceCommand('redraw board');
                 setTimeout(() => {
                     this.setupEndgameTrainingSet(this.currentExercise);
                     this.triggerInterfaceCommand('redraw board');
