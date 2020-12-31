@@ -317,31 +317,27 @@ export class EndgameTrainerComponent implements OnInit {
                         console.log('validMoves', validMoves);
                         let move: Move = pickRandom(validMoves);
                         return 'K' + move.dest.toString();
-                    } else {
-                        // ANY OTHER MOVE
-                        let allMoves = game.getLegalMoves();
-                        let preferredMove: Move;
-                        for (let m of allMoves) {
-                            if (!preferredMove) {
+                    }
+                    // ANY OTHER MOVE
+                    let allMoves = game.getLegalMoves();
+                    let preferredMove: Move;
+                    for (let m of allMoves) {
+                        if (!preferredMove) {
+                            preferredMove = m;
+                        } else {
+                            if (
+                                m.dest.isCloserToCenterThan(preferredMove.dest)
+                            ) {
                                 preferredMove = m;
-                            } else {
-                                if (
-                                    m.dest.isCloserToCenterThan(
-                                        preferredMove.dest
-                                    )
-                                ) {
-                                    preferredMove = m;
-                                }
                             }
                         }
-                        return 'K' + preferredMove.dest.toString();
                     }
-                    return 'boogalooga';
+                    return 'K' + preferredMove.dest.toString();
                 },
                 (game: Game, move: Move): boolean => {
                     // moveValidator
                     let board = game.getBoard();
-                    return false;
+                    return true;
                 },
                 (game: Game): boolean => {
                     // complete
