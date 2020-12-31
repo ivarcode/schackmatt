@@ -10,8 +10,10 @@ import {
     Rank
 } from 'src/app/lib/game.library';
 import {
+    pickRandom,
     randomFile,
     randomFileInclusivelyBetween,
+    randomNumberInclusivelyBetween,
     randomRank,
     randomRankInclusivelyBetween
 } from 'src/app/lib/util.library';
@@ -275,19 +277,64 @@ export class EndgameTrainerComponent implements OnInit {
                     let board = game.getBoard();
                     console.log('movehist', game.getMoveHistory());
                     if (game.getMoveHistory().length === 0) {
+                        // FIRST MOVE
                         console.log(game.getLegalMoves());
                         let moves = game.getLegalMoves();
-                        let validMoves = [];
+                        let validMoves: Move[] = [];
+                        // construct valid moves
                         for (let m of moves) {
                             if (
                                 Math.abs(m.src.file - 3.5) >
                                 Math.abs(m.src.rank - 3.5)
                             ) {
                                 // file sided
+                                if (m.src.file >= File.e) {
+                                    // right
+                                    if (m.dest.file >= m.src.file) {
+                                        validMoves.push(m);
+                                    }
+                                } else {
+                                    // left
+                                    if (m.dest.file <= m.src.file) {
+                                        validMoves.push(m);
+                                    }
+                                }
                             } else {
                                 // rank sided
+                                if (m.src.rank >= Rank.FIVE) {
+                                    // top
+                                    if (m.dest.rank >= m.src.rank) {
+                                        validMoves.push(m);
+                                    }
+                                } else {
+                                    // bot
+                                    if (m.dest.rank <= m.src.rank) {
+                                        validMoves.push(m);
+                                    }
+                                }
                             }
                         }
+                        console.log('validMoves', validMoves);
+                        let move: Move = pickRandom(validMoves);
+                        return 'K' + move.dest.toString();
+                    } else {
+                        // ANY OTHER MOVE
+                        let allMoves = game.getLegalMoves();
+                        let preferredMove: Move;
+                        for (let m of allMoves) {
+                            if (!preferredMove) {
+                                preferredMove = m;
+                            } else {
+                                if (
+                                    m.dest.isCloserToCenterThan(
+                                        preferredMove.dest
+                                    )
+                                ) {
+                                    preferredMove = m;
+                                }
+                            }
+                        }
+                        return 'K' + preferredMove.dest.toString();
                     }
                     return 'boogalooga';
                 },
