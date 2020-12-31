@@ -648,6 +648,13 @@ export class GameComponent implements OnInit, OnChanges {
                 }
             }
         }
+        // ISSUE 73 DRAW SHOULD HAPPEN HERE
+        /**
+         * before dragged piece but after the rest of the board is drawn
+         * start by creating an Arrow object and a corresponding array
+         * and then make a loop in here that draws all the arrows, then
+         * hook into the ngOnInit function to use mouse events to create arrows
+         */
         this.boardContext.globalAlpha = 1;
         if (this.CURSOR_DATA.draggedPieceIndex !== -1) {
             this.boardContext.drawImage(
