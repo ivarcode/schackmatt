@@ -334,9 +334,44 @@ export class EndgameTrainerComponent implements OnInit {
                     }
                     return 'K' + preferredMove.dest.toString();
                 },
-                (game: Game, move: Move): boolean => {
+                (game: Game, move: GameEvent): boolean => {
+                    // TODO complete this with a systematic pattern
                     // moveValidator
+                    let preBoard = new Game(
+                        game.getMoveHistory()[
+                            game.getMoveHistory().length - 1
+                        ].preMoveFEN
+                    ).getBoard();
                     let board = game.getBoard();
+                    // console.log('move', board, move);
+                    let blackKing: Square = game.findKing(Color.Black);
+                    let whiteKing: Square = game.findKing(Color.White);
+                    let whiteRook: Square = board.findPiece(
+                        new Piece(PieceType.Rook, Color.White)
+                    )[0];
+                    // if (
+                    //     Math.abs(blackKing.file - 3.5) >
+                    //     Math.abs(blackKing.rank - 3.5)
+                    // ) {
+                    //     // file sided
+                    //     if (blackKing.file >= File.e) {
+                    //         // right
+                    //         if (
+                    //             whiteRook.file === blackKing.file - 1 &&
+                    //             Math.abs(whiteRook.rank - blackKing.rank) > 1
+                    //         ) {
+
+                    //         }
+                    //     }
+                    // } else {
+                    //     // rank sided
+                    // }
+                    let blacksNext = game.getLegalMoves();
+                    for (let m of blacksNext) {
+                        if (m.dest.toString() === whiteRook.toString()) {
+                            return false;
+                        }
+                    }
                     return true;
                 },
                 (game: Game): boolean => {
