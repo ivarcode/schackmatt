@@ -2,7 +2,7 @@
 
 This is a website for creating chess training tools. The dev site is live, the production site is yet to come.
 
-Dev:  https://schackmatt.net/
+Dev: https://schackmatt.net/
 
 ### Developers:
 
@@ -13,6 +13,8 @@ Dev:  https://schackmatt.net/
 -   run `npm i` to install necessary packages (this might take some time)
 -   if you use Angular CLI
     -   run `ng build`
+        -   run `ng build-watch` to build and then rebuild the project to the output folder when relevant files are modified
+        -   run `ng build-prod` to build on a production machine (moves relevant web configuration files after normal build process)
     -   run `ng serve`
 -   if you don't...
     -   run `npm run start`
