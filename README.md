@@ -30,6 +30,11 @@ Dev: https://schackmatt.net/
 `git fetch upstream`
 `git merge upstream/develop`
 
+### To bump package version
+
+`git checkout develop`
+`npm version [<type> | major | minor | patch]`
+
 ### General standard for branch names (please follow this if you want to spare me a headache)
 
 `issue-#-some-basic-descriptive-phrase`
