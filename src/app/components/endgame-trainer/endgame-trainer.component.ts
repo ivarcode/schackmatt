@@ -274,8 +274,8 @@ export class EndgameTrainerComponent implements OnInit {
                 },
                 (game: Game): string => {
                     // nextMove
-                    let board = game.getBoard();
-                    console.log('movehist', game.getMoveHistory());
+                    const board = game.getBoard();
+                    // console.log('movehist', game.getMoveHistory());
                     if (game.getMoveHistory().length === 0) {
                         // FIRST MOVE
                         console.log(game.getLegalMoves());
@@ -319,15 +319,22 @@ export class EndgameTrainerComponent implements OnInit {
                         return 'K' + move.dest.toString();
                     }
                     // ANY OTHER MOVE
-                    let allMoves = game.getLegalMoves();
+                    const allMoves = game.getLegalMoves();
                     let preferredMove: Move;
-                    for (let m of allMoves) {
+                    for (const m of allMoves) {
                         if (!preferredMove) {
                             preferredMove = m;
                         } else {
+                            // try to go towards the center of the board
                             if (
                                 m.dest.isCloserToCenterThan(preferredMove.dest)
                             ) {
+                                // avoid being directly across from white king
+                                let whiteKingPosition = board.findPiece(
+                                    new Piece(PieceType.King, Color.White)
+                                );
+                                if (true) {
+                                }
                                 preferredMove = m;
                             }
                         }
@@ -390,12 +397,12 @@ export class EndgameTrainerComponent implements OnInit {
     }
 
     private setupEndgameTrainingSet(exercise: Exercise): void {
-        let emptyBoardFEN = '8/8/8/8/8/8/8/8 b - - 0 1';
+        const emptyBoardFEN = '8/8/8/8/8/8/8/8 b - - 0 1';
         this.game.setFEN(emptyBoardFEN);
         this.game.loadFEN();
         exercise.setup(this.game);
         this.game.updateFENPiecesPositionsFromBoard();
-        let firstMoveNotation = this.currentExercise.nextMove(this.game);
+        const firstMoveNotation = this.currentExercise.nextMove(this.game);
         setTimeout(() => {
             this.game.makeMove(firstMoveNotation);
             this.triggerInterfaceCommand('move made, redraw board');
@@ -434,7 +441,7 @@ export class EndgameTrainerComponent implements OnInit {
                 // trigger black's move if white's is correct
                 this.currentExercise.moveValidator(this.game, event)
             ) {
-                let moveNotation = this.currentExercise.nextMove(this.game);
+                const moveNotation = this.currentExercise.nextMove(this.game);
                 setTimeout(() => {
                     this.game.makeMove(moveNotation);
                     this.triggerInterfaceCommand('move made, redraw board');
@@ -442,7 +449,7 @@ export class EndgameTrainerComponent implements OnInit {
             } else {
                 // move is wrong
                 setTimeout(() => {
-                    let lastMove = this.game.undoLastMove();
+                    const lastMove = this.game.undoLastMove();
 
                     this.triggerInterfaceCommand('back');
                     // this timeout is because of the trigger command's timeout
