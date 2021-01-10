@@ -25,4 +25,4 @@ git commit -m "v$verval - changelog updates"
 git tag -d v$verval
 echo "Tagging v$verval"
 git tag -a $verval -m "$verval"
-git push
+git push --tags
