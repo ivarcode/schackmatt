@@ -12,13 +12,16 @@ Dev: https://schackmatt.net/
 -   navigate to the clone repo root in your preferred terminal; eg. `cd ~./git/schackmatt`
 -   run `npm i` to install necessary packages (this might take some time)
 -   if you use Angular CLI
-    -   run `ng build`
-        -   run `ng build-watch` to build and then rebuild the project to the output folder when relevant files are modified
-        -   run `ng build-prod` to build on a production machine (moves relevant web configuration files after normal build process)
     -   run `ng serve`
 -   if you don't...
     -   run `npm run start`
 -   should be on localhost:4200/
+
+To build out to `/dist`
+
+-   run `npm run build`
+    -   run `npm run build-watch` to build and then rebuild the project to the output folder when relevant files are modified
+    -   run `npm run build-prod` to build on a production machine (_Windows batch script_ that moves relevant web configuration files after normal build process)
 
 ### To set the upstream (might exist by default):
 
