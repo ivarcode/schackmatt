@@ -3,7 +3,7 @@ npm version minor
 sed -n 3p package.json > vertext.md
 sed -i 's/    \"version\": \"//g' vertext.md
 sed -i 's/\",//g' vertext.md
-verval=cat vertext.md
+verval=`cat vertext.md`
 cat CHANGELOG.md > old_changelog.md
 echo -n "### " > CHANGELOG.md
 cat vertext.md >> CHANGELOG.md
