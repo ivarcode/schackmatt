@@ -1,4 +1,4 @@
-echo "Enter version description: "
+echo -n "Enter version description: "
 read VerDesc
 npm version minor
 git log -1 > LAST_COMMIT.txt
