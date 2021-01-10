@@ -14,6 +14,8 @@ sed -n 3p LAST_COMMIT.txt >> CHANGELOG.md
 echo "" >> CHANGELOG.md
 sed -n 5p LAST_COMMIT.txt >> CHANGELOG.md
 echo "" >> CHANGELOG.md
+cat old_changelog.md >> CHANGELOG.md
+rm old_changelog.md
 rm LAST_COMMIT.txt
 rm vertext.md
 git add CHANGELOG.md
