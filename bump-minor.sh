@@ -17,5 +17,6 @@ echo "" >> CHANGELOG.md
 rm LAST_COMMIT.txt
 rm vertext.md
 git add CHANGELOG.md
-git commit -m "$verval"
+git commit -m "v$verval - changelog updates"
+git tag -a $verval -m "$verval"
 git push
