@@ -1,36 +1,17 @@
-### 0.1.0
+### 0.8.0
 
-commit 6156079fa54ef8ead0d73844142ef74360d7c0e1
-Date: Mon Jan 4 18:41:20 2021 -0500
+commit 31f2e1b6a2c5ffa6257d1a426ddd4773a17fc830
 
-    const changes and prep, merging this back into 108
-### \n
-0.1.0
-commit 6156079fa54ef8ead0d73844142ef74360d7c0e1
-Date:   Mon Jan 4 18:41:20 2021 -0500
-    const changes and prep, merging this back into 108
-### 0.1.0
+Date:   Sun Jan 10 16:59:55 2021 -0500
 
-commit 6156079fa54ef8ead0d73844142ef74360d7c0e1
-Date:   Mon Jan 4 18:41:20 2021 -0500
-    const changes and prep, merging this back into 108
-### 0.1.0
+    adding a letter
 
-commit 6156079fa54ef8ead0d73844142ef74360d7c0e1
-Date:   Mon Jan 4 18:41:20 2021 -0500
+### 0.7.0
 
-    const changes and prep, merging this back into 108
-### 0.1.0
+commit d514001132fdce0d1528d0857feed4b3da46d1f0
 
-commit 6156079fa54ef8ead0d73844142ef74360d7c0e1
-Date:   Mon Jan 4 18:41:20 2021 -0500
+Date: Sun Jan 10 16:55:48 2021 -0500
 
-    const changes and prep, merging this back into 108
+    almost good?
 
-### 0.1.0
-
-commit 6156079fa54ef8ead0d73844142ef74360d7c0e1
-Date:   Mon Jan 4 18:41:20 2021 -0500
-
-    const changes and prep, merging this back into 108
-
+d
