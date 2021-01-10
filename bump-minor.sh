@@ -18,5 +18,7 @@ rm LAST_COMMIT.txt
 rm vertext.md
 git add CHANGELOG.md
 git commit -m "v$verval - changelog updates"
+git tag -d v$verval
+echo "Tagging v$verval"
 git tag -a $verval -m "$verval"
 git push
