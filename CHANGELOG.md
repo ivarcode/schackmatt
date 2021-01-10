@@ -1,3 +1,11 @@
+### 0.1.2
+
+commit a380869e71226ba21f2873739284fb372f3d53d1
+
+Date:   Sun Jan 10 18:57:41 2021 -0500
+
+    Added a new line to CHANGELOG automation. Added updates to README build instructions.
+
 ### 0.1.1
 
 commit 42a6deb540f526fb9a9661490779ad013f53a422
