@@ -1,6 +1,6 @@
 echo "Enter version description: "
 read VerDesc
-npm version minor
+npm version patch
 git log -1 > LAST_COMMIT.txt
 sed -n 3p package.json > vertext.md
 sed -i 's/    \"version\": \"//g' vertext.md

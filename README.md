@@ -30,10 +30,23 @@ Dev: https://schackmatt.net/
 `git fetch upstream`
 `git merge upstream/develop`
 
-### To bump package version
+### Versioning
+
+## [Changelog](https://github.com/ivarcode/schackmatt/blob/develop/CHANGELOG.md)
+
+Contains information about each version of the code. The last commit before the version bump gets written to `CHANGELOG.md`.
+
+## To bump package version
 
 `git checkout develop`
-`npm version [<type> | major | minor | patch]`
+
+Run the respective shell script to bump a version `[ major | minor | patch ]`
+
+`sh bump-major.sh`
+`sh bump-minor.sh`
+`sh bump-patch.sh`
+
+Note: these scripts are shell executables, you will need to be in a terminal that supports this if you are developing on Windows (eg. git bash).
 
 ### General standard for branch names (please follow this if you want to spare me a headache)
 
