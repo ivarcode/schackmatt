@@ -14,7 +14,7 @@ sed -n 1p LAST_COMMIT.txt >> CHANGELOG.md
 echo "" >> CHANGELOG.md
 sed -n 3p LAST_COMMIT.txt >> CHANGELOG.md
 echo "" >> CHANGELOG.md
-echo -n "    $VerDesc" >> CHANGELOG.md
+echo "    $VerDesc" >> CHANGELOG.md
 echo "" >> CHANGELOG.md
 cat old_changelog.md >> CHANGELOG.md
 rm old_changelog.md
