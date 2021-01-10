@@ -34,7 +34,7 @@ Dev: https://schackmatt.net/
 
 ## [Changelog](https://github.com/ivarcode/schackmatt/blob/develop/CHANGELOG.md)
 
-Contains information about each version of the code. The last commit before the version bump gets written to `CHANGELOG.md`.
+Contains information about each version of the code.
 
 ## To bump package version
 
@@ -45,6 +45,8 @@ Run the respective shell script to bump a version `[ major | minor | patch ]`
 `sh bump-major.sh`
 `sh bump-minor.sh`
 `sh bump-patch.sh`
+
+Write a description of the new version when prompted. The single line of text you enter will be written to `CHANGELOG.md` for a record of what the version changed in the code.
 
 Note: these scripts are shell executables, you will need to be in a terminal that supports this if you are developing on Windows (eg. git bash).
 
