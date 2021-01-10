@@ -32,11 +32,11 @@ Dev: https://schackmatt.net/
 
 ### Versioning
 
-## [Changelog](https://github.com/ivarcode/schackmatt/blob/develop/CHANGELOG.md)
+#### [Changelog](https://github.com/ivarcode/schackmatt/blob/develop/CHANGELOG.md)
 
 Contains information about each version of the code.
 
-## To bump package version
+#### To bump package version
 
 `git checkout develop`
 
