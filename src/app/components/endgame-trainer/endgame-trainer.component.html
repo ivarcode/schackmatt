@@ -1,5 +1,11 @@
 <div id="standard-game-container" class="row">
-    <div class="col-sm-2"></div>
+    <div class="col-sm-2">
+        <ul>
+            <li *ngFor="let cs of checkmateSequences">
+                {{ cs.name }}
+            </li>
+        </ul>
+    </div>
     <div class="col-sm-10">
         <div class="row">
             <h2 id="title" *ngIf="currentExercise">

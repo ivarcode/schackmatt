@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Exercise } from 'src/app/lib/exercises/exercise.library';
 import {
-    Board,
     Color,
     Game,
     Piece,
@@ -10,6 +9,7 @@ import {
     Rank
 } from 'src/app/lib/game.library';
 import {
+    pickRandom,
     randomFile,
     randomFileInclusivelyBetween,
     randomRank,
@@ -22,6 +22,7 @@ import {
 } from 'src/app/lib/interface.library';
 import { Square } from 'src/app/lib/square.library';
 import { GameComponent } from '../game/game.component';
+import { Sequence } from 'src/app/lib/sequence.library';
 
 @Component({
     selector: 'app-endgame-trainer',
@@ -42,7 +43,8 @@ export class EndgameTrainerComponent implements OnInit {
     };
     private _colorToPlay: Color;
 
-    // TODO not any
+    private _checkmateSequences: Sequence[];
+
     private _endgameExercises: Exercise[];
     private _currentExercise: Exercise;
 
@@ -71,8 +73,11 @@ export class EndgameTrainerComponent implements OnInit {
                 ],
                 (game: Game): void => {
                     // setup
-                    let board = game.getBoard();
-                    let r = randomRankInclusivelyBetween(Rank.THREE, Rank.FIVE);
+                    const board = game.getBoard();
+                    const r = randomRankInclusivelyBetween(
+                        Rank.THREE,
+                        Rank.FIVE
+                    );
                     let f = randomFileInclusivelyBetween(File.a, File.d);
                     if (f > 1) {
                         f += 4;
@@ -93,11 +98,11 @@ export class EndgameTrainerComponent implements OnInit {
                 },
                 (game: Game): string => {
                     // nextMove
-                    let board = game.getBoard();
-                    let pawnLocation = board.findPiece(
+                    const board = game.getBoard();
+                    const pawnLocation = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     )[0];
-                    let dest = new Square(
+                    const dest = new Square(
                         pawnLocation.file,
                         pawnLocation.rank - 1
                     );
@@ -109,11 +114,11 @@ export class EndgameTrainerComponent implements OnInit {
                 },
                 (game: Game, move: Move): boolean => {
                     // moveValidator
-                    let board = game.getBoard();
-                    let pawnLocation = board.findPiece(
+                    const board = game.getBoard();
+                    const pawnLocation = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     )[0];
-                    let kingLocation = board.findPiece(
+                    const kingLocation = board.findPiece(
                         new Piece(PieceType.King, Color.White)
                     )[0];
                     if (
@@ -127,11 +132,11 @@ export class EndgameTrainerComponent implements OnInit {
                 },
                 (game: Game): boolean => {
                     // complete
-                    let board = game.getBoard();
-                    let blackPawns = board.findPiece(
+                    const board = game.getBoard();
+                    const blackPawns = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     );
-                    let blackQueens = board.findPiece(
+                    const blackQueens = board.findPiece(
                         new Piece(PieceType.Queen, Color.Black)
                     );
                     if (blackPawns.length === 0 && blackQueens.length === 0) {
@@ -147,12 +152,12 @@ export class EndgameTrainerComponent implements OnInit {
                 ['needs explanation here', 'info'],
                 (game: Game): void => {
                     // setup
-                    let board = game.getBoard();
-                    let f = randomFile();
-                    let r = randomRank();
+                    const board = game.getBoard();
+                    const f = randomFile();
+                    const r = randomRank();
                     if (Math.abs(f - 3.5) > Math.abs(r - 3.5)) {
                         // file is wider
-                        let rookRank =
+                        const rookRank =
                             r > Rank.FOUR
                                 ? randomRankInclusivelyBetween(
                                       Rank.ONE,
@@ -162,7 +167,7 @@ export class EndgameTrainerComponent implements OnInit {
                                       Rank.SIX,
                                       Rank.EIGHT
                                   );
-                        let kingRank =
+                        const kingRank =
                             r > Rank.FOUR
                                 ? randomRankInclusivelyBetween(
                                       Rank.THREE,
@@ -174,7 +179,7 @@ export class EndgameTrainerComponent implements OnInit {
                                   );
                         if (f > 3) {
                             // right target
-                            let rookPosition = new Square(
+                            const rookPosition = new Square(
                                 randomFileInclusivelyBetween(File.a, f - 2),
                                 rookRank
                             );
@@ -183,7 +188,7 @@ export class EndgameTrainerComponent implements OnInit {
                                 rookPosition,
                                 new Piece(PieceType.Rook, Color.White)
                             );
-                            let whiteKingPosition = new Square(
+                            const whiteKingPosition = new Square(
                                 randomFileInclusivelyBetween(File.a, f - 2),
                                 kingRank
                             );
@@ -194,7 +199,7 @@ export class EndgameTrainerComponent implements OnInit {
                             );
                         } else {
                             // left target
-                            let rookPosition = new Square(
+                            const rookPosition = new Square(
                                 randomFileInclusivelyBetween(f + 2, File.h),
                                 rookRank
                             );
@@ -203,7 +208,7 @@ export class EndgameTrainerComponent implements OnInit {
                                 rookPosition,
                                 new Piece(PieceType.Rook, Color.White)
                             );
-                            let whiteKingPosition = new Square(
+                            const whiteKingPosition = new Square(
                                 randomFileInclusivelyBetween(f + 2, File.h),
                                 kingRank
                             );
@@ -215,17 +220,17 @@ export class EndgameTrainerComponent implements OnInit {
                         }
                     } else {
                         // rank is wider
-                        let rookFile =
+                        const rookFile =
                             f > File.d
                                 ? randomFileInclusivelyBetween(File.a, File.c)
                                 : randomFileInclusivelyBetween(File.f, File.h);
-                        let kingFile =
+                        const kingFile =
                             f > File.d
                                 ? randomFileInclusivelyBetween(File.d, File.h)
                                 : randomFileInclusivelyBetween(File.a, File.e);
                         if (r > 3) {
                             // top target
-                            let rookPosition = new Square(
+                            const rookPosition = new Square(
                                 rookFile,
                                 randomRankInclusivelyBetween(Rank.ONE, r - 2)
                             );
@@ -234,7 +239,7 @@ export class EndgameTrainerComponent implements OnInit {
                                 rookPosition,
                                 new Piece(PieceType.Rook, Color.White)
                             );
-                            let whiteKingPosition = new Square(
+                            const whiteKingPosition = new Square(
                                 kingFile,
                                 randomRankInclusivelyBetween(Rank.ONE, r - 2)
                             );
@@ -245,7 +250,7 @@ export class EndgameTrainerComponent implements OnInit {
                             );
                         } else {
                             // bottom target
-                            let rookPosition = new Square(
+                            const rookPosition = new Square(
                                 rookFile,
                                 randomRankInclusivelyBetween(r + 2, Rank.EIGHT)
                             );
@@ -254,7 +259,7 @@ export class EndgameTrainerComponent implements OnInit {
                                 rookPosition,
                                 new Piece(PieceType.Rook, Color.White)
                             );
-                            let whiteKingPosition = new Square(
+                            const whiteKingPosition = new Square(
                                 kingFile,
                                 randomRankInclusivelyBetween(r + 2, Rank.EIGHT)
                             );
@@ -272,38 +277,123 @@ export class EndgameTrainerComponent implements OnInit {
                 },
                 (game: Game): string => {
                     // nextMove
-                    let board = game.getBoard();
-                    console.log('movehist', game.getMoveHistory());
+                    const board = game.getBoard();
+                    // console.log('movehist', game.getMoveHistory());
                     if (game.getMoveHistory().length === 0) {
+                        // FIRST MOVE
                         console.log(game.getLegalMoves());
-                        let moves = game.getLegalMoves();
-                        let validMoves = [];
-                        for (let m of moves) {
+                        const moves = game.getLegalMoves();
+                        const validMoves: Move[] = [];
+                        // construct valid moves
+                        for (const m of moves) {
                             if (
                                 Math.abs(m.src.file - 3.5) >
                                 Math.abs(m.src.rank - 3.5)
                             ) {
                                 // file sided
+                                if (m.src.file >= File.e) {
+                                    // right
+                                    if (m.dest.file >= m.src.file) {
+                                        validMoves.push(m);
+                                    }
+                                } else {
+                                    // left
+                                    if (m.dest.file <= m.src.file) {
+                                        validMoves.push(m);
+                                    }
+                                }
                             } else {
                                 // rank sided
+                                if (m.src.rank >= Rank.FIVE) {
+                                    // top
+                                    if (m.dest.rank >= m.src.rank) {
+                                        validMoves.push(m);
+                                    }
+                                } else {
+                                    // bot
+                                    if (m.dest.rank <= m.src.rank) {
+                                        validMoves.push(m);
+                                    }
+                                }
+                            }
+                        }
+                        console.log('validMoves', validMoves);
+                        const move: Move = pickRandom(validMoves);
+                        return 'K' + move.dest.toString();
+                    }
+                    // ANY OTHER MOVE
+                    const allMoves = game.getLegalMoves();
+                    let preferredMove: Move;
+                    for (const m of allMoves) {
+                        if (!preferredMove) {
+                            preferredMove = m;
+                        } else {
+                            // try to go towards the center of the board
+                            if (
+                                m.dest.isCloserToCenterThan(preferredMove.dest)
+                            ) {
+                                // avoid being directly across from white king
+                                const whiteKingPosition = board.findPiece(
+                                    new Piece(PieceType.King, Color.White)
+                                );
+                                if (true) {
+                                }
+                                preferredMove = m;
                             }
                         }
                     }
-                    return 'boogalooga';
+                    return 'K' + preferredMove.dest.toString();
                 },
-                (game: Game, move: Move): boolean => {
+                (game: Game, move: GameEvent): boolean => {
+                    // TODO complete this with a systematic pattern
                     // moveValidator
-                    let board = game.getBoard();
-                    return false;
+                    const preBoard = new Game(
+                        game.getMoveHistory()[
+                            game.getMoveHistory().length - 1
+                        ].preMoveFEN
+                    ).getBoard();
+                    const board = game.getBoard();
+                    // console.log('move', board, move);
+                    const blackKing: Square = game.findKing(Color.Black);
+                    const whiteKing: Square = game.findKing(Color.White);
+                    const whiteRook: Square = board.findPiece(
+                        new Piece(PieceType.Rook, Color.White)
+                    )[0];
+                    // if (
+                    //     Math.abs(blackKing.file - 3.5) >
+                    //     Math.abs(blackKing.rank - 3.5)
+                    // ) {
+                    //     // file sided
+                    //     if (blackKing.file >= File.e) {
+                    //         // right
+                    //         if (
+                    //             whiteRook.file === blackKing.file - 1 &&
+                    //             Math.abs(whiteRook.rank - blackKing.rank) > 1
+                    //         ) {
+
+                    //         }
+                    //     }
+                    // } else {
+                    //     // rank sided
+                    // }
+                    const blacksNext = game.getLegalMoves();
+                    for (const m of blacksNext) {
+                        if (m.dest.toString() === whiteRook.toString()) {
+                            return false;
+                        }
+                    }
+                    return true;
                 },
                 (game: Game): boolean => {
                     // complete
-                    let board = game.getBoard();
-                    return false;
+                    return game.isCheckmate();
                 }
             )
         );
-        this._currentExercise = this._endgameExercises[0];
+        this._currentExercise = this._endgameExercises[1];
+
+        this._checkmateSequences = [];
+        this._checkmateSequences.push(new Sequence([], 'test sequence'));
     }
 
     ngOnInit() {
@@ -313,16 +403,12 @@ export class EndgameTrainerComponent implements OnInit {
     }
 
     private setupEndgameTrainingSet(exercise: Exercise): void {
-        let emptyBoardFEN = '8/8/8/8/8/8/8/8 b - - 0 1';
+        const emptyBoardFEN = '8/8/8/8/8/8/8/8 b - - 0 1';
         this.game.setFEN(emptyBoardFEN);
         this.game.loadFEN();
         exercise.setup(this.game);
         this.game.updateFENPiecesPositionsFromBoard();
-        if (this._gameComponent) {
-            console.log('com');
-            this.triggerInterfaceCommand('redraw board');
-        }
-        let firstMoveNotation = this.currentExercise.nextMove(this.game);
+        const firstMoveNotation = this.currentExercise.nextMove(this.game);
         setTimeout(() => {
             this.game.makeMove(firstMoveNotation);
             this.triggerInterfaceCommand('move made, redraw board');
@@ -361,7 +447,7 @@ export class EndgameTrainerComponent implements OnInit {
                 // trigger black's move if white's is correct
                 this.currentExercise.moveValidator(this.game, event)
             ) {
-                let moveNotation = this.currentExercise.nextMove(this.game);
+                const moveNotation = this.currentExercise.nextMove(this.game);
                 setTimeout(() => {
                     this.game.makeMove(moveNotation);
                     this.triggerInterfaceCommand('move made, redraw board');
@@ -369,7 +455,7 @@ export class EndgameTrainerComponent implements OnInit {
             } else {
                 // move is wrong
                 setTimeout(() => {
-                    let lastMove = this.game.undoLastMove();
+                    const lastMove = this.game.undoLastMove();
 
                     this.triggerInterfaceCommand('back');
                     // this timeout is because of the trigger command's timeout
@@ -423,5 +509,8 @@ export class EndgameTrainerComponent implements OnInit {
     }
     get gameDisplayOptions(): GameDisplayOptions {
         return this._gameDisplayOptions;
+    }
+    get checkmateSequences(): Sequence[] {
+        return this._checkmateSequences;
     }
 }

@@ -609,7 +609,7 @@ export class GameComponent implements OnInit, OnChanges {
     public drawBoard(): void {
         this.boardContext.restore();
         this.boardContext.globalAlpha = 1;
-        this.boardContext.drawImage(this.boardImage, 0, 0);
+        // this.boardContext.drawImage(this.boardImage, 0, 0);
         this.boardContext.font = '15px Arial';
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
@@ -694,6 +694,17 @@ export class GameComponent implements OnInit, OnChanges {
                       [this.displayedMoveIndex - 1].resultingBoard.getPiece(
                           new Square(x, y)
                       );
+        if (this.displayedMoveIndex !== 0) {
+            let lastMove = this.game.getMoveHistory()[
+                this.displayedMoveIndex - 1
+            ];
+            if (
+                (lastMove.src.file === x && lastMove.src.rank === y) ||
+                (lastMove.dest.file === x && lastMove.dest.rank === y)
+            ) {
+                this.tintSquare(x, 7 - y, 'yellow', 0.5);
+            }
+        }
         if (
             this.CURSOR_DATA.overSquare &&
             this.CURSOR_DATA.overSquare.x === x &&
@@ -705,7 +716,7 @@ export class GameComponent implements OnInit, OnChanges {
                 this.CURSOR_DATA.overSquare.y === this.twoClickMove.source.y
             )
         ) {
-            this.tintSquare(x, 7 - y, 'yellow', 0.5);
+            this.tintSquare(x, 7 - y, 'gray', 0.5);
             this.boardContext.globalAlpha = 1; // reset this to full
         }
         if (
