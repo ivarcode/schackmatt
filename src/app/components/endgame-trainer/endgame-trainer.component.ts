@@ -22,6 +22,7 @@ import {
 } from 'src/app/lib/interface.library';
 import { Square } from 'src/app/lib/square.library';
 import { GameComponent } from '../game/game.component';
+import { Sequence } from 'src/app/lib/sequence.library';
 
 @Component({
     selector: 'app-endgame-trainer',
@@ -42,7 +43,7 @@ export class EndgameTrainerComponent implements OnInit {
     };
     private _colorToPlay: Color;
 
-    private _checkmateSequences: any[];
+    private _checkmateSequences: Sequence[];
 
     private _endgameExercises: Exercise[];
     private _currentExercise: Exercise;
@@ -390,6 +391,8 @@ export class EndgameTrainerComponent implements OnInit {
             )
         );
         this._currentExercise = this._endgameExercises[1];
+
+        this._checkmateSequences = [];
     }
 
     ngOnInit() {
@@ -505,5 +508,8 @@ export class EndgameTrainerComponent implements OnInit {
     }
     get gameDisplayOptions(): GameDisplayOptions {
         return this._gameDisplayOptions;
+    }
+    get checkmateSequences(): Sequence[] {
+        return this._checkmateSequences;
     }
 }
