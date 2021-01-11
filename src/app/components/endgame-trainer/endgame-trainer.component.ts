@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Exercise } from 'src/app/lib/exercises/exercise.library';
 import {
-    Board,
     Color,
     Game,
     Piece,
@@ -13,7 +12,6 @@ import {
     pickRandom,
     randomFile,
     randomFileInclusivelyBetween,
-    randomNumberInclusivelyBetween,
     randomRank,
     randomRankInclusivelyBetween
 } from 'src/app/lib/util.library';
@@ -44,7 +42,8 @@ export class EndgameTrainerComponent implements OnInit {
     };
     private _colorToPlay: Color;
 
-    // TODO not any
+    private _checkmateSequences: any[];
+
     private _endgameExercises: Exercise[];
     private _currentExercise: Exercise;
 
