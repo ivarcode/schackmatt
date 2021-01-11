@@ -393,6 +393,7 @@ export class EndgameTrainerComponent implements OnInit {
         this._currentExercise = this._endgameExercises[1];
 
         this._checkmateSequences = [];
+        this._checkmateSequences.push(new Sequence([], 'test sequence'));
     }
 
     ngOnInit() {
