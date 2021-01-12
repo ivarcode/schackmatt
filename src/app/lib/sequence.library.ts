@@ -1,5 +1,9 @@
 import { parsePGN } from './util.library';
 
+/**
+ * @description class that defines a specific sequence of moves by storing
+ * a starting position and a sequence of moves in string format (move notation)
+ */
 export class Sequence {
     /**
      * @description {string} Sequence title (optional)
