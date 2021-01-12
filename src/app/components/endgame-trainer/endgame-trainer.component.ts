@@ -411,7 +411,8 @@ export class EndgameTrainerComponent implements OnInit {
         const firstMoveNotation = this.currentExercise.nextMove(this.game);
         setTimeout(() => {
             this.game.makeMove(firstMoveNotation);
-            this.triggerInterfaceCommand('move made, redraw board');
+            this.gameComponent.displayedMoveIndex++;
+            this.gameComponent.drawBoard();
             this._colorToPlay = this.game.getTurn();
         }, 1000);
     }
@@ -423,10 +424,11 @@ export class EndgameTrainerComponent implements OnInit {
                 this.game.setMoveHistory([]);
                 this._gameComponent.setInitPosition(this.game.getBoard());
                 this._gameComponent.setDisplayedMoveIndex(0);
-                this.triggerInterfaceCommand('redraw board');
+                this.gameComponent.drawBoard();
+
                 setTimeout(() => {
                     this.setupEndgameTrainingSet(this.currentExercise);
-                    this.triggerInterfaceCommand('redraw board');
+                    this.gameComponent.drawBoard();
                 }, 500);
                 break;
             default:
@@ -450,14 +452,18 @@ export class EndgameTrainerComponent implements OnInit {
                 const moveNotation = this.currentExercise.nextMove(this.game);
                 setTimeout(() => {
                     this.game.makeMove(moveNotation);
-                    this.triggerInterfaceCommand('move made, redraw board');
+                    this.gameComponent.displayedMoveIndex++;
+                    this.gameComponent.drawBoard();
                 }, 1000);
             } else {
                 // move is wrong
                 setTimeout(() => {
                     const lastMove = this.game.undoLastMove();
+                    if (this.gameComponent.displayedMoveIndex !== 0) {
+                        this.gameComponent.displayedMoveIndex--;
+                        this.gameComponent.drawBoard();
+                    }
 
-                    this.triggerInterfaceCommand('back');
                     // this timeout is because of the trigger command's timeout
                     // can be removed when we do #117
                     setTimeout(() => {
@@ -474,23 +480,11 @@ export class EndgameTrainerComponent implements OnInit {
         }
     }
 
-    private triggerInterfaceCommand(command: string) {
-        this._interfaceCommand = command;
-        // using setTimeout because it appears that a slight delay before reset
-        // helps to trigger change detection smoothly (research required?)
-        setTimeout(() => {
-            this._interfaceCommand = null;
-        }, 10);
-    }
-
     get game(): Game {
         return this._game;
     }
     get gameComponent(): GameComponent {
         return this._gameComponent;
-    }
-    get interfaceCommand(): string {
-        return this._interfaceCommand;
     }
     // TODO not any
     get currentExercise(): Exercise {
