@@ -462,13 +462,14 @@ export class GameComponent implements OnInit, OnChanges {
         );
     }
 
+    // we need to remove both of these
     public setDisplayedMoveIndex(index: number): void {
         this.displayedMoveIndex = index;
     }
-
     public getDisplayedMoveIndex(): number {
         return this.displayedMoveIndex;
     }
+    //
 
     private showMoves(): void {
         const pieceMovements = this.game.getLegalMoves();
@@ -606,6 +607,9 @@ export class GameComponent implements OnInit, OnChanges {
         return { x: mX, y: mY };
     }
 
+    /**
+     * @description triggers a redraw event of the entire board
+     */
     public drawBoard(): void {
         this.boardContext.restore();
         this.boardContext.globalAlpha = 1;
