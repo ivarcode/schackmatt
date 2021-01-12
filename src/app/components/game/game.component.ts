@@ -171,9 +171,9 @@ export class GameComponent implements OnInit, OnChanges {
                     this.CURSOR_DATA.mouseUpOn = overSq;
                     if (
                         this.CURSOR_DATA.mouseDownOn.x ===
-                        this.CURSOR_DATA.mouseUpOn.x &&
+                            this.CURSOR_DATA.mouseUpOn.x &&
                         this.CURSOR_DATA.mouseDownOn.y ===
-                        this.CURSOR_DATA.mouseUpOn.y
+                            this.CURSOR_DATA.mouseUpOn.y
                     ) {
                         // console.log('', this.matchingMoves);
                         const f = this.CURSOR_DATA.mouseDownOn.x;
@@ -229,31 +229,34 @@ export class GameComponent implements OnInit, OnChanges {
                 this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.overSquare;
                 if (
                     this.CURSOR_DATA.mouseDownOn.x ===
-                    this.CURSOR_DATA.mouseUpOn.x &&
+                        this.CURSOR_DATA.mouseUpOn.x &&
                     this.CURSOR_DATA.mouseDownOn.y ===
-                    this.CURSOR_DATA.mouseUpOn.y
+                        this.CURSOR_DATA.mouseUpOn.y
                 ) {
-                    if (this.game.getPiece({
-                        file: this.CURSOR_DATA.mouseDownOn.x,
-                        rank: 7 - this.CURSOR_DATA.mouseDownOn.y
-                    }).color === this.game.getTurn()) {
+                    if (
+                        this.game.getPiece(
+                            new Square(
+                                this.CURSOR_DATA.mouseDownOn.x,
+                                7 - this.CURSOR_DATA.mouseDownOn.y
+                            )
+                        ).color === this.game.getTurn()
+                    ) {
                         this.twoClickMove.attempting = true;
                         this.twoClickMove.source = this.CURSOR_DATA.mouseUpOn;
                     }
                 } else {
                     if (e.which == 1) {
                         this.attemptMoveOnBoard();
-                    }
-                    else if (e.which == 3) {
+                    } else if (e.which == 3) {
                         this.arrows.push({
-                            fromSquare: {
-                                file: this.CURSOR_DATA.mouseDownOn.x,
-                                rank: this.CURSOR_DATA.mouseDownOn.y
-                            },
-                            toSquare: {
-                                file: this.CURSOR_DATA.mouseUpOn.x,
-                                rank: this.CURSOR_DATA.mouseUpOn.y
-                            }
+                            fromSquare: new Square(
+                                this.CURSOR_DATA.mouseDownOn.x,
+                                this.CURSOR_DATA.mouseDownOn.y
+                            ),
+                            toSquare: new Square(
+                                this.CURSOR_DATA.mouseUpOn.x,
+                                this.CURSOR_DATA.mouseUpOn.y
+                            )
                         });
                     }
                 }
@@ -383,7 +386,7 @@ export class GameComponent implements OnInit, OnChanges {
                     }
                     throw new Error(
                         'invalid interface command' +
-                        changes.interfaceCommand.currentValue
+                            changes.interfaceCommand.currentValue
                     );
             }
             // TODO probably can draw board HERE instead?
@@ -666,10 +669,10 @@ export class GameComponent implements OnInit, OnChanges {
             this.displayedMoveIndex === 0
                 ? this.initPosition.getPiece(new Square(x, y))
                 : this.game
-                    .getMoveHistory()
-                [this.displayedMoveIndex - 1].resultingBoard.getPiece(
-                    new Square(x, y)
-                );
+                      .getMoveHistory()
+                      [this.displayedMoveIndex - 1].resultingBoard.getPiece(
+                          new Square(x, y)
+                      );
         if (this.displayedMoveIndex !== 0) {
             let lastMove = this.game.getMoveHistory()[
                 this.displayedMoveIndex - 1
@@ -799,10 +802,10 @@ export class GameComponent implements OnInit, OnChanges {
     private drawArrows(): void {
         for (const arrow of this.arrows) {
             // draws the line
-            var fromX = arrow.fromSquare.file * 80 + 40
-            var fromY = arrow.fromSquare.rank * 80 + 40
-            var toX = arrow.toSquare.file * 80 + 40
-            var toY = arrow.toSquare.rank * 80 + 40
+            var fromX = arrow.fromSquare.file * 80 + 40;
+            var fromY = arrow.fromSquare.rank * 80 + 40;
+            var toX = arrow.toSquare.file * 80 + 40;
+            var toY = arrow.toSquare.rank * 80 + 40;
             this.boardContext.beginPath();
             this.boardContext.moveTo(fromX, fromY);
             this.boardContext.lineTo(toX, toY);
