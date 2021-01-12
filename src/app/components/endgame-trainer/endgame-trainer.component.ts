@@ -1,10 +1,4 @@
-import {
-    AfterContentInit,
-    AfterViewInit,
-    Component,
-    OnInit,
-    ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Exercise } from 'src/app/lib/exercises/exercise.library';
 import {
     Color,
@@ -496,7 +490,6 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     get gameComponent(): GameComponent {
         return this._gameComponent;
     }
-    // TODO not any
     get currentExercise(): Exercise {
         return this._currentExercise;
     }
