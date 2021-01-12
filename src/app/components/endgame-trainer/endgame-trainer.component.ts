@@ -486,6 +486,9 @@ export class EndgameTrainerComponent implements OnInit {
     get game(): Game {
         return this._game;
     }
+    get gameComponent(): GameComponent {
+        return this._gameComponent;
+    }
     get interfaceCommand(): string {
         return this._interfaceCommand;
     }
