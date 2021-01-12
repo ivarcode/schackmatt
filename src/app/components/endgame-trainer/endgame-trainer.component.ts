@@ -422,14 +422,14 @@ export class EndgameTrainerComponent implements OnInit {
         switch (event) {
             case 'Retry Exercise':
                 this.game.setMoveHistory([]);
-                this._gameComponent.setInitPosition(this.game.getBoard());
-                this._gameComponent.setDisplayedMoveIndex(0);
+                this.gameComponent.setInitPosition(this.game.getBoard());
+                this.gameComponent.displayedMoveIndex = 0;
                 this.gameComponent.drawBoard();
 
                 setTimeout(() => {
                     this.setupEndgameTrainingSet(this.currentExercise);
                     this.gameComponent.drawBoard();
-                }, 500);
+                }, 5000);
                 break;
             default:
                 break;
