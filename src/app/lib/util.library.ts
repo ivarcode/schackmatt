@@ -1,7 +1,12 @@
 import { File, Rank } from './game.library';
+import { Move } from './interface.library';
 
 export function fileToString(file: File): string {
     return String.fromCharCode(97 + file);
+}
+
+export function parsePGN(initPosition: string, pgn: string): Move[] {
+    return null;
 }
 
 export function randomRank(): Rank {

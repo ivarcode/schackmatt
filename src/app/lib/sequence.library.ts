@@ -1,4 +1,6 @@
+import { Game } from './game.library';
 import { Move } from './interface.library';
+import { parsePGN } from './util.library';
 
 export class Sequence {
     /**
@@ -6,13 +8,21 @@ export class Sequence {
      */
     private _name: string;
     /**
+     * @description starting position of the sequence in fen format
+     */
+    private _initPosition: string;
+    /**
      * @description {Move[]} series of moves that defines the Sequence
      */
     private _moves: Move[];
 
-    constructor(moves: Move[], name?: string) {
+    constructor(initPosition: string, sequence: string, name?: string) {
         this._name = name || null;
-        this._moves = moves;
+        this._initPosition = initPosition;
+        let game = new Game(initPosition);
+
+        this._moves = parsePGN(initPosition, sequence);
+        console.log('moves parsed', this._moves);
     }
 
     /**
@@ -29,5 +39,8 @@ export class Sequence {
     }
     get moves(): Move[] {
         return this._moves;
+    }
+    get initPosition(): string {
+        return this._initPosition;
     }
 }
