@@ -23,7 +23,7 @@ export class GameComponent implements OnInit, OnChanges {
     @Input() interfaceCommand: string;
     @Input() gameDisplayOptions: GameDisplayOptions;
 
-    private displayedMoveIndex: number;
+    private _displayedMoveIndex: number;
     private boardCanvas: any;
     private boardContext: any;
     private boardImage: any;
@@ -73,11 +73,11 @@ export class GameComponent implements OnInit, OnChanges {
     private initPosition: Board;
 
     // event listener functions
-    private _mouseEnterEventListener: Function = () => {
+    private _mouseEnterEventListener: () => void = () => {
         // just a detector of when the mouse is over the canvas object
         this.CURSOR_DATA.mouseOverBoard = true;
     };
-    private _mouseLeaveEventListener: Function = () => {
+    private _mouseLeaveEventListener: () => void = () => {
         // when mouse exits the canvas object
         this.CURSOR_DATA.mouseOverBoard = false;
         this.CURSOR_DATA.currentMousePosition = { x: -1, y: -1 };
@@ -86,7 +86,7 @@ export class GameComponent implements OnInit, OnChanges {
         this.CURSOR_DATA.draggedPieceIndex = -1;
         this.drawBoard();
     };
-    private _mouseMoveEventListener: Function = (events: any) => {
+    private _mouseMoveEventListener: (events: any) => void = (events: any) => {
         // condition when not on latest move
         if (this.displayedMoveIndex !== this.game.getMoveHistory().length) {
             return;
@@ -117,7 +117,7 @@ export class GameComponent implements OnInit, OnChanges {
         }
         this.drawBoard();
     };
-    private _mouseDownEventListener: Function = () => {
+    private _mouseDownEventListener: () => void = () => {
         // condition when not on latest move
         if (this.displayedMoveIndex !== this.game.getMoveHistory().length) {
             return;
@@ -147,7 +147,7 @@ export class GameComponent implements OnInit, OnChanges {
             throw new Error('mouse down not over sq');
         }
     };
-    private _mouseUpEventListener: Function = () => {
+    private _mouseUpEventListener: () => void = () => {
         // condition when not on latest move
         if (this.displayedMoveIndex !== this.game.getMoveHistory().length) {
             return;
@@ -818,5 +818,12 @@ export class GameComponent implements OnInit, OnChanges {
                 this.flashSquare(sq, color, milliDuration, times - 1);
             }, milliDuration);
         }, milliDuration);
+    }
+
+    get displayedMoveIndex(): number {
+        return this._displayedMoveIndex;
+    }
+    set displayedMoveIndex(i: number) {
+        this._displayedMoveIndex = i;
     }
 }
