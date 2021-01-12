@@ -68,6 +68,10 @@ export class GameComponent implements OnInit, OnChanges {
         color: string;
         gA: number;
     }[];
+    private arrows: {
+        fromSquare: Square;
+        toSquare: Square;
+    }[];
     private isPromoting: boolean;
     private matchingMoves: any[];
     private initPosition: Board;
@@ -117,7 +121,7 @@ export class GameComponent implements OnInit, OnChanges {
         }
         this.drawBoard();
     };
-    private _mouseDownEventListener: Function = () => {
+    private _mouseDownEventListener: Function = (e) => {
         // condition when not on latest move
         if (this.displayedMoveIndex !== this.game.getMoveHistory().length) {
             return;
@@ -125,6 +129,9 @@ export class GameComponent implements OnInit, OnChanges {
         // when mouse is pressed down
         this.CURSOR_DATA.mouseIsDown = true;
         if (this.CURSOR_DATA.overSquare) {
+            if (e.which == 1) {
+                this.arrows = [];
+            }
             this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
             if (!this.isPromoting) {
                 this.CURSOR_DATA.dragging = true;
@@ -147,7 +154,7 @@ export class GameComponent implements OnInit, OnChanges {
             throw new Error('mouse down not over sq');
         }
     };
-    private _mouseUpEventListener: Function = () => {
+    private _mouseUpEventListener: Function = (e) => {
         // condition when not on latest move
         if (this.displayedMoveIndex !== this.game.getMoveHistory().length) {
             return;
@@ -164,9 +171,9 @@ export class GameComponent implements OnInit, OnChanges {
                     this.CURSOR_DATA.mouseUpOn = overSq;
                     if (
                         this.CURSOR_DATA.mouseDownOn.x ===
-                            this.CURSOR_DATA.mouseUpOn.x &&
+                        this.CURSOR_DATA.mouseUpOn.x &&
                         this.CURSOR_DATA.mouseDownOn.y ===
-                            this.CURSOR_DATA.mouseUpOn.y
+                        this.CURSOR_DATA.mouseUpOn.y
                     ) {
                         // console.log('', this.matchingMoves);
                         const f = this.CURSOR_DATA.mouseDownOn.x;
@@ -177,76 +184,36 @@ export class GameComponent implements OnInit, OnChanges {
                                     this.game.makeMove(
                                         this.matchingMoves[0].notation
                                     );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[0].notation
-                                    });
                                 } else if (r === Rank.SEVEN) {
                                     this.game.makeMove(
                                         this.matchingMoves[3].notation
                                     );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[3].notation
-                                    });
                                 } else if (r === Rank.SIX) {
                                     this.game.makeMove(
                                         this.matchingMoves[1].notation
                                     );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[1].notation
-                                    });
                                 } else if (r === Rank.FIVE) {
                                     this.game.makeMove(
                                         this.matchingMoves[2].notation
                                     );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[2].notation
-                                    });
                                 }
                             } else {
                                 if (r === Rank.ONE) {
                                     this.game.makeMove(
                                         this.matchingMoves[0].notation
                                     );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[0].notation
-                                    });
                                 } else if (r === Rank.TWO) {
                                     this.game.makeMove(
                                         this.matchingMoves[3].notation
                                     );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[3].notation
-                                    });
                                 } else if (r === Rank.THREE) {
                                     this.game.makeMove(
                                         this.matchingMoves[1].notation
                                     );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[1].notation
-                                    });
                                 } else if (r === Rank.FOUR) {
                                     this.game.makeMove(
                                         this.matchingMoves[2].notation
                                     );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[2].notation
-                                    });
                                 }
                             }
                         }
@@ -262,26 +229,33 @@ export class GameComponent implements OnInit, OnChanges {
                 this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.overSquare;
                 if (
                     this.CURSOR_DATA.mouseDownOn.x ===
-                        this.CURSOR_DATA.mouseUpOn.x &&
+                    this.CURSOR_DATA.mouseUpOn.x &&
                     this.CURSOR_DATA.mouseDownOn.y ===
-                        this.CURSOR_DATA.mouseUpOn.y &&
-                    this.game.getPiece(
-                        new Square(
-                            this.CURSOR_DATA.mouseDownOn.x,
-                            7 - this.CURSOR_DATA.mouseDownOn.y
-                        )
-                    ) &&
-                    this.game.getPiece(
-                        new Square(
-                            this.CURSOR_DATA.mouseDownOn.x,
-                            7 - this.CURSOR_DATA.mouseDownOn.y
-                        )
-                    ).color === this.game.getTurn()
+                    this.CURSOR_DATA.mouseUpOn.y
                 ) {
-                    this.twoClickMove.attempting = true;
-                    this.twoClickMove.source = this.CURSOR_DATA.mouseUpOn;
+                    if (this.game.getPiece({
+                        file: this.CURSOR_DATA.mouseDownOn.x,
+                        rank: 7 - this.CURSOR_DATA.mouseDownOn.y
+                    }).color === this.game.getTurn()) {
+                        this.twoClickMove.attempting = true;
+                        this.twoClickMove.source = this.CURSOR_DATA.mouseUpOn;
+                    }
                 } else {
-                    this.attemptMoveOnBoard();
+                    if (e.which == 1) {
+                        this.attemptMoveOnBoard();
+                    }
+                    else if (e.which == 3) {
+                        this.arrows.push({
+                            fromSquare: {
+                                file: this.CURSOR_DATA.mouseDownOn.x,
+                                rank: this.CURSOR_DATA.mouseDownOn.y
+                            },
+                            toSquare: {
+                                file: this.CURSOR_DATA.mouseUpOn.x,
+                                rank: this.CURSOR_DATA.mouseUpOn.y
+                            }
+                        });
+                    }
                 }
             } else {
                 throw new Error('mouse up not over sq');
@@ -314,6 +288,7 @@ export class GameComponent implements OnInit, OnChanges {
             preventPromote: false
         };
         this.tintSqFromMouseObjects = [];
+        this.arrows = [];
         this.tintSqData = [];
         this.isPromoting = false;
         this.matchingMoves = [];
@@ -408,7 +383,7 @@ export class GameComponent implements OnInit, OnChanges {
                     }
                     throw new Error(
                         'invalid interface command' +
-                            changes.interfaceCommand.currentValue
+                        changes.interfaceCommand.currentValue
                     );
             }
             // TODO probably can draw board HERE instead?
@@ -654,13 +629,7 @@ export class GameComponent implements OnInit, OnChanges {
                 }
             }
         }
-        // ISSUE 73 DRAW SHOULD HAPPEN HERE
-        /**
-         * before dragged piece but after the rest of the board is drawn
-         * start by creating an Arrow object and a corresponding array
-         * and then make a loop in here that draws all the arrows, then
-         * hook into the ngOnInit function to use mouse events to create arrows
-         */
+        this.drawArrows();
         this.boardContext.globalAlpha = 1;
         if (this.CURSOR_DATA.draggedPieceIndex !== -1) {
             this.boardContext.drawImage(
@@ -697,10 +666,10 @@ export class GameComponent implements OnInit, OnChanges {
             this.displayedMoveIndex === 0
                 ? this.initPosition.getPiece(new Square(x, y))
                 : this.game
-                      .getMoveHistory()
-                      [this.displayedMoveIndex - 1].resultingBoard.getPiece(
-                          new Square(x, y)
-                      );
+                    .getMoveHistory()
+                [this.displayedMoveIndex - 1].resultingBoard.getPiece(
+                    new Square(x, y)
+                );
         if (this.displayedMoveIndex !== 0) {
             let lastMove = this.game.getMoveHistory()[
                 this.displayedMoveIndex - 1
@@ -825,5 +794,44 @@ export class GameComponent implements OnInit, OnChanges {
                 this.flashSquare(sq, color, milliDuration, times - 1);
             }, milliDuration);
         }, milliDuration);
+    }
+
+    private drawArrows(): void {
+        for (const arrow of this.arrows) {
+            // draws the line
+            var fromX = arrow.fromSquare.file * 80 + 40
+            var fromY = arrow.fromSquare.rank * 80 + 40
+            var toX = arrow.toSquare.file * 80 + 40
+            var toY = arrow.toSquare.rank * 80 + 40
+            this.boardContext.beginPath();
+            this.boardContext.moveTo(fromX, fromY);
+            this.boardContext.lineTo(toX, toY);
+            this.boardContext.closePath();
+            this.boardContext.stroke();
+
+            // draws the rectangle pointer
+            var xCenter = toX;
+            var yCenter = toY;
+            var angle;
+            var x;
+            var y;
+            const r = 10;
+            this.boardContext.beginPath();
+            angle = Math.atan2(toY - fromY, toX - fromX);
+            x = r * Math.cos(angle) + toX;
+            y = r * Math.sin(angle) + toY;
+            this.boardContext.moveTo(x, y);
+            angle += (1 / 3) * (2 * Math.PI);
+            x = r * Math.cos(angle) + toX;
+            y = r * Math.sin(angle) + toY;
+            this.boardContext.lineTo(x, y);
+            angle += (1 / 3) * (2 * Math.PI);
+            x = r * Math.cos(angle) + toX;
+            y = r * Math.sin(angle) + toY;
+            this.boardContext.lineTo(x, y);
+            this.boardContext.closePath();
+            this.boardContext.fillStyle = '#000000';
+            this.boardContext.fill();
+        }
     }
 }
