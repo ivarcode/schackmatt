@@ -1,12 +1,33 @@
-import { File, Rank } from './game.library';
+import { File, Game, Rank } from './game.library';
 import { Move } from './interface.library';
 
 export function fileToString(file: File): string {
     return String.fromCharCode(97 + file);
 }
 
-export function parsePGN(initPosition: string, pgn: string): Move[] {
-    return null;
+export function parsePGN(initPosition: string, pgn: string): string[] {
+    const moves: string[] = [];
+    let i = 0;
+    while (i < pgn.length) {
+        let j = i;
+        while (pgn.charAt(j) !== ' ' && j < pgn.length) {
+            j++;
+        }
+        const a = pgn.substr(i, j - i);
+        // if 1-9 or *
+        if (
+            !(
+                (a.charCodeAt(0) <= 57 && a.charCodeAt(0) >= 49) ||
+                a.charAt(0) === ' ' ||
+                a.length === 0 ||
+                a === '*'
+            )
+        ) {
+            moves.push(a);
+        }
+        i = j + 1;
+    }
+    return moves;
 }
 
 export function randomRank(): Rank {
