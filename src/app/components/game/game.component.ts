@@ -20,7 +20,6 @@ import { Square } from 'src/app/lib/square.library';
 export class GameComponent implements OnInit, OnChanges {
     @Output() gameDataEmitter = new EventEmitter<GameEvent>();
     @Input() game: Game;
-    @Input() interfaceCommand: string;
     @Input() gameDisplayOptions: GameDisplayOptions;
 
     private _displayedMoveIndex: number;
@@ -366,53 +365,6 @@ export class GameComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         // console.log(changes);
-        if (changes.interfaceCommand && changes.interfaceCommand.currentValue) {
-            switch (changes.interfaceCommand.currentValue) {
-                case 'move made, redraw board':
-                    this.displayedMoveIndex++;
-                    this.drawBoard();
-                    break;
-                case 'redraw board':
-                    this.drawBoard();
-                    break;
-                case 'back':
-                    if (this.displayedMoveIndex > 0) {
-                        this.displayedMoveIndex--;
-                    }
-                    this.drawBoard();
-                    break;
-                case 'forward':
-                    if (
-                        this.displayedMoveIndex <=
-                        this.game.getMoveHistory().length - 1
-                    ) {
-                        this.displayedMoveIndex++;
-                    }
-                    console.log(
-                        this.game.getMoveHistory()[this.displayedMoveIndex]
-                    );
-                    this.drawBoard();
-                    break;
-                case 'displayMoveIndex--':
-                    this.displayedMoveIndex--;
-                    this.drawBoard();
-                    break;
-                default:
-                    const value = changes.interfaceCommand.currentValue;
-                    if (value.substr(0, 9) === 'traverse ') {
-                        this.setDisplayedMoveIndex(
-                            Number.parseInt(value.substr(9), 10)
-                        );
-                        this.drawBoard();
-                        break;
-                    }
-                    throw new Error(
-                        'invalid interface command' +
-                            changes.interfaceCommand.currentValue
-                    );
-            }
-            // TODO probably can draw board HERE instead?
-        }
     }
 
     public initializeEventListeners(): void {

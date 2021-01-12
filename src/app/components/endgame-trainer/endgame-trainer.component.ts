@@ -33,7 +33,6 @@ export class EndgameTrainerComponent implements OnInit {
     @ViewChild('gameComponent') _gameComponent: GameComponent;
     private _gameDisplayOptions: GameDisplayOptions;
     private _game: Game;
-    private _interfaceCommand: string;
     private _showBoardOverlay: boolean;
     private _boardOverlayData: {
         title: string;

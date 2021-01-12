@@ -26,10 +26,10 @@
             (boardOverlayEmitter)="boardOverlayEvent($event)"
         ></app-board-overlay>
         <app-game
+            #gameComponent
             id="game"
             [game]="getGame()"
             [gameDisplayOptions]="gameDisplayOptions"
-            [interfaceCommand]="getGameInterfaceCommand()"
             (gameDataEmitter)="gameDataEvent($event)"
         ></app-game>
     </div>
