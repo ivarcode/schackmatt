@@ -15,6 +15,11 @@ export class Sequence {
      */
     private _moves: string[];
 
+    /**
+     * @param initPosition - starting position FEN
+     * @param sequence - pgn defining the sequence
+     * @param name - sequence name (optional)
+     */
     constructor(initPosition: string, sequence: string, name?: string) {
         this._name = name || null;
         this._initPosition = initPosition;
