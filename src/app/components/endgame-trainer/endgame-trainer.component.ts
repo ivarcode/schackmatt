@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+    AfterContentInit,
+    AfterViewInit,
+    Component,
+    OnInit,
+    ViewChild
+} from '@angular/core';
 import { Exercise } from 'src/app/lib/exercises/exercise.library';
 import {
     Color,
@@ -29,7 +35,7 @@ import { Sequence } from 'src/app/lib/sequence.library';
     templateUrl: './endgame-trainer.component.html',
     styleUrls: ['./endgame-trainer.component.css']
 })
-export class EndgameTrainerComponent implements OnInit {
+export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     @ViewChild('gameComponent') _gameComponent: GameComponent;
     private _gameDisplayOptions: GameDisplayOptions;
     private _game: Game;
@@ -397,8 +403,13 @@ export class EndgameTrainerComponent implements OnInit {
     }
 
     ngOnInit() {
+        // this could also go in constructor I suppose
         this._game = new Game();
-        // start with an empty board
+    }
+
+    ngAfterViewInit() {
+        console.log('after');
+        // setup first training set
         this.setupEndgameTrainingSet(this.currentExercise);
     }
 
@@ -408,7 +419,9 @@ export class EndgameTrainerComponent implements OnInit {
         this.game.loadFEN();
         exercise.setup(this.game);
         this.game.updateFENPiecesPositionsFromBoard();
+        this.gameComponent.initPosition = this.game.getBoard();
         const firstMoveNotation = this.currentExercise.nextMove(this.game);
+        this.gameComponent.drawBoard();
         setTimeout(() => {
             this.game.makeMove(firstMoveNotation);
             this.gameComponent.displayedMoveIndex++;
@@ -422,14 +435,11 @@ export class EndgameTrainerComponent implements OnInit {
         switch (event) {
             case 'Retry Exercise':
                 this.game.setMoveHistory([]);
-                this.gameComponent.setInitPosition(this.game.getBoard());
+                // this.gameComponent.initPosition = this.game.getBoard();
                 this.gameComponent.displayedMoveIndex = 0;
-                this.gameComponent.drawBoard();
 
-                setTimeout(() => {
-                    this.setupEndgameTrainingSet(this.currentExercise);
-                    this.gameComponent.drawBoard();
-                }, 5000);
+                // this.gameComponent.drawBoard();
+                this.setupEndgameTrainingSet(this.currentExercise);
                 break;
             default:
                 break;

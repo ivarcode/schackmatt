@@ -70,7 +70,7 @@ export class GameComponent implements OnInit, OnChanges {
     }[];
     private isPromoting: boolean;
     private matchingMoves: any[];
-    private initPosition: Board;
+    private _initPosition: Board;
 
     // event listener functions
     private _mouseEnterEventListener: () => void = () => {
@@ -790,8 +790,11 @@ export class GameComponent implements OnInit, OnChanges {
         return this.game;
     }
 
-    public setInitPosition(board: Board): void {
-        this.initPosition = board;
+    set initPosition(board: Board) {
+        this._initPosition = board;
+    }
+    get initPosition(): Board {
+        return this._initPosition;
     }
 
     // TODO refactor
