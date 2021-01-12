@@ -1,33 +1,42 @@
-import { Move } from './interface.library';
+import { parsePGN } from './util.library';
 
+/**
+ * @description class that defines a specific sequence of moves by storing
+ * a starting position and a sequence of moves in string format (move notation)
+ */
 export class Sequence {
     /**
      * @description {string} Sequence title (optional)
      */
     private _name: string;
     /**
-     * @description {Move[]} series of moves that defines the Sequence
+     * @description starting position of the sequence in fen format
      */
-    private _moves: Move[];
-
-    constructor(moves: Move[], name?: string) {
-        this._name = name || null;
-        this._moves = moves;
-    }
+    private _initPosition: string;
+    /**
+     * @description {string[]} series of moves (notation) that defines the
+     * Sequence
+     */
+    private _moves: string[];
 
     /**
-     * @description gets a Move at a given index
-     * @param index - move index
-     * @returns move at the index
+     * @param initPosition - starting position FEN
+     * @param sequence - pgn defining the sequence
+     * @param name - sequence name (optional)
      */
-    public getMove(index: number): Move {
-        return this.moves[index];
+    constructor(initPosition: string, sequence: string, name?: string) {
+        this._name = name || null;
+        this._initPosition = initPosition;
+        this._moves = parsePGN(initPosition, sequence);
     }
 
     get name(): string {
         return this._name;
     }
-    get moves(): Move[] {
+    get moves(): string[] {
         return this._moves;
+    }
+    get initPosition(): string {
+        return this._initPosition;
     }
 }

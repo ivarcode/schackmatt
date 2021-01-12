@@ -393,7 +393,12 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         this._currentExercise = this._endgameExercises[1];
 
         this._checkmateSequences = [];
-        this._checkmateSequences.push(new Sequence([], 'test sequence'));
+        this._checkmateSequences.push(
+            new Sequence(
+                '8/8/1Q6/3k4/1R6/8/3K4/8 w - - 0 1',
+                '1. Rd4+ Ke5 2. Qd6+ Kf5 3. Rf4+ Kg5 4. Qf6+ Kh5 5. Rh4#'
+            )
+        );
     }
 
     ngOnInit() {
