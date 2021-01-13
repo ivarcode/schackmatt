@@ -6,7 +6,7 @@ import { parsePGN } from './util.library';
  */
 export class Sequence {
     /**
-     * @description {string} Sequence title (optional)
+     * @description {string} Sequence title
      */
     private _name: string;
     /**
@@ -20,12 +20,12 @@ export class Sequence {
     private _moves: string[];
 
     /**
+     * @param name - sequence name
      * @param initPosition - starting position FEN
      * @param sequence - pgn defining the sequence
-     * @param name - sequence name (optional)
      */
-    constructor(initPosition: string, sequence: string, name?: string) {
-        this._name = name || null;
+    constructor(name: string, initPosition: string, sequence: string) {
+        this._name = name;
         this._initPosition = initPosition;
         this._moves = parsePGN(initPosition, sequence);
     }
