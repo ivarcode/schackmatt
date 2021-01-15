@@ -416,16 +416,15 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         this.setupSequence(this.currentSequence);
     }
 
-    private setupSequence(sequence: Sequence): void {
-        this.game.setFEN(sequence.initPosition);
+    private setupSequence(seq: Sequence): void {
+        this.game.setFEN(seq.initPosition);
         this.game.loadFEN();
         this.game.updateFENPiecesPositionsFromBoard();
         this.gameComponent.initPosition = this.game.getBoard();
         this.gameComponent.drawBoard();
         setTimeout(() => {
-            let m = sequence.getMoveFollowing(this.game.getMoveHistory());
+            let m = seq.getMoveFollowing(this.game.getMoveHistory());
             console.log('m', m);
-
             this.game.makeMove(m);
             this.gameComponent.displayedMoveIndex++;
             this.gameComponent.drawBoard();
