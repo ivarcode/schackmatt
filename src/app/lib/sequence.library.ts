@@ -1,3 +1,4 @@
+import { Move } from './interface.library';
 import { parsePGN } from './util.library';
 
 /**
@@ -28,6 +29,20 @@ export class Sequence {
         this._name = name;
         this._initPosition = initPosition;
         this._moves = parsePGN(initPosition, sequence);
+    }
+
+    public getMoveFollowing(moveHistory: Move[]): string {
+        let index = 0;
+        let syncedWithLine = true;
+        for (let m of moveHistory) {
+            if (m.notation === this.moves[index]) {
+                index++;
+                syncedWithLine = true;
+            } else {
+                syncedWithLine = false;
+            }
+        }
+        return syncedWithLine ? this.moves[index] : null;
     }
 
     get name(): string {

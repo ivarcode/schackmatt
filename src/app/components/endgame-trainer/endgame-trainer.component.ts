@@ -23,6 +23,7 @@ import {
 import { Square } from 'src/app/lib/square.library';
 import { GameComponent } from '../game/game.component';
 import { Sequence } from 'src/app/lib/sequence.library';
+import { sequence } from '@angular/animations';
 
 @Component({
     selector: 'app-endgame-trainer',
@@ -43,6 +44,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     private _colorToPlay: Color;
 
     private _checkmateSequences: Sequence[];
+    private _currentSequence: Sequence;
 
     private _endgameExercises: Exercise[];
     private _currentExercise: Exercise;
@@ -395,10 +397,11 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         this._checkmateSequences.push(
             new Sequence(
                 'something',
-                '8/8/1Q6/3k4/1R6/8/3K4/8 w - - 0 1',
-                '1. Rd4+ Ke5 2. Qd6+ Kf5 3. Rf4+ Kg5 4. Qf6+ Kh5 5. Rh4#'
+                '8/8/1Q6/4k3/1R6/8/3K4/8 b - - 0 1',
+                '1. ... Kd5 2. Rd4+ Ke5 3. Qd6+ Kf5 4. Rf4+ Kg5 5. Qf6+ Kh5 6. Rh4#'
             )
         );
+        this._currentSequence = this.checkmateSequences[0];
     }
 
     ngOnInit() {
@@ -409,7 +412,25 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         console.log('after');
         // setup first training set
-        this.setupEndgameTrainingSet(this.currentExercise);
+        // this.setupEndgameTrainingSet(this.currentExercise);
+        this.setupSequence(this.currentSequence);
+    }
+
+    private setupSequence(sequence: Sequence): void {
+        this.game.setFEN(sequence.initPosition);
+        this.game.loadFEN();
+        this.game.updateFENPiecesPositionsFromBoard();
+        this.gameComponent.initPosition = this.game.getBoard();
+        this.gameComponent.drawBoard();
+        setTimeout(() => {
+            let m = sequence.getMoveFollowing(this.game.getMoveHistory());
+            console.log('m', m);
+
+            this.game.makeMove(m);
+            this.gameComponent.displayedMoveIndex++;
+            this.gameComponent.drawBoard();
+            this._colorToPlay = this.game.getTurn();
+        }, 1000);
     }
 
     private setupEndgameTrainingSet(exercise: Exercise): void {
@@ -517,5 +538,8 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     }
     get checkmateSequences(): Sequence[] {
         return this._checkmateSequences;
+    }
+    get currentSequence(): Sequence {
+        return this._currentSequence;
     }
 }

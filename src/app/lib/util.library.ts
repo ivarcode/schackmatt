@@ -14,13 +14,14 @@ export function parsePGN(initPosition: string, pgn: string): string[] {
             j++;
         }
         const a = pgn.substr(i, j - i);
-        // if 1-9 or *
+        // if 1-9 or * or ...
         if (
             !(
                 (a.charCodeAt(0) <= 57 && a.charCodeAt(0) >= 49) ||
                 a.charAt(0) === ' ' ||
                 a.length === 0 ||
-                a === '*'
+                a === '*' ||
+                a.charAt(0) === '.'
             )
         ) {
             moves.push(a);
