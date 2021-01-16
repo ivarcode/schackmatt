@@ -396,7 +396,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         this._checkmateSequences = [];
         this._checkmateSequences.push(
             new Sequence(
-                'something',
+                'Queen & Rook Killbox',
                 '8/8/1Q6/4k3/1R6/8/3K4/8 b - - 0 1',
                 '1. ... Kd5 2. Rd4+ Ke5 3. Qd6+ Kf5 4. Rf4+ Kg5 5. Qf6+ Kh5 6. Rh4#'
             )
