@@ -476,9 +476,13 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         } else {
             if (
                 // trigger black's move if white's is correct
-                this.currentExercise.moveValidator(this.game, event)
+                this.currentSequence.moves[
+                    this.gameComponent.displayedMoveIndex - 1
+                ] === event.content
             ) {
-                const moveNotation = this.currentExercise.nextMove(this.game);
+                const moveNotation = this.currentSequence.getMoveFollowing(
+                    this.game.getMoveHistory()
+                );
                 setTimeout(() => {
                     this.game.makeMove(moveNotation);
                     this.gameComponent.displayedMoveIndex++;
@@ -495,15 +499,15 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
 
                     // this timeout is because of the trigger command's timeout
                     // can be removed when we do #117
-                    setTimeout(() => {
-                        this._gameComponent.drawBoard();
-                        this._gameComponent.flashSquare(
-                            lastMove.dest,
-                            'red',
-                            200,
-                            3
-                        );
-                    }, 100);
+                    // setTimeout(() => {
+                    this._gameComponent.drawBoard();
+                    this._gameComponent.flashSquare(
+                        lastMove.dest,
+                        'red',
+                        200,
+                        3
+                    );
+                    // }, 100);
                 }, 1000);
             }
         }
