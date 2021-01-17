@@ -290,13 +290,13 @@ export class GameComponent implements OnInit, OnChanges {
                         this.twoClickMove.source = this.CURSOR_DATA.mouseUpOn;
                     }
                 } else {
-                    if (e.which == 1) {
+                    if (e.which === 1) {
                         // mouse left click
                         this.attemptMoveOnBoard();
-                    } else if (e.which == 3) {
+                    } else if (e.which === 3) {
                         // mouse right click
                         let unique = true;
-                        let newArrow = {
+                        const newArrow = {
                             fromSquare: new Square(
                                 this.CURSOR_DATA.mouseDownOn.x,
                                 this.CURSOR_DATA.mouseDownOn.y
@@ -319,7 +319,7 @@ export class GameComponent implements OnInit, OnChanges {
                         );
 
                         // delete if arrow already exists, otherwise add
-                        if (index != -1) {
+                        if (index !== -1) {
                             this.drawnArrows.splice(index, 1);
                             unique = false;
                         }
@@ -870,19 +870,22 @@ export class GameComponent implements OnInit, OnChanges {
     private drawArrows(): void {
         this.boardContext.globalAlpha = 0.5;
         for (const arrow of this.drawnArrows) {
-            let fromX = arrow.fromSquare.file * 80 + 40;
-            let fromY = arrow.fromSquare.rank * 80 + 40;
-            let toX = arrow.toSquare.file * 80 + 40;
-            let toY = arrow.toSquare.rank * 80 + 40;
-            let color = arrow.color;
-            let displacement = arrow.displacement;
-            let r = arrow.pointerSize; // radius of the circumcircle of the triangle pointer
-            let lineWidth = arrow.lineWidth;
+            const fromX = arrow.fromSquare.file * 80 + 40;
+            const fromY = arrow.fromSquare.rank * 80 + 40;
+            const toX = arrow.toSquare.file * 80 + 40;
+            const toY = arrow.toSquare.rank * 80 + 40;
+            const color = arrow.color;
+            // pointer displacement from the center
+            const displacement = arrow.displacement;
+            // radius of the circumcircle of the triangle pointer
+            const r = arrow.pointerSize;
+            const lineWidth = arrow.lineWidth;
 
             // imaginary triangle - hypotenuse goes from origin sq to dest sq
-            let angle = Math.atan2(toY - fromY, toX - fromX);
-            let hyp = Math.sqrt((toX - fromX) ** 2 + (toY - fromY) ** 2);
-            hyp += displacement; // pointer displacement from the center
+            const angle = Math.atan2(toY - fromY, toX - fromX);
+            const hypotenuse =
+                Math.sqrt((toX - fromX) ** 2 + (toY - fromY) ** 2) +
+                displacement;
             this.boardContext.save();
             this.boardContext.translate(fromX, fromY);
             this.boardContext.rotate(angle);
@@ -890,16 +893,16 @@ export class GameComponent implements OnInit, OnChanges {
             // draws the line
             this.boardContext.beginPath();
             this.boardContext.moveTo(0, 0);
-            this.boardContext.lineTo(hyp - r, 0);
+            this.boardContext.lineTo(hypotenuse - r, 0);
             this.boardContext.lineWidth = lineWidth;
             this.boardContext.strokeStyle = color;
             this.boardContext.stroke();
 
             // draws the triangle pointer
             this.boardContext.beginPath();
-            this.boardContext.lineTo(hyp - r, r);
-            this.boardContext.lineTo(hyp, 0);
-            this.boardContext.lineTo(hyp - r, -r);
+            this.boardContext.lineTo(hypotenuse - r, r);
+            this.boardContext.lineTo(hypotenuse, 0);
+            this.boardContext.lineTo(hypotenuse - r, -r);
             this.boardContext.fillStyle = color;
             this.boardContext.fill();
             this.boardContext.restore();
