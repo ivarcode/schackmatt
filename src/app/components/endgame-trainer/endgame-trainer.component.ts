@@ -394,14 +394,21 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         this._currentExercise = this._endgameExercises[1];
 
         this._checkmateSequences = [];
-        this._checkmateSequences.push(
+        this.checkmateSequences.push(
             new Sequence(
                 'Queen & Rook Killbox',
                 '8/8/1Q6/4k3/1R6/8/3K4/8 b - - 0 1',
                 '1. ... Kd5 2. Rd4+ Ke5 3. Qd6+ Kf5 4. Rf4+ Kg5 5. Qf6+ Kh5 6. Rh4#'
             )
         );
-        this._currentSequence = this.checkmateSequences[0];
+        this.checkmateSequences.push(
+            new Sequence(
+                'test seq',
+                '8/6P1/1Q6/4k3/1R6/8/3K4/8 b - - 0 1',
+                '1. ... Kd5 2. g8=N Ke5 3. Qd6+'
+            )
+        );
+        this._currentSequence = this.checkmateSequences[1];
     }
 
     ngOnInit() {
