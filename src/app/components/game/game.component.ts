@@ -129,26 +129,26 @@ export class GameComponent implements OnInit, OnChanges {
         // when mouse is pressed down
         this.CURSOR_DATA.mouseIsDown = true;
         if (this.CURSOR_DATA.overSquare) {
+            this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
             if (e.which == 1) {
                 this.arrows = [];
-            }
-            this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
-            if (!this.isPromoting) {
-                this.CURSOR_DATA.dragging = true;
-            }
-            if (this.twoClickMove.attempting) {
-                this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.mouseDownOn;
-                this.CURSOR_DATA.mouseDownOn = this.twoClickMove.source;
-                this.attemptMoveOnBoard();
-                this.twoClickMove.attempting = false;
-                this.twoClickMove.source = null;
-                this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
-                this.tintSqFromMouseObjects = [];
-                this.drawBoard();
-                this.showMoves();
-            } else {
-                this.twoClickMove.attempting = false;
-                this.twoClickMove.source = null;
+                if (!this.isPromoting) {
+                    this.CURSOR_DATA.dragging = true;
+                }
+                if (this.twoClickMove.attempting) {
+                    this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.mouseDownOn;
+                    this.CURSOR_DATA.mouseDownOn = this.twoClickMove.source;
+                    this.attemptMoveOnBoard();
+                    this.twoClickMove.attempting = false;
+                    this.twoClickMove.source = null;
+                    this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
+                    this.tintSqFromMouseObjects = [];
+                    this.drawBoard();
+                    this.showMoves();
+                } else {
+                    this.twoClickMove.attempting = false;
+                    this.twoClickMove.source = null;
+                }
             }
         } else {
             throw new Error('mouse down not over sq');
@@ -171,9 +171,9 @@ export class GameComponent implements OnInit, OnChanges {
                     this.CURSOR_DATA.mouseUpOn = overSq;
                     if (
                         this.CURSOR_DATA.mouseDownOn.x ===
-                            this.CURSOR_DATA.mouseUpOn.x &&
+                        this.CURSOR_DATA.mouseUpOn.x &&
                         this.CURSOR_DATA.mouseDownOn.y ===
-                            this.CURSOR_DATA.mouseUpOn.y
+                        this.CURSOR_DATA.mouseUpOn.y
                     ) {
                         // console.log('', this.matchingMoves);
                         const f = this.CURSOR_DATA.mouseDownOn.x;
@@ -229,9 +229,9 @@ export class GameComponent implements OnInit, OnChanges {
                 this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.overSquare;
                 if (
                     this.CURSOR_DATA.mouseDownOn.x ===
-                        this.CURSOR_DATA.mouseUpOn.x &&
+                    this.CURSOR_DATA.mouseUpOn.x &&
                     this.CURSOR_DATA.mouseDownOn.y ===
-                        this.CURSOR_DATA.mouseUpOn.y
+                    this.CURSOR_DATA.mouseUpOn.y
                 ) {
                     if (
                         this.game.getPiece(
@@ -239,7 +239,7 @@ export class GameComponent implements OnInit, OnChanges {
                                 this.CURSOR_DATA.mouseDownOn.x,
                                 7 - this.CURSOR_DATA.mouseDownOn.y
                             )
-                        ).color === this.game.getTurn()
+                        )?.color === this.game.getTurn()
                     ) {
                         this.twoClickMove.attempting = true;
                         this.twoClickMove.source = this.CURSOR_DATA.mouseUpOn;
@@ -248,7 +248,8 @@ export class GameComponent implements OnInit, OnChanges {
                     if (e.which == 1) {
                         this.attemptMoveOnBoard();
                     } else if (e.which == 3) {
-                        this.arrows.push({
+                        let unique = true;
+                        let newArrow = {
                             fromSquare: new Square(
                                 this.CURSOR_DATA.mouseDownOn.x,
                                 this.CURSOR_DATA.mouseDownOn.y
@@ -257,7 +258,22 @@ export class GameComponent implements OnInit, OnChanges {
                                 this.CURSOR_DATA.mouseUpOn.x,
                                 this.CURSOR_DATA.mouseUpOn.y
                             )
-                        });
+                        };
+                        const index = this.arrows.findIndex(
+                            arrow => arrow.fromSquare.toString() ===
+                                newArrow.fromSquare.toString() &&
+                                arrow.toSquare.toString() ===
+                                newArrow.toSquare.toString()
+                        );
+
+                        // delete if arrow already exists, otherwise add
+                        if (index != -1) {
+                            this.arrows.splice(index, 1);
+                            unique = false;
+                        }
+                        if (unique) {
+                            this.arrows.push(newArrow);
+                        }
                     }
                 }
             } else {
@@ -386,7 +402,7 @@ export class GameComponent implements OnInit, OnChanges {
                     }
                     throw new Error(
                         'invalid interface command' +
-                            changes.interfaceCommand.currentValue
+                        changes.interfaceCommand.currentValue
                     );
             }
             // TODO probably can draw board HERE instead?
@@ -669,10 +685,10 @@ export class GameComponent implements OnInit, OnChanges {
             this.displayedMoveIndex === 0
                 ? this.initPosition.getPiece(new Square(x, y))
                 : this.game
-                      .getMoveHistory()
-                      [this.displayedMoveIndex - 1].resultingBoard.getPiece(
-                          new Square(x, y)
-                      );
+                    .getMoveHistory()
+                [this.displayedMoveIndex - 1].resultingBoard.getPiece(
+                    new Square(x, y)
+                );
         if (this.displayedMoveIndex !== 0) {
             let lastMove = this.game.getMoveHistory()[
                 this.displayedMoveIndex - 1
@@ -802,22 +818,19 @@ export class GameComponent implements OnInit, OnChanges {
     private drawArrows(): void {
         for (const arrow of this.arrows) {
             // draws the line
-            var fromX = arrow.fromSquare.file * 80 + 40;
-            var fromY = arrow.fromSquare.rank * 80 + 40;
-            var toX = arrow.toSquare.file * 80 + 40;
-            var toY = arrow.toSquare.rank * 80 + 40;
+            let fromX = arrow.fromSquare.file * 80 + 40;
+            let fromY = arrow.fromSquare.rank * 80 + 40;
+            let toX = arrow.toSquare.file * 80 + 40;
+            let toY = arrow.toSquare.rank * 80 + 40;
             this.boardContext.beginPath();
             this.boardContext.moveTo(fromX, fromY);
             this.boardContext.lineTo(toX, toY);
-            this.boardContext.closePath();
             this.boardContext.stroke();
 
-            // draws the rectangle pointer
-            var xCenter = toX;
-            var yCenter = toY;
-            var angle;
-            var x;
-            var y;
+            // draws the triangle pointer
+            let angle;
+            let x;
+            let y;
             const r = 10;
             this.boardContext.beginPath();
             angle = Math.atan2(toY - fromY, toX - fromX);
