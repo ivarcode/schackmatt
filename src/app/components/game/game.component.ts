@@ -71,6 +71,10 @@ export class GameComponent implements OnInit, OnChanges {
     private arrows: {
         fromSquare: Square;
         toSquare: Square;
+        color: string;
+        displacement: number;
+        pointerSize: number;
+        lineWidth: number;
     }[];
     private isPromoting: boolean;
     private matchingMoves: any[];
@@ -257,7 +261,11 @@ export class GameComponent implements OnInit, OnChanges {
                             toSquare: new Square(
                                 this.CURSOR_DATA.mouseUpOn.x,
                                 this.CURSOR_DATA.mouseUpOn.y
-                            )
+                            ),
+                            color: '#15781B',
+                            displacement: -5,
+                            pointerSize: 25,
+                            lineWidth: 15
                         };
                         const index = this.arrows.findIndex(
                             arrow => arrow.fromSquare.toString() ===
@@ -816,38 +824,41 @@ export class GameComponent implements OnInit, OnChanges {
     }
 
     private drawArrows(): void {
+        this.boardContext.globalAlpha = 0.5;
         for (const arrow of this.arrows) {
-            // draws the line
             let fromX = arrow.fromSquare.file * 80 + 40;
             let fromY = arrow.fromSquare.rank * 80 + 40;
             let toX = arrow.toSquare.file * 80 + 40;
             let toY = arrow.toSquare.rank * 80 + 40;
+            let color = arrow.color;
+            let displacement = arrow.displacement;
+            let r = arrow.pointerSize; // radius of the circumcircle of the triangle pointer 
+            let lineWidth = arrow.lineWidth;
+
+            // imaginary triangle - hypotenuse goes from origin sq to dest sq
+            let angle = Math.atan2(toY - fromY, toX - fromX);
+            let hyp = Math.sqrt((toX - fromX) ** 2 + (toY - fromY) ** 2);
+            hyp += displacement; // pointer displacement from the center
+            this.boardContext.save();
+            this.boardContext.translate(fromX, fromY);
+            this.boardContext.rotate(angle);
+
+            // draws the line
             this.boardContext.beginPath();
-            this.boardContext.moveTo(fromX, fromY);
-            this.boardContext.lineTo(toX, toY);
+            this.boardContext.moveTo(0, 0);
+            this.boardContext.lineTo(hyp - r, 0);
+            this.boardContext.lineWidth = lineWidth;
+            this.boardContext.strokeStyle = color;
             this.boardContext.stroke();
 
             // draws the triangle pointer
-            let angle;
-            let x;
-            let y;
-            const r = 10;
             this.boardContext.beginPath();
-            angle = Math.atan2(toY - fromY, toX - fromX);
-            x = r * Math.cos(angle) + toX;
-            y = r * Math.sin(angle) + toY;
-            this.boardContext.moveTo(x, y);
-            angle += (1 / 3) * (2 * Math.PI);
-            x = r * Math.cos(angle) + toX;
-            y = r * Math.sin(angle) + toY;
-            this.boardContext.lineTo(x, y);
-            angle += (1 / 3) * (2 * Math.PI);
-            x = r * Math.cos(angle) + toX;
-            y = r * Math.sin(angle) + toY;
-            this.boardContext.lineTo(x, y);
-            this.boardContext.closePath();
-            this.boardContext.fillStyle = '#000000';
+            this.boardContext.lineTo(hyp - r, r);
+            this.boardContext.lineTo(hyp, 0);
+            this.boardContext.lineTo(hyp - r, -r);
+            this.boardContext.fillStyle = color;
             this.boardContext.fill();
+            this.boardContext.restore();
         }
     }
 }
