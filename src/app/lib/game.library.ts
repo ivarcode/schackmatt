@@ -1,24 +1,19 @@
 import { Board } from './board.library';
-import { Move } from './interface.library';
+import { CastlingRights, Move } from './interface.library';
 import { Piece } from './piece.libary';
 import { Square } from './square.library';
 import { fileToString, Rank, File, PieceType, Color } from './util.library';
 
 export class Game {
-    private fen: string;
-    private pgn: string;
-    private board: Board;
-    private turn: Color;
-    private moveHistory: Move[];
-    private castlingRights: {
-        K: boolean;
-        Q: boolean;
-        k: boolean;
-        q: boolean;
-    };
-    private enPassant: string;
-    private halfmove: number;
-    private fullmove: number;
+    private _fen: string;
+    private _pgn: string;
+    private _board: Board;
+    private _turn: Color;
+    private _moveHistory: Move[];
+    private _castlingRights: CastlingRights;
+    private _enPassant: string;
+    private _halfmove: number;
+    private _fullmove: number;
 
     constructor(fen?: string) {
         this.fen = fen
@@ -394,7 +389,7 @@ export class Game {
                                         );
                                         movements.push({
                                             notation: null,
-                                            preMoveFEN: this.getFEN(),
+                                            preMoveFEN: this.fen,
                                             src: new Square(f, r),
                                             dest: d,
                                             resultingBoard: newBoard
@@ -428,7 +423,7 @@ export class Game {
                                         );
                                         movements.push({
                                             notation: null,
-                                            preMoveFEN: this.getFEN(),
+                                            preMoveFEN: this.fen,
                                             src: new Square(f, r),
                                             dest: d,
                                             resultingBoard: newBoard
@@ -486,7 +481,7 @@ export class Game {
                                             );
                                             movements.push({
                                                 notation: null,
-                                                preMoveFEN: this.getFEN(),
+                                                preMoveFEN: this.fen,
                                                 src: new Square(
                                                     File.e,
                                                     Rank.ONE
@@ -549,7 +544,7 @@ export class Game {
                                             );
                                             movements.push({
                                                 notation: null,
-                                                preMoveFEN: this.getFEN(),
+                                                preMoveFEN: this.fen,
                                                 src: new Square(
                                                     File.e,
                                                     Rank.ONE
@@ -613,7 +608,7 @@ export class Game {
                                             );
                                             movements.push({
                                                 notation: null,
-                                                preMoveFEN: this.getFEN(),
+                                                preMoveFEN: this.fen,
                                                 src: new Square(
                                                     File.e,
                                                     Rank.EIGHT
@@ -676,7 +671,7 @@ export class Game {
                                             );
                                             movements.push({
                                                 notation: null,
-                                                preMoveFEN: this.getFEN(),
+                                                preMoveFEN: this.fen,
                                                 src: new Square(
                                                     File.e,
                                                     Rank.EIGHT
@@ -716,7 +711,7 @@ export class Game {
                                                 );
                                                 movements.push({
                                                     notation: null,
-                                                    preMoveFEN: this.getFEN(),
+                                                    preMoveFEN: this.fen,
                                                     src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
@@ -733,7 +728,7 @@ export class Game {
                                             );
                                             movements.push({
                                                 notation: null,
-                                                preMoveFEN: this.getFEN(),
+                                                preMoveFEN: this.fen,
                                                 src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
@@ -773,7 +768,7 @@ export class Game {
                                                 );
                                                 movements.push({
                                                     notation: null,
-                                                    preMoveFEN: this.getFEN(),
+                                                    preMoveFEN: this.fen,
                                                     src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
@@ -790,7 +785,7 @@ export class Game {
                                             );
                                             movements.push({
                                                 notation: null,
-                                                preMoveFEN: this.getFEN(),
+                                                preMoveFEN: this.fen,
                                                 src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
@@ -834,7 +829,7 @@ export class Game {
                                                 );
                                                 movements.push({
                                                     notation: null,
-                                                    preMoveFEN: this.getFEN(),
+                                                    preMoveFEN: this.fen,
                                                     src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
@@ -851,7 +846,7 @@ export class Game {
                                             );
                                             movements.push({
                                                 notation: null,
-                                                preMoveFEN: this.getFEN(),
+                                                preMoveFEN: this.fen,
                                                 src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
@@ -905,7 +900,7 @@ export class Game {
                                                 );
                                                 movements.push({
                                                     notation: null,
-                                                    preMoveFEN: this.getFEN(),
+                                                    preMoveFEN: this.fen,
                                                     src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
@@ -921,7 +916,7 @@ export class Game {
                                             );
                                             movements.push({
                                                 notation: null,
-                                                preMoveFEN: this.getFEN(),
+                                                preMoveFEN: this.fen,
                                                 src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
@@ -943,7 +938,7 @@ export class Game {
                                                     );
                                                     movements.push({
                                                         notation: null,
-                                                        preMoveFEN: this.getFEN(),
+                                                        preMoveFEN: this.fen,
                                                         src: new Square(f, r),
                                                         dest: d,
                                                         resultingBoard: newBoard
@@ -989,7 +984,7 @@ export class Game {
                                                 );
                                                 movements.push({
                                                     notation: null,
-                                                    preMoveFEN: this.getFEN(),
+                                                    preMoveFEN: this.fen,
                                                     src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
@@ -1005,7 +1000,7 @@ export class Game {
                                             );
                                             movements.push({
                                                 notation: null,
-                                                preMoveFEN: this.getFEN(),
+                                                preMoveFEN: this.fen,
                                                 src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
@@ -1027,7 +1022,7 @@ export class Game {
                                         );
                                         movements.push({
                                             notation: null,
-                                            preMoveFEN: this.getFEN(),
+                                            preMoveFEN: this.fen,
                                             src: new Square(f, r),
                                             dest: d,
                                             resultingBoard: newBoard
@@ -1070,7 +1065,7 @@ export class Game {
                                                 );
                                                 movements.push({
                                                     notation: null,
-                                                    preMoveFEN: this.getFEN(),
+                                                    preMoveFEN: this.fen,
                                                     src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
@@ -1086,7 +1081,7 @@ export class Game {
                                             );
                                             movements.push({
                                                 notation: null,
-                                                preMoveFEN: this.getFEN(),
+                                                preMoveFEN: this.fen,
                                                 src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
@@ -1108,7 +1103,7 @@ export class Game {
                                         );
                                         movements.push({
                                             notation: null,
-                                            preMoveFEN: this.getFEN(),
+                                            preMoveFEN: this.fen,
                                             src: new Square(f, r),
                                             dest: d,
                                             resultingBoard: newBoard
@@ -1152,7 +1147,7 @@ export class Game {
                                                 );
                                                 movements.push({
                                                     notation: null,
-                                                    preMoveFEN: this.getFEN(),
+                                                    preMoveFEN: this.fen,
                                                     src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
@@ -1168,7 +1163,7 @@ export class Game {
                                             );
                                             movements.push({
                                                 notation: null,
-                                                preMoveFEN: this.getFEN(),
+                                                preMoveFEN: this.fen,
                                                 src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
@@ -1190,7 +1185,7 @@ export class Game {
                                                     );
                                                     movements.push({
                                                         notation: null,
-                                                        preMoveFEN: this.getFEN(),
+                                                        preMoveFEN: this.fen,
                                                         src: new Square(f, r),
                                                         dest: d,
                                                         resultingBoard: newBoard
@@ -1236,7 +1231,7 @@ export class Game {
                                                 );
                                                 movements.push({
                                                     notation: null,
-                                                    preMoveFEN: this.getFEN(),
+                                                    preMoveFEN: this.fen,
                                                     src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
@@ -1252,7 +1247,7 @@ export class Game {
                                             );
                                             movements.push({
                                                 notation: null,
-                                                preMoveFEN: this.getFEN(),
+                                                preMoveFEN: this.fen,
                                                 src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
@@ -1274,7 +1269,7 @@ export class Game {
                                         );
                                         movements.push({
                                             notation: null,
-                                            preMoveFEN: this.getFEN(),
+                                            preMoveFEN: this.fen,
                                             src: new Square(f, r),
                                             dest: d,
                                             resultingBoard: newBoard
@@ -1317,7 +1312,7 @@ export class Game {
                                                 );
                                                 movements.push({
                                                     notation: null,
-                                                    preMoveFEN: this.getFEN(),
+                                                    preMoveFEN: this.fen,
                                                     src: new Square(f, r),
                                                     dest: d,
                                                     resultingBoard: newBoard
@@ -1333,7 +1328,7 @@ export class Game {
                                             );
                                             movements.push({
                                                 notation: null,
-                                                preMoveFEN: this.getFEN(),
+                                                preMoveFEN: this.fen,
                                                 src: new Square(f, r),
                                                 dest: d,
                                                 resultingBoard: newBoard
@@ -1355,7 +1350,7 @@ export class Game {
                                         );
                                         movements.push({
                                             notation: null,
-                                            preMoveFEN: this.getFEN(),
+                                            preMoveFEN: this.fen,
                                             src: new Square(f, r),
                                             dest: d,
                                             resultingBoard: newBoard
@@ -1820,7 +1815,7 @@ export class Game {
     // updates the pieces positions in the FEN from the board state
     public updateFENPiecesPositionsFromBoard(): void {
         const boardString = this.getBoardString(this.board);
-        const fenArray = this.getFEN().split(' ');
+        const fenArray = this.fen.split(' ');
         // console.log('fenArray', fenArray);
         fenArray[0] = boardString;
         this.fen = fenArray.join(' ');
@@ -1853,46 +1848,6 @@ export class Game {
         return boardString;
     }
 
-    // SETTERS
-    public setFEN(fen: string): void {
-        this.fen = fen;
-    }
-
-    // GETTERS
-    public getBoard(): Board {
-        return this.board;
-    }
-    public getPiece(sq: Square): Piece {
-        return this.board.getPiece(sq);
-    }
-    public getFEN(): string {
-        return this.fen;
-    }
-    public getPGN(): string {
-        return this.pgn;
-    }
-    public getPGNFromMoveHistory(fen: string): string {
-        // TODO MUST REFACTOR THIS LOL
-        // have to start with this fen ...
-        const tempNewGame = new Game(fen);
-        for (const m of this.getMoveHistory()) {
-            tempNewGame.makeMove(m.notation);
-        }
-        return tempNewGame.getPGN();
-    }
-    public getTurn(): Color {
-        return this.turn;
-    }
-    public getMoveHistory(): Move[] {
-        return this.moveHistory;
-    }
-
-    public setMoveHistory(mh: Move[]): void {
-        this.moveHistory = mh;
-    }
-
-    // ---
-
     // helper function that prints the legal moves of this game object
     public printLegalMovesToConsole(): void {
         let str = 'LEGAL MOVES';
@@ -1902,5 +1857,76 @@ export class Game {
             str += '\n  - ' + move.notation;
         }
         console.log(str);
+    }
+
+    // GETTERS
+    public getPiece(sq: Square): Piece {
+        return this.board.getPiece(sq);
+    }
+    public getPGNFromMoveHistory(fen: string): string {
+        // TODO MUST REFACTOR THIS LOL
+        // have to start with this fen ...
+        const tempNewGame = new Game(fen);
+        for (const m of this.moveHistory) {
+            tempNewGame.makeMove(m.notation);
+        }
+        return tempNewGame.pgn;
+    }
+
+    // ---
+
+    get enPassant(): string {
+        return this._enPassant;
+    }
+    set enPassant(enPassant: string) {
+        this._enPassant = enPassant;
+    }
+    get halfmove(): number {
+        return this._halfmove;
+    }
+    set halfmove(halfmove: number) {
+        this._halfmove = halfmove;
+    }
+    get fullmove(): number {
+        return this._fullmove;
+    }
+    set fullmove(fullmove: number) {
+        this._fullmove = fullmove;
+    }
+    get castlingRights(): CastlingRights {
+        return this._castlingRights;
+    }
+    set castlingRights(castlingRights: CastlingRights) {
+        this._castlingRights = castlingRights;
+    }
+    get fen(): string {
+        return this._fen;
+    }
+    set fen(fen: string) {
+        this._fen = fen;
+    }
+    get board(): Board {
+        return this._board;
+    }
+    set board(b: Board) {
+        this._board = b;
+    }
+    get pgn(): string {
+        return this._pgn;
+    }
+    set pgn(s: string) {
+        this._pgn = s;
+    }
+    get turn(): Color {
+        return this._turn;
+    }
+    set turn(c: Color) {
+        this._turn = c;
+    }
+    get moveHistory(): Move[] {
+        return this._moveHistory;
+    }
+    set moveHistory(mh: Move[]) {
+        this._moveHistory = mh;
     }
 }

@@ -69,7 +69,7 @@ export class EndgameTrainerComponent implements OnInit {
                 ],
                 (game: Game): void => {
                     // setup
-                    let board = game.getBoard();
+                    let board = game.board;
                     let r = randomRankInclusivelyBetween(Rank.THREE, Rank.FIVE);
                     let f = randomFileInclusivelyBetween(File.a, File.d);
                     if (f > 1) {
@@ -91,7 +91,7 @@ export class EndgameTrainerComponent implements OnInit {
                 },
                 (game: Game): string => {
                     // nextMove
-                    let board = game.getBoard();
+                    let board = game.board;
                     let pawnLocation = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     )[0];
@@ -107,7 +107,7 @@ export class EndgameTrainerComponent implements OnInit {
                 },
                 (game: Game, move: Move): boolean => {
                     // moveValidator
-                    let board = game.getBoard();
+                    let board = game.board;
                     let pawnLocation = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     )[0];
@@ -125,7 +125,7 @@ export class EndgameTrainerComponent implements OnInit {
                 },
                 (game: Game): boolean => {
                     // complete
-                    let board = game.getBoard();
+                    let board = game.board;
                     let blackPawns = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     );
@@ -145,7 +145,7 @@ export class EndgameTrainerComponent implements OnInit {
                 ['needs explanation here', 'info'],
                 (game: Game): void => {
                     // setup
-                    let board = game.getBoard();
+                    let board = game.board;
                     let f = randomFile();
                     let r = randomRank();
                     if (Math.abs(f - 3.5) > Math.abs(r - 3.5)) {
@@ -270,9 +270,9 @@ export class EndgameTrainerComponent implements OnInit {
                 },
                 (game: Game): string => {
                     // nextMove
-                    const board = game.getBoard();
-                    // console.log('movehist', game.getMoveHistory());
-                    if (game.getMoveHistory().length === 0) {
+                    const board = game.board;
+                    // console.log('movehist', game.moveHistory);
+                    if (game.moveHistory.length === 0) {
                         // FIRST MOVE
                         console.log(game.getLegalMoves());
                         let moves = game.getLegalMoves();
@@ -341,11 +341,9 @@ export class EndgameTrainerComponent implements OnInit {
                     // TODO complete this with a systematic pattern
                     // moveValidator
                     let preBoard = new Game(
-                        game.getMoveHistory()[
-                            game.getMoveHistory().length - 1
-                        ].preMoveFEN
-                    ).getBoard();
-                    let board = game.getBoard();
+                        game.moveHistory[game.moveHistory.length - 1].preMoveFEN
+                    ).board;
+                    let board = game.board;
                     // console.log('move', board, move);
                     let blackKing: Square = game.findKing(Color.Black);
                     let whiteKing: Square = game.findKing(Color.White);
@@ -394,7 +392,7 @@ export class EndgameTrainerComponent implements OnInit {
 
     private setupEndgameTrainingSet(exercise: Exercise): void {
         const emptyBoardFEN = '8/8/8/8/8/8/8/8 b - - 0 1';
-        this.game.setFEN(emptyBoardFEN);
+        this.game.fen = emptyBoardFEN;
         this.game.loadFEN();
         exercise.setup(this.game);
         this.game.updateFENPiecesPositionsFromBoard();
@@ -402,7 +400,7 @@ export class EndgameTrainerComponent implements OnInit {
         setTimeout(() => {
             this.game.makeMove(firstMoveNotation);
             this.triggerInterfaceCommand('move made, redraw board');
-            this._colorToPlay = this.game.getTurn();
+            this._colorToPlay = this.game.turn;
         }, 1000);
     }
 
@@ -411,8 +409,8 @@ export class EndgameTrainerComponent implements OnInit {
         switch (event) {
             case 'Retry Exercise':
                 this.triggerInterfaceCommand('redraw board');
-                this.game.setMoveHistory([]);
-                this._gameComponent.setInitPosition(this.game.getBoard());
+                this.game.moveHistory = [];
+                this._gameComponent.setInitPosition(this.game.board);
                 this._gameComponent.setDisplayedMoveIndex(0);
                 setTimeout(() => {
                     this.setupEndgameTrainingSet(this.currentExercise);

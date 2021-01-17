@@ -89,7 +89,7 @@ export class GameComponent implements OnInit, OnChanges {
     };
     private _mouseMoveEventListener: Function = (events: any) => {
         // condition when not on latest move
-        if (this.displayedMoveIndex !== this.game.getMoveHistory().length) {
+        if (this.displayedMoveIndex !== this.game.moveHistory.length) {
             return;
         }
         // this function takes the x and y coordinates of mousedata to
@@ -120,7 +120,7 @@ export class GameComponent implements OnInit, OnChanges {
     };
     private _mouseDownEventListener: Function = () => {
         // condition when not on latest move
-        if (this.displayedMoveIndex !== this.game.getMoveHistory().length) {
+        if (this.displayedMoveIndex !== this.game.moveHistory.length) {
             return;
         }
         // when mouse is pressed down
@@ -150,7 +150,7 @@ export class GameComponent implements OnInit, OnChanges {
     };
     private _mouseUpEventListener: Function = () => {
         // condition when not on latest move
-        if (this.displayedMoveIndex !== this.game.getMoveHistory().length) {
+        if (this.displayedMoveIndex !== this.game.moveHistory.length) {
             return;
         }
         // when mouse is released
@@ -173,7 +173,7 @@ export class GameComponent implements OnInit, OnChanges {
                         const f = this.CURSOR_DATA.mouseDownOn.x;
                         const r = 7 - this.CURSOR_DATA.mouseDownOn.y;
                         if (f === this.matchingMoves[0].dest.file) {
-                            if (this.game.getTurn() === Color.White) {
+                            if (this.game.turn === Color.White) {
                                 if (r === Rank.EIGHT) {
                                     this.game.makeMove(
                                         this.matchingMoves[0].notation
@@ -277,7 +277,7 @@ export class GameComponent implements OnInit, OnChanges {
                             this.CURSOR_DATA.mouseDownOn.x,
                             7 - this.CURSOR_DATA.mouseDownOn.y
                         )
-                    ).color === this.game.getTurn()
+                    ).color === this.game.turn
                 ) {
                     this.twoClickMove.attempting = true;
                     this.twoClickMove.source = this.CURSOR_DATA.mouseUpOn;
@@ -325,7 +325,7 @@ export class GameComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        this.initPosition = this.game.getBoard();
+        this.initPosition = this.game.board;
 
         this.boardCanvas = document.getElementById('board');
         this.boardCanvas.oncontextmenu = (events: any) => {
@@ -385,13 +385,11 @@ export class GameComponent implements OnInit, OnChanges {
                 case 'forward':
                     if (
                         this.displayedMoveIndex <=
-                        this.game.getMoveHistory().length - 1
+                        this.game.moveHistory.length - 1
                     ) {
                         this.displayedMoveIndex++;
                     }
-                    console.log(
-                        this.game.getMoveHistory()[this.displayedMoveIndex]
-                    );
+                    console.log(this.game.moveHistory[this.displayedMoveIndex]);
                     this.drawBoard();
                     break;
                 case 'displayMoveIndex--':
@@ -534,7 +532,7 @@ export class GameComponent implements OnInit, OnChanges {
             }
         }
         if (this.game.isCheck()) {
-            const kingSq = this.game.findKing(this.game.getTurn());
+            const kingSq = this.game.findKing(this.game.turn);
             this.tintSqFromMouseObjects.push({
                 dest: new Square(kingSq.file, 7 - kingSq.rank),
                 color: 'red',
@@ -545,7 +543,7 @@ export class GameComponent implements OnInit, OnChanges {
 
     private attemptMoveOnBoard(): void {
         // checking the original pgn to see if it changes
-        const originalPGN = this.getGame().getPGN();
+        const originalPGN = this.getGame().pgn;
 
         // does not matter what the resulting board is here,
         // we are just passing the src and dest
@@ -571,7 +569,7 @@ export class GameComponent implements OnInit, OnChanges {
             this.game.makeMove(this.matchingMoves[0].notation);
             this.displayedMoveIndex++;
             // checking if changed
-            if (originalPGN !== this.getGame().getPGN()) {
+            if (originalPGN !== this.getGame().pgn) {
                 this.gameDataEmitter.emit({
                     type: 'move',
                     content: this.matchingMoves[0].notation
@@ -670,7 +668,7 @@ export class GameComponent implements OnInit, OnChanges {
             this.boardContext.globalAlpha = 1;
             const x = this.matchingMoves[0].dest.file;
             this.boardContext.fillStyle = '#AAAAAA';
-            if (this.game.getTurn() === Color.White) {
+            if (this.game.turn === Color.White) {
                 this.boardContext.fillRect(x * 80, 0, 80, 320);
                 this.boardContext.drawImage(this.pieceImages[1], x * 80, 0);
                 this.boardContext.drawImage(this.pieceImages[3], x * 80, 80);
@@ -690,15 +688,11 @@ export class GameComponent implements OnInit, OnChanges {
         const piece =
             this.displayedMoveIndex === 0
                 ? this.initPosition.getPiece(new Square(x, y))
-                : this.game
-                      .getMoveHistory()
-                      [this.displayedMoveIndex - 1].resultingBoard.getPiece(
-                          new Square(x, y)
-                      );
+                : this.game.moveHistory[
+                      this.displayedMoveIndex - 1
+                  ].resultingBoard.getPiece(new Square(x, y));
         if (this.displayedMoveIndex !== 0) {
-            let lastMove = this.game.getMoveHistory()[
-                this.displayedMoveIndex - 1
-            ];
+            let lastMove = this.game.moveHistory[this.displayedMoveIndex - 1];
             if (
                 (lastMove.src.file === x && lastMove.src.rank === y) ||
                 (lastMove.dest.file === x && lastMove.dest.rank === y)

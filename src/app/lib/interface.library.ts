@@ -31,3 +31,10 @@ export interface GameDisplayOptions {
         dark: string;
     };
 }
+
+export interface CastlingRights {
+    K: boolean;
+    Q: boolean;
+    k: boolean;
+    q: boolean;
+}
