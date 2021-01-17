@@ -175,9 +175,9 @@ export class GameComponent implements OnInit, OnChanges {
                     this.CURSOR_DATA.mouseUpOn = overSq;
                     if (
                         this.CURSOR_DATA.mouseDownOn.x ===
-                        this.CURSOR_DATA.mouseUpOn.x &&
+                            this.CURSOR_DATA.mouseUpOn.x &&
                         this.CURSOR_DATA.mouseDownOn.y ===
-                        this.CURSOR_DATA.mouseUpOn.y
+                            this.CURSOR_DATA.mouseUpOn.y
                     ) {
                         // console.log('', this.matchingMoves);
                         const f = this.CURSOR_DATA.mouseDownOn.x;
@@ -188,36 +188,76 @@ export class GameComponent implements OnInit, OnChanges {
                                     this.game.makeMove(
                                         this.matchingMoves[0].notation
                                     );
+                                    this.displayedMoveIndex++;
+                                    this.gameDataEmitter.emit({
+                                        type: 'move',
+                                        content: this.matchingMoves[0].notation
+                                    });
                                 } else if (r === Rank.SEVEN) {
                                     this.game.makeMove(
                                         this.matchingMoves[3].notation
                                     );
+                                    this.displayedMoveIndex++;
+                                    this.gameDataEmitter.emit({
+                                        type: 'move',
+                                        content: this.matchingMoves[3].notation
+                                    });
                                 } else if (r === Rank.SIX) {
                                     this.game.makeMove(
                                         this.matchingMoves[1].notation
                                     );
+                                    this.displayedMoveIndex++;
+                                    this.gameDataEmitter.emit({
+                                        type: 'move',
+                                        content: this.matchingMoves[1].notation
+                                    });
                                 } else if (r === Rank.FIVE) {
                                     this.game.makeMove(
                                         this.matchingMoves[2].notation
                                     );
+                                    this.displayedMoveIndex++;
+                                    this.gameDataEmitter.emit({
+                                        type: 'move',
+                                        content: this.matchingMoves[2].notation
+                                    });
                                 }
                             } else {
                                 if (r === Rank.ONE) {
                                     this.game.makeMove(
                                         this.matchingMoves[0].notation
                                     );
+                                    this.displayedMoveIndex++;
+                                    this.gameDataEmitter.emit({
+                                        type: 'move',
+                                        content: this.matchingMoves[0].notation
+                                    });
                                 } else if (r === Rank.TWO) {
                                     this.game.makeMove(
                                         this.matchingMoves[3].notation
                                     );
+                                    this.displayedMoveIndex++;
+                                    this.gameDataEmitter.emit({
+                                        type: 'move',
+                                        content: this.matchingMoves[3].notation
+                                    });
                                 } else if (r === Rank.THREE) {
                                     this.game.makeMove(
                                         this.matchingMoves[1].notation
                                     );
+                                    this.displayedMoveIndex++;
+                                    this.gameDataEmitter.emit({
+                                        type: 'move',
+                                        content: this.matchingMoves[1].notation
+                                    });
                                 } else if (r === Rank.FOUR) {
                                     this.game.makeMove(
                                         this.matchingMoves[2].notation
                                     );
+                                    this.displayedMoveIndex++;
+                                    this.gameDataEmitter.emit({
+                                        type: 'move',
+                                        content: this.matchingMoves[2].notation
+                                    });
                                 }
                             }
                         }
@@ -233,9 +273,9 @@ export class GameComponent implements OnInit, OnChanges {
                 this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.overSquare;
                 if (
                     this.CURSOR_DATA.mouseDownOn.x ===
-                    this.CURSOR_DATA.mouseUpOn.x &&
+                        this.CURSOR_DATA.mouseUpOn.x &&
                     this.CURSOR_DATA.mouseDownOn.y ===
-                    this.CURSOR_DATA.mouseUpOn.y
+                        this.CURSOR_DATA.mouseUpOn.y
                 ) {
                     if (
                         this.game.getPiece(
@@ -268,10 +308,11 @@ export class GameComponent implements OnInit, OnChanges {
                             lineWidth: 15
                         };
                         const index = this.arrows.findIndex(
-                            arrow => arrow.fromSquare.toString() ===
-                                newArrow.fromSquare.toString() &&
+                            (arrow) =>
+                                arrow.fromSquare.toString() ===
+                                    newArrow.fromSquare.toString() &&
                                 arrow.toSquare.toString() ===
-                                newArrow.toSquare.toString()
+                                    newArrow.toSquare.toString()
                         );
 
                         // delete if arrow already exists, otherwise add
@@ -410,7 +451,7 @@ export class GameComponent implements OnInit, OnChanges {
                     }
                     throw new Error(
                         'invalid interface command' +
-                        changes.interfaceCommand.currentValue
+                            changes.interfaceCommand.currentValue
                     );
             }
             // TODO probably can draw board HERE instead?
@@ -693,10 +734,10 @@ export class GameComponent implements OnInit, OnChanges {
             this.displayedMoveIndex === 0
                 ? this.initPosition.getPiece(new Square(x, y))
                 : this.game
-                    .getMoveHistory()
-                [this.displayedMoveIndex - 1].resultingBoard.getPiece(
-                    new Square(x, y)
-                );
+                      .getMoveHistory()
+                      [this.displayedMoveIndex - 1].resultingBoard.getPiece(
+                          new Square(x, y)
+                      );
         if (this.displayedMoveIndex !== 0) {
             let lastMove = this.game.getMoveHistory()[
                 this.displayedMoveIndex - 1
@@ -832,7 +873,7 @@ export class GameComponent implements OnInit, OnChanges {
             let toY = arrow.toSquare.rank * 80 + 40;
             let color = arrow.color;
             let displacement = arrow.displacement;
-            let r = arrow.pointerSize; // radius of the circumcircle of the triangle pointer 
+            let r = arrow.pointerSize; // radius of the circumcircle of the triangle pointer
             let lineWidth = arrow.lineWidth;
 
             // imaginary triangle - hypotenuse goes from origin sq to dest sq
