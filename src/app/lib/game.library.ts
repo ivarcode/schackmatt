@@ -1,120 +1,8 @@
+import { Board } from './board.library';
 import { Move } from './interface.library';
+import { Piece } from './piece.libary';
 import { Square } from './square.library';
-import { fileToString } from './util.library';
-
-export const enum PieceType {
-    King,
-    Queen,
-    Bishop,
-    Knight,
-    Rook,
-    Pawn
-}
-
-export const enum Color {
-    White,
-    Black
-}
-
-// TODO pull all classes that aren't game OUT
-// and all const enums into interface or util or something
-export class Piece {
-    type: PieceType;
-    color: Color;
-    constructor(type: PieceType, color: Color) {
-        this.type = type;
-        this.color = color;
-    }
-    public toString(): string {
-        let str = null;
-        switch (this.type) {
-            case PieceType.King:
-                str = 'k';
-                break;
-            case PieceType.Queen:
-                str = 'q';
-                break;
-            case PieceType.Bishop:
-                str = 'b';
-                break;
-            case PieceType.Knight:
-                str = 'n';
-                break;
-            case PieceType.Rook:
-                str = 'r';
-                break;
-            case PieceType.Pawn:
-                str = 'p';
-                break;
-        }
-        if (this.color === Color.White) {
-            return str.toUpperCase();
-        }
-        return str;
-    }
-}
-
-export const enum File {
-    a,
-    b,
-    c,
-    d,
-    e,
-    f,
-    g,
-    h
-}
-
-export const enum Rank {
-    ONE,
-    TWO,
-    THREE,
-    FOUR,
-    FIVE,
-    SIX,
-    SEVEN,
-    EIGHT
-}
-
-export class Board {
-    private content: Piece[][];
-    public captured: Piece[];
-    constructor() {
-        this.content = [[], [], [], [], [], [], [], []];
-        this.captured = [];
-    }
-    public insertPiece(sq: Square, piece: Piece): void {
-        this.content[sq.file][sq.rank] = piece;
-    }
-    public getPiece(sq: Square): Piece {
-        const p = this.content[sq.file][sq.rank];
-        return p;
-    }
-    public findPiece(piece: Piece): Square[] {
-        let sqArray: Square[] = [];
-        for (let rank = Rank.ONE; rank <= Rank.EIGHT; rank++) {
-            for (let file = File.a; file <= File.h; file++) {
-                const sq = new Square(file, rank);
-                const p = this.getPiece(sq);
-                if (p && p.color === piece.color && p.type === piece.type) {
-                    sqArray.push(sq);
-                }
-            }
-        }
-        return sqArray;
-    }
-    public toString(): string {
-        let str = 'board:';
-        for (const i of this.content) {
-            str += '\n    ';
-            for (let j = 0; j < 8; j++) {
-                const a = i[j];
-                str += '[' + (a ? a.toString() : ' ') + ']';
-            }
-        }
-        return str;
-    }
-}
+import { fileToString, Rank, File, PieceType, Color } from './util.library';
 
 export class Game {
     private fen: string;
@@ -1915,8 +1803,8 @@ export class Game {
         // console.log(this.getPGN());
         // console.log(this.getMoveHistory());
         this.fen = this.moveHistory[this.moveHistory.length - 1].preMoveFEN;
-        let firstMove = this.moveHistory[0];
-        let m = this.moveHistory.pop();
+        const firstMove = this.moveHistory[0];
+        const m = this.moveHistory.pop();
         this.loadFEN();
         this.pgn = this.getPGNFromMoveHistory(firstMove.preMoveFEN);
         // console.log(this.getPGN());
@@ -1931,8 +1819,8 @@ export class Game {
 
     // updates the pieces positions in the FEN from the board state
     public updateFENPiecesPositionsFromBoard(): void {
-        let boardString = this.getBoardString(this.board);
-        let fenArray = this.getFEN().split(' ');
+        const boardString = this.getBoardString(this.board);
+        const fenArray = this.getFEN().split(' ');
         // console.log('fenArray', fenArray);
         fenArray[0] = boardString;
         this.fen = fenArray.join(' ');

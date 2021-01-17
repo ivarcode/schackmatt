@@ -1,19 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Exercise } from 'src/app/lib/exercises/exercise.library';
+import { Game } from 'src/app/lib/game.library';
 import {
-    Board,
     Color,
-    Game,
-    Piece,
     PieceType,
     File,
-    Rank
-} from 'src/app/lib/game.library';
-import {
+    Rank,
     pickRandom,
     randomFile,
     randomFileInclusivelyBetween,
-    randomNumberInclusivelyBetween,
     randomRank,
     randomRankInclusivelyBetween
 } from 'src/app/lib/util.library';
@@ -24,6 +19,7 @@ import {
 } from 'src/app/lib/interface.library';
 import { Square } from 'src/app/lib/square.library';
 import { GameComponent } from '../game/game.component';
+import { Piece } from 'src/app/lib/piece.libary';
 
 @Component({
     selector: 'app-endgame-trainer',

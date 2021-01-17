@@ -7,10 +7,11 @@ import {
     SimpleChanges,
     OnChanges
 } from '@angular/core';
-import { Game, Color, Rank, Board } from '../../lib/game.library';
+import { Game } from '../../lib/game.library';
 import { GameDisplayOptions, GameEvent } from 'src/app/lib/interface.library';
-import { fileToString } from 'src/app/lib/util.library';
+import { fileToString, Color, Rank } from 'src/app/lib/util.library';
 import { Square } from 'src/app/lib/square.library';
+import { Board } from 'src/app/lib/board.library';
 
 @Component({
     selector: 'app-game',

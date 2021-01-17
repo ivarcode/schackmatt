@@ -1,4 +1,4 @@
-import { Board } from './game.library';
+import { Board } from './board.library';
 import { Square } from './square.library';
 
 export interface Branch {
