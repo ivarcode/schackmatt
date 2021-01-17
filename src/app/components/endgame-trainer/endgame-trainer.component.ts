@@ -1,14 +1,11 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Exercise } from 'src/app/lib/exercises/exercise.library';
+import { Game } from 'src/app/lib/game.library';
 import {
     Color,
-    Game,
-    Piece,
     PieceType,
     File,
-    Rank
-} from 'src/app/lib/game.library';
-import {
+    Rank,
     pickRandom,
     randomFile,
     randomFileInclusivelyBetween,
@@ -23,7 +20,7 @@ import {
 import { Square } from 'src/app/lib/square.library';
 import { GameComponent } from '../game/game.component';
 import { Sequence } from 'src/app/lib/sequence.library';
-import { sequence } from '@angular/animations';
+import { Piece } from 'src/app/lib/piece.libary';
 
 @Component({
     selector: 'app-endgame-trainer',
@@ -74,7 +71,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                 ],
                 (game: Game): void => {
                     // setup
-                    const board = game.getBoard();
+                    const board = game.board;
                     const r = randomRankInclusivelyBetween(
                         Rank.THREE,
                         Rank.FIVE
@@ -99,7 +96,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                 },
                 (game: Game): string => {
                     // nextMove
-                    const board = game.getBoard();
+                    const board = game.board;
                     const pawnLocation = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     )[0];
@@ -115,7 +112,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                 },
                 (game: Game, move: Move): boolean => {
                     // moveValidator
-                    const board = game.getBoard();
+                    const board = game.board;
                     const pawnLocation = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     )[0];
@@ -133,7 +130,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                 },
                 (game: Game): boolean => {
                     // complete
-                    const board = game.getBoard();
+                    const board = game.board;
                     const blackPawns = board.findPiece(
                         new Piece(PieceType.Pawn, Color.Black)
                     );
@@ -153,7 +150,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                 ['needs explanation here', 'info'],
                 (game: Game): void => {
                     // setup
-                    const board = game.getBoard();
+                    const board = game.board;
                     const f = randomFile();
                     const r = randomRank();
                     if (Math.abs(f - 3.5) > Math.abs(r - 3.5)) {
@@ -278,9 +275,9 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                 },
                 (game: Game): string => {
                     // nextMove
-                    const board = game.getBoard();
-                    // console.log('movehist', game.getMoveHistory());
-                    if (game.getMoveHistory().length === 0) {
+                    const board = game.board;
+                    // console.log('movehist', game.moveHistory);
+                    if (game.moveHistory.length === 0) {
                         // FIRST MOVE
                         console.log(game.getLegalMoves());
                         const moves = game.getLegalMoves();
@@ -349,11 +346,9 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                     // TODO complete this with a systematic pattern
                     // moveValidator
                     const preBoard = new Game(
-                        game.getMoveHistory()[
-                            game.getMoveHistory().length - 1
-                        ].preMoveFEN
-                    ).getBoard();
-                    const board = game.getBoard();
+                        game.moveHistory[game.moveHistory.length - 1].preMoveFEN
+                    ).board;
+                    const board = game.board;
                     // console.log('move', board, move);
                     const blackKing: Square = game.findKing(Color.Black);
                     const whiteKing: Square = game.findKing(Color.White);
@@ -424,35 +419,35 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     }
 
     private setupSequence(seq: Sequence): void {
-        this.game.setFEN(seq.initPosition);
+        this.game.fen = seq.initPosition;
         this.game.loadFEN();
         this.game.updateFENPiecesPositionsFromBoard();
-        this.gameComponent.initPosition = this.game.getBoard();
+        this.gameComponent.initPosition = this.game.board;
         this.gameComponent.drawBoard();
         setTimeout(() => {
-            let m = seq.getMoveFollowing(this.game.getMoveHistory());
+            const m = seq.getMoveFollowing(this.game.moveHistory);
             console.log('m', m);
             this.game.makeMove(m);
             this.gameComponent.displayedMoveIndex++;
             this.gameComponent.drawBoard();
-            this._colorToPlay = this.game.getTurn();
+            this._colorToPlay = this.game.turn;
         }, 1000);
     }
 
     private setupEndgameTrainingSet(exercise: Exercise): void {
         const emptyBoardFEN = '8/8/8/8/8/8/8/8 b - - 0 1';
-        this.game.setFEN(emptyBoardFEN);
+        this.game.fen = emptyBoardFEN;
         this.game.loadFEN();
         exercise.setup(this.game);
         this.game.updateFENPiecesPositionsFromBoard();
-        this.gameComponent.initPosition = this.game.getBoard();
+        this.gameComponent.initPosition = this.game.board;
         const firstMoveNotation = this.currentExercise.nextMove(this.game);
         this.gameComponent.drawBoard();
         setTimeout(() => {
             this.game.makeMove(firstMoveNotation);
             this.gameComponent.displayedMoveIndex++;
             this.gameComponent.drawBoard();
-            this._colorToPlay = this.game.getTurn();
+            this._colorToPlay = this.game.turn;
         }, 1000);
     }
 
@@ -460,8 +455,8 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         console.log('board overlay event', event);
         switch (event) {
             case 'Retry Exercise':
-                this.game.setMoveHistory([]);
-                // this.gameComponent.initPosition = this.game.getBoard();
+                this.game.moveHistory = [];
+                // this.gameComponent.initPosition = this.game.board;
                 this.gameComponent.displayedMoveIndex = 0;
 
                 // this.gameComponent.drawBoard();
@@ -488,7 +483,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                 ] === event.content
             ) {
                 const moveNotation = this.currentSequence.getMoveFollowing(
-                    this.game.getMoveHistory()
+                    this.game.moveHistory
                 );
                 setTimeout(() => {
                     this.game.makeMove(moveNotation);

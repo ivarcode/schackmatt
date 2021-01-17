@@ -165,7 +165,7 @@ export class Study {
                 const classificationObj = this.getClassificationObjectOfMove(a);
                 // don't make move because doing this is tasking on cpu
                 // game.makeMove(classificationObj.notation);
-                positionHistArray.push(game.getFEN());
+                positionHistArray.push(game.fen);
                 const nextNode = {
                     definingMove: classificationObj.notation,
                     fen: positionHistArray[positionHistArray.length - 1],

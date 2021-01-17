@@ -5,7 +5,7 @@
     <app-game id="game" [game]="getGame()" class="col-sm-8"></app-game>
     <app-game-details-table
         id="game-details"
-        [pgn]="getGame().getPGN()"
+        [pgn]="getGame().pgn"
         (navigationDataEmitter)="navigationDataEvent($event)"
         class="col-sm-4"
     ></app-game-details-table>
