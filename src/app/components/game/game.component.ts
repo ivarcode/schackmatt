@@ -68,7 +68,7 @@ export class GameComponent implements OnInit, OnChanges {
         color: string;
         gA: number;
     }[];
-    private arrows: {
+    private drawnArrows: {
         fromSquare: Square;
         toSquare: Square;
         color: string;
@@ -134,8 +134,8 @@ export class GameComponent implements OnInit, OnChanges {
         this.CURSOR_DATA.mouseIsDown = true;
         if (this.CURSOR_DATA.overSquare) {
             this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
-            if (e.which == 1) {
-                this.arrows = [];
+            if (e.which == 1) { // mouse left click
+                this.drawnArrows = [];
                 if (!this.isPromoting) {
                     this.CURSOR_DATA.dragging = true;
                 }
@@ -249,9 +249,9 @@ export class GameComponent implements OnInit, OnChanges {
                         this.twoClickMove.source = this.CURSOR_DATA.mouseUpOn;
                     }
                 } else {
-                    if (e.which == 1) {
+                    if (e.which == 1) { // mouse left click
                         this.attemptMoveOnBoard();
-                    } else if (e.which == 3) {
+                    } else if (e.which == 3) { // mouse right click
                         let unique = true;
                         let newArrow = {
                             fromSquare: new Square(
@@ -267,7 +267,7 @@ export class GameComponent implements OnInit, OnChanges {
                             pointerSize: 25,
                             lineWidth: 15
                         };
-                        const index = this.arrows.findIndex(
+                        const index = this.drawnArrows.findIndex(
                             arrow => arrow.fromSquare.toString() ===
                                 newArrow.fromSquare.toString() &&
                                 arrow.toSquare.toString() ===
@@ -276,11 +276,11 @@ export class GameComponent implements OnInit, OnChanges {
 
                         // delete if arrow already exists, otherwise add
                         if (index != -1) {
-                            this.arrows.splice(index, 1);
+                            this.drawnArrows.splice(index, 1);
                             unique = false;
                         }
                         if (unique) {
-                            this.arrows.push(newArrow);
+                            this.drawnArrows.push(newArrow);
                         }
                     }
                 }
@@ -315,7 +315,7 @@ export class GameComponent implements OnInit, OnChanges {
             preventPromote: false
         };
         this.tintSqFromMouseObjects = [];
-        this.arrows = [];
+        this.drawnArrows = [];
         this.tintSqData = [];
         this.isPromoting = false;
         this.matchingMoves = [];
@@ -825,7 +825,7 @@ export class GameComponent implements OnInit, OnChanges {
 
     private drawArrows(): void {
         this.boardContext.globalAlpha = 0.5;
-        for (const arrow of this.arrows) {
+        for (const arrow of this.drawnArrows) {
             let fromX = arrow.fromSquare.file * 80 + 40;
             let fromY = arrow.fromSquare.rank * 80 + 40;
             let toX = arrow.toSquare.file * 80 + 40;
