@@ -22,4 +22,19 @@
 
 #sequence-list {
     padding: 10px;
+    list-style: none;
+}
+
+#sequence-list li {
+    padding: 5px;
+    border: black 1px solid;
+}
+#sequence-list li:hover {
+    background-color: gray;
+}
+
+.sequence-link {
+    cursor: pointer;
+    color: blue;
+    font-size: 22px;
 }

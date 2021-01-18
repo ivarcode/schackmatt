@@ -1,8 +1,11 @@
 <div id="standard-game-container" class="row">
     <div class="col-sm-2">
         <ul id="sequence-list">
-            <li *ngFor="let cs of checkmateSequences; index as i">
-                <a (click)="setupSequence(checkmateSequences[i])">
+            <li
+                *ngFor="let cs of checkmateSequences; index as i"
+                (click)="setupSequence(checkmateSequences[i])"
+            >
+                <a class="sequence-link">
                     {{ cs.name }}
                 </a>
             </li>
