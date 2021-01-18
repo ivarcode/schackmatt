@@ -31,10 +31,15 @@ export class Sequence {
         this._moves = parsePGN(initPosition, sequence);
     }
 
+    /**
+     * @description returns the move immediately following the last move in the
+     * sequence param
+     * @param moveHistory - list of moves to parse through
+     */
     public getMoveFollowing(moveHistory: Move[]): string {
         let index = 0;
         let syncedWithLine = true;
-        for (let m of moveHistory) {
+        for (const m of moveHistory) {
             if (m.notation === this.moves[index]) {
                 index++;
                 syncedWithLine = true;
@@ -43,6 +48,20 @@ export class Sequence {
             }
         }
         return syncedWithLine ? this.moves[index] : null;
+    }
+
+    /**
+     * @description performs a loop to determine if the param sequence matches
+     * the move sequence of the Sequence object
+     * @param moveHistory - series of moves to compare to the sequence
+     */
+    public matches(moveHistory: Move[]): boolean {
+        for (let i = 0; i < moveHistory.length; i++) {
+            if (moveHistory[i].notation !== this.moves[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     get name(): string {
