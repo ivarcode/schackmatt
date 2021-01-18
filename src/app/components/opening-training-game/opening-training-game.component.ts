@@ -74,7 +74,7 @@ export class OpeningTrainingGameComponent implements OnInit {
         if (
             event === 'forward' &&
             this.gameComponent.displayedMoveIndex <
-                this.game.getMoveHistory().length - 1
+                this.game.moveHistory.length - 1
         ) {
             this.gameComponent.displayedMoveIndex++;
             this.gameComponent.drawBoard();
