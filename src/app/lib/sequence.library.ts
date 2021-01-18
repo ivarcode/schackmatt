@@ -56,8 +56,8 @@ export class Sequence {
      * @param moveHistory - series of moves to compare to the sequence
      */
     public matches(moveHistory: Move[]): boolean {
-        for (let i = 0; i < moveHistory.length; i++) {
-            if (moveHistory[i].notation !== this.moves[i]) {
+        for (let i = 0; i < this.moves.length; i++) {
+            if (!moveHistory[i] || moveHistory[i].notation !== this.moves[i]) {
                 return false;
             }
         }

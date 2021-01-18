@@ -404,7 +404,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                 '1. ... Kd5 2. g8=N Ke5 3. Qd6+'
             )
         );
-        this._currentSequence = this.checkmateSequences[1];
+        this._currentSequence = this.checkmateSequences[0];
     }
 
     ngOnInit() {
