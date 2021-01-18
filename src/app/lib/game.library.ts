@@ -1521,6 +1521,8 @@ export class Game {
     }
 
     public makeMove(moveNotation: string): void {
+        console.log('make move ', moveNotation);
+
         let move: Move;
         const legalMoves = this.getLegalMoves();
         for (const m of legalMoves) {
@@ -1529,7 +1531,7 @@ export class Game {
                 move = m;
             }
         }
-        // console.log('move', move);
+        console.log('move', move);
         this.addMoveToPGN(move);
 
         if (this.board.getPiece(move.dest)) {

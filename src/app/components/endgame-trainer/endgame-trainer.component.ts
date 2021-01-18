@@ -409,7 +409,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         // this could also go in constructor I suppose
-        this._game = new Game();
+        this.game = new Game();
     }
 
     ngAfterViewInit() {
@@ -425,6 +425,8 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         this.game.updateFENPiecesPositionsFromBoard();
         this.gameComponent.initPosition = this.game.board;
         this.gameComponent.drawBoard();
+        console.log('game', this.game);
+
         setTimeout(() => {
             const m = seq.getMoveFollowing(this.game.moveHistory);
             console.log('m', m);
@@ -514,6 +516,9 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
 
     get game(): Game {
         return this._game;
+    }
+    set game(g: Game) {
+        this._game = g;
     }
     get gameComponent(): GameComponent {
         return this._gameComponent;
