@@ -472,7 +472,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
 
     public gameDataEvent(event: GameEvent) {
         console.log(event);
-        if (this.currentExercise.complete(this.game)) {
+        if (this.currentSequence.matches(this.game.moveHistory)) {
             // reset
             setTimeout(() => {
                 this.showBoardOverlay = true;
