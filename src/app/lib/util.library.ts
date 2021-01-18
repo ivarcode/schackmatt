@@ -1,5 +1,42 @@
-import { File, Game, Rank } from './game.library';
-import { Move } from './interface.library';
+export const enum PieceType {
+    King,
+    Queen,
+    Bishop,
+    Knight,
+    Rook,
+    Pawn
+}
+
+export const enum Color {
+    White,
+    Black
+}
+
+export function colorToString(c: Color): string {
+    return c ? 'black' : 'white';
+}
+
+export const enum File {
+    a,
+    b,
+    c,
+    d,
+    e,
+    f,
+    g,
+    h
+}
+
+export const enum Rank {
+    ONE,
+    TWO,
+    THREE,
+    FOUR,
+    FIVE,
+    SIX,
+    SEVEN,
+    EIGHT
+}
 
 export function fileToString(file: File): string {
     return String.fromCharCode(97 + file);
@@ -14,13 +51,14 @@ export function parsePGN(initPosition: string, pgn: string): string[] {
             j++;
         }
         const a = pgn.substr(i, j - i);
-        // if 1-9 or *
+        // if 1-9 or * or ...
         if (
             !(
                 (a.charCodeAt(0) <= 57 && a.charCodeAt(0) >= 49) ||
                 a.charAt(0) === ' ' ||
                 a.length === 0 ||
-                a === '*'
+                a === '*' ||
+                a.charAt(0) === '.'
             )
         ) {
             moves.push(a);

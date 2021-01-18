@@ -7,10 +7,11 @@ import {
     SimpleChanges,
     OnChanges
 } from '@angular/core';
-import { Game, Color, Rank, Board } from '../../lib/game.library';
+import { Game } from '../../lib/game.library';
 import { GameDisplayOptions, GameEvent } from 'src/app/lib/interface.library';
-import { fileToString } from 'src/app/lib/util.library';
+import { fileToString, Color, Rank } from 'src/app/lib/util.library';
 import { Square } from 'src/app/lib/square.library';
+import { Board } from 'src/app/lib/board.library';
 
 @Component({
     selector: 'app-game',
@@ -20,10 +21,9 @@ import { Square } from 'src/app/lib/square.library';
 export class GameComponent implements OnInit, OnChanges {
     @Output() gameDataEmitter = new EventEmitter<GameEvent>();
     @Input() game: Game;
-    @Input() interfaceCommand: string;
     @Input() gameDisplayOptions: GameDisplayOptions;
 
-    private displayedMoveIndex: number;
+    private _displayedMoveIndex: number;
     private boardCanvas: any;
     private boardContext: any;
     private boardImage: any;
@@ -70,14 +70,14 @@ export class GameComponent implements OnInit, OnChanges {
     }[];
     private isPromoting: boolean;
     private matchingMoves: any[];
-    private initPosition: Board;
+    private _initPosition: Board;
 
     // event listener functions
-    private _mouseEnterEventListener: Function = () => {
+    private _mouseEnterEventListener: () => void = () => {
         // just a detector of when the mouse is over the canvas object
         this.CURSOR_DATA.mouseOverBoard = true;
     };
-    private _mouseLeaveEventListener: Function = () => {
+    private _mouseLeaveEventListener: () => void = () => {
         // when mouse exits the canvas object
         this.CURSOR_DATA.mouseOverBoard = false;
         this.CURSOR_DATA.currentMousePosition = { x: -1, y: -1 };
@@ -86,9 +86,9 @@ export class GameComponent implements OnInit, OnChanges {
         this.CURSOR_DATA.draggedPieceIndex = -1;
         this.drawBoard();
     };
-    private _mouseMoveEventListener: Function = (events: any) => {
+    private _mouseMoveEventListener: (events: any) => void = (events: any) => {
         // condition when not on latest move
-        if (this.displayedMoveIndex !== this.game.getMoveHistory().length) {
+        if (this.displayedMoveIndex !== this.game.moveHistory.length) {
             return;
         }
         // this function takes the x and y coordinates of mousedata to
@@ -117,9 +117,9 @@ export class GameComponent implements OnInit, OnChanges {
         }
         this.drawBoard();
     };
-    private _mouseDownEventListener: Function = () => {
+    private _mouseDownEventListener: () => void = () => {
         // condition when not on latest move
-        if (this.displayedMoveIndex !== this.game.getMoveHistory().length) {
+        if (this.displayedMoveIndex !== this.game.moveHistory.length) {
             return;
         }
         // when mouse is pressed down
@@ -147,9 +147,9 @@ export class GameComponent implements OnInit, OnChanges {
             throw new Error('mouse down not over sq');
         }
     };
-    private _mouseUpEventListener: Function = () => {
+    private _mouseUpEventListener: () => void = () => {
         // condition when not on latest move
-        if (this.displayedMoveIndex !== this.game.getMoveHistory().length) {
+        if (this.displayedMoveIndex !== this.game.moveHistory.length) {
             return;
         }
         // when mouse is released
@@ -172,7 +172,7 @@ export class GameComponent implements OnInit, OnChanges {
                         const f = this.CURSOR_DATA.mouseDownOn.x;
                         const r = 7 - this.CURSOR_DATA.mouseDownOn.y;
                         if (f === this.matchingMoves[0].dest.file) {
-                            if (this.game.getTurn() === Color.White) {
+                            if (this.game.turn === Color.White) {
                                 if (r === Rank.EIGHT) {
                                     this.game.makeMove(
                                         this.matchingMoves[0].notation
@@ -276,7 +276,7 @@ export class GameComponent implements OnInit, OnChanges {
                             this.CURSOR_DATA.mouseDownOn.x,
                             7 - this.CURSOR_DATA.mouseDownOn.y
                         )
-                    ).color === this.game.getTurn()
+                    ).color === this.game.turn
                 ) {
                     this.twoClickMove.attempting = true;
                     this.twoClickMove.source = this.CURSOR_DATA.mouseUpOn;
@@ -324,7 +324,7 @@ export class GameComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        this.initPosition = this.game.getBoard();
+        this.initPosition = this.game.board;
 
         this.boardCanvas = document.getElementById('board');
         this.boardCanvas.oncontextmenu = (events: any) => {
@@ -366,53 +366,6 @@ export class GameComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         // console.log(changes);
-        if (changes.interfaceCommand && changes.interfaceCommand.currentValue) {
-            switch (changes.interfaceCommand.currentValue) {
-                case 'move made, redraw board':
-                    this.displayedMoveIndex++;
-                    this.drawBoard();
-                    break;
-                case 'redraw board':
-                    this.drawBoard();
-                    break;
-                case 'back':
-                    if (this.displayedMoveIndex > 0) {
-                        this.displayedMoveIndex--;
-                    }
-                    this.drawBoard();
-                    break;
-                case 'forward':
-                    if (
-                        this.displayedMoveIndex <=
-                        this.game.getMoveHistory().length - 1
-                    ) {
-                        this.displayedMoveIndex++;
-                    }
-                    console.log(
-                        this.game.getMoveHistory()[this.displayedMoveIndex]
-                    );
-                    this.drawBoard();
-                    break;
-                case 'displayMoveIndex--':
-                    this.displayedMoveIndex--;
-                    this.drawBoard();
-                    break;
-                default:
-                    const value = changes.interfaceCommand.currentValue;
-                    if (value.substr(0, 9) === 'traverse ') {
-                        this.setDisplayedMoveIndex(
-                            Number.parseInt(value.substr(9), 10)
-                        );
-                        this.drawBoard();
-                        break;
-                    }
-                    throw new Error(
-                        'invalid interface command' +
-                            changes.interfaceCommand.currentValue
-                    );
-            }
-            // TODO probably can draw board HERE instead?
-        }
     }
 
     public initializeEventListeners(): void {
@@ -462,13 +415,14 @@ export class GameComponent implements OnInit, OnChanges {
         );
     }
 
+    // we need to remove both of these
     public setDisplayedMoveIndex(index: number): void {
         this.displayedMoveIndex = index;
     }
-
     public getDisplayedMoveIndex(): number {
         return this.displayedMoveIndex;
     }
+    //
 
     private showMoves(): void {
         const pieceMovements = this.game.getLegalMoves();
@@ -533,7 +487,7 @@ export class GameComponent implements OnInit, OnChanges {
             }
         }
         if (this.game.isCheck()) {
-            const kingSq = this.game.findKing(this.game.getTurn());
+            const kingSq = this.game.findKing(this.game.turn);
             this.tintSqFromMouseObjects.push({
                 dest: new Square(kingSq.file, 7 - kingSq.rank),
                 color: 'red',
@@ -544,7 +498,7 @@ export class GameComponent implements OnInit, OnChanges {
 
     private attemptMoveOnBoard(): void {
         // checking the original pgn to see if it changes
-        const originalPGN = this.getGame().getPGN();
+        const originalPGN = this.getGame().pgn;
 
         // does not matter what the resulting board is here,
         // we are just passing the src and dest
@@ -570,7 +524,7 @@ export class GameComponent implements OnInit, OnChanges {
             this.game.makeMove(this.matchingMoves[0].notation);
             this.displayedMoveIndex++;
             // checking if changed
-            if (originalPGN !== this.getGame().getPGN()) {
+            if (originalPGN !== this.getGame().pgn) {
                 this.gameDataEmitter.emit({
                     type: 'move',
                     content: this.matchingMoves[0].notation
@@ -606,6 +560,9 @@ export class GameComponent implements OnInit, OnChanges {
         return { x: mX, y: mY };
     }
 
+    /**
+     * @description triggers a redraw event of the entire board
+     */
     public drawBoard(): void {
         this.boardContext.restore();
         this.boardContext.globalAlpha = 1;
@@ -669,7 +626,7 @@ export class GameComponent implements OnInit, OnChanges {
             this.boardContext.globalAlpha = 1;
             const x = this.matchingMoves[0].dest.file;
             this.boardContext.fillStyle = '#AAAAAA';
-            if (this.game.getTurn() === Color.White) {
+            if (this.game.turn === Color.White) {
                 this.boardContext.fillRect(x * 80, 0, 80, 320);
                 this.boardContext.drawImage(this.pieceImages[1], x * 80, 0);
                 this.boardContext.drawImage(this.pieceImages[3], x * 80, 80);
@@ -689,15 +646,11 @@ export class GameComponent implements OnInit, OnChanges {
         const piece =
             this.displayedMoveIndex === 0
                 ? this.initPosition.getPiece(new Square(x, y))
-                : this.game
-                      .getMoveHistory()
-                      [this.displayedMoveIndex - 1].resultingBoard.getPiece(
-                          new Square(x, y)
-                      );
+                : this.game.moveHistory[
+                      this.displayedMoveIndex - 1
+                  ].resultingBoard.getPiece(new Square(x, y));
         if (this.displayedMoveIndex !== 0) {
-            let lastMove = this.game.getMoveHistory()[
-                this.displayedMoveIndex - 1
-            ];
+            let lastMove = this.game.moveHistory[this.displayedMoveIndex - 1];
             if (
                 (lastMove.src.file === x && lastMove.src.rank === y) ||
                 (lastMove.dest.file === x && lastMove.dest.rank === y)
@@ -786,8 +739,11 @@ export class GameComponent implements OnInit, OnChanges {
         return this.game;
     }
 
-    public setInitPosition(board: Board): void {
-        this.initPosition = board;
+    set initPosition(board: Board) {
+        this._initPosition = board;
+    }
+    get initPosition(): Board {
+        return this._initPosition;
     }
 
     // TODO refactor
@@ -818,5 +774,12 @@ export class GameComponent implements OnInit, OnChanges {
                 this.flashSquare(sq, color, milliDuration, times - 1);
             }, milliDuration);
         }, milliDuration);
+    }
+
+    get displayedMoveIndex(): number {
+        return this._displayedMoveIndex;
+    }
+    set displayedMoveIndex(i: number) {
+        this._displayedMoveIndex = i;
     }
 }

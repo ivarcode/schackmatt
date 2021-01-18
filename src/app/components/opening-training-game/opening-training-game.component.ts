@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Game } from 'src/app/lib/game.library';
 import { Study, moveClassificationKey } from 'src/app/lib/study.library';
 import {
@@ -7,6 +7,7 @@ import {
     GameDisplayOptions
 } from 'src/app/lib/interface.library';
 import { Openings } from 'src/app/data/openings';
+import { GameComponent } from '../game/game.component';
 
 @Component({
     selector: 'app-opening-training-game',
@@ -14,10 +15,12 @@ import { Openings } from 'src/app/data/openings';
     styleUrls: ['./opening-training-game.component.css']
 })
 export class OpeningTrainingGameComponent implements OnInit {
+    @ViewChild('gameComponent') _gameComponent: GameComponent;
+
     private game: Game;
+
     private _gameDisplayOptions: GameDisplayOptions;
     private opening: Study;
-    private gameInterfaceCommand: string;
     private alertType: string;
     private choiceHeadingMessage: string;
     private choiceSubMessage: string;
@@ -68,8 +71,19 @@ export class OpeningTrainingGameComponent implements OnInit {
     }
     public navigationDataEvent(event: string): void {
         console.log('nav emit', event);
-        if (event === 'forward' || event === 'back') {
-            this.triggerGameInterfaceCommand(event);
+        if (
+            event === 'forward' &&
+            this.gameComponent.displayedMoveIndex <
+                this.game.moveHistory.length - 1
+        ) {
+            this.gameComponent.displayedMoveIndex++;
+            this.gameComponent.drawBoard();
+        } else if (
+            event === 'back' &&
+            this.gameComponent.displayedMoveIndex > 0
+        ) {
+            this.gameComponent.displayedMoveIndex--;
+            this.gameComponent.drawBoard();
         }
     }
     public resetBoard(): void {
@@ -109,7 +123,9 @@ export class OpeningTrainingGameComponent implements OnInit {
                 );
                 setTimeout(() => {
                     this.game.undoLastMove();
-                    this.triggerGameInterfaceCommand('displayMoveIndex--');
+
+                    this.gameComponent.displayedMoveIndex--;
+                    this.gameComponent.drawBoard();
                 }, 1000);
             } else {
                 this.showNotification(
@@ -125,7 +141,8 @@ export class OpeningTrainingGameComponent implements OnInit {
                     if (randMove !== null) {
                         this.game.makeMove(randMove);
                     }
-                    this.triggerGameInterfaceCommand('move made, redraw board');
+                    this.gameComponent.displayedMoveIndex++;
+                    this.gameComponent.drawBoard();
                     setTimeout(() => {
                         if (this.isLineIsOver()) {
                             return;
@@ -173,7 +190,7 @@ export class OpeningTrainingGameComponent implements OnInit {
                     ? this.opening.getCurrentChapter().index.options[0]
                     : null;
         }
-        this.triggerGameInterfaceCommand('traverse ' + numberOfTraversals);
+        this.gameComponent.displayedMoveIndex += numberOfTraversals;
         console.log(
             'this.opening.getCurrentChapter().index',
             this.opening.getCurrentChapter().index
@@ -195,15 +212,6 @@ export class OpeningTrainingGameComponent implements OnInit {
             return true;
         }
         return false;
-    }
-
-    private triggerGameInterfaceCommand(command: string): void {
-        this.gameInterfaceCommand = command;
-        // using setTimeout because it appears that a slight delay before reset
-        // helps to trigger change detection smoothly (research required?)
-        setTimeout(() => {
-            this.gameInterfaceCommand = null;
-        }, 10);
     }
 
     private showNotification(result: string, index?: Branch): void {
@@ -284,9 +292,6 @@ export class OpeningTrainingGameComponent implements OnInit {
     public getOpening(): Study {
         return this.opening;
     }
-    public getGameInterfaceCommand(): string {
-        return this.gameInterfaceCommand;
-    }
     public getAlertType(): string {
         return this.alertType;
     }
@@ -304,5 +309,8 @@ export class OpeningTrainingGameComponent implements OnInit {
     }
     get gameDisplayOptions(): GameDisplayOptions {
         return this._gameDisplayOptions;
+    }
+    get gameComponent(): GameComponent {
+        return this._gameComponent;
     }
 }

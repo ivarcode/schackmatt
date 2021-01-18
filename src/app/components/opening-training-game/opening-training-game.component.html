@@ -26,10 +26,10 @@
             (boardOverlayEmitter)="boardOverlayEvent($event)"
         ></app-board-overlay>
         <app-game
+            #gameComponent
             id="game"
             [game]="getGame()"
             [gameDisplayOptions]="gameDisplayOptions"
-            [interfaceCommand]="getGameInterfaceCommand()"
             (gameDataEmitter)="gameDataEvent($event)"
         ></app-game>
     </div>
@@ -37,7 +37,7 @@
     <div class="col-sm-2">
         <app-game-details-table
             id="game-details"
-            [pgn]="getGame().getPGN()"
+            [pgn]="getGame().pgn"
             (navigationDataEmitter)="navigationDataEvent($event)"
         ></app-game-details-table>
         <div
