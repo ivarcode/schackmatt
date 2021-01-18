@@ -12,6 +12,10 @@ export const enum Color {
     Black
 }
 
+export function colorToString(c: Color): string {
+    return c ? 'black' : 'white';
+}
+
 export const enum File {
     a,
     b,

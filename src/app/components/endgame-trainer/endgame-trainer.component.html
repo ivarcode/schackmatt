@@ -2,7 +2,7 @@
     <div class="col-sm-2">
         <ul id="sequence-list">
             <li *ngFor="let cs of checkmateSequences; index as i">
-                <a (click)="doThing(i)">
+                <a (click)="setupSequence(checkmateSequences[i])">
                     {{ cs.name }}
                 </a>
             </li>
@@ -33,7 +33,7 @@
             <div class="col-sm-auto">
                 <div id="which-color-to-play-alert" class="alert alert-primary">
                     <h4 class="alert-heading">
-                        You play {{ colorToPlayToString }}
+                        You play {{ colorToPlayString }}
                     </h4>
                 </div>
                 <h5 *ngFor="let p of currentExercise.info" style="width: 300px">

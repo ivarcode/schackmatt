@@ -10,7 +10,8 @@ import {
     randomFile,
     randomFileInclusivelyBetween,
     randomRank,
-    randomRankInclusivelyBetween
+    randomRankInclusivelyBetween,
+    colorToString
 } from 'src/app/lib/util.library';
 import {
     GameDisplayOptions,
@@ -418,7 +419,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         this.setupSequence(this.currentSequence);
     }
 
-    private setupSequence(seq: Sequence): void {
+    public setupSequence(seq: Sequence): void {
         this.game.fen = seq.initPosition;
         this.game.loadFEN();
         this.game.updateFENPiecesPositionsFromBoard();
@@ -430,26 +431,26 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
             this.game.makeMove(m);
             this.gameComponent.displayedMoveIndex++;
             this.gameComponent.drawBoard();
-            this._colorToPlay = this.game.turn;
+            this.colorToPlay = this.game.turn;
         }, 1000);
     }
 
-    private setupEndgameTrainingSet(exercise: Exercise): void {
-        const emptyBoardFEN = '8/8/8/8/8/8/8/8 b - - 0 1';
-        this.game.fen = emptyBoardFEN;
-        this.game.loadFEN();
-        exercise.setup(this.game);
-        this.game.updateFENPiecesPositionsFromBoard();
-        this.gameComponent.initPosition = this.game.board;
-        const firstMoveNotation = this.currentExercise.nextMove(this.game);
-        this.gameComponent.drawBoard();
-        setTimeout(() => {
-            this.game.makeMove(firstMoveNotation);
-            this.gameComponent.displayedMoveIndex++;
-            this.gameComponent.drawBoard();
-            this._colorToPlay = this.game.turn;
-        }, 1000);
-    }
+    // private setupEndgameTrainingSet(exercise: Exercise): void {
+    //     const emptyBoardFEN = '8/8/8/8/8/8/8/8 b - - 0 1';
+    //     this.game.fen = emptyBoardFEN;
+    //     this.game.loadFEN();
+    //     exercise.setup(this.game);
+    //     this.game.updateFENPiecesPositionsFromBoard();
+    //     this.gameComponent.initPosition = this.game.board;
+    //     const firstMoveNotation = this.currentExercise.nextMove(this.game);
+    //     this.gameComponent.drawBoard();
+    //     setTimeout(() => {
+    //         this.game.makeMove(firstMoveNotation);
+    //         this.gameComponent.displayedMoveIndex++;
+    //         this.gameComponent.drawBoard();
+    //         this._colorToPlay = this.game.turn;
+    //     }, 1000);
+    // }
 
     public boardOverlayEvent(event: string): void {
         console.log('board overlay event', event);
@@ -460,12 +461,13 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                 this.gameComponent.displayedMoveIndex = 0;
 
                 // this.gameComponent.drawBoard();
-                this.setupEndgameTrainingSet(this.currentExercise);
+                this.setupSequence(this.currentSequence);
                 break;
             default:
                 break;
         }
-        this._showBoardOverlay = false;
+        // turn off board overlay
+        this.showBoardOverlay = false;
     }
 
     public gameDataEvent(event: GameEvent) {
@@ -473,7 +475,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         if (this.currentExercise.complete(this.game)) {
             // reset
             setTimeout(() => {
-                this._showBoardOverlay = true;
+                this.showBoardOverlay = true;
             }, 1500);
         } else {
             if (
@@ -498,18 +500,13 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                         this.gameComponent.displayedMoveIndex--;
                         this.gameComponent.drawBoard();
                     }
-
-                    // this timeout is because of the trigger command's timeout
-                    // can be removed when we do #117
-                    // setTimeout(() => {
-                    this._gameComponent.drawBoard();
-                    this._gameComponent.flashSquare(
+                    this.gameComponent.drawBoard();
+                    this.gameComponent.flashSquare(
                         lastMove.dest,
                         'red',
                         200,
                         3
                     );
-                    // }, 100);
                 }, 1000);
             }
         }
@@ -527,6 +524,9 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     get showBoardOverlay(): boolean {
         return this._showBoardOverlay;
     }
+    set showBoardOverlay(flag: boolean) {
+        this._showBoardOverlay = flag;
+    }
     // TODO not any
     get boardOverlayData(): any {
         return this._boardOverlayData;
@@ -534,9 +534,11 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     get colorToPlay(): Color {
         return this._colorToPlay;
     }
-    // TODO colorToString utility function
-    get colorToPlayToString(): string {
-        return this.colorToPlay ? 'black' : 'white';
+    set colorToPlay(c: Color) {
+        this._colorToPlay = c;
+    }
+    get colorToPlayString(): string {
+        return colorToString(this.colorToPlay);
     }
     get gameDisplayOptions(): GameDisplayOptions {
         return this._gameDisplayOptions;
