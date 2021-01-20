@@ -421,6 +421,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
 
     public setupSequence(seq: Sequence): void {
         this.game.fen = seq.initPosition;
+        this.gameComponent.displayedMoveIndex = 0;
         this.game.loadFEN();
         this.game.updateFENPiecesPositionsFromBoard();
         this.gameComponent.initPosition = this.game.board;
@@ -462,7 +463,6 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
             case 'Retry Exercise':
                 // this.game.moveHistory = [];
                 // this.gameComponent.initPosition = this.game.board;
-                this.gameComponent.displayedMoveIndex = 0;
 
                 // this.gameComponent.drawBoard();
                 this.setupSequence(this.currentSequence);
