@@ -428,11 +428,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         this.gameComponent.drawBoard();
         this.game.moveHistory = [];
         setTimeout(() => {
-            console.log('game', this.game);
-            console.log('gl', this.game.getLegalMoves());
-
             const m = seq.getMoveFollowing(this.game.moveHistory);
-            console.log('m', m);
             this.game.makeMove(m);
             this.gameComponent.displayedMoveIndex++;
             this.gameComponent.drawBoard();
