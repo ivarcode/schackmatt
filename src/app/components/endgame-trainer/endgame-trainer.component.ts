@@ -20,6 +20,7 @@ import {
 import { Square } from 'src/app/lib/square.library';
 import { GameComponent } from '../game/game.component';
 import { Piece } from 'src/app/lib/piece.libary';
+import { LichessStudyService } from 'src/app/services/lichess-study.service';
 
 @Component({
     selector: 'app-endgame-trainer',
@@ -44,7 +45,7 @@ export class EndgameTrainerComponent implements OnInit {
     private _endgameExercises: Exercise[];
     private _currentExercise: Exercise;
 
-    constructor() {
+    constructor(private _lichessStudyService: LichessStudyService) {
         this._showBoardOverlay = false;
         this._gameDisplayOptions = {
             showCoordinates: true,

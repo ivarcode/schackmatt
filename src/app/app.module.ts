@@ -21,6 +21,7 @@ import { PageComponent } from './components/studies/page/page.component';
 import { AboutComponent } from './components/about/about.component';
 import { BoardOverlayComponent } from './components/board-overlay/board-overlay.component';
 import { EndgameTrainerComponent } from './components/endgame-trainer/endgame-trainer.component';
+import { LichessStudyService } from './services/lichess-study.service';
 
 @NgModule({
     declarations: [
@@ -44,7 +45,7 @@ import { EndgameTrainerComponent } from './components/endgame-trainer/endgame-tr
         EndgameTrainerComponent
     ],
     imports: [BrowserModule, AppRoutingModule, FormsModule],
-    providers: [],
+    providers: [LichessStudyService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
