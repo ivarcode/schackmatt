@@ -404,7 +404,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                 '1. ... Kd5 2. g8=N Ke5 3. Qd6+'
             )
         );
-        this._currentSequence = this.checkmateSequences[0];
+        this.currentSequence = this.checkmateSequences[0];
     }
 
     ngOnInit() {
@@ -413,13 +413,15 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        console.log('after');
+        // console.log('after');
+
         // setup first training set
         // this.setupEndgameTrainingSet(this.currentExercise);
         this.setupSequence(this.currentSequence);
     }
 
     public setupSequence(seq: Sequence): void {
+        this.currentSequence = seq;
         this.game.fen = seq.initPosition;
         this.gameComponent.displayedMoveIndex = 0;
         this.game.loadFEN();
@@ -551,5 +553,8 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     }
     get currentSequence(): Sequence {
         return this._currentSequence;
+    }
+    set currentSequence(seq: Sequence) {
+        this._currentSequence = seq;
     }
 }
