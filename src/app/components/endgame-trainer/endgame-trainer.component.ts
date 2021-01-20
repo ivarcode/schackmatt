@@ -425,9 +425,11 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         this.game.updateFENPiecesPositionsFromBoard();
         this.gameComponent.initPosition = this.game.board;
         this.gameComponent.drawBoard();
-        console.log('game', this.game);
-
+        this.game.moveHistory = [];
         setTimeout(() => {
+            console.log('game', this.game);
+            console.log('gl', this.game.getLegalMoves());
+
             const m = seq.getMoveFollowing(this.game.moveHistory);
             console.log('m', m);
             this.game.makeMove(m);
@@ -458,7 +460,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         console.log('board overlay event', event);
         switch (event) {
             case 'Retry Exercise':
-                this.game.moveHistory = [];
+                // this.game.moveHistory = [];
                 // this.gameComponent.initPosition = this.game.board;
                 this.gameComponent.displayedMoveIndex = 0;
 
