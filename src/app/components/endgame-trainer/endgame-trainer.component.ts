@@ -399,9 +399,9 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         );
         this.checkmateSequences.push(
             new Sequence(
-                'test seq',
-                '8/6P1/1Q6/4k3/1R6/8/3K4/8 b - - 0 1',
-                '1. ... Kd5 2. g8=N Ke5 3. Qd6+'
+                'Queen & King vs King',
+                '4k3/1Q6/3K4/8/8/8/8/8 b - - 0 1',
+                '1. ... Kd8 2. Qd7#'
             )
         );
         this.currentSequence = this.checkmateSequences[0];
