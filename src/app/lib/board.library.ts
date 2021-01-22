@@ -1,6 +1,6 @@
 import { Piece } from './piece.libary';
 import { Square } from './square.library';
-import { Rank, File } from './util.library';
+import { RANK, FILE } from './util.library';
 
 export class Board {
     private content: Piece[][];
@@ -18,8 +18,8 @@ export class Board {
     }
     public findPiece(piece: Piece): Square[] {
         const sqArray: Square[] = [];
-        for (let rank = Rank.ONE; rank <= Rank.EIGHT; rank++) {
-            for (let file = File.a; file <= File.h; file++) {
+        for (let rank = RANK.ONE; rank <= RANK.EIGHT; rank++) {
+            for (let file = FILE.a; file <= FILE.h; file++) {
                 const sq = new Square(file, rank);
                 const p = this.getPiece(sq);
                 if (p && p.color === piece.color && p.type === piece.type) {

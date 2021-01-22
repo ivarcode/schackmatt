@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { Game } from '../../lib/game.library';
 import { GameDisplayOptions, GameEvent } from 'src/app/lib/interface.library';
-import { fileToString, Color, Rank } from 'src/app/lib/util.library';
+import { fileToString, Color, RANK } from 'src/app/lib/util.library';
 import { Square } from 'src/app/lib/square.library';
 import { Board } from 'src/app/lib/board.library';
 
@@ -174,7 +174,7 @@ export class GameComponent implements OnInit, OnChanges {
                         const r = 7 - this.CURSOR_DATA.mouseDownOn.y;
                         if (f === this.matchingMoves[0].dest.file) {
                             if (this.game.turn === Color.White) {
-                                if (r === Rank.EIGHT) {
+                                if (r === RANK.EIGHT) {
                                     this.game.makeMove(
                                         this.matchingMoves[0].notation
                                     );
@@ -183,7 +183,7 @@ export class GameComponent implements OnInit, OnChanges {
                                         type: 'move',
                                         content: this.matchingMoves[0].notation
                                     });
-                                } else if (r === Rank.SEVEN) {
+                                } else if (r === RANK.SEVEN) {
                                     this.game.makeMove(
                                         this.matchingMoves[3].notation
                                     );
@@ -192,7 +192,7 @@ export class GameComponent implements OnInit, OnChanges {
                                         type: 'move',
                                         content: this.matchingMoves[3].notation
                                     });
-                                } else if (r === Rank.SIX) {
+                                } else if (r === RANK.SIX) {
                                     this.game.makeMove(
                                         this.matchingMoves[1].notation
                                     );
@@ -201,7 +201,7 @@ export class GameComponent implements OnInit, OnChanges {
                                         type: 'move',
                                         content: this.matchingMoves[1].notation
                                     });
-                                } else if (r === Rank.FIVE) {
+                                } else if (r === RANK.FIVE) {
                                     this.game.makeMove(
                                         this.matchingMoves[2].notation
                                     );
@@ -212,7 +212,7 @@ export class GameComponent implements OnInit, OnChanges {
                                     });
                                 }
                             } else {
-                                if (r === Rank.ONE) {
+                                if (r === RANK.ONE) {
                                     this.game.makeMove(
                                         this.matchingMoves[0].notation
                                     );
@@ -221,7 +221,7 @@ export class GameComponent implements OnInit, OnChanges {
                                         type: 'move',
                                         content: this.matchingMoves[0].notation
                                     });
-                                } else if (r === Rank.TWO) {
+                                } else if (r === RANK.TWO) {
                                     this.game.makeMove(
                                         this.matchingMoves[3].notation
                                     );
@@ -230,7 +230,7 @@ export class GameComponent implements OnInit, OnChanges {
                                         type: 'move',
                                         content: this.matchingMoves[3].notation
                                     });
-                                } else if (r === Rank.THREE) {
+                                } else if (r === RANK.THREE) {
                                     this.game.makeMove(
                                         this.matchingMoves[1].notation
                                     );
@@ -239,7 +239,7 @@ export class GameComponent implements OnInit, OnChanges {
                                         type: 'move',
                                         content: this.matchingMoves[1].notation
                                     });
-                                } else if (r === Rank.FOUR) {
+                                } else if (r === RANK.FOUR) {
                                     this.game.makeMove(
                                         this.matchingMoves[2].notation
                                     );
