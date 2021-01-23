@@ -82,6 +82,8 @@ export function pickRandom(array: any[]): any {
 }
 
 export function parseLichessFile(file: any): any {
+    console.log('parseLichessFile');
+
     // console.log('called with ', pgn);
     // console.log('root', root);
     // const game = new Game(root.fen);
