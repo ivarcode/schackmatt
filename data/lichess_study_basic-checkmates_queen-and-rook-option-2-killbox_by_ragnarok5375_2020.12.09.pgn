@@ -1,0 +1,18 @@
+[Event "Basic Checkmates: Queen and Rook Option 2: Killbox"]
+[Site "https://lichess.org/study/HJt6gg6y/V9LKnNFe"]
+[Result "*"]
+[UTCDate "2020.12.09"]
+[UTCTime "02:14:00"]
+[Variant "From Position"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "8/8/1Q6/3k4/1R6/8/3K4/8 w - - 0 1"]
+[SetUp "1"]
+
+{ The Kill Box Checkmate is a common strategy to slowly force a king to the end of the board by slowly pushing him with a queen and rook.
+
+This is faster than the staircase method, and sometimes easier to pull off if there are more pieces on the board.
+
+The formation can be repeated from as far away as necessary. }
+1. Rd4+ Ke5 2. Qd6+ Kf5 3. Rf4+ Kg5 4. Qf6+ Kh5 5. Rh4# *
