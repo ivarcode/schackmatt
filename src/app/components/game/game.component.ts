@@ -134,7 +134,7 @@ export class GameComponent implements OnInit, OnChanges {
         this.CURSOR_DATA.mouseIsDown = true;
         if (this.CURSOR_DATA.overSquare) {
             this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
-            if (e.which == 1) {
+            if (e.which === 1) {
                 // mouse left click
                 this.drawnArrows = [];
                 if (!this.isPromoting) {
@@ -886,6 +886,8 @@ export class GameComponent implements OnInit, OnChanges {
             const hypotenuse =
                 Math.sqrt((toX - fromX) ** 2 + (toY - fromY) ** 2) +
                 displacement;
+
+            // save the state of the canvas first then perform transformations
             this.boardContext.save();
             this.boardContext.translate(fromX, fromY);
             this.boardContext.rotate(angle);
@@ -905,6 +907,9 @@ export class GameComponent implements OnInit, OnChanges {
             this.boardContext.lineTo(hypotenuse - r, -r);
             this.boardContext.fillStyle = color;
             this.boardContext.fill();
+            this.boardContext.translate(0, 0);
+
+            // finally restore the state of the canvas
             this.boardContext.restore();
         }
     }
