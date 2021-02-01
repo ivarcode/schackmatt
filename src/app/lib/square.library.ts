@@ -1,5 +1,4 @@
-import { File, Rank } from './game.library';
-import { fileToString } from './util.library';
+import { File, Rank, fileToString } from './util.library';
 
 export class Square {
     private _file: File;

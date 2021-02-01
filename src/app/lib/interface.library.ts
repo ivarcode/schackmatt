@@ -1,4 +1,4 @@
-import { Board } from './game.library';
+import { Board } from './board.library';
 import { Square } from './square.library';
 
 export interface Branch {
@@ -30,4 +30,11 @@ export interface GameDisplayOptions {
         light: string;
         dark: string;
     };
+}
+
+export interface CastlingRights {
+    K: boolean;
+    Q: boolean;
+    k: boolean;
+    q: boolean;
 }

@@ -1,4 +1,38 @@
-import { File, Rank } from './game.library';
+export const enum PieceType {
+    King,
+    Queen,
+    Bishop,
+    Knight,
+    Rook,
+    Pawn
+}
+
+export const enum Color {
+    White,
+    Black
+}
+
+export const enum File {
+    a,
+    b,
+    c,
+    d,
+    e,
+    f,
+    g,
+    h
+}
+
+export const enum Rank {
+    ONE,
+    TWO,
+    THREE,
+    FOUR,
+    FIVE,
+    SIX,
+    SEVEN,
+    EIGHT
+}
 
 export function fileToString(file: File): string {
     return String.fromCharCode(97 + file);

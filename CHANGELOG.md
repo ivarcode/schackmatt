@@ -1,3 +1,11 @@
+### 0.1.3
+
+commit f64549efcc84d7a2346c36dc549949f1d060099d
+
+Date:   Sun Jan 17 13:21:07 2021 -0500
+
+    Refactors stemming from game.library.ts
+
 ### 0.1.2
 
 commit a380869e71226ba21f2873739284fb372f3d53d1
