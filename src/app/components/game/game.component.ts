@@ -30,6 +30,8 @@ export class GameComponent implements OnInit, OnChanges {
     private pieceImages: any[];
     private CURSOR_DATA: {
         mouseIsDown: boolean;
+        mouseLeftIsDown: boolean;
+        mouseRightIsDown: boolean;
         mouseOverBoard: boolean;
         currentMousePosition: {
             x: number;
@@ -47,7 +49,7 @@ export class GameComponent implements OnInit, OnChanges {
             x: number;
             y: number;
         };
-        dragging: boolean;
+        pieceDragging: boolean;
         draggedPieceIndex: number;
     };
     private twoClickMove: {
@@ -132,13 +134,22 @@ export class GameComponent implements OnInit, OnChanges {
         }
         // when mouse is pressed down
         this.CURSOR_DATA.mouseIsDown = true;
+        if (e.which === 1) {
+            this.CURSOR_DATA.mouseLeftIsDown = true;
+        } else if (e.which === 3) {
+            this.CURSOR_DATA.mouseRightIsDown = true;
+        }
         if (this.CURSOR_DATA.overSquare) {
             this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
-            if (e.which === 1) {
-                // mouse left click
+            if (this.CURSOR_DATA.mouseLeftIsDown) {
                 this.drawnArrows = [];
+                if (this.CURSOR_DATA.mouseRightIsDown) {
+                    this.CURSOR_DATA.pieceDragging = false;
+                    this.CURSOR_DATA.draggedPieceIndex = -1;
+                }
+                this.drawBoard();
                 if (!this.isPromoting) {
-                    this.CURSOR_DATA.dragging = true;
+                    this.CURSOR_DATA.pieceDragging = true;
                 }
                 if (this.twoClickMove.attempting) {
                     this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.mouseDownOn;
@@ -166,6 +177,11 @@ export class GameComponent implements OnInit, OnChanges {
         }
         // when mouse is released
         this.CURSOR_DATA.mouseIsDown = false;
+        if (e.which === 1) {
+            this.CURSOR_DATA.mouseLeftIsDown = false;
+        } else if (e.which === 3) {
+            this.CURSOR_DATA.mouseRightIsDown = false;
+        }
         if (this.isPromoting) {
             if (
                 !this.twoClickMove.attempting &&
@@ -290,11 +306,12 @@ export class GameComponent implements OnInit, OnChanges {
                         this.twoClickMove.source = this.CURSOR_DATA.mouseUpOn;
                     }
                 } else {
-                    if (e.which === 1) {
-                        // mouse left click
+                    if (e.which === 1 && !this.CURSOR_DATA.mouseRightIsDown) {
                         this.attemptMoveOnBoard();
-                    } else if (e.which === 3) {
-                        // mouse right click
+                    } else if (
+                        e.which === 3 &&
+                        !this.CURSOR_DATA.pieceDragging
+                    ) {
                         let unique = true;
                         const newArrow = {
                             fromSquare: new Square(
@@ -317,7 +334,6 @@ export class GameComponent implements OnInit, OnChanges {
                                 arrow.toSquare.toString() ===
                                     newArrow.toSquare.toString()
                         );
-
                         // delete if arrow already exists, otherwise add
                         if (index !== -1) {
                             this.drawnArrows.splice(index, 1);
@@ -332,7 +348,7 @@ export class GameComponent implements OnInit, OnChanges {
                 throw new Error('mouse up not over sq');
             }
         }
-        this.CURSOR_DATA.dragging = false;
+        this.CURSOR_DATA.pieceDragging = false;
         this.CURSOR_DATA.draggedPieceIndex = -1;
         this.drawBoard();
         this.showMoves();
@@ -342,6 +358,8 @@ export class GameComponent implements OnInit, OnChanges {
         // this.game = new Game('1k6/1p6/8/2P5/5p2/4P3/1K6/8 w - - 0 1');
         this.CURSOR_DATA = {
             mouseIsDown: false,
+            mouseLeftIsDown: false,
+            mouseRightIsDown: false,
             mouseOverBoard: false,
             currentMousePosition: {
                 x: -1,
@@ -350,7 +368,7 @@ export class GameComponent implements OnInit, OnChanges {
             overSquare: null,
             mouseDownOn: null,
             mouseUpOn: null,
-            dragging: false,
+            pieceDragging: false,
             draggedPieceIndex: -1
         };
         this.twoClickMove = {
@@ -540,7 +558,7 @@ export class GameComponent implements OnInit, OnChanges {
                 }
             }
         }
-        if (this.CURSOR_DATA.dragging) {
+        if (this.CURSOR_DATA.pieceDragging) {
             for (const movement of pieceMovements) {
                 if (
                     movement.src.file === this.CURSOR_DATA.mouseDownOn.x &&
@@ -560,7 +578,7 @@ export class GameComponent implements OnInit, OnChanges {
         if (
             !this.isPromoting &&
             !this.twoClickMove.attempting &&
-            !this.CURSOR_DATA.dragging
+            !this.CURSOR_DATA.pieceDragging
         ) {
             for (const movement of pieceMovements) {
                 if (
@@ -803,7 +821,7 @@ export class GameComponent implements OnInit, OnChanges {
             const pieceType = piece.type;
             const index = (color === 1 ? 6 : 0) + pieceType;
             if (
-                this.CURSOR_DATA.dragging &&
+                this.CURSOR_DATA.pieceDragging &&
                 this.CURSOR_DATA.mouseDownOn.x === x &&
                 this.CURSOR_DATA.mouseDownOn.y === 7 - y
             ) {
