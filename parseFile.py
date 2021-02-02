@@ -13,9 +13,23 @@ f = open(sys.argv[1], 'r')
 
 obj = {}
 
+def parseLineIntoObj(line):
+    for i in range(0, len(line)):
+        if line[i] == ' ':
+            spaceIndex = i
+            break
+    # print(line[1:spaceIndex])
+    # print('-')
+    # print(line[(spaceIndex + 2):len(line) - 3])
+    obj[line[1:spaceIndex]] = line[(spaceIndex + 2):len(line) - 3]
+
+
 for line in f:
     if line[0] == '[':
-        print(line)
+        # print(line)
+        parseLineIntoObj(line)
+
+print(obj)
 
 # for arg in sys.argv:
 
