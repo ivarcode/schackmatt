@@ -1,3 +1,11 @@
+### 0.2.1
+
+commit c127740964b26512d64c89996c96a2d63b5f464c
+
+Date:   Sat Feb 6 13:21:03 2021 -0500
+
+    npm audit instructions and audit process 2/6/21
+
 ### 0.2.0
 
 commit 3060ba0698558bd4e9fa2dd9aefbfa24ee38fea2
