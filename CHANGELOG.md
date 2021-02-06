@@ -1,3 +1,11 @@
+### 0.2.0
+
+commit 3060ba0698558bd4e9fa2dd9aefbfa24ee38fea2
+
+Date:   Sat Feb 6 13:01:58 2021 -0500
+
+    Adding python script to parse lichess study code (only works for chapters, not multi-chapters)
+
 ### 0.1.3
 
 commit f64549efcc84d7a2346c36dc549949f1d060099d
