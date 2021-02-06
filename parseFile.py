@@ -34,10 +34,13 @@ for line in f:
 
 obj['pgnContent'] = pgnContent
 
+outObj = {}
+outObj['lichessData'] = obj
+
 # This should be an argument
 filename = './out.json'
-with open(filename, 'w') as outfile:  
-    json.dump(obj, outfile)
+with open(filename, 'w') as outfile:
+    json.dump(outObj, outfile)
 
 print('Written to "' + filename + '" the following JSON object:\n')
 print(obj)

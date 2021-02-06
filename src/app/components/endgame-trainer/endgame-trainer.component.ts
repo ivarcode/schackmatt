@@ -21,6 +21,7 @@ import {
 import { Square } from 'src/app/lib/square.library';
 import { GameComponent } from '../game/game.component';
 import { Piece } from 'src/app/lib/piece.libary';
+import { lichessData } from 'out.json';
 
 @Component({
     selector: 'app-endgame-trainer',
@@ -47,7 +48,7 @@ export class EndgameTrainerComponent implements OnInit {
 
     constructor() {
         // TEMP
-        let parsedFile = parseLichessFile(null);
+        let parsedFile = parseLichessFile(lichessData);
         console.log('parsed file', parsedFile);
 
         this._showBoardOverlay = false;

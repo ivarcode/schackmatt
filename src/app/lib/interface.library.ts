@@ -38,3 +38,17 @@ export interface CastlingRights {
     k: boolean;
     q: boolean;
 }
+
+// needs better name; lichess json study object? idk
+export interface LichessJSONObject {
+    Event: string;
+    Site: string;
+    Result: string;
+    UTCDate: string;
+    UTCTime: string;
+    Variant: string;
+    ECO: string;
+    Opening: string;
+    Annotator: string;
+    pgnContent: string;
+}
