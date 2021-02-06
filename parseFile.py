@@ -10,7 +10,7 @@ if len(sys.argv) != 2:
     print('Err: 1 argument required (target filename)')
     exit()
 else:
-    print(sys.argv[1])
+    print('Located file: ' + sys.argv[1])
 
 f = open(sys.argv[1], 'r')
 # print(f.read())
