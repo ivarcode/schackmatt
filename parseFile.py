@@ -1,4 +1,5 @@
 import sys
+import json
 
 # print(sys.argv)
 
@@ -23,13 +24,25 @@ def parseLineIntoObj(line):
     # print(line[(spaceIndex + 2):len(line) - 3])
     obj[line[1:spaceIndex]] = line[(spaceIndex + 2):len(line) - 3]
 
-
+pgnContent = ''
 for line in f:
     if line[0] == '[':
         # print(line)
         parseLineIntoObj(line)
+    else:
+        pgnContent += line
 
+obj['pgnContent'] = pgnContent
+
+with open("sample.json", "w") as outfile:  
+    json.dump(obj, outfile)
+
+print('details')
 print(obj)
+
+print('PGN')
+print(pgnContent)
+
 
 # for arg in sys.argv:
 
