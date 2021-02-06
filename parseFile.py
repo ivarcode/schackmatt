@@ -1,7 +1,10 @@
 import sys
 import json
 
-# print(sys.argv)
+# Currently, this file only works for lichess study CHAPTERS.  Once we break
+# from the first [bracketed] details, the rest is treated as PGN code. I
+# intend to create a second file, or possibly update this file with arguments
+# and subroutines to handle a multi-chapter lichess file.
 
 if len(sys.argv) != 2:
     print('Err: 1 argument required (target filename)')
@@ -19,9 +22,6 @@ def parseLineIntoObj(line):
         if line[i] == ' ':
             spaceIndex = i
             break
-    # print(line[1:spaceIndex])
-    # print('-')
-    # print(line[(spaceIndex + 2):len(line) - 3])
     obj[line[1:spaceIndex]] = line[(spaceIndex + 2):len(line) - 3]
 
 pgnContent = ''
@@ -34,18 +34,11 @@ for line in f:
 
 obj['pgnContent'] = pgnContent
 
-with open("sample.json", "w") as outfile:  
+# This should be an argument
+filename = './out.json'
+with open(filename, 'w') as outfile:  
     json.dump(obj, outfile)
 
-print('details')
+print('Written to "' + filename + '" the following JSON object:\n')
 print(obj)
-
-print('PGN')
-print(pgnContent)
-
-
-# for arg in sys.argv:
-
-
-# print('parse!')
-
+print('\nSuccess.')
