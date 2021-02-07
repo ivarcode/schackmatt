@@ -99,10 +99,35 @@ export function parsePGN(pgn: string): any {
     let i = 0;
     while (i < pgn.length) {
         // handle beginning new lines
+        if (pgn.charAt(i) === '\n') {
+            i++;
+        }
+        let j = i + 1;
 
-        // check for { }
+        let specialCase = null;
+        if (pgn.charAt(i) === '(') {
+            specialCase = ')';
+        } else if (pgn.charAt(i) === '{') {
+            specialCase = '}';
+        }
 
-        // (sidelines)
+        if (!specialCase) {
+            // no special case, assuming notation
+            while (pgn.charAt(j) !== ' ') {
+                j++;
+            }
+        } else {
+            while (pgn.charAt(j) !== specialCase) {
+                j++;
+            }
+            j--;
+            i += 2;
+        }
+
+        let s = pgn.substring(i, j);
+        console.log('s', s);
+
+        i = j;
 
         // must do this to avoid inf loop
         i++;
