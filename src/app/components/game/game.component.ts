@@ -30,7 +30,6 @@ export class GameComponent implements OnInit, OnChanges {
     private boardImage: any;
     private pieceImages: any[];
     private CURSOR_DATA: {
-        mouseIsDown: boolean;
         mouseLeftIsDown: boolean;
         mouseRightIsDown: boolean;
         mouseOverBoard: boolean;
@@ -42,11 +41,19 @@ export class GameComponent implements OnInit, OnChanges {
             x: number;
             y: number;
         };
-        mouseDownOn: {
+        mouseLeftDownOn: {
             x: number;
             y: number;
         };
-        mouseUpOn: {
+        mouseLeftUpOn: {
+            x: number;
+            y: number;
+        };
+        mouseRightDownOn: {
+            x: number;
+            y: number;
+        };
+        mouseRightUpOn: {
             x: number;
             y: number;
         };
@@ -129,43 +136,37 @@ export class GameComponent implements OnInit, OnChanges {
         this.drawBoard();
     };
     private _mouseDownEventListener: Function = (e) => {
+        // when mouse is pressed down
+
         // condition when not on latest move
         if (this.displayedMoveIndex !== this.game.moveHistory.length) {
             return;
         }
-        // when mouse is pressed down
-        this.CURSOR_DATA.mouseIsDown = true;
-        if (e.which === 1) {
-            this.CURSOR_DATA.mouseLeftIsDown = true;
-        } else if (e.which === 3) {
-            this.CURSOR_DATA.mouseRightIsDown = true;
-        }
         if (this.CURSOR_DATA.overSquare) {
-            this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
-            if (this.CURSOR_DATA.mouseLeftIsDown) {
+            if (e.which === 1) {
+                this.CURSOR_DATA.mouseLeftIsDown = true;
+                this.CURSOR_DATA.mouseLeftDownOn = this.CURSOR_DATA.overSquare;
                 this.drawnArrows = [];
-                if (this.CURSOR_DATA.mouseRightIsDown) {
-                    this.CURSOR_DATA.pieceDragging = false;
-                    this.CURSOR_DATA.draggedPieceIndex = -1;
-                }
                 this.drawBoard();
                 if (!this.isPromoting) {
                     this.CURSOR_DATA.pieceDragging = true;
                 }
                 if (this.twoClickMove.attempting) {
-                    this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.mouseDownOn;
-                    this.CURSOR_DATA.mouseDownOn = this.twoClickMove.source;
+                    this.CURSOR_DATA.mouseLeftUpOn = this.CURSOR_DATA.mouseLeftDownOn;
+                    this.CURSOR_DATA.mouseLeftDownOn = this.twoClickMove.source;
                     this.attemptMoveOnBoard();
                     this.twoClickMove.attempting = false;
                     this.twoClickMove.source = null;
-                    this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
+                    this.CURSOR_DATA.mouseLeftDownOn = this.CURSOR_DATA.overSquare;
                     this.tintSqFromMouseObjects = [];
                     this.drawBoard();
                     this.showMoves();
-                } else {
-                    this.twoClickMove.attempting = false;
-                    this.twoClickMove.source = null;
                 }
+            } else if (e.which === 3) {
+                this.CURSOR_DATA.mouseRightIsDown = true;
+                this.CURSOR_DATA.mouseRightDownOn = this.CURSOR_DATA.overSquare;
+                this.CURSOR_DATA.pieceDragging = false;
+                this.CURSOR_DATA.draggedPieceIndex = -1;
             }
         } else {
             throw new Error('mouse down not over sq');
@@ -177,178 +178,188 @@ export class GameComponent implements OnInit, OnChanges {
             return;
         }
         // when mouse is released
-        this.CURSOR_DATA.mouseIsDown = false;
         if (e.which === 1) {
             this.CURSOR_DATA.mouseLeftIsDown = false;
-        } else if (e.which === 3) {
-            this.CURSOR_DATA.mouseRightIsDown = false;
-        }
-        if (this.isPromoting) {
-            if (
-                !this.twoClickMove.attempting &&
-                !this.twoClickMove.preventPromote
-            ) {
-                if (this.CURSOR_DATA.overSquare) {
-                    const overSq = this.CURSOR_DATA.overSquare;
-                    this.CURSOR_DATA.mouseUpOn = overSq;
-                    if (
-                        this.CURSOR_DATA.mouseDownOn.x ===
-                            this.CURSOR_DATA.mouseUpOn.x &&
-                        this.CURSOR_DATA.mouseDownOn.y ===
-                            this.CURSOR_DATA.mouseUpOn.y
-                    ) {
-                        // console.log('', this.matchingMoves);
-                        const f = this.CURSOR_DATA.mouseDownOn.x;
-                        const r = 7 - this.CURSOR_DATA.mouseDownOn.y;
-                        if (f === this.matchingMoves[0].dest.file) {
-                            if (this.game.turn === Color.White) {
-                                if (r === Rank.EIGHT) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[0].notation
-                                    );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[0].notation
-                                    });
-                                } else if (r === Rank.SEVEN) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[3].notation
-                                    );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[3].notation
-                                    });
-                                } else if (r === Rank.SIX) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[1].notation
-                                    );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[1].notation
-                                    });
-                                } else if (r === Rank.FIVE) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[2].notation
-                                    );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[2].notation
-                                    });
-                                }
-                            } else {
-                                if (r === Rank.ONE) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[0].notation
-                                    );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[0].notation
-                                    });
-                                } else if (r === Rank.TWO) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[3].notation
-                                    );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[3].notation
-                                    });
-                                } else if (r === Rank.THREE) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[1].notation
-                                    );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[1].notation
-                                    });
-                                } else if (r === Rank.FOUR) {
-                                    this.game.makeMove(
-                                        this.matchingMoves[2].notation
-                                    );
-                                    this.displayedMoveIndex++;
-                                    this.gameDataEmitter.emit({
-                                        type: 'move',
-                                        content: this.matchingMoves[2].notation
-                                    });
+            if (this.isPromoting) {
+                if (
+                    !this.twoClickMove.attempting &&
+                    !this.twoClickMove.preventPromote
+                ) {
+                    if (this.CURSOR_DATA.overSquare) {
+                        this.CURSOR_DATA.mouseLeftUpOn = this.CURSOR_DATA.overSquare;
+                        if (
+                            this.CURSOR_DATA.mouseLeftDownOn.x ===
+                                this.CURSOR_DATA.mouseLeftUpOn.x &&
+                            this.CURSOR_DATA.mouseLeftDownOn.y ===
+                                this.CURSOR_DATA.mouseLeftUpOn.y
+                        ) {
+                            // console.log('', this.matchingMoves);
+                            const f = this.CURSOR_DATA.mouseLeftDownOn.x;
+                            const r = 7 - this.CURSOR_DATA.mouseLeftDownOn.y;
+                            if (f === this.matchingMoves[0].dest.file) {
+                                if (this.game.turn === Color.White) {
+                                    if (r === Rank.EIGHT) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[0].notation
+                                        );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[0]
+                                                .notation
+                                        });
+                                    } else if (r === Rank.SEVEN) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[3].notation
+                                        );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[3]
+                                                .notation
+                                        });
+                                    } else if (r === Rank.SIX) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[1].notation
+                                        );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[1]
+                                                .notation
+                                        });
+                                    } else if (r === Rank.FIVE) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[2].notation
+                                        );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[2]
+                                                .notation
+                                        });
+                                    }
+                                } else {
+                                    if (r === Rank.ONE) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[0].notation
+                                        );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[0]
+                                                .notation
+                                        });
+                                    } else if (r === Rank.TWO) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[3].notation
+                                        );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[3]
+                                                .notation
+                                        });
+                                    } else if (r === Rank.THREE) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[1].notation
+                                        );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[1]
+                                                .notation
+                                        });
+                                    } else if (r === Rank.FOUR) {
+                                        this.game.makeMove(
+                                            this.matchingMoves[2].notation
+                                        );
+                                        this.displayedMoveIndex++;
+                                        this.gameDataEmitter.emit({
+                                            type: 'move',
+                                            content: this.matchingMoves[2]
+                                                .notation
+                                        });
+                                    }
                                 }
                             }
+                            this.isPromoting = false;
+                            this.matchingMoves = [];
                         }
-                        this.isPromoting = false;
-                        this.matchingMoves = [];
                     }
+                } else {
+                    this.twoClickMove.preventPromote = false;
                 }
             } else {
-                this.twoClickMove.preventPromote = false;
-            }
-        } else {
-            if (this.CURSOR_DATA.overSquare) {
-                this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.overSquare;
-                if (
-                    this.CURSOR_DATA.mouseDownOn.x ===
-                        this.CURSOR_DATA.mouseUpOn.x &&
-                    this.CURSOR_DATA.mouseDownOn.y ===
-                        this.CURSOR_DATA.mouseUpOn.y
-                ) {
+                if (this.CURSOR_DATA.overSquare) {
+                    this.CURSOR_DATA.mouseLeftUpOn = this.CURSOR_DATA.overSquare;
                     if (
+                        this.CURSOR_DATA.mouseLeftDownOn.x ===
+                            this.CURSOR_DATA.mouseLeftUpOn.x &&
+                        this.CURSOR_DATA.mouseLeftDownOn.y ===
+                            this.CURSOR_DATA.mouseLeftUpOn.y &&
                         this.game.getPiece(
                             new Square(
-                                this.CURSOR_DATA.mouseDownOn.x,
-                                7 - this.CURSOR_DATA.mouseDownOn.y
+                                this.CURSOR_DATA.mouseLeftDownOn.x,
+                                7 - this.CURSOR_DATA.mouseLeftDownOn.y
                             )
                         )?.color === this.game.turn
                     ) {
                         this.twoClickMove.attempting = true;
-                        this.twoClickMove.source = this.CURSOR_DATA.mouseUpOn;
-                    }
-                } else {
-                    if (e.which === 1 && !this.CURSOR_DATA.mouseRightIsDown) {
+                        this.twoClickMove.source = this.CURSOR_DATA.mouseLeftUpOn;
+                    } else {
                         this.attemptMoveOnBoard();
-                    } else if (
-                        e.which === 3 &&
-                        !this.CURSOR_DATA.pieceDragging
-                    ) {
-                        let unique = true;
-                        const newArrow = {
-                            fromSquare: new Square(
-                                this.CURSOR_DATA.mouseDownOn.x,
-                                this.CURSOR_DATA.mouseDownOn.y
-                            ),
-                            toSquare: new Square(
-                                this.CURSOR_DATA.mouseUpOn.x,
-                                this.CURSOR_DATA.mouseUpOn.y
-                            ),
-                            color: '#15781B',
-                            displacement: -5,
-                            pointerSize: 25,
-                            lineWidth: 15
-                        };
-                        const index = this.drawnArrows.findIndex(
-                            (arrow) =>
-                                arrow.fromSquare.toString() ===
-                                    newArrow.fromSquare.toString() &&
-                                arrow.toSquare.toString() ===
-                                    newArrow.toSquare.toString()
-                        );
-                        // delete if arrow already exists, otherwise add
-                        if (index !== -1) {
-                            this.drawnArrows.splice(index, 1);
-                            unique = false;
-                        }
-                        if (unique) {
-                            this.drawnArrows.push(newArrow);
-                        }
+                    }
+                }
+            }
+        } else if (e.which === 3) {
+            this.CURSOR_DATA.mouseRightIsDown = false;
+            if (this.CURSOR_DATA.overSquare) {
+                const overSq = this.CURSOR_DATA.overSquare;
+                this.CURSOR_DATA.mouseRightUpOn = overSq;
+                let unique = true;
+                if (
+                    this.CURSOR_DATA.mouseRightDownOn.x !==
+                        this.CURSOR_DATA.mouseRightUpOn.x ||
+                    this.CURSOR_DATA.mouseRightDownOn.y !==
+                        this.CURSOR_DATA.mouseRightUpOn.y
+                ) {
+                    const newArrow = {
+                        fromSquare: new Square(
+                            this.CURSOR_DATA.mouseRightDownOn.x,
+                            this.CURSOR_DATA.mouseRightDownOn.y
+                        ),
+                        toSquare: new Square(
+                            this.CURSOR_DATA.mouseRightUpOn.x,
+                            this.CURSOR_DATA.mouseRightUpOn.y
+                        ),
+                        color: '#15781B',
+                        displacement: -5,
+                        pointerSize: 25,
+                        lineWidth: 15
+                    };
+
+                    const index = this.drawnArrows.findIndex(
+                        (arrow) =>
+                            arrow.fromSquare.toString() ===
+                                newArrow.fromSquare.toString() &&
+                            arrow.toSquare.toString() ===
+                                newArrow.toSquare.toString()
+                    );
+                    // delete if arrow already exists, otherwise add
+                    if (index !== -1) {
+                        this.drawnArrows.splice(index, 1);
+                        unique = false;
+                    }
+                    if (unique) {
+                        this.drawnArrows.push(newArrow);
                     }
                 }
             } else {
                 throw new Error('mouse up not over sq');
             }
         }
+
         this.CURSOR_DATA.pieceDragging = false;
         this.CURSOR_DATA.draggedPieceIndex = -1;
         this.drawBoard();
@@ -358,7 +369,7 @@ export class GameComponent implements OnInit, OnChanges {
     constructor() {
         // this.game = new Game('1k6/1p6/8/2P5/5p2/4P3/1K6/8 w - - 0 1');
         this.CURSOR_DATA = {
-            mouseIsDown: false,
+            //mouseIsDown: false,
             mouseLeftIsDown: false,
             mouseRightIsDown: false,
             mouseOverBoard: false,
@@ -367,8 +378,10 @@ export class GameComponent implements OnInit, OnChanges {
                 y: -1
             },
             overSquare: null,
-            mouseDownOn: null,
-            mouseUpOn: null,
+            mouseLeftDownOn: null,
+            mouseRightDownOn: null,
+            mouseLeftUpOn: null,
+            mouseRightUpOn: null,
             pieceDragging: false,
             draggedPieceIndex: -1
         };
@@ -560,8 +573,8 @@ export class GameComponent implements OnInit, OnChanges {
         if (this.CURSOR_DATA.pieceDragging) {
             for (const movement of pieceMovements) {
                 if (
-                    movement.src.file === this.CURSOR_DATA.mouseDownOn.x &&
-                    movement.src.rank === 7 - this.CURSOR_DATA.mouseDownOn.y
+                    movement.src.file === this.CURSOR_DATA.mouseLeftDownOn.x &&
+                    movement.src.rank === 7 - this.CURSOR_DATA.mouseLeftDownOn.y
                 ) {
                     this.tintSqFromMouseObjects.push({
                         dest: new Square(
@@ -621,10 +634,10 @@ export class GameComponent implements OnInit, OnChanges {
 
         for (const move of legalMoves) {
             if (
-                move.src.file === this.CURSOR_DATA.mouseDownOn.x &&
-                move.src.rank === 7 - this.CURSOR_DATA.mouseDownOn.y &&
-                move.dest.file === this.CURSOR_DATA.mouseUpOn.x &&
-                move.dest.rank === 7 - this.CURSOR_DATA.mouseUpOn.y
+                move.src.file === this.CURSOR_DATA.mouseLeftDownOn.x &&
+                move.src.rank === 7 - this.CURSOR_DATA.mouseLeftDownOn.y &&
+                move.dest.file === this.CURSOR_DATA.mouseLeftUpOn.x &&
+                move.dest.rank === 7 - this.CURSOR_DATA.mouseLeftUpOn.y
             ) {
                 this.matchingMoves.push(move);
             }
@@ -645,7 +658,7 @@ export class GameComponent implements OnInit, OnChanges {
             // console.log('invalid move attempted');
         } else {
             this.isPromoting = true;
-            if (this.CURSOR_DATA.mouseIsDown) {
+            if (this.CURSOR_DATA.mouseLeftIsDown) {
                 this.twoClickMove.preventPromote = true;
             } else {
                 this.twoClickMove.preventPromote = false;
@@ -817,8 +830,8 @@ export class GameComponent implements OnInit, OnChanges {
             const index = (color === 1 ? 6 : 0) + pieceType;
             if (
                 this.CURSOR_DATA.pieceDragging &&
-                this.CURSOR_DATA.mouseDownOn.x === x &&
-                this.CURSOR_DATA.mouseDownOn.y === 7 - y
+                this.CURSOR_DATA.mouseLeftDownOn.x === x &&
+                this.CURSOR_DATA.mouseLeftDownOn.y === 7 - y
             ) {
                 this.CURSOR_DATA.draggedPieceIndex = index;
             } else {
@@ -893,37 +906,56 @@ export class GameComponent implements OnInit, OnChanges {
             // radius of the circumcircle of the triangle pointer
             const r = arrow.pointerSize;
             const lineWidth = arrow.lineWidth;
-
-            // imaginary triangle - hypotenuse goes from origin sq to dest sq
-            const angle = Math.atan2(toY - fromY, toX - fromX);
-            const hypotenuse =
-                Math.sqrt((toX - fromX) ** 2 + (toY - fromY) ** 2) +
-                displacement;
-
-            // save the state of the canvas first then perform transformations
-            this.boardContext.save();
-            this.boardContext.translate(fromX, fromY);
-            this.boardContext.rotate(angle);
-
-            // draws the line
-            this.boardContext.beginPath();
-            this.boardContext.moveTo(0, 0);
-            this.boardContext.lineTo(hypotenuse - r, 0);
-            this.boardContext.lineWidth = lineWidth;
-            this.boardContext.strokeStyle = color;
-            this.boardContext.stroke();
-
-            // draws the triangle pointer
-            this.boardContext.beginPath();
-            this.boardContext.lineTo(hypotenuse - r, r);
-            this.boardContext.lineTo(hypotenuse, 0);
-            this.boardContext.lineTo(hypotenuse - r, -r);
-            this.boardContext.fillStyle = color;
-            this.boardContext.fill();
-            this.boardContext.translate(0, 0);
-
-            // finally restore the state of the canvas
-            this.boardContext.restore();
+            this.drawArrow(
+                fromX,
+                fromY,
+                toX,
+                toY,
+                color,
+                displacement,
+                r,
+                lineWidth
+            );
         }
+    }
+    private drawArrow(
+        fromX: number,
+        fromY: number,
+        toX: number,
+        toY: number,
+        color: string,
+        displacement: number,
+        r: number,
+        lineWidth: number
+    ): void {
+        // imaginary triangle - hypotenuse goes from origin sq to dest sq
+        const angle = Math.atan2(toY - fromY, toX - fromX);
+        const hypotenuse =
+            Math.sqrt((toX - fromX) ** 2 + (toY - fromY) ** 2) + displacement;
+
+        // save the state of the canvas first then perform transformations
+        this.boardContext.save();
+        this.boardContext.translate(fromX, fromY);
+        this.boardContext.rotate(angle);
+
+        // draws the line
+        this.boardContext.beginPath();
+        this.boardContext.moveTo(0, 0);
+        this.boardContext.lineTo(hypotenuse - r, 0);
+        this.boardContext.lineWidth = lineWidth;
+        this.boardContext.strokeStyle = color;
+        this.boardContext.stroke();
+
+        // draws the triangle pointer
+        this.boardContext.beginPath();
+        this.boardContext.lineTo(hypotenuse - r, r);
+        this.boardContext.lineTo(hypotenuse, 0);
+        this.boardContext.lineTo(hypotenuse - r, -r);
+        this.boardContext.fillStyle = color;
+        this.boardContext.fill();
+        this.boardContext.translate(0, 0);
+
+        // finally restore the state of the canvas
+        this.boardContext.restore();
     }
 }
