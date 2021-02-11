@@ -731,6 +731,27 @@ export class GameComponent implements OnInit, OnChanges {
             }
         }
         this.drawArrows();
+
+        //draw arrow in real time
+        if (
+            this.CURSOR_DATA.mouseRightIsDown &&
+            (this.CURSOR_DATA.mouseRightDownOn.x !==
+                this.CURSOR_DATA.overSquare.x ||
+                this.CURSOR_DATA.mouseRightDownOn.y !==
+                    this.CURSOR_DATA.overSquare.y)
+        ) {
+            this.drawArrow(
+                this.CURSOR_DATA.mouseRightDownOn.x * 80 + 40,
+                this.CURSOR_DATA.mouseRightDownOn.y * 80 + 40,
+                this.CURSOR_DATA.overSquare.x * 80 + 40,
+                this.CURSOR_DATA.overSquare.y * 80 + 40,
+                '#15781B',
+                -5,
+                25,
+                15
+            );
+        }
+
         this.boardContext.globalAlpha = 1;
         if (this.CURSOR_DATA.draggedPieceIndex !== -1) {
             this.boardContext.drawImage(
