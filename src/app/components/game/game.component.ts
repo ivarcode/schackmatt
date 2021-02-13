@@ -31,6 +31,8 @@ export class GameComponent implements OnInit, OnChanges {
     private pieceImages: any[];
     private CURSOR_DATA: {
         mouseIsDown: boolean;
+        mouseLeftIsDown: boolean;
+        mouseRightIsDown: boolean;
         mouseOverBoard: boolean;
         currentMousePosition: {
             x: number;
@@ -69,6 +71,11 @@ export class GameComponent implements OnInit, OnChanges {
         color: string;
         gA: number;
     }[];
+    private drawnCircles: {
+        square: Square;
+        color: string;
+        lineWidth: number;
+    }[];
     private isPromoting: boolean;
     private matchingMoves: any[];
     private initPosition: Board;
@@ -84,6 +91,7 @@ export class GameComponent implements OnInit, OnChanges {
         this.CURSOR_DATA.currentMousePosition = { x: -1, y: -1 };
         this.CURSOR_DATA.overSquare = null;
         this.tintSqFromMouseObjects = [];
+        this.drawnCircles = [];
         this.CURSOR_DATA.draggedPieceIndex = -1;
         this.drawBoard();
     };
@@ -118,31 +126,44 @@ export class GameComponent implements OnInit, OnChanges {
         }
         this.drawBoard();
     };
-    private _mouseDownEventListener: Function = () => {
+    private _mouseDownEventListener: Function = (e) => {
         // condition when not on latest move
         if (this.displayedMoveIndex !== this.game.moveHistory.length) {
             return;
         }
         // when mouse is pressed down
         this.CURSOR_DATA.mouseIsDown = true;
+        if (e.which === 1) {
+            this.CURSOR_DATA.mouseLeftIsDown = true;
+        } else if (e.which === 3) {
+            this.CURSOR_DATA.mouseRightIsDown = true;
+        }
         if (this.CURSOR_DATA.overSquare) {
             this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
-            if (!this.isPromoting) {
-                this.CURSOR_DATA.dragging = true;
+            this.drawnCircles = [];
+            if (this.CURSOR_DATA.mouseRightIsDown) {
+                this.CURSOR_DATA.draggedPieceIndex = -1;
+                // TODO: Add circle here
             }
-            if (this.twoClickMove.attempting) {
-                this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.mouseDownOn;
-                this.CURSOR_DATA.mouseDownOn = this.twoClickMove.source;
-                this.attemptMoveOnBoard();
-                this.twoClickMove.attempting = false;
-                this.twoClickMove.source = null;
-                this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
-                this.tintSqFromMouseObjects = [];
-                this.drawBoard();
-                this.showMoves();
-            } else {
-                this.twoClickMove.attempting = false;
-                this.twoClickMove.source = null;
+            this.drawBoard();
+            if (this.CURSOR_DATA.mouseLeftIsDown) {
+                if (!this.isPromoting) {
+                    this.CURSOR_DATA.dragging = true;
+                }
+                if (this.twoClickMove.attempting) {
+                    this.CURSOR_DATA.mouseUpOn = this.CURSOR_DATA.mouseDownOn;
+                    this.CURSOR_DATA.mouseDownOn = this.twoClickMove.source;
+                    this.attemptMoveOnBoard();
+                    this.twoClickMove.attempting = false;
+                    this.twoClickMove.source = null;
+                    this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
+                    this.tintSqFromMouseObjects = [];
+                    this.drawBoard();
+                    this.showMoves();
+                } else {
+                    this.twoClickMove.attempting = false;
+                    this.twoClickMove.source = null;
+                }
             }
         } else {
             throw new Error('mouse down not over sq');
@@ -298,6 +319,8 @@ export class GameComponent implements OnInit, OnChanges {
         // this.game = new Game('1k6/1p6/8/2P5/5p2/4P3/1K6/8 w - - 0 1');
         this.CURSOR_DATA = {
             mouseIsDown: false,
+            mouseLeftIsDown: false,
+            mouseRightIsDown: false,
             mouseOverBoard: false,
             currentMousePosition: {
                 x: -1,
@@ -315,6 +338,7 @@ export class GameComponent implements OnInit, OnChanges {
             preventPromote: false
         };
         this.tintSqFromMouseObjects = [];
+        this.drawnCircles = [];
         this.tintSqData = [];
         this.isPromoting = false;
         this.matchingMoves = [];
@@ -653,6 +677,7 @@ export class GameComponent implements OnInit, OnChanges {
                 }
             }
         }
+        this.drawCircles();
         this.boardContext.globalAlpha = 1;
         if (this.CURSOR_DATA.draggedPieceIndex !== -1) {
             this.boardContext.drawImage(
@@ -813,5 +838,30 @@ export class GameComponent implements OnInit, OnChanges {
                 this.flashSquare(sq, color, milliDuration, times - 1);
             }, milliDuration);
         }, milliDuration);
+    }
+
+    private drawCircles(): void {
+        this.boardContext.globalAlpha = 0.5;
+        for (const circle of this.drawnCircles) {
+            const x = circle.square.file * 80 + 40;
+            const y = circle.square.rank * 80 + 40;
+            const color = circle.color;
+            const lineWidth = circle.lineWidth;
+
+            // save the state of the canvas first then perform transformation
+            this.boardContext.save();
+            this.boardContext.translate(x, y);
+
+            // draws the circle
+            this.boardContext.beginPath();
+            this.boardContext.moveTo(0, 0);
+            this.boardContext.arc(0, 0, 40, 0, 2 * Math.PI);
+            this.boardContext.lineWidth = lineWidth;
+            this.boardContext.strokeStyle = color;
+            this.boardContext.stroke();
+
+            // finally restore the state of the canvas
+            this.boardContext.restore();
+        }
     }
 }
