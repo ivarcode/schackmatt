@@ -113,24 +113,25 @@ export function parsePGN(pgn: string): any {
 
         if (!specialCase) {
             // no special case, assuming notation
-            while (pgn.charAt(j) !== ' ') {
+            while (pgn.charAt(j) !== ' ' && j < pgn.length) {
                 j++;
             }
         } else {
-            while (pgn.charAt(j) !== specialCase) {
+            while (pgn.charAt(j) !== specialCase && j < pgn.length) {
                 j++;
             }
             j--;
-            i += 2;
         }
 
         let s = pgn.substring(i, j);
-        console.log('s', s);
+        console.log('s', '|' + s + '|');
 
         i = j;
 
         // must do this to avoid inf loop
         i++;
     }
+    console.log('done');
+
     return chap;
 }
