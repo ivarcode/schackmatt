@@ -70,6 +70,11 @@ export class GameComponent implements OnInit, OnChanges {
         color: string;
         gA: number;
     }[];
+    private drawnCircles: {
+        square: Square;
+        color: string;
+        lineWidth: number;
+    }[];
     private isPromoting: boolean;
     private matchingMoves: any[];
     private initPosition: Board;
@@ -103,6 +108,7 @@ export class GameComponent implements OnInit, OnChanges {
             preventPromote: false
         };
         this.tintSqFromMouseObjects = [];
+        this.drawnCircles = [];
         this.tintSqData = [];
         this.isPromoting = false;
         this.matchingMoves = [];
@@ -190,6 +196,31 @@ export class GameComponent implements OnInit, OnChanges {
                 this.CURSOR_DATA.rightMouseIsDown = true;
 
                 // logic for right mouse pressed DOWN event here
+                this.CURSOR_DATA.draggedPieceIndex = -1;
+                const newCircle = {
+                    square: new Square(
+                        this.CURSOR_DATA.mouseDownOn.x,
+                        this.CURSOR_DATA.mouseDownOn.y
+                    ),
+                    color: '#15781B',
+                    lineWidth: 5
+                };
+                // find index of a circle that matches, that may or may not
+                // already exist
+                const index = this.drawnCircles.findIndex(
+                    (circle) =>
+                        circle.square.toString() === newCircle.square.toString()
+                );
+
+                let unique = true;
+                // delete if circle already exists, otherwise add a new circle
+                if (index !== -1) {
+                    this.drawnCircles.splice(index, 1);
+                    unique = false;
+                }
+                if (unique) {
+                    this.drawnCircles.push(newCircle);
+                }
             }
         };
         this._mouseUpEventListener = (event: any) => {
@@ -616,7 +647,7 @@ export class GameComponent implements OnInit, OnChanges {
             // console.log('invalid move attempted');
         } else {
             this.isPromoting = true;
-            if (this.CURSOR_DATA.mouseIsDown) {
+            if (this.CURSOR_DATA.leftMouseIsDown) {
                 this.twoClickMove.preventPromote = true;
             } else {
                 this.twoClickMove.preventPromote = false;
@@ -688,6 +719,7 @@ export class GameComponent implements OnInit, OnChanges {
                 }
             }
         }
+        this.drawCircles();
         this.boardContext.globalAlpha = 1;
         if (this.CURSOR_DATA.draggedPieceIndex !== -1) {
             this.boardContext.drawImage(
@@ -848,5 +880,29 @@ export class GameComponent implements OnInit, OnChanges {
                 this.flashSquare(sq, color, milliDuration, times - 1);
             }, milliDuration);
         }, milliDuration);
+    }
+
+    private drawCircles(): void {
+        this.boardContext.globalAlpha = 0.5;
+        for (const circle of this.drawnCircles) {
+            const x = circle.square.file * 80 + 40;
+            const y = circle.square.rank * 80 + 40;
+            const color = circle.color;
+            const lineWidth = circle.lineWidth;
+
+            // save the state of the canvas first then perform transformation
+            this.boardContext.save();
+            this.boardContext.translate(x, y);
+
+            // draws the circle
+            this.boardContext.beginPath();
+            this.boardContext.arc(0, 0, 37.5, 0, 2 * Math.PI);
+            this.boardContext.lineWidth = lineWidth;
+            this.boardContext.strokeStyle = color;
+            this.boardContext.stroke();
+
+            // finally restore the state of the canvas
+            this.boardContext.restore();
+        }
     }
 }
