@@ -91,7 +91,6 @@ export class GameComponent implements OnInit, OnChanges {
         this.CURSOR_DATA.currentMousePosition = { x: -1, y: -1 };
         this.CURSOR_DATA.overSquare = null;
         this.tintSqFromMouseObjects = [];
-        this.drawnCircles = [];
         this.CURSOR_DATA.draggedPieceIndex = -1;
         this.drawBoard();
     };
@@ -133,16 +132,17 @@ export class GameComponent implements OnInit, OnChanges {
         }
         // when mouse is pressed down
         this.CURSOR_DATA.mouseIsDown = true;
+        // left click
         if (e.which === 1) {
             this.CURSOR_DATA.mouseLeftIsDown = true;
             this.CURSOR_DATA.mouseRightIsDown = false;
+            // right click
         } else if (e.which === 3) {
             this.CURSOR_DATA.mouseRightIsDown = true;
             this.CURSOR_DATA.mouseLeftIsDown = false;
         }
         if (this.CURSOR_DATA.overSquare) {
             this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
-            this.drawnCircles = [];
             if (this.CURSOR_DATA.mouseRightIsDown) {
                 this.CURSOR_DATA.draggedPieceIndex = -1;
                 let unique = true;
