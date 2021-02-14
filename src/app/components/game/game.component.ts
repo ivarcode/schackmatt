@@ -194,6 +194,9 @@ export class GameComponent implements OnInit, OnChanges {
             } else if (event.which === 3) {
                 // right button
                 this.CURSOR_DATA.rightMouseIsDown = true;
+                if (this.CURSOR_DATA.overSquare) {
+                    this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
+                }
 
                 // logic for right mouse pressed DOWN event here
                 this.CURSOR_DATA.draggedPieceIndex = -1;
@@ -221,6 +224,8 @@ export class GameComponent implements OnInit, OnChanges {
                 if (unique) {
                     this.drawnCircles.push(newCircle);
                 }
+
+                this.drawBoard();
             }
         };
         this._mouseUpEventListener = (event: any) => {
