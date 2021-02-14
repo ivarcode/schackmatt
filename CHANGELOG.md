@@ -1,3 +1,11 @@
+### 0.2.2
+
+commit 5e8d6691d725413f1eb8396077d1384db32870ba
+
+Date:   Sun Feb 14 11:46:13 2021 -0500
+
+    refactored the mouseevents for right/left click
+
 ### 0.2.1
 
 commit c127740964b26512d64c89996c96a2d63b5f464c
