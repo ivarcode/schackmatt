@@ -145,7 +145,28 @@ export class GameComponent implements OnInit, OnChanges {
             this.drawnCircles = [];
             if (this.CURSOR_DATA.mouseRightIsDown) {
                 this.CURSOR_DATA.draggedPieceIndex = -1;
-                // TODO: Add circle here
+                let unique = true;
+                const newCircle = {
+                    square: new Square(
+                        this.CURSOR_DATA.mouseDownOn.x,
+                        this.CURSOR_DATA.mouseDownOn.y
+                    ),
+                    color: '#15781B',
+                    lineWidth: 5
+                };
+                const index = this.drawnCircles.findIndex(
+                    (circle) =>
+                        circle.square.toString() === newCircle.square.toString()
+                );
+
+                // delete if circle already exists, otherwise add
+                if (index !== -1) {
+                    this.drawnCircles.splice(index, 1);
+                    unique = false;
+                }
+                if (unique) {
+                    this.drawnCircles.push(newCircle);
+                }
             }
             this.drawBoard();
             if (this.CURSOR_DATA.mouseLeftIsDown) {
@@ -856,8 +877,7 @@ export class GameComponent implements OnInit, OnChanges {
 
             // draws the circle
             this.boardContext.beginPath();
-            this.boardContext.moveTo(0, 0);
-            this.boardContext.arc(0, 0, 40, 0, 2 * Math.PI);
+            this.boardContext.arc(0, 0, 37, 0, 2 * Math.PI);
             this.boardContext.lineWidth = lineWidth;
             this.boardContext.strokeStyle = color;
             this.boardContext.stroke();
