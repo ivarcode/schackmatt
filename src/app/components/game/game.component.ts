@@ -616,7 +616,7 @@ export class GameComponent implements OnInit, OnChanges {
             // console.log('invalid move attempted');
         } else {
             this.isPromoting = true;
-            if (this.CURSOR_DATA.mouseIsDown) {
+            if (this.CURSOR_DATA.leftMouseIsDown) {
                 this.twoClickMove.preventPromote = true;
             } else {
                 this.twoClickMove.preventPromote = false;
