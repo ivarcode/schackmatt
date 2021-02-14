@@ -135,8 +135,10 @@ export class GameComponent implements OnInit, OnChanges {
         this.CURSOR_DATA.mouseIsDown = true;
         if (e.which === 1) {
             this.CURSOR_DATA.mouseLeftIsDown = true;
+            this.CURSOR_DATA.mouseRightIsDown = false;
         } else if (e.which === 3) {
             this.CURSOR_DATA.mouseRightIsDown = true;
+            this.CURSOR_DATA.mouseLeftIsDown = false;
         }
         if (this.CURSOR_DATA.overSquare) {
             this.CURSOR_DATA.mouseDownOn = this.CURSOR_DATA.overSquare;
