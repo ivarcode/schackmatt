@@ -877,7 +877,7 @@ export class GameComponent implements OnInit, OnChanges {
 
             // draws the circle
             this.boardContext.beginPath();
-            this.boardContext.arc(0, 0, 37, 0, 2 * Math.PI);
+            this.boardContext.arc(0, 0, 37.5, 0, 2 * Math.PI);
             this.boardContext.lineWidth = lineWidth;
             this.boardContext.strokeStyle = color;
             this.boardContext.stroke();
