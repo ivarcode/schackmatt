@@ -32,6 +32,7 @@ for line in f:
     if line[0] == '[':
         if pgnContent != '':
             obj['pgnContent'] = pgnContent
+            pgnContent = ''
             outObj[eventIndex] = obj
             eventIndex += 1
             obj = {}
@@ -45,11 +46,15 @@ outObj[eventIndex] = obj
 eventIndex += 1
 obj = {}
 
+outObj = {
+    'lichessData': outObj
+}
+
 # This should be an argument
 filename = './out.json'
 with open(filename, 'w') as outfile:
     json.dump(outObj, outfile)
 
 print('Written to "' + filename + '" the following JSON object:\n')
-print(obj)
+print(outObj)
 print('\nSuccess.')
