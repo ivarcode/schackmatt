@@ -48,7 +48,7 @@ export class EndgameTrainerComponent implements OnInit {
 
     constructor() {
         // TEMP
-        let parsedFile = parseLichessFile(lichessData);
+        let parsedFile = parseLichessFile(lichessData['0']);
         console.log('parsed file', parsedFile);
 
         this._showBoardOverlay = false;
