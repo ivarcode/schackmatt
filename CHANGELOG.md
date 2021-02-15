@@ -1,3 +1,27 @@
+### 0.2.2
+
+commit 5e8d6691d725413f1eb8396077d1384db32870ba
+
+Date:   Sun Feb 14 11:46:13 2021 -0500
+
+    refactored the mouseevents for right/left click
+
+### 0.2.1
+
+commit c127740964b26512d64c89996c96a2d63b5f464c
+
+Date:   Sat Feb 6 13:21:03 2021 -0500
+
+    npm audit instructions and audit process 2/6/21
+
+### 0.2.0
+
+commit 3060ba0698558bd4e9fa2dd9aefbfa24ee38fea2
+
+Date:   Sat Feb 6 13:01:58 2021 -0500
+
+    Adding python script to parse lichess study code (only works for chapters, not multi-chapters)
+
 ### 0.1.3
 
 commit f64549efcc84d7a2346c36dc549949f1d060099d
