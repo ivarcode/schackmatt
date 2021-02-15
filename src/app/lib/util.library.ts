@@ -91,7 +91,8 @@ export function parseLichessFile(ljo: LichessJSONObject): any {
 export function parsePGN(pgn: string): LineNode {
     // console.log('parsePGN', pgn);
 
-    // "pgnContent": "\n1. e4 c5 { [%cal Gg1f3,Gg1e2,Gg1h3] } 2. Nf3
+    // EXAMPLE CONTENT
+    // "pgn": "\n1. e4 c5 { [%cal Gg1f3,Gg1e2,Gg1h3] } 2. Nf3
     // { [%csl Gc7,Gb6,Ga5] } 2... Qa5 { The pawn can't play to d4 because
     // it is pinned by the queen on a5 } { [%csl Rd4][%cal Rd2d4,Ga5e1] }
     // (2... Nc6 3. d4) 3. c3 *"
@@ -110,14 +111,14 @@ export function parsePGN(pgn: string): LineNode {
             i++;
         }
         let j = i + 1;
-
+        // determine special case termination char
         let specialCase = null;
         if (pgn.charAt(i) === '(') {
             specialCase = ')';
         } else if (pgn.charAt(i) === '{') {
             specialCase = '}';
         }
-
+        // for the next text segment
         if (!specialCase) {
             // no special case, assuming notation
             while (pgn.charAt(j) !== ' ' && j < pgn.length) {
@@ -162,14 +163,8 @@ export function parsePGN(pgn: string): LineNode {
                 j++;
             }
         }
-
-        // let s = pgn.substring(i, j);
-        // console.log('s', '|' + s + '|');
-
         // must do this to avoid inf loop
         i = j + 1;
     }
-    // console.log('done');
-
     return lineNode;
 }
