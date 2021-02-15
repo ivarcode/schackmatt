@@ -15,6 +15,9 @@ else:
 f = open(sys.argv[1], 'r')
 # print(f.read())
 
+outObj = {}
+
+eventIndex = 0
 obj = {}
 
 def parseLineIntoObj(line):
@@ -27,15 +30,20 @@ def parseLineIntoObj(line):
 pgnContent = ''
 for line in f:
     if line[0] == '[':
+        if pgnContent != '':
+            obj['pgnContent'] = pgnContent
+            outObj[eventIndex] = obj
+            eventIndex += 1
+            obj = {}
         # print(line)
         parseLineIntoObj(line)
     else:
         pgnContent += line
 
 obj['pgnContent'] = pgnContent
-
-outObj = {}
-outObj['lichessData'] = obj
+outObj[eventIndex] = obj
+eventIndex += 1
+obj = {}
 
 # This should be an argument
 filename = './out.json'

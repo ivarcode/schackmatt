@@ -88,6 +88,11 @@ export function parseLichessFile(ljo: LichessJSONObject): any {
     return { pgn: parsePGN(ljo.pgnContent) };
 }
 
+function parseDrawObjectsString(s: string): any {
+    // parse into NOT any
+    return;
+}
+
 export function parsePGN(pgn: string): LineNode {
     // console.log('parsePGN', pgn);
 
