@@ -89,18 +89,20 @@ export function parseLichessFile(ljo: LichessJSONObject): any {
 }
 
 export function parsePGN(pgn: string): LineNode {
-    console.log('parsePGN', pgn);
+    // console.log('parsePGN', pgn);
+
     // "pgnContent": "\n1. e4 c5 { [%cal Gg1f3,Gg1e2,Gg1h3] } 2. Nf3
     // { [%csl Gc7,Gb6,Ga5] } 2... Qa5 { The pawn can't play to d4 because
     // it is pinned by the queen on a5 } { [%csl Rd4][%cal Rd2d4,Ga5e1] }
     // (2... Nc6 3. d4) 3. c3 *"
 
-    let lineNode: LineNode = {
+    const lineNode: LineNode = {
         move: null,
         nextNodes: [],
         comment: null,
         draws: null
     };
+    let currNode = lineNode;
     let i = 0;
     while (i < pgn.length) {
         // handle beginning new lines
@@ -119,30 +121,55 @@ export function parsePGN(pgn: string): LineNode {
         if (!specialCase) {
             // no special case, assuming notation
             while (pgn.charAt(j) !== ' ' && j < pgn.length) {
+                // index up to the end of the segment
                 j++;
+            }
+            if (pgn.charAt(j - 1) === '.' || pgn.charAt(j - 1) === '*') {
+                // just a move numba or the termination *
+                // TODO add other result (termination) keys here
+            } else {
+                if (currNode.move === null) {
+                    currNode.move = pgn.substring(i, j);
+                } else {
+                    const nextNode = {
+                        move: pgn.substring(i, j),
+                        nextNodes: [],
+                        comment: null,
+                        draws: null
+                    };
+                    currNode.nextNodes.push(nextNode);
+                    currNode = nextNode;
+                }
             }
         } else {
             while (pgn.charAt(j) !== specialCase && j < pgn.length) {
+                // index up to the end of the segment
                 j++;
             }
             if (pgn.charAt(j) === '}' && specialCase === '}') {
-                console.log('COMMENT', pgn.substring(i + 2, j - 1));
+                // console.log('COMMENT', pgn.substring(i + 2, j - 1));
+                if (pgn.charAt(i + 2) === '[') {
+                    // draw arrows/circles notation
+                    currNode.draws = pgn.substring(i + 2, j - 1);
+                } else {
+                    // normal comment
+                    currNode.comment = pgn.substring(i + 2, j - 1);
+                }
                 j++;
             } else if (pgn.charAt(j) === ')' && specialCase === ')') {
-                console.log('SIDELINE', pgn.substring(i + 1, j));
+                // console.log('SIDELINE', pgn.substring(i + 1, j));
+                currNode.nextNodes.push(parsePGN(pgn.substring(i + 1, j)));
                 j++;
             }
         }
 
-        let s = pgn.substring(i, j);
-        console.log('s', '|' + s + '|');
-
-        i = j;
+        // let s = pgn.substring(i, j);
+        // console.log('s', '|' + s + '|');
 
         // must do this to avoid inf loop
-        i++;
+        i = j + 1;
     }
-    console.log('done');
+    // console.log('done');
 
     return lineNode;
 }
