@@ -52,3 +52,12 @@ export interface LichessJSONObject {
     Annotator: string;
     pgnContent: string;
 }
+
+export interface LineNode {
+    move: string;
+    nextNodes: LineNode[];
+    // documentation not comment? idk
+    comment: string;
+    // NEEDS a better name
+    draws: string;
+}
