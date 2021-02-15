@@ -94,7 +94,7 @@ function parseDrawObjectsString(s: string): any {
 }
 
 export function parsePGN(pgn: string): LineNode {
-    console.log('parsePGN', pgn);
+    // console.log('parsePGN', pgn);
 
     // EXAMPLE CONTENT
     // "pgn": "\n1. e4 c5 { [%cal Gg1f3,Gg1e2,Gg1h3] } 2. Nf3
@@ -167,12 +167,12 @@ export function parsePGN(pgn: string): LineNode {
                 }
                 j++;
             } else if (pgn.charAt(j) === ')' && specialCase === ')') {
-                console.log('SIDELINE', pgn.substring(i + 1, j));
+                // console.log('SIDELINE', pgn.substring(i + 1, j));
                 currNode.nextNodes.push(parsePGN(pgn.substring(i + 1, j)));
                 j++;
             }
         }
-        console.log('i,j', pgn.substring(i, j));
+        // console.log('i,j', pgn.substring(i, j));
 
         // must do this to avoid inf loop
         i = j + 1;
