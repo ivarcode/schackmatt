@@ -10,7 +10,7 @@ Dev: https://schackmatt.net/
 -   clone repository to your machine
 -   install node https://nodejs.org/en/download/
 -   install python https://www.python.org/downloads/ to use `.py` scripts in this project
-    -   be sure to add python to the path on windows so you can run commands from the command line (check the box "Add python _version_ to PATH" in the installer)
+    -   be sure to add python to the path on Windows so you can run commands from the command line (check the box "Add python _version_ to PATH" in the installer)
 -   navigate to the clone repo root in your preferred terminal; eg. `cd ~./git/schackmatt`
 -   run `npm i` to install necessary packages (this might take some time)
 -   run `npm audit` to ensure no critical vulnerabilities (this will make changes to `package.json` and `package-lock.json`)
@@ -42,7 +42,7 @@ To build out to `/dist`
 
 The only current python script `parseLichessPGNFile.py` is used to convert `.pgn` files downloaded from [Lichess](https://lichess.org/) into `.json` files to be used by the web application.
 
-On Windows with python in the PATH (see above python instructions), you can invoke that script with `parseLichessPGNFile.py <target filepath> <output filepath>` (with Mac or Unix you might need to include `python` first to indicate that you are running a python script).
+On Windows with python in the PATH (see above python instructions), you can invoke that script with `parseLichessPGNFile.py <target_filepath> <output_filepath>` (with Mac or Unix you might need to include `python` first to indicate that you are running a python script).
 
 eg. `parseLichessPGNFile.py data/example_games.pgn data/parsed_games.json`
 

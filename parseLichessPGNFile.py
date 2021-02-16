@@ -7,7 +7,7 @@ import json
 # and subroutines to handle a multi-chapter lichess file.
 
 if len(sys.argv) != 3:
-    print('Err: 2 arguments required (<target filename> <output filename>)')
+    print('Err: 2 arguments required (<target_filepath> <output_filepath>)')
     exit()
 else:
     print('Located file: ' + sys.argv[1])
@@ -56,5 +56,5 @@ with open(filename, 'w') as outfile:
     json.dump(outObj, outfile)
 
 print('Written to "' + filename + '" the following JSON object:\n')
-print(outObj)
+# print(outObj)
 print('\nSuccess.')
