@@ -6,8 +6,8 @@ import json
 # intend to create a second file, or possibly update this file with arguments
 # and subroutines to handle a multi-chapter lichess file.
 
-if len(sys.argv) != 2:
-    print('Err: 1 argument required (target filename)')
+if len(sys.argv) != 3:
+    print('Err: 2 arguments required (<target filename> <output filename>)')
     exit()
 else:
     print('Located file: ' + sys.argv[1])
@@ -51,7 +51,7 @@ outObj = {
 }
 
 # This should be an argument
-filename = './out.json'
+filename = sys.argv[2]
 with open(filename, 'w') as outfile:
     json.dump(outObj, outfile)
 
