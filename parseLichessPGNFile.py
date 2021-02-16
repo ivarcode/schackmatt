@@ -55,6 +55,6 @@ filename = sys.argv[2]
 with open(filename, 'w') as outfile:
     json.dump(outObj, outfile)
 
-print('Written to "' + filename + '" the following JSON object:\n')
+print('Written to: ' + filename)
 # print(outObj)
 print('\nSuccess.')
