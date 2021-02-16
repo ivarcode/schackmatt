@@ -1,4 +1,4 @@
-import { LichessJSONObject, LineNode } from './interface.library';
+import { LichessGame, LichessStudy, LineNode } from './interface.library';
 
 export const enum PieceType {
     King,
@@ -83,9 +83,14 @@ export function pickRandom(array: any[]): any {
     return array[Math.floor(Math.random() * array.length)];
 }
 
-export function parseLichessFile(ljo: LichessJSONObject): any {
+export function parseLichessStudy(ls: LichessStudy): any {
     // TODO more here
-    return { pgn: parsePGN(ljo.pgnContent) };
+    return { pgn: parsePGN(ls.pgnContent) };
+}
+
+export function parseLichessGame(lg: LichessGame): any {
+    // TODO more here
+    return { pgn: parsePGN(lg.pgnContent) };
 }
 
 function parseDrawObjectsString(s: string): any {
