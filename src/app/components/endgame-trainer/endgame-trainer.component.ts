@@ -11,7 +11,7 @@ import {
     randomFileInclusivelyBetween,
     randomRank,
     randomRankInclusivelyBetween,
-    parseLichessFile
+    parseLichessStudy
 } from 'src/app/lib/util.library';
 import {
     GameDisplayOptions,
@@ -48,8 +48,8 @@ export class EndgameTrainerComponent implements OnInit {
 
     constructor() {
         // TEMP
-        let parsedFile = parseLichessFile(lichessData['0']);
-        console.log('parsed file', parsedFile);
+        let parsedStudy = parseLichessStudy(lichessData['0']);
+        console.log('parsed file', parsedStudy);
 
         this._showBoardOverlay = false;
         this._gameDisplayOptions = {
