@@ -1,10 +1,7 @@
 import sys
 import json
 
-# Currently, this file only works for lichess study CHAPTERS.  Once we break
-# from the first [bracketed] details, the rest is treated as PGN code. I
-# intend to create a second file, or possibly update this file with arguments
-# and subroutines to handle a multi-chapter lichess file.
+# Parses lichess PGN files into JSON files representing the same data
 
 if len(sys.argv) != 3:
     print('Err: 2 arguments required (<target_filepath> <output_filepath>)')
@@ -46,12 +43,14 @@ outObj[eventIndex] = obj
 eventIndex += 1
 obj = {}
 
+# for the root object key, and for the filename, we want to grab this now
+filename = sys.argv[2]
+
 outObj = {
-    'lichessData': outObj
+    filename: outObj
 }
 
 # This should be an argument
-filename = sys.argv[2]
 with open(filename, 'w') as outfile:
     json.dump(outObj, outfile)
 
