@@ -147,18 +147,14 @@ export function parsePGN(pgn: string): LineNode {
                 // just a move numba or the termination *
                 // TODO add other result (termination) keys here
             } else {
-                if (currNode.move === null) {
-                    currNode.move = pgn.substring(i, j);
-                } else {
-                    const nextNode = {
-                        move: pgn.substring(i, j),
-                        nextNodes: [],
-                        comment: null,
-                        draws: null
-                    };
-                    currNode.nextNodes.push(nextNode);
-                    currNode = nextNode;
-                }
+                const nextNode = {
+                    move: pgn.substring(i, j),
+                    nextNodes: [],
+                    comment: null,
+                    draws: null
+                };
+                currNode.nextNodes.push(nextNode);
+                currNode = nextNode;
             }
         } else {
             while (pgn.charAt(j) !== specialCase && j < pgn.length) {
