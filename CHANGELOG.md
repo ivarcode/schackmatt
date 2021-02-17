@@ -1,3 +1,11 @@
+### 0.3.0
+
+commit 8b04e03ca74c035e3e4a545510b7fc2b58935f98
+
+Date:   Tue Feb 16 20:04:46 2021 -0500
+
+    Bringing in README docs for python script parseLichessPGNFile.py and refactoring FILE and RANK
+
 ### 0.2.2
 
 commit 5e8d6691d725413f1eb8396077d1384db32870ba
