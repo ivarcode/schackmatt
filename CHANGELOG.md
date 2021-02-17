@@ -1,3 +1,11 @@
+### 0.3.1
+
+commit 9d9c20b26f53c298f9bea7e348aa6abaa44cdc0c
+
+Date:   Wed Feb 17 16:34:04 2021 -0500
+
+    Small changes to the README for organization purposes
+
 ### 0.3.0
 
 commit 8b04e03ca74c035e3e4a545510b7fc2b58935f98
