@@ -38,3 +38,45 @@ export interface CastlingRights {
     k: boolean;
     q: boolean;
 }
+
+export interface LichessStudy {
+    Event: string;
+    Site: string;
+    Result: string;
+    UTCDate: string;
+    UTCTime: string;
+    Variant: string;
+    ECO: string;
+    Opening: string;
+    Annotator: string;
+    pgnContent: string;
+}
+
+export interface LichessGame {
+    Event: string;
+    Site: string;
+    Date: string;
+    White: string;
+    Black: string;
+    Result: string;
+    UTCDate: string;
+    UTCTime: string;
+    WhiteElo: string;
+    BlackElo: string;
+    WhiteRatingDiff: string;
+    BlackRatingDiff: string;
+    Variant: string;
+    TimeControl: string;
+    ECO: string;
+    Termination: string;
+    pgnContent: string;
+}
+
+export interface LineNode {
+    move: string;
+    nextNodes: LineNode[];
+    // documentation not comment? idk
+    comment: string;
+    // NEEDS a better name
+    draws: string;
+}

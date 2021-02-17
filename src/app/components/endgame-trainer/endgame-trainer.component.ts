@@ -4,8 +4,8 @@ import { Game } from 'src/app/lib/game.library';
 import {
     Color,
     PieceType,
-    File,
-    Rank,
+    FILE,
+    RANK,
     pickRandom,
     randomFile,
     randomFileInclusivelyBetween,
@@ -48,6 +48,10 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     private _currentExercise: Exercise;
 
     constructor() {
+        // TEMP
+        // let parsedStudy = parseLichessStudy(lichessData['0']);
+        // console.log('parsed file', parsedStudy);
+
         this._showBoardOverlay = false;
         this._gameDisplayOptions = {
             showCoordinates: true,
@@ -74,10 +78,10 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                     // setup
                     const board = game.board;
                     const r = randomRankInclusivelyBetween(
-                        Rank.THREE,
-                        Rank.FIVE
+                        RANK.THREE,
+                        RANK.FIVE
                     );
-                    let f = randomFileInclusivelyBetween(File.a, File.d);
+                    let f = randomFileInclusivelyBetween(FILE.a, FILE.d);
                     if (f > 1) {
                         f += 4;
                     }
@@ -106,7 +110,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                         pawnLocation.rank - 1
                     );
                     let moveNotation = dest.toString();
-                    if (dest.rank === Rank.ONE) {
+                    if (dest.rank === RANK.ONE) {
                         moveNotation += '=Q+';
                     }
                     return moveNotation;
@@ -157,29 +161,29 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                     if (Math.abs(f - 3.5) > Math.abs(r - 3.5)) {
                         // file is wider
                         const rookRank =
-                            r > Rank.FOUR
+                            r > RANK.FOUR
                                 ? randomRankInclusivelyBetween(
-                                      Rank.ONE,
-                                      Rank.TWO
+                                      RANK.ONE,
+                                      RANK.TWO
                                   )
                                 : randomRankInclusivelyBetween(
-                                      Rank.SIX,
-                                      Rank.EIGHT
+                                      RANK.SIX,
+                                      RANK.EIGHT
                                   );
                         const kingRank =
-                            r > Rank.FOUR
+                            r > RANK.FOUR
                                 ? randomRankInclusivelyBetween(
-                                      Rank.THREE,
-                                      Rank.EIGHT
+                                      RANK.THREE,
+                                      RANK.EIGHT
                                   )
                                 : randomRankInclusivelyBetween(
-                                      Rank.ONE,
-                                      Rank.FIVE
+                                      RANK.ONE,
+                                      RANK.FIVE
                                   );
                         if (f > 3) {
                             // right target
                             const rookPosition = new Square(
-                                randomFileInclusivelyBetween(File.a, f - 2),
+                                randomFileInclusivelyBetween(FILE.a, f - 2),
                                 rookRank
                             );
 
@@ -188,7 +192,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                                 new Piece(PieceType.Rook, Color.White)
                             );
                             const whiteKingPosition = new Square(
-                                randomFileInclusivelyBetween(File.a, f - 2),
+                                randomFileInclusivelyBetween(FILE.a, f - 2),
                                 kingRank
                             );
 
@@ -199,7 +203,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                         } else {
                             // left target
                             const rookPosition = new Square(
-                                randomFileInclusivelyBetween(f + 2, File.h),
+                                randomFileInclusivelyBetween(f + 2, FILE.h),
                                 rookRank
                             );
 
@@ -208,7 +212,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                                 new Piece(PieceType.Rook, Color.White)
                             );
                             const whiteKingPosition = new Square(
-                                randomFileInclusivelyBetween(f + 2, File.h),
+                                randomFileInclusivelyBetween(f + 2, FILE.h),
                                 kingRank
                             );
 
@@ -220,18 +224,18 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                     } else {
                         // rank is wider
                         const rookFile =
-                            f > File.d
-                                ? randomFileInclusivelyBetween(File.a, File.c)
-                                : randomFileInclusivelyBetween(File.f, File.h);
+                            f > FILE.d
+                                ? randomFileInclusivelyBetween(FILE.a, FILE.c)
+                                : randomFileInclusivelyBetween(FILE.f, FILE.h);
                         const kingFile =
-                            f > File.d
-                                ? randomFileInclusivelyBetween(File.d, File.h)
-                                : randomFileInclusivelyBetween(File.a, File.e);
+                            f > FILE.d
+                                ? randomFileInclusivelyBetween(FILE.d, FILE.h)
+                                : randomFileInclusivelyBetween(FILE.a, FILE.e);
                         if (r > 3) {
                             // top target
                             const rookPosition = new Square(
                                 rookFile,
-                                randomRankInclusivelyBetween(Rank.ONE, r - 2)
+                                randomRankInclusivelyBetween(RANK.ONE, r - 2)
                             );
 
                             board.insertPiece(
@@ -240,7 +244,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                             );
                             const whiteKingPosition = new Square(
                                 kingFile,
-                                randomRankInclusivelyBetween(Rank.ONE, r - 2)
+                                randomRankInclusivelyBetween(RANK.ONE, r - 2)
                             );
 
                             board.insertPiece(
@@ -251,7 +255,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                             // bottom target
                             const rookPosition = new Square(
                                 rookFile,
-                                randomRankInclusivelyBetween(r + 2, Rank.EIGHT)
+                                randomRankInclusivelyBetween(r + 2, RANK.EIGHT)
                             );
 
                             board.insertPiece(
@@ -260,7 +264,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                             );
                             const whiteKingPosition = new Square(
                                 kingFile,
-                                randomRankInclusivelyBetween(r + 2, Rank.EIGHT)
+                                randomRankInclusivelyBetween(r + 2, RANK.EIGHT)
                             );
 
                             board.insertPiece(
@@ -290,7 +294,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                                 Math.abs(m.src.rank - 3.5)
                             ) {
                                 // file sided
-                                if (m.src.file >= File.e) {
+                                if (m.src.file >= FILE.e) {
                                     // right
                                     if (m.dest.file >= m.src.file) {
                                         validMoves.push(m);
@@ -303,7 +307,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                                 }
                             } else {
                                 // rank sided
-                                if (m.src.rank >= Rank.FIVE) {
+                                if (m.src.rank >= RANK.FIVE) {
                                     // top
                                     if (m.dest.rank >= m.src.rank) {
                                         validMoves.push(m);
@@ -361,7 +365,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                     //     Math.abs(blackKing.rank - 3.5)
                     // ) {
                     //     // file sided
-                    //     if (blackKing.file >= File.e) {
+                    //     if (blackKing.file >= FILE.e) {
                     //         // right
                     //         if (
                     //             whiteRook.file === blackKing.file - 1 &&

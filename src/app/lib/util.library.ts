@@ -1,3 +1,5 @@
+import { LichessGame, LichessStudy, LineNode } from './interface.library';
+
 export const enum PieceType {
     King,
     Queen,
@@ -16,7 +18,7 @@ export function colorToString(c: Color): string {
     return c ? 'black' : 'white';
 }
 
-export const enum File {
+export const enum FILE {
     a,
     b,
     c,
@@ -27,7 +29,7 @@ export const enum File {
     h
 }
 
-export const enum Rank {
+export const enum RANK {
     ONE,
     TWO,
     THREE,
@@ -38,52 +40,26 @@ export const enum Rank {
     EIGHT
 }
 
-export function fileToString(file: File): string {
+export function fileToString(file: FILE): string {
     return String.fromCharCode(97 + file);
 }
 
-export function parsePGN(initPosition: string, pgn: string): string[] {
-    const moves: string[] = [];
-    let i = 0;
-    while (i < pgn.length) {
-        let j = i;
-        while (pgn.charAt(j) !== ' ' && j < pgn.length) {
-            j++;
-        }
-        const a = pgn.substr(i, j - i);
-        // if 1-9 or * or ...
-        if (
-            !(
-                (a.charCodeAt(0) <= 57 && a.charCodeAt(0) >= 49) ||
-                a.charAt(0) === ' ' ||
-                a.length === 0 ||
-                a === '*' ||
-                a.charAt(0) === '.'
-            )
-        ) {
-            moves.push(a);
-        }
-        i = j + 1;
-    }
-    return moves;
-}
-
-export function randomRank(): Rank {
+export function randomRank(): RANK {
     return Math.floor(Math.random() * 8);
 }
-export function randomFile(): File {
+export function randomFile(): FILE {
     return Math.floor(Math.random() * 8);
 }
 export function randomRankInclusivelyBetween(
-    minRank: Rank,
-    maxRank: Rank
-): Rank {
+    minRank: RANK,
+    maxRank: RANK
+): RANK {
     return randomNumberInclusivelyBetween(minRank + 0, maxRank + 0);
 }
 export function randomFileInclusivelyBetween(
-    minFile: File,
-    maxFile: File
-): File {
+    minFile: FILE,
+    maxFile: FILE
+): FILE {
     return randomNumberInclusivelyBetween(minFile + 0, maxFile + 0);
 }
 export function randomNumberInclusivelyBetween(
@@ -109,4 +85,109 @@ export function pickRandom(array: any[]): any {
         return array[0];
     }
     return array[Math.floor(Math.random() * array.length)];
+}
+
+export function parseLichessStudy(ls: LichessStudy): any {
+    // TODO more here
+    return { pgn: parsePGN(ls.pgnContent) };
+}
+
+export function parseLichessGame(lg: LichessGame): any {
+    // TODO more here
+    return { pgn: parsePGN(lg.pgnContent) };
+}
+
+function parseDrawObjectsString(s: string): any {
+    // parse into NOT any
+    return;
+}
+
+export function parsePGN(pgn: string): LineNode {
+    // console.log('parsePGN', pgn);
+
+    // EXAMPLE CONTENT
+    // "pgn": "\n1. e4 c5 { [%cal Gg1f3,Gg1e2,Gg1h3] } 2. Nf3
+    // { [%csl Gc7,Gb6,Ga5] } 2... Qa5 { The pawn can't play to d4 because
+    // it is pinned by the queen on a5 } { [%csl Rd4][%cal Rd2d4,Ga5e1] }
+    // (2... Nc6 3. d4) 3. c3 *"
+
+    const lineNode: LineNode = {
+        move: null,
+        nextNodes: [],
+        comment: null,
+        draws: null
+    };
+    let currNode = lineNode;
+    let i = 0;
+    while (i < pgn.length) {
+        // handle beginning new lines
+        if (pgn.charAt(i) === '\n') {
+            i++;
+        }
+        let j = i + 1;
+        // determine special case termination char
+        let specialCase = null;
+        if (pgn.charAt(i) === '(') {
+            specialCase = ')';
+        } else if (pgn.charAt(i) === '{') {
+            specialCase = '}';
+        }
+        // for the next text segment
+        if (!specialCase) {
+            // no special case, assuming notation
+            while (pgn.charAt(j) !== ' ' && j < pgn.length) {
+                // index up to the end of the segment
+                j++;
+            }
+            if (
+                pgn.charAt(j - 1) === '.' ||
+                pgn.charAt(j - 1) === '*' ||
+                pgn.charAt(j - 1) === '↵'
+            ) {
+                // just a move numba or the termination *
+                // TODO add other result (termination) keys here
+            } else {
+                if (currNode.move === null) {
+                    currNode.move = pgn.substring(i, j);
+                } else {
+                    const nextNode = {
+                        move: pgn.substring(i, j),
+                        nextNodes: [],
+                        comment: null,
+                        draws: null
+                    };
+                    currNode.nextNodes.push(nextNode);
+                    currNode = nextNode;
+                }
+            }
+        } else {
+            while (pgn.charAt(j) !== specialCase && j < pgn.length) {
+                // index up to the end of the segment
+                j++;
+            }
+            if (pgn.charAt(j) === '}' && specialCase === '}') {
+                // console.log('COMMENT', pgn.substring(i + 2, j - 1));
+                if (pgn.charAt(i + 2) === '[') {
+                    // draw arrows/circles notation
+                    currNode.draws = pgn.substring(i + 2, j - 1);
+                } else {
+                    // normal comment
+                    currNode.comment = pgn.substring(i + 2, j - 1);
+                }
+                j++;
+            } else if (pgn.charAt(j) === ')' && specialCase === ')') {
+                // console.log('SIDELINE', pgn.substring(i + 1, j));
+                currNode.nextNodes.push(parsePGN(pgn.substring(i + 1, j)));
+                j++;
+            }
+        }
+        // console.log('i,j', pgn.substring(i, j));
+
+        // must do this to avoid inf loop
+        i = j + 1;
+        if (pgn.charAt(i) === ' ') {
+            i++;
+        }
+    }
+    return lineNode;
 }
