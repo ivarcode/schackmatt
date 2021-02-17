@@ -45,9 +45,16 @@ obj = {}
 
 # for the root object key, and for the filename, we want to grab this now
 filename = sys.argv[2]
+rootKeyStartIndex = 0
+for i in range(0, len(filename)):
+    if filename[i] == '/':
+        rootKeyStartIndex = i
+
+# assumption is that filename ends in .json
+rootKey = filename[rootKeyStartIndex + 1:len(filename) - 5]
 
 outObj = {
-    filename: outObj
+    rootKey: outObj
 }
 
 # This should be an argument
