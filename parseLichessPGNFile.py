@@ -12,7 +12,7 @@ if len(sys.argv) != 3:
 else:
     print('Located file: ' + sys.argv[1])
 
-f = open(sys.argv[1], 'r')
+f = open(sys.argv[1], 'r', encoding='utf-8')
 # print(f.read())
 
 outObj = {}
