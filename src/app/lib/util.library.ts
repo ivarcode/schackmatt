@@ -1,4 +1,9 @@
-import { LichessGame, LichessStudy, LineNode } from './interface.library';
+import {
+    LichessGame,
+    LichessStudy,
+    LineNode,
+    Puzzle
+} from './interface.library';
 
 export const enum PieceType {
     King,
@@ -87,14 +92,30 @@ export function pickRandom(array: any[]): any {
     return array[Math.floor(Math.random() * array.length)];
 }
 
-export function parseLichessStudy(ls: LichessStudy): any {
-    // TODO more here
-    return { pgn: parsePGN(ls.pgnContent) };
+function instanceOfLichessStudy(object: any): object is LichessStudy {
+    return 'Event' in object;
 }
 
-export function parseLichessGame(lg: LichessGame): any {
+export function parseLichessStudies(studies: any): Puzzle[] {
+    // it is expected the study array be an object with numerically increasing
+    // keys that all contain a LichessStudy object
+    const puzzles = [];
+    for (const study of Object.values(studies)) {
+        if (instanceOfLichessStudy(study)) {
+            puzzles.push(parseLichessStudy(study));
+        }
+    }
+    return puzzles;
+}
+
+export function parseLichessStudy(ls: LichessStudy): Puzzle {
     // TODO more here
-    return { pgn: parsePGN(lg.pgnContent) };
+    return { FEN: ls.FEN, title: ls.Event, pgn: parsePGN(ls.pgnContent) };
+}
+
+export function parseLichessGame(lg: LichessGame): Puzzle {
+    // TODO more here
+    return null;
 }
 
 function parseDrawObjectsString(s: string): any {
@@ -117,6 +138,7 @@ export function parsePGN(pgn: string): LineNode {
         comment: null,
         draws: null
     };
+    let prevNode: LineNode;
     let currNode = lineNode;
     let i = 0;
     while (i < pgn.length) {
@@ -154,6 +176,7 @@ export function parsePGN(pgn: string): LineNode {
                     draws: null
                 };
                 currNode.nextNodes.push(nextNode);
+                prevNode = currNode;
                 currNode = nextNode;
             }
         } else {
@@ -173,7 +196,9 @@ export function parsePGN(pgn: string): LineNode {
                 j++;
             } else if (pgn.charAt(j) === ')' && specialCase === ')') {
                 // console.log('SIDELINE', pgn.substring(i + 1, j));
-                currNode.nextNodes.push(parsePGN(pgn.substring(i + 1, j)));
+                prevNode.nextNodes.push(
+                    parsePGN(pgn.substring(i + 1, j)).nextNodes[0]
+                );
                 j++;
             }
         }

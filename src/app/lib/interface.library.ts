@@ -49,6 +49,8 @@ export interface LichessStudy {
     ECO: string;
     Opening: string;
     Annotator: string;
+    FEN?: string;
+    SetUp?: string;
     pgnContent: string;
 }
 
@@ -79,4 +81,10 @@ export interface LineNode {
     comment: string;
     // NEEDS a better name
     draws: string;
+}
+
+export interface Puzzle {
+    FEN: string;
+    pgn: LineNode;
+    title: string;
 }

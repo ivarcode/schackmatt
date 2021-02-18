@@ -11,17 +11,23 @@ import {
     randomFileInclusivelyBetween,
     randomRank,
     randomRankInclusivelyBetween,
-    colorToString
+    colorToString,
+    parseLichessStudy,
+    parseLichessStudies,
+    randomNumberInclusivelyBetween
 } from 'src/app/lib/util.library';
 import {
     GameDisplayOptions,
     GameEvent,
-    Move
+    LineNode,
+    Move,
+    Puzzle
 } from 'src/app/lib/interface.library';
 import { Square } from 'src/app/lib/square.library';
 import { GameComponent } from '../game/game.component';
 import { Sequence } from 'src/app/lib/sequence.library';
 import { Piece } from 'src/app/lib/piece.libary';
+import { basic_checkmates } from 'data/basic_checkmates.json';
 
 @Component({
     selector: 'app-endgame-trainer',
@@ -41,16 +47,22 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     };
     private _colorToPlay: Color;
 
-    private _checkmateSequences: Sequence[];
-    private _currentSequence: Sequence;
+    // private _checkmateSequences: Sequence[];
+    // private _currentSequence: Sequence;
 
     private _endgameExercises: Exercise[];
     private _currentExercise: Exercise;
 
+    private _currentPuzzleIndex: number;
+    private _endgamePuzzles: Puzzle[];
+    private _currentPuzzleNode: LineNode;
+
     constructor() {
         // TEMP
-        // let parsedStudy = parseLichessStudy(lichessData['0']);
-        // console.log('parsed file', parsedStudy);
+        this.endgamePuzzles = parseLichessStudies(basic_checkmates);
+        this.currentPuzzleIndex = 0;
+        console.log('endgmae puzzles', this.endgamePuzzles);
+        // console.log('testing char specials', parsedStudy.pgn.comment);
 
         this._showBoardOverlay = false;
         this._gameDisplayOptions = {
@@ -393,22 +405,22 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         );
         this._currentExercise = this._endgameExercises[1];
 
-        this._checkmateSequences = [];
-        this.checkmateSequences.push(
-            new Sequence(
-                'Queen & Rook Killbox',
-                '8/8/1Q6/4k3/1R6/8/3K4/8 b - - 0 1',
-                '1. ... Kd5 2. Rd4+ Ke5 3. Qd6+ Kf5 4. Rf4+ Kg5 5. Qf6+ Kh5 6. Rh4#'
-            )
-        );
-        this.checkmateSequences.push(
-            new Sequence(
-                'Queen & King vs King',
-                '4k3/1Q6/3K4/8/8/8/8/8 b - - 0 1',
-                '1. ... Kd8 2. Qd7#'
-            )
-        );
-        this.currentSequence = this.checkmateSequences[0];
+        // this._checkmateSequences = [];
+        // this.checkmateSequences.push(
+        //     new Sequence(
+        //         'Queen & Rook Killbox',
+        //         '8/8/1Q6/4k3/1R6/8/3K4/8 b - - 0 1',
+        //         '1. ... Kd5 2. Rd4+ Ke5 3. Qd6+ Kf5 4. Rf4+ Kg5 5. Qf6+ Kh5 6. Rh4#'
+        //     )
+        // );
+        // this.checkmateSequences.push(
+        //     new Sequence(
+        //         'Queen & King vs King',
+        //         '4k3/1Q6/3K4/8/8/8/8/8 b - - 0 1',
+        //         '1. ... Kd8 2. Qd7#'
+        //     )
+        // );
+        // this.currentSequence = this.checkmateSequences[0];
     }
 
     ngOnInit() {
@@ -418,15 +430,17 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit() {
         // console.log('after');
-
         // setup first training set
         // this.setupEndgameTrainingSet(this.currentExercise);
-        this.setupSequence(this.currentSequence);
+        this.setupPuzzle(this.currentPuzzleIndex);
     }
 
-    public setupSequence(seq: Sequence): void {
-        this.currentSequence = seq;
-        this.game.fen = seq.initPosition;
+    public setupPuzzle(puzzleIndex: number): void {
+        this.currentPuzzleIndex = puzzleIndex;
+        console.log(this.currentPuzzle);
+
+        this.currentPuzzleNode = this.currentPuzzle.pgn;
+        this.game.fen = this.currentPuzzle.FEN;
         this.gameComponent.displayedMoveIndex = 0;
         this.game.loadFEN();
         this.game.updateFENPiecesPositionsFromBoard();
@@ -434,7 +448,16 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         this.gameComponent.drawBoard();
         this.game.moveHistory = [];
         setTimeout(() => {
-            const m = seq.getMoveFollowing(this.game.moveHistory);
+            this.currentPuzzleNode = this.currentPuzzleNode.nextNodes[0];
+            // this.currentPuzzleNode = this.currentPuzzleNode.nextNodes[
+            //     randomNumberInclusivelyBetween(
+            //         0,
+            //         this.currentPuzzleNode.nextNodes.length - 1
+            //     )
+            // ];
+            const m = this.currentPuzzleNode.move;
+            console.log('m', m);
+
             this.game.makeMove(m);
             this.gameComponent.displayedMoveIndex++;
             this.gameComponent.drawBoard();
@@ -467,7 +490,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                 // this.gameComponent.initPosition = this.game.board;
 
                 // this.gameComponent.drawBoard();
-                this.setupSequence(this.currentSequence);
+                this.setupPuzzle(this.currentPuzzleIndex);
                 break;
             default:
                 break;
@@ -478,43 +501,44 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
 
     public gameDataEvent(event: GameEvent) {
         console.log(event);
-        if (this.currentSequence.matches(this.game.moveHistory)) {
+        if (false) {
+            // if (this.currentPuzzle.matches(this.game.moveHistory)) {
             // reset
             setTimeout(() => {
                 this.showBoardOverlay = true;
             }, 1500);
         } else {
-            if (
-                // trigger black's move if white's is correct
-                this.currentSequence.moves[
-                    this.gameComponent.displayedMoveIndex - 1
-                ] === event.content
-            ) {
-                const moveNotation = this.currentSequence.getMoveFollowing(
-                    this.game.moveHistory
-                );
-                setTimeout(() => {
-                    this.game.makeMove(moveNotation);
-                    this.gameComponent.displayedMoveIndex++;
-                    this.gameComponent.drawBoard();
-                }, 1000);
-            } else {
-                // move is wrong
-                setTimeout(() => {
-                    const lastMove = this.game.undoLastMove();
-                    if (this.gameComponent.displayedMoveIndex !== 0) {
-                        this.gameComponent.displayedMoveIndex--;
-                        this.gameComponent.drawBoard();
-                    }
-                    this.gameComponent.drawBoard();
-                    this.gameComponent.flashSquare(
-                        lastMove.dest,
-                        'red',
-                        200,
-                        3
-                    );
-                }, 1000);
-            }
+            // if (
+            //     // trigger black's move if white's is correct
+            //     this.currentPuzzle.moves[
+            //         this.gameComponent.displayedMoveIndex - 1
+            //     ] === event.content
+            // ) {
+            //     const moveNotation = this.currentPuzzle.getMoveFollowing(
+            //         this.game.moveHistory
+            //     );
+            //     setTimeout(() => {
+            //         this.game.makeMove(moveNotation);
+            //         this.gameComponent.displayedMoveIndex++;
+            //         this.gameComponent.drawBoard();
+            //     }, 1000);
+            // } else {
+            //     // move is wrong
+            //     setTimeout(() => {
+            //         const lastMove = this.game.undoLastMove();
+            //         if (this.gameComponent.displayedMoveIndex !== 0) {
+            //             this.gameComponent.displayedMoveIndex--;
+            //             this.gameComponent.drawBoard();
+            //         }
+            //         this.gameComponent.drawBoard();
+            //         this.gameComponent.flashSquare(
+            //             lastMove.dest,
+            //             'red',
+            //             200,
+            //             3
+            //         );
+            //     }, 1000);
+            // }
         }
     }
 
@@ -552,13 +576,35 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     get gameDisplayOptions(): GameDisplayOptions {
         return this._gameDisplayOptions;
     }
-    get checkmateSequences(): Sequence[] {
-        return this._checkmateSequences;
+    // get checkmateSequences(): Sequence[] {
+    //     return this._checkmateSequences;
+    // }
+    // get currentSequence(): Sequence {
+    //     return this._currentSequence;
+    // }
+    // set currentSequence(seq: Sequence) {
+    //     this._currentSequence = seq;
+    // }
+
+    get currentPuzzleIndex(): number {
+        return this._currentPuzzleIndex;
     }
-    get currentSequence(): Sequence {
-        return this._currentSequence;
+    set currentPuzzleIndex(i: number) {
+        this._currentPuzzleIndex = i;
     }
-    set currentSequence(seq: Sequence) {
-        this._currentSequence = seq;
+    get endgamePuzzles(): Puzzle[] {
+        return this._endgamePuzzles;
+    }
+    set endgamePuzzles(puzzles: Puzzle[]) {
+        this._endgamePuzzles = puzzles;
+    }
+    get currentPuzzle(): Puzzle {
+        return this.endgamePuzzles[this.currentPuzzleIndex];
+    }
+    get currentPuzzleNode(): LineNode {
+        return this._currentPuzzleNode;
+    }
+    set currentPuzzleNode(node: LineNode) {
+        this._currentPuzzleNode = node;
     }
 }
