@@ -28,7 +28,7 @@ export class Sequence {
     constructor(name: string, initPosition: string, sequence: string) {
         this._name = name;
         this._initPosition = initPosition;
-        this._moves = parsePGN(initPosition, sequence);
+        // this._moves = parsePGN(initPosition, sequence);
     }
 
     /**
