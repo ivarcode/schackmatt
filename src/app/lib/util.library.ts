@@ -39,7 +39,7 @@ export const enum RANK {
 export const enum Score {
     loss = 0,
     draw = 0.5,
-    win = 1,
+    win = 1
 }
 
 export function fileToString(file: FILE): string {
