@@ -4,7 +4,7 @@ This is a website for creating chess training tools. The dev site is live, the p
 
 Dev: https://schackmatt.net/
 
-### Developers:
+### Developers
 
 #### Setup & Getting Started
 
@@ -31,11 +31,11 @@ Dev: https://schackmatt.net/
 -   run `npm run build-watch` to build and then rebuild the project to the output folder when relevant files are modified
 -   run `npm run build-prod` to build on a production machine (_Windows batch script_ that moves relevant web configuration files after normal build process)
 
-#### To set the upstream (might exist by default):
+#### To set the upstream (might exist by default)
 
 `git remote add upstream <URL HERE>`
 
-#### To merge upstream code with your branch (for example develop):
+#### To merge upstream code with your branch (for example develop)
 
 `git checkout develop`
 `git fetch upstream`
