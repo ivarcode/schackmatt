@@ -712,11 +712,26 @@ export class GameComponent implements OnInit, OnChanges {
                         : this.displayOptions.colorScheme.light;
                 if (i === 7) {
                     // right side
-                    this.boardCtx.fillText('' + (8 - j), 628, j * 80 + 15);
+                    this.boardCtx.fillText(
+                        '' +
+                            (this.displayOptions.orientation === Color.White
+                                ? 8 - j
+                                : j + 1),
+                        628,
+                        j * 80 + 15
+                    );
                 }
                 if (j === 7) {
                     // bottom row
-                    this.boardCtx.fillText(fileToString(i), i * 80 + 5, 635);
+                    this.boardCtx.fillText(
+                        fileToString(
+                            this.displayOptions.orientation === Color.White
+                                ? i
+                                : 7 - i
+                        ),
+                        i * 80 + 5,
+                        635
+                    );
                 }
             }
         }
