@@ -745,7 +745,7 @@ export class GameComponent implements OnInit, OnChanges {
                       this.displayedMoveIndex - 1
                   ].resultingBoard.getPiece(new Square(x, y));
         if (this.displayedMoveIndex !== 0) {
-            let lastMove = this.game.moveHistory[this.displayedMoveIndex - 1];
+            const lastMove = this.game.moveHistory[this.displayedMoveIndex - 1];
             if (
                 (lastMove.src.file === x && lastMove.src.rank === y) ||
                 (lastMove.dest.file === x && lastMove.dest.rank === y)
@@ -827,6 +827,10 @@ export class GameComponent implements OnInit, OnChanges {
     ): void {
         this.boardCtx.globalAlpha = globalAlpha;
         this.boardCtx.fillStyle = color;
+        if (this.displayOptions.orientation === Color.Black) {
+            x = 7 - x;
+            y = 7 - y;
+        }
         this.boardCtx.fillRect(x * 80, y * 80, 80, 80);
     }
 
@@ -852,9 +856,9 @@ export class GameComponent implements OnInit, OnChanges {
         if (times < 1) {
             return;
         }
-        let redTint = {
+        const redTint = {
             dest: new Square(sq.file, 7 - sq.rank),
-            color: color,
+            color,
             gA: 0.5
         };
         this.tintSqData.push(redTint);
