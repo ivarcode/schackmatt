@@ -1,5 +1,6 @@
 import { Board } from './board.library';
 import { Square } from './square.library';
+import { Color } from './util.library';
 
 export interface Branch {
     definingMove: string;
@@ -25,6 +26,7 @@ export interface GameEvent {
 }
 
 export interface GameDisplayOptions {
+    orientation: Color;
     showCoordinates: boolean;
     colorScheme: {
         light: string;

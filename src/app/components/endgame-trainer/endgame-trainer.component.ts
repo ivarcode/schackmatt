@@ -52,6 +52,7 @@ export class EndgameTrainerComponent implements OnInit {
 
         this._showBoardOverlay = false;
         this._gameDisplayOptions = {
+            orientation: Color.Black,
             showCoordinates: true,
             colorScheme: {
                 light: '#f0d9b9',

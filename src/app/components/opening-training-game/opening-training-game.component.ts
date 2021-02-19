@@ -7,6 +7,7 @@ import {
     GameDisplayOptions
 } from 'src/app/lib/interface.library';
 import { Openings } from 'src/app/data/openings';
+import { Color } from 'src/app/lib/util.library';
 
 @Component({
     selector: 'app-opening-training-game',
@@ -35,6 +36,7 @@ export class OpeningTrainingGameComponent implements OnInit {
     constructor() {
         this.game = new Game();
         this._gameDisplayOptions = {
+            orientation: Color.White,
             showCoordinates: true,
             colorScheme: {
                 light: '#f0d9b9',
