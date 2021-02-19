@@ -18,11 +18,18 @@ Dev: https://schackmatt.net/
 -   run `npm audit` to ensure no critical vulnerabilities (this will make changes to `package.json` and `package-lock.json`)
     -   run `npm audit fix` if there are any, this should usually resolve those vulnerabilities
     -   if not, please open an issue and request my (@ivarcode's) assistance - sometimes dependency upon a backdated package can conflict with requirements for newer releases of packages it might require
--   if you use Angular CLI
-    -   run `ng serve`
--   if you don't...
-    -   run `npm run start`
--   should be on localhost:4200/
+
+#### To start the local server
+
+If you use Angular CLI
+
+`ng serve`
+
+If you don't...
+
+`npm run start`
+
+Should be on localhost:4200/
 
 #### To build out to `/dist`
 
@@ -73,9 +80,9 @@ Run the respective shell script to bump a version `[ major | minor | patch ]`
 
 Write a description of the new version when prompted. The single line of text you enter will be written to `CHANGELOG.md` for a record of what the version changed in the code.
 
-Note: these scripts are shell executables, you will need to be in a terminal that supports this if you are developing on Windows (eg. git bash).
+Note: these scripts are `.sh` executables, you will need to be in a terminal that supports this if you are developing on Windows (eg. git bash).
 
-### Developer Discord Server: https://discord.gg/uruXya4
+### [Developer Discord Server](https://discord.gg/uruXya4)
 
 Please submit bugs or feature requests in detailed issues.
 
