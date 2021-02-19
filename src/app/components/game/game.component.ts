@@ -121,37 +121,7 @@ export class GameComponent implements OnInit, OnChanges {
             this.CURSOR_DATA.draggedPieceIndex = -1;
             this.drawBoard();
         };
-        this._mouseMoveEventListener = (event: any) => {
-            // condition when not on latest move
-            if (this.displayedMoveIndex !== this.game.moveHistory.length) {
-                return;
-            }
-            // this function takes the x and y coordinates of mousedata to
-            // convert that to a square coordinate
-            // we save this in an object to reference when click events happen
-            if (this.CURSOR_DATA.mouseOverBoard) {
-                this.CURSOR_DATA.currentMousePosition = this.getMousePosition(
-                    event
-                );
-                let x = this.CURSOR_DATA.currentMousePosition.x;
-                let y = this.CURSOR_DATA.currentMousePosition.y;
-                x -= x % 80;
-                y -= y % 80;
-                x /= 80;
-                y /= 80;
-                if (
-                    this.CURSOR_DATA.overSquare === null ||
-                    this.CURSOR_DATA.overSquare.x !== x ||
-                    this.CURSOR_DATA.overSquare.y !== y
-                ) {
-                    // console.log('xy', x, y);
-                    // ooh tslint taught me shorthand
-                    this.CURSOR_DATA.overSquare = { x, y };
-                    this.showMoves();
-                }
-            }
-            this.drawBoard();
-        };
+        this._mouseMoveEventListener = (event: any) => {};
         this._mouseDownEventListener = (event: any) => {
             // condition when not on latest move
             if (this.displayedMoveIndex !== this.game.moveHistory.length) {
@@ -494,6 +464,48 @@ export class GameComponent implements OnInit, OnChanges {
             'mouseup',
             this._mouseUpEventListener
         );
+    }
+
+    /**
+     * @description returns the mouse event, if necessary, with inverted x,y
+     * @param event - mouse event
+     * @returns any - event
+     */
+    private mouseEventOrientationResolver(event: any): any {
+        // invert x,y if private input variable indicates our orientation
+        // should be flipped
+    }
+
+    private mouseMoveEvent(event: any) {
+        // condition when not on latest move
+        if (this.displayedMoveIndex !== this.game.moveHistory.length) {
+            return;
+        }
+        // this function takes the x and y coordinates of mousedata to
+        // convert that to a square coordinate
+        // we save this in an object to reference when click events happen
+        if (this.CURSOR_DATA.mouseOverBoard) {
+            this.CURSOR_DATA.currentMousePosition = this.getMousePosition(
+                event
+            );
+            let x = this.CURSOR_DATA.currentMousePosition.x;
+            let y = this.CURSOR_DATA.currentMousePosition.y;
+            x -= x % 80;
+            y -= y % 80;
+            x /= 80;
+            y /= 80;
+            if (
+                this.CURSOR_DATA.overSquare === null ||
+                this.CURSOR_DATA.overSquare.x !== x ||
+                this.CURSOR_DATA.overSquare.y !== y
+            ) {
+                // console.log('xy', x, y);
+                // ooh tslint taught me shorthand
+                this.CURSOR_DATA.overSquare = { x, y };
+                this.showMoves();
+            }
+        }
+        this.drawBoard();
     }
 
     public setDisplayedMoveIndex(index: number): void {
