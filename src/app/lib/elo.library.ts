@@ -6,16 +6,19 @@ export class Elo {
 	private _K: number;
 	private _games: number;
 
-	constructor() {
-		this._rating = 1200;
-		this._K = 40;
-		this._games = 0;
+	constructor(rating?: number, k?: number) {
+		this._rating = rating ?? 1500;
+		this._K = k ?? 40;
+		if (this._K !== 10 &&
+			this._K !== 20 &&
+			this._K !== 40) this._K = 40;
+		this._games = this._K === 40 ? 0 : 30;
 	}
 
 	private expected(opponent: number): number {
-		return 1 / (1 + Math.pow(10, (
-			opponent - this._rating
-		) / 400));
+		let p = opponent - this._rating;
+		if (Math.abs(p) > 400) p = p < 0 ? - 400 : 400;
+		return 1 / (1 + Math.pow(10, p / 400));
 	}
 
 	/// Updates the current Elo according to
@@ -33,7 +36,7 @@ export class Elo {
 	}
 
 	get rating(): number {
-		return Math.floor(this._rating);
+		return Math.round(this._rating);
 	}
 
 	get games(): number {
