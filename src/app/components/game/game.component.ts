@@ -656,6 +656,7 @@ export class GameComponent implements OnInit, OnChanges {
         this.boardCtx.font = '15px Arial';
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
+                // no need to invert this if displayOptions.orientation is black
                 this.boardCtx.fillStyle =
                     (i + j) % 2 === 0
                         ? this.displayOptions.colorScheme.light
@@ -673,10 +674,16 @@ export class GameComponent implements OnInit, OnChanges {
         }
         this.boardCtx.globalAlpha = 1;
         if (this.cursor.draggedPieceIndex !== -1) {
+            let x = this.cursor.currentMousePosition.x;
+            let y = this.cursor.currentMousePosition.y;
+            if (this.displayOptions.orientation === Color.Black) {
+                x = 640 - 1 - x;
+                y = 640 - 1 - y;
+            }
             this.boardCtx.drawImage(
                 this.pieceImages[this.cursor.draggedPieceIndex],
-                this.cursor.currentMousePosition.x - 40,
-                this.cursor.currentMousePosition.y - 40
+                x - 40,
+                y - 40
             );
         }
         if (this.isPromoting) {
@@ -779,14 +786,22 @@ export class GameComponent implements OnInit, OnChanges {
                 0.5
             );
             this.boardCtx.globalAlpha = 1; // reset this to full
+
+            // TODO currently LEAVING this if block alone, but I don't think it
+            // actually does anything...we already draw the pieces, investigate
+            // commenting this whole block out.
             if (piece) {
                 const color = piece.color;
                 const pieceType = piece.type;
                 const index = (color ? 6 : 0) + pieceType;
                 this.boardCtx.drawImage(
                     this.pieceImages[index],
-                    x * 80,
-                    (7 - y) * 80
+                    (this.displayOptions.orientation === Color.White
+                        ? x
+                        : 7 - x) * 80,
+                    (this.displayOptions.orientation === Color.White
+                        ? 7 - y
+                        : y) * 80
                 );
             }
         }
@@ -812,8 +827,12 @@ export class GameComponent implements OnInit, OnChanges {
             } else {
                 this.boardCtx.drawImage(
                     this.pieceImages[index],
-                    x * 80,
-                    (7 - y) * 80
+                    (this.displayOptions.orientation === Color.White
+                        ? x
+                        : 7 - x) * 80,
+                    (this.displayOptions.orientation === Color.White
+                        ? 7 - y
+                        : y) * 80
                 );
             }
         }
