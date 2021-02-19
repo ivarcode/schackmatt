@@ -1,3 +1,11 @@
+### 0.3.2
+
+commit 4a8dac10b420aedfef38ff856cc48f7c583cf015
+
+Date:   Fri Feb 19 17:46:00 2021 -0500
+
+    ELO rating system implemented and tested. (not currently being utilized in any components)
+
 ### 0.3.1
 
 commit 9d9c20b26f53c298f9bea7e348aa6abaa44cdc0c
