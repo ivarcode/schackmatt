@@ -147,6 +147,8 @@ export class EndgameTrainerComponent implements OnInit {
         );
         this._endgameExercises.push(
             new Exercise(
+                // TODO
+                // this fails if we stalemate the king, ERROR!
                 'King and Rook vs King',
                 ['needs explanation here', 'info'],
                 (game: Game): void => {

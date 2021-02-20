@@ -691,20 +691,34 @@ export class GameComponent implements OnInit, OnChanges {
             this.boardCtx.fillStyle = 'black';
             this.boardCtx.fillRect(0, 0, 640, 640);
             this.boardCtx.globalAlpha = 1;
-            const x = this.matchingMoves[0].dest.file;
+            // this is where we do the invert trickery
+            let drawAtTopOfBoard = this.game.turn === Color.White;
+            let x = this.matchingMoves[0].dest.file;
+            if (this.displayOptions.orientation === Color.Black) {
+                // flip
+                drawAtTopOfBoard = !drawAtTopOfBoard;
+                x = 7 - x;
+            }
             this.boardCtx.fillStyle = '#AAAAAA';
+            this.boardCtx.fillRect(
+                x * 80,
+                drawAtTopOfBoard ? 0 : 80 * 4,
+                80,
+                80 * 4
+            );
+            const _4ys = drawAtTopOfBoard
+                ? [0, 80, 80 * 2, 80 * 3]
+                : [80 * 7, 80 * 6, 80 * 5, 80 * 4];
             if (this.game.turn === Color.White) {
-                this.boardCtx.fillRect(x * 80, 0, 80, 320);
-                this.boardCtx.drawImage(this.pieceImages[1], x * 80, 0);
-                this.boardCtx.drawImage(this.pieceImages[3], x * 80, 80);
-                this.boardCtx.drawImage(this.pieceImages[4], x * 80, 160);
-                this.boardCtx.drawImage(this.pieceImages[2], x * 80, 240);
+                this.boardCtx.drawImage(this.pieceImages[1], x * 80, _4ys[0]);
+                this.boardCtx.drawImage(this.pieceImages[3], x * 80, _4ys[1]);
+                this.boardCtx.drawImage(this.pieceImages[4], x * 80, _4ys[2]);
+                this.boardCtx.drawImage(this.pieceImages[2], x * 80, _4ys[3]);
             } else {
-                this.boardCtx.fillRect(x * 80, 320, 80, 320);
-                this.boardCtx.drawImage(this.pieceImages[7], x * 80, 560);
-                this.boardCtx.drawImage(this.pieceImages[9], x * 80, 480);
-                this.boardCtx.drawImage(this.pieceImages[10], x * 80, 400);
-                this.boardCtx.drawImage(this.pieceImages[8], x * 80, 320);
+                this.boardCtx.drawImage(this.pieceImages[7], x * 80, _4ys[0]);
+                this.boardCtx.drawImage(this.pieceImages[9], x * 80, _4ys[1]);
+                this.boardCtx.drawImage(this.pieceImages[10], x * 80, _4ys[2]);
+                this.boardCtx.drawImage(this.pieceImages[8], x * 80, _4ys[3]);
             }
         }
     }
