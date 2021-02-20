@@ -116,6 +116,15 @@ export class GameComponent implements OnInit, OnChanges {
             if (this.CURSOR_DATA.leftMouseIsDown) {
                 if (event.buttons !== 0) {
                     // pause here, but this is where we put the "mouse back up"
+                    // left button
+                    this.CURSOR_DATA.leftMouseIsDown = false;
+                    this.CURSOR_DATA.dragging = false;
+                    this.CURSOR_DATA.draggedPieceIndex = -1;
+                    this.drawBoard();
+                    this.showMoves();
+                    // this block is the same logic in mouseUpEvent but without
+                    // the action of doing a bunch of promotion / make move
+                    // checking
                 }
             }
         };
