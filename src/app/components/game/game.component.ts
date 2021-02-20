@@ -114,7 +114,7 @@ export class GameComponent implements OnInit, OnChanges {
             // if mouse was down end that "drag drop event" if the mouse isn't
             // still down
             if (this.CURSOR_DATA.leftMouseIsDown) {
-                if (event.buttons !== 0) {
+                if (event.buttons === 0 || event.which !== 1) {
                     // pause here, but this is where we put the "mouse back up"
                     // left button
                     this.CURSOR_DATA.leftMouseIsDown = false;
