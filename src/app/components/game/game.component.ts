@@ -75,7 +75,7 @@ export class GameComponent implements OnInit, OnChanges {
     private initPosition: Board;
 
     // event listener functions
-    private _mouseEnterEventListener: () => void;
+    private _mouseEnterEventListener: (event: any) => void;
     private _mouseLeaveEventListener: () => void;
     private _mouseMoveEventListener: (event: any) => void;
     private _mouseDownEventListener: (event: any) => void;
@@ -108,9 +108,24 @@ export class GameComponent implements OnInit, OnChanges {
         this.matchingMoves = [];
         this.displayedMoveIndex = 0;
 
-        this._mouseEnterEventListener = () => {
+        this._mouseEnterEventListener = (event: any) => {
             // just a detector of when the mouse is over the canvas object
             this.CURSOR_DATA.mouseOverBoard = true;
+            // if mouse was down end that "drag drop event" if the mouse isn't
+            // still down
+            if (this.CURSOR_DATA.leftMouseIsDown) {
+                if (event.buttons === 0 || event.which !== 1) {
+                    // pause here, but this is where we put the "mouse back up"
+                    // left button
+                    this.CURSOR_DATA.leftMouseIsDown = false;
+                    this.CURSOR_DATA.dragging = false;
+                    this.CURSOR_DATA.draggedPieceIndex = -1;
+                    this.drawBoard();
+                    // this block is the same logic in mouseUpEvent but without
+                    // the action of doing a bunch of promotion / make move
+                    // checking
+                }
+            }
         };
         this._mouseLeaveEventListener = () => {
             // when mouse exits the canvas object
@@ -689,7 +704,10 @@ export class GameComponent implements OnInit, OnChanges {
             }
         }
         this.boardContext.globalAlpha = 1;
-        if (this.CURSOR_DATA.draggedPieceIndex !== -1) {
+        if (
+            this.CURSOR_DATA.draggedPieceIndex !== -1 &&
+            this.CURSOR_DATA.mouseOverBoard
+        ) {
             this.boardContext.drawImage(
                 this.pieceImages[this.CURSOR_DATA.draggedPieceIndex],
                 this.CURSOR_DATA.currentMousePosition.x - 40,
