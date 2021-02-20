@@ -1,3 +1,11 @@
+### 0.3.3
+
+commit e34ded02eef62f846083424969204db512b33d49
+
+Date:   Sat Feb 20 10:30:05 2021 -0500
+
+    Bugfix: piece dragging on/off board bug
+
 ### 0.3.2
 
 commit 4a8dac10b420aedfef38ff856cc48f7c583cf015
