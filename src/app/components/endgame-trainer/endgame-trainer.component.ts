@@ -66,6 +66,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
 
         this._showBoardOverlay = false;
         this._gameDisplayOptions = {
+            orientation: Color.Black,
             showCoordinates: true,
             colorScheme: {
                 light: '#f0d9b9',
@@ -163,6 +164,8 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         );
         this._endgameExercises.push(
             new Exercise(
+                // TODO
+                // this fails if we stalemate the king, ERROR!
                 'King and Rook vs King',
                 ['needs explanation here', 'info'],
                 (game: Game): void => {

@@ -45,6 +45,12 @@ export const enum RANK {
     EIGHT
 }
 
+export const enum Score {
+    loss = 0,
+    draw = 0.5,
+    win = 1
+}
+
 export function fileToString(file: FILE): string {
     return String.fromCharCode(97 + file);
 }

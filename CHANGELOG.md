@@ -1,3 +1,35 @@
+### 0.3.4
+
+commit dc807a5bb056a711d59d69679a35e517993903e3
+
+Date:   Mon Feb 22 17:32:57 2021 -0500
+
+    Adding a board orientation property to the GameDisplayOptions and adding a mouseevent resolver as well as draw changes to support this.
+
+### 0.3.3
+
+commit e34ded02eef62f846083424969204db512b33d49
+
+Date:   Sat Feb 20 10:30:05 2021 -0500
+
+    Bugfix: piece dragging on/off board bug
+
+### 0.3.2
+
+commit 4a8dac10b420aedfef38ff856cc48f7c583cf015
+
+Date:   Fri Feb 19 17:46:00 2021 -0500
+
+    ELO rating system implemented and tested. (not currently being utilized in any components)
+
+### 0.3.1
+
+commit 9d9c20b26f53c298f9bea7e348aa6abaa44cdc0c
+
+Date:   Wed Feb 17 16:34:04 2021 -0500
+
+    Small changes to the README for organization purposes
+
 ### 0.3.0
 
 commit 8b04e03ca74c035e3e4a545510b7fc2b58935f98

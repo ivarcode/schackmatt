@@ -4,7 +4,9 @@ This is a website for creating chess training tools. The dev site is live, the p
 
 Dev: https://schackmatt.net/
 
-### Developers:
+### Developers
+
+#### Setup & Getting Started
 
 -   fork repo to your account or organization
 -   clone repository to your machine
@@ -16,27 +18,41 @@ Dev: https://schackmatt.net/
 -   run `npm audit` to ensure no critical vulnerabilities (this will make changes to `package.json` and `package-lock.json`)
     -   run `npm audit fix` if there are any, this should usually resolve those vulnerabilities
     -   if not, please open an issue and request my (@ivarcode's) assistance - sometimes dependency upon a backdated package can conflict with requirements for newer releases of packages it might require
--   if you use Angular CLI
-    -   run `ng serve`
--   if you don't...
-    -   run `npm run start`
--   should be on localhost:4200/
 
-To build out to `/dist`
+#### To start the local server
 
--   run `npm run build`
-    -   run `npm run build-watch` to build and then rebuild the project to the output folder when relevant files are modified
-    -   run `npm run build-prod` to build on a production machine (_Windows batch script_ that moves relevant web configuration files after normal build process)
+If you use Angular CLI
 
-### To set the upstream (might exist by default):
+`ng serve`
+
+If you don't...
+
+`npm run start`
+
+Should be on localhost:4200/
+
+#### To build out to `/dist`
+
+`npm run build`
+
+-   run `npm run build-watch` to build and then rebuild the project to the output folder when relevant files are modified
+-   run `npm run build-prod` to build on a production machine (_Windows batch script_ that moves relevant web configuration files after normal build process)
+
+#### To set the upstream (might exist by default)
 
 `git remote add upstream <URL HERE>`
 
-### To merge upstream code with your branch (for example develop):
+#### To merge upstream code with your branch (for example develop)
 
 `git checkout develop`
 `git fetch upstream`
 `git merge upstream/develop`
+
+#### General standard for branch names (please follow this if you want to spare me a headache)
+
+`issue-#-some-basic-descriptive-phrase`
+
+#### [General standard for formatting](https://github.com/ivarcode/schackmatt/blob/develop/JAVASCRIPT_GUIDELINES.md)
 
 ### Python Scripts
 
@@ -64,15 +80,9 @@ Run the respective shell script to bump a version `[ major | minor | patch ]`
 
 Write a description of the new version when prompted. The single line of text you enter will be written to `CHANGELOG.md` for a record of what the version changed in the code.
 
-Note: these scripts are shell executables, you will need to be in a terminal that supports this if you are developing on Windows (eg. git bash).
+Note: these scripts are `.sh` executables, you will need to be in a terminal that supports this if you are developing on Windows (eg. git bash).
 
-### General standard for branch names (please follow this if you want to spare me a headache)
-
-`issue-#-some-basic-descriptive-phrase`
-
-### [General standard for formatting](https://github.com/ivarcode/schackmatt/blob/develop/JAVASCRIPT_GUIDELINES.md)
-
-### Developer Discord Server: https://discord.gg/uruXya4
+### [Developer Discord Server](https://discord.gg/uruXya4)
 
 Please submit bugs or feature requests in detailed issues.
 
