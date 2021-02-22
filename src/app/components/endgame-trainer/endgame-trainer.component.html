@@ -1,21 +1,21 @@
 <div id="standard-game-container" class="row">
     <div class="col-sm-2">
-        <!-- <ul id="sequence-list">
+        <ul id="sequence-list">
             <li
-                *ngFor="let cs of checkmateSequences; index as i"
-                (click)="setupSequence(checkmateSequences[i])"
+                *ngFor="let p of endgamePuzzles; index as i"
+                (click)="setupPuzzle(i)"
             >
                 <a class="sequence-link">
-                    {{ cs.name }}
+                    {{ p.title }}
                 </a>
             </li>
-        </ul> -->
+        </ul>
     </div>
     <div class="col-sm-10">
         <div class="row">
-            <!-- <h2 id="title" *ngIf="currentSequence">
-                {{ currentSequence.name }}
-            </h2> -->
+            <h2 id="title" *ngIf="currentPuzzle">
+                {{ currentPuzzle.title }}
+            </h2>
         </div>
         <div class="row">
             <div class="col-sm-auto">

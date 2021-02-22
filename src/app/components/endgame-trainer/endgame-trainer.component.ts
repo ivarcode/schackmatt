@@ -12,9 +12,8 @@ import {
     randomRank,
     randomRankInclusivelyBetween,
     colorToString,
-    parseLichessStudy,
     parseLichessStudies,
-    randomNumberInclusivelyBetween
+    oppositeColor
 } from 'src/app/lib/util.library';
 import {
     GameDisplayOptions,
@@ -25,7 +24,6 @@ import {
 } from 'src/app/lib/interface.library';
 import { Square } from 'src/app/lib/square.library';
 import { GameComponent } from '../game/game.component';
-import { Sequence } from 'src/app/lib/sequence.library';
 import { Piece } from 'src/app/lib/piece.libary';
 import { basic_checkmates } from 'data/basic_checkmates.json';
 
@@ -60,7 +58,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     constructor() {
         // TEMP
         this.endgamePuzzles = parseLichessStudies(basic_checkmates);
-        this.currentPuzzleIndex = 0;
+        this.currentPuzzleIndex = 1;
         console.log('endgmae puzzles', this.endgamePuzzles);
         // console.log('testing char specials', parsedStudy.pgn.comment);
 
@@ -448,6 +446,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         this.game.loadFEN();
         this.game.updateFENPiecesPositionsFromBoard();
         this.gameComponent.initPosition = this.game.board;
+        this.gameDisplayOptions.orientation = oppositeColor(this.game.turn);
         this.gameComponent.drawBoard();
         this.game.moveHistory = [];
         setTimeout(() => {
@@ -509,6 +508,8 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
             // if event was a move
             let isCorrectMove = false;
             for (const n of this.currentPuzzleNode.nextNodes) {
+                console.log(n.move, event.content);
+
                 if (n.move === event.content) {
                     this._currentPuzzleNode = n;
                     isCorrectMove = true;
@@ -523,8 +524,9 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                     }, 1500);
                 } else {
                     // trigger black's move if white's is correct
-                    const moveNotation = this.currentPuzzleNode.nextNodes[0]
-                        .move;
+                    const n = this.currentPuzzleNode.nextNodes[0];
+                    this.currentPuzzleNode = n;
+                    const moveNotation = this.currentPuzzleNode.move;
                     setTimeout(() => {
                         this.game.makeMove(moveNotation);
                         this.gameComponent.displayedMoveIndex++;

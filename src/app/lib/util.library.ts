@@ -19,6 +19,10 @@ export const enum Color {
     Black
 }
 
+export function oppositeColor(c: Color): Color {
+    return c ? Color.White : Color.Black;
+}
+
 export function colorToString(c: Color): string {
     return c ? 'black' : 'white';
 }
