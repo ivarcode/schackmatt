@@ -1,3 +1,11 @@
+### 0.3.4
+
+commit dc807a5bb056a711d59d69679a35e517993903e3
+
+Date:   Mon Feb 22 17:32:57 2021 -0500
+
+    Adding a board orientation property to the GameDisplayOptions and adding a mouseevent resolver as well as draw changes to support this.
+
 ### 0.3.3
 
 commit e34ded02eef62f846083424969204db512b33d49
