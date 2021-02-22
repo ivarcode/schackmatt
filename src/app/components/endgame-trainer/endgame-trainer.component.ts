@@ -504,44 +504,50 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
 
     public gameDataEvent(event: GameEvent) {
         console.log(event);
-        if (false) {
-            // if (this.currentPuzzle.matches(this.game.moveHistory)) {
-            // reset
-            setTimeout(() => {
-                this.showBoardOverlay = true;
-            }, 1500);
-        } else {
-            // if (
-            //     // trigger black's move if white's is correct
-            //     this.currentPuzzle.moves[
-            //         this.gameComponent.displayedMoveIndex - 1
-            //     ] === event.content
-            // ) {
-            //     const moveNotation = this.currentPuzzle.getMoveFollowing(
-            //         this.game.moveHistory
-            //     );
-            //     setTimeout(() => {
-            //         this.game.makeMove(moveNotation);
-            //         this.gameComponent.displayedMoveIndex++;
-            //         this.gameComponent.drawBoard();
-            //     }, 1000);
-            // } else {
-            //     // move is wrong
-            //     setTimeout(() => {
-            //         const lastMove = this.game.undoLastMove();
-            //         if (this.gameComponent.displayedMoveIndex !== 0) {
-            //             this.gameComponent.displayedMoveIndex--;
-            //             this.gameComponent.drawBoard();
-            //         }
-            //         this.gameComponent.drawBoard();
-            //         this.gameComponent.flashSquare(
-            //             lastMove.dest,
-            //             'red',
-            //             200,
-            //             3
-            //         );
-            //     }, 1000);
-            // }
+
+        if (event.type === 'move') {
+            // if event was a move
+            let isCorrectMove = false;
+            for (const n of this.currentPuzzleNode.nextNodes) {
+                if (n.move === event.content) {
+                    this._currentPuzzleNode = n;
+                    isCorrectMove = true;
+                    break;
+                }
+            }
+            if (isCorrectMove) {
+                if (this.currentPuzzleNode.nextNodes.length === 0) {
+                    // reset
+                    setTimeout(() => {
+                        this.showBoardOverlay = true;
+                    }, 1500);
+                } else {
+                    // trigger black's move if white's is correct
+                    const moveNotation = this.currentPuzzleNode.nextNodes[0]
+                        .move;
+                    setTimeout(() => {
+                        this.game.makeMove(moveNotation);
+                        this.gameComponent.displayedMoveIndex++;
+                        this.gameComponent.drawBoard();
+                    }, 1000);
+                }
+            } else {
+                // move is wrong
+                setTimeout(() => {
+                    const lastMove = this.game.undoLastMove();
+                    if (this.gameComponent.displayedMoveIndex !== 0) {
+                        this.gameComponent.displayedMoveIndex--;
+                        this.gameComponent.drawBoard();
+                    }
+                    this.gameComponent.drawBoard();
+                    this.gameComponent.flashSquare(
+                        lastMove.dest,
+                        'red',
+                        200,
+                        3
+                    );
+                }, 1000);
+            }
         }
     }
 
