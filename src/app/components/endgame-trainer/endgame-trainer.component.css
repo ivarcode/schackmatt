@@ -20,6 +20,10 @@
     height: 60px;
 }
 
+.col-sm-2 {
+    padding: 0px;
+}
+
 #sequence-list {
     padding: 10px;
     list-style: none;
@@ -29,12 +33,17 @@
     padding: 5px;
     border: black 1px solid;
 }
+
 #sequence-list li:hover {
-    background-color: gray;
+    background-color: rgb(175, 175, 175);
+    cursor: pointer;
 }
 
 .sequence-link {
     cursor: pointer;
-    color: blue;
-    font-size: 22px;
+    font-size: 18px;
+}
+
+.current-puzzle {
+    background-color: rgb(185, 235, 255);
 }

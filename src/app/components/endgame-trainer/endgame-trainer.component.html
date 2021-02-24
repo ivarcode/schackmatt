@@ -3,6 +3,7 @@
         <ul id="sequence-list">
             <li
                 *ngFor="let p of endgamePuzzles; index as i"
+                [class.current-puzzle]="i === currentPuzzleIndex"
                 (click)="setupPuzzle(i)"
             >
                 <a class="sequence-link">
