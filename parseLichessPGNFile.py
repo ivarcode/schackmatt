@@ -6,6 +6,12 @@ import json
 # intend to create a second file, or possibly update this file with arguments
 # and subroutines to handle a multi-chapter lichess file.
 
+# version checking
+if int(sys.version_info[0]) < 3:
+    print('Err: Python3 is required for this script to properly run. Please upgrade from your version (Python ' + sys.version_info[0] + ')')
+    exit()
+
+# argument checking
 if len(sys.argv) != 3:
     print('Err: 2 arguments required (<target_filepath> <output_filepath>)')
     exit()
