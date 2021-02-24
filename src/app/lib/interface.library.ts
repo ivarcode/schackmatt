@@ -80,7 +80,7 @@ export interface LineNode {
     move: string;
     nextNodes: LineNode[];
     // documentation not comment? idk
-    comment: string;
+    comment: string[];
     // NEEDS a better name
     draws: string;
 }

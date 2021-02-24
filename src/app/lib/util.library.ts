@@ -174,7 +174,7 @@ export function parsePGN(pgn: string): LineNode {
             if (
                 pgn.charAt(j - 1) === '.' ||
                 pgn.charAt(j - 1) === '*' ||
-                pgn.charAt(j - 1) === '↵'
+                pgn.charAt(j - 1) === '\n'
             ) {
                 // just a move numba or the termination *
                 // TODO add other result (termination) keys here
@@ -201,7 +201,7 @@ export function parsePGN(pgn: string): LineNode {
                     currNode.draws = pgn.substring(i + 2, j - 1);
                 } else {
                     // normal comment
-                    currNode.comment = pgn.substring(i + 2, j - 1);
+                    currNode.comment = pgn.substring(i + 2, j - 1).split('\n');
                 }
                 j++;
             } else if (pgn.charAt(j) === ')' && specialCase === ')') {

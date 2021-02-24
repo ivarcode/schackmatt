@@ -59,7 +59,12 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         // TEMP
         this.endgamePuzzles = parseLichessStudies(basic_checkmates);
         this.currentPuzzleIndex = 1;
-        console.log('endgmae puzzles', this.endgamePuzzles);
+
+        this.currentPuzzleNode = this.currentPuzzle.pgn;
+
+        // console.log('endgmae puzzles', this.endgamePuzzles);
+        // console.log(this.currentPuzzle);
+
         // console.log('testing char specials', parsedStudy.pgn.comment);
 
         this._showBoardOverlay = false;
