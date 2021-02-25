@@ -28,7 +28,7 @@
         <app-game
             id="game"
             [game]="getGame()"
-            [displayOptions]="gameDisplayOptions"
+            [config]="gameConfig"
             [interfaceCommand]="getGameInterfaceCommand()"
             (gameDataEmitter)="gameDataEvent($event)"
         ></app-game>

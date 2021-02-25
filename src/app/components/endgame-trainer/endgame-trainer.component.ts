@@ -13,11 +13,7 @@ import {
     randomRankInclusivelyBetween,
     parseLichessStudy
 } from 'src/app/lib/util.library';
-import {
-    GameDisplayOptions,
-    GameEvent,
-    Move
-} from 'src/app/lib/interface.library';
+import { GameConfig, GameEvent, Move } from 'src/app/lib/interface.library';
 import { Square } from 'src/app/lib/square.library';
 import { GameComponent } from '../game/game.component';
 import { Piece } from 'src/app/lib/piece.libary';
@@ -29,7 +25,7 @@ import { Piece } from 'src/app/lib/piece.libary';
 })
 export class EndgameTrainerComponent implements OnInit {
     @ViewChild('gameComponent') _gameComponent: GameComponent;
-    private _gameDisplayOptions: GameDisplayOptions;
+    private _gameConfig: GameConfig;
     private _game: Game;
     private _interfaceCommand: string;
     private _showBoardOverlay: boolean;
@@ -51,7 +47,8 @@ export class EndgameTrainerComponent implements OnInit {
         // console.log('parsed file', parsedStudy);
 
         this._showBoardOverlay = false;
-        this._gameDisplayOptions = {
+        this._gameConfig = {
+            restrictPieces: [],
             orientation: Color.Black,
             showCoordinates: true,
             colorScheme: {
@@ -503,7 +500,7 @@ export class EndgameTrainerComponent implements OnInit {
     get colorToPlayToString(): string {
         return this.colorToPlay ? 'black' : 'white';
     }
-    get gameDisplayOptions(): GameDisplayOptions {
-        return this._gameDisplayOptions;
+    get gameConfig(): GameConfig {
+        return this._gameConfig;
     }
 }

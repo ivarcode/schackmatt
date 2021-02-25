@@ -8,7 +8,7 @@ import {
     OnChanges
 } from '@angular/core';
 import { Game } from '../../lib/game.library';
-import { GameDisplayOptions, GameEvent } from 'src/app/lib/interface.library';
+import { GameConfig, GameEvent } from 'src/app/lib/interface.library';
 import { fileToString, Color, RANK } from 'src/app/lib/util.library';
 import { Square } from 'src/app/lib/square.library';
 import { Board } from 'src/app/lib/board.library';
@@ -22,7 +22,7 @@ export class GameComponent implements OnInit, OnChanges {
     @Output() gameDataEmitter = new EventEmitter<GameEvent>();
     @Input() game: Game;
     @Input() interfaceCommand: string;
-    @Input() displayOptions: GameDisplayOptions;
+    @Input() config: GameConfig;
 
     private displayedMoveIndex: number;
     private boardCanvas: any;
@@ -491,7 +491,7 @@ export class GameComponent implements OnInit, OnChanges {
     private mouseEventOrientationResolver(event: any): any {
         // invert x,y if private input variable indicates our orientation
         // should be flipped
-        if (this.displayOptions.orientation === Color.Black) {
+        if (this.config.orientation === Color.Black) {
             const offsetX = 640 - event.offsetX;
             const offsetY = 640 - event.offsetY;
             this.mouseMoveEvent({ offsetX, offsetY });
@@ -671,11 +671,11 @@ export class GameComponent implements OnInit, OnChanges {
         this.boardCtx.font = '15px Arial';
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
-                // no need to invert this if displayOptions.orientation is black
+                // no need to invert this if config.orientation is black
                 this.boardCtx.fillStyle =
                     (i + j) % 2 === 0
-                        ? this.displayOptions.colorScheme.light
-                        : this.displayOptions.colorScheme.dark;
+                        ? this.config.colorScheme.light
+                        : this.config.colorScheme.dark;
                 this.boardCtx.fillRect(i * 80, j * 80, 80, 80);
             }
         }
@@ -684,7 +684,7 @@ export class GameComponent implements OnInit, OnChanges {
                 this.refreshCanvasSquare(i, j);
             }
         }
-        if (this.displayOptions.showCoordinates) {
+        if (this.config.showCoordinates) {
             this.drawCoordinates();
         }
         this.boardCtx.globalAlpha = 1;
@@ -694,7 +694,7 @@ export class GameComponent implements OnInit, OnChanges {
         ) {
             let x = this.cursor.currentMousePosition.x;
             let y = this.cursor.currentMousePosition.y;
-            if (this.displayOptions.orientation === Color.Black) {
+            if (this.config.orientation === Color.Black) {
                 x = 640 - 1 - x;
                 y = 640 - 1 - y;
             }
@@ -712,7 +712,7 @@ export class GameComponent implements OnInit, OnChanges {
             // this is where we do the invert trickery
             let drawAtTopOfBoard = this.game.turn === Color.White;
             let x = this.matchingMoves[0].dest.file;
-            if (this.displayOptions.orientation === Color.Black) {
+            if (this.config.orientation === Color.Black) {
                 // flip
                 drawAtTopOfBoard = !drawAtTopOfBoard;
                 x = 7 - x;
@@ -747,13 +747,13 @@ export class GameComponent implements OnInit, OnChanges {
                 // light/dark sq
                 this.boardCtx.fillStyle =
                     (i + j) % 2 === 0
-                        ? this.displayOptions.colorScheme.dark
-                        : this.displayOptions.colorScheme.light;
+                        ? this.config.colorScheme.dark
+                        : this.config.colorScheme.light;
                 if (i === 7) {
                     // right side
                     this.boardCtx.fillText(
                         '' +
-                            (this.displayOptions.orientation === Color.White
+                            (this.config.orientation === Color.White
                                 ? 8 - j
                                 : j + 1),
                         628,
@@ -764,9 +764,7 @@ export class GameComponent implements OnInit, OnChanges {
                     // bottom row
                     this.boardCtx.fillText(
                         fileToString(
-                            this.displayOptions.orientation === Color.White
-                                ? i
-                                : 7 - i
+                            this.config.orientation === Color.White ? i : 7 - i
                         ),
                         i * 80 + 5,
                         635
@@ -828,12 +826,8 @@ export class GameComponent implements OnInit, OnChanges {
                 const index = (color ? 6 : 0) + pieceType;
                 this.boardCtx.drawImage(
                     this.pieceImages[index],
-                    (this.displayOptions.orientation === Color.White
-                        ? x
-                        : 7 - x) * 80,
-                    (this.displayOptions.orientation === Color.White
-                        ? 7 - y
-                        : y) * 80
+                    (this.config.orientation === Color.White ? x : 7 - x) * 80,
+                    (this.config.orientation === Color.White ? 7 - y : y) * 80
                 );
             }
         }
@@ -859,12 +853,8 @@ export class GameComponent implements OnInit, OnChanges {
             } else {
                 this.boardCtx.drawImage(
                     this.pieceImages[index],
-                    (this.displayOptions.orientation === Color.White
-                        ? x
-                        : 7 - x) * 80,
-                    (this.displayOptions.orientation === Color.White
-                        ? 7 - y
-                        : y) * 80
+                    (this.config.orientation === Color.White ? x : 7 - x) * 80,
+                    (this.config.orientation === Color.White ? 7 - y : y) * 80
                 );
             }
         }
@@ -878,7 +868,7 @@ export class GameComponent implements OnInit, OnChanges {
     ): void {
         this.boardCtx.globalAlpha = globalAlpha;
         this.boardCtx.fillStyle = color;
-        if (this.displayOptions.orientation === Color.Black) {
+        if (this.config.orientation === Color.Black) {
             x = 7 - x;
             y = 7 - y;
         }

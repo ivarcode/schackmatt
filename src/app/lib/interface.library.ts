@@ -25,7 +25,8 @@ export interface GameEvent {
     content: string;
 }
 
-export interface GameDisplayOptions {
+export interface GameConfig {
+    restrictPieces: Color[];
     orientation: Color;
     showCoordinates: boolean;
     colorScheme: {
