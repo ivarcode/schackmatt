@@ -13,7 +13,8 @@ import {
     randomRankInclusivelyBetween,
     colorToString,
     parseLichessStudies,
-    oppositeColor
+    oppositeColor,
+    randomNumberInclusivelyBetween
 } from 'src/app/lib/util.library';
 import {
     GameDisplayOptions,
@@ -529,7 +530,12 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
                     }, 1500);
                 } else {
                     // trigger black's move if white's is correct
-                    const n = this.currentPuzzleNode.nextNodes[0];
+                    const n = this.currentPuzzleNode.nextNodes[
+                        randomNumberInclusivelyBetween(
+                            0,
+                            this.currentPuzzleNode.nextNodes.length - 1
+                        )
+                    ];
                     this.currentPuzzleNode = n;
                     const moveNotation = this.currentPuzzleNode.move;
                     setTimeout(() => {
