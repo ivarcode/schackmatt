@@ -540,10 +540,24 @@ export class GameComponent implements OnInit, OnChanges {
 
     private showMoves(): void {
         const pieceMovements = this.game.getLegalMoves();
-        const sq = {
-            file: this.cursor.overSquare.x,
-            rank: 7 - this.cursor.overSquare.y
-        };
+        const sq = new Square(
+            this.cursor.overSquare.x,
+            7 - this.cursor.overSquare.y
+        );
+        // error if restricted
+        if (
+            this.game.getPiece(sq) &&
+            this.config.restrictPieces.includes(
+                this.getGame().getPiece(sq).color
+            )
+        ) {
+            // console.error(
+            //     'Not showing moves for ' +
+            //         this.getGame().getPiece(sq).color +
+            //         ' pieces.'
+            // );
+            return;
+        }
         this.tintSqFromMouseObjects = [];
         if (this.twoClickMove.attempting) {
             for (const movement of pieceMovements) {
@@ -635,6 +649,15 @@ export class GameComponent implements OnInit, OnChanges {
             }
         }
         if (this.matchingMoves.length === 1) {
+            // error if restricted
+            if (this.config.restrictPieces.includes(this.getGame().turn)) {
+                console.error(
+                    'Not allowed to move ' +
+                        this.getGame().turn +
+                        ' color pieces.'
+                );
+                return;
+            }
             this.game.makeMove(this.matchingMoves[0].notation);
             this.displayedMoveIndex++;
             // checking if changed
@@ -649,6 +672,15 @@ export class GameComponent implements OnInit, OnChanges {
         } else if (this.matchingMoves.length === 0) {
             // console.log('invalid move attempted');
         } else {
+            // error if restricted
+            if (this.config.restrictPieces.includes(this.getGame().turn)) {
+                console.error(
+                    'Not allowed to move ' +
+                        this.getGame().turn +
+                        ' color pieces.'
+                );
+                return;
+            }
             this.isPromoting = true;
             if (this.cursor.leftMouseIsDown) {
                 this.twoClickMove.preventPromote = true;
@@ -848,6 +880,8 @@ export class GameComponent implements OnInit, OnChanges {
                 this.cursor.dragging &&
                 this.cursor.mouseDownOn.x === x &&
                 this.cursor.mouseDownOn.y === 7 - y
+                // &&
+                // !this.config.restrictPieces.includes(color)
             ) {
                 this.cursor.draggedPieceIndex = index;
             } else {
