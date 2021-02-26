@@ -1,49 +1,44 @@
+.navbar-logo {
+    height: 25px;
+    width: 25px;
+    margin: 0 10px;
+}
 .navbar-brand {
-    font-size: 25px;
+    font-size: 20px;
     margin-left: 10px;
     margin-right: 30px;
     color: white;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 400;
+    border-left: 1px solid #fff;
+    padding-left: 15px;
+    transition-duration: 0.4s;
 }
 .navbar-brand:hover {
-    color: #ff7e15;
+    color: #ff4656;
 }
 .nav-link {
-    font-size: 20px;
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid transparent;
+    padding: 10px;
+    margin: 0 5px;
 }
 .button {
     transition-duration: 0.4s;
-    /* slate grey w light grey scheme code */
-    background-color: #33363b;
-
-    /* Possible Dark theme */
-    /* background-color: #3b3b3b; */
-
-    /* Dark grey nav Lighter gray background Orange accent */
-    /* background-color: #2b2b2b; */
-
     text-decoration-color: white;
 }
-.button:hover {
-    /* slate grey w light grey scheme code */
-    /* background-color: #5c626b; */
-
-    /* Possible Dark theme */
-    /* background-color: #686868; */
-
-    /* Dark grey nav Lighter gray background Orange accent */
-    background-color: #e96b04;
+.button:hover,
+.nav-link.active {
+    border-color: #ff4656 !important;
 }
 
 nav {
-    height: 50px;
-    /* slate grey w light grey scheme code */
-    background-color: #33363b;
-
-    /* Possible Dark theme */
-    /* background-color: #3b3b3b; */
-
-    /* Dark grey nav Lighter gray background Orange accent */
-    /* background-color: #2b2b2b; */
+    height: 80px;
+    background-color: #111111;
 }
 
 /* .nav-disabled {
@@ -52,5 +47,8 @@ nav {
 } */
 
 #version {
-    color: gray;
+    color: #6f6f6f;
+    margin: 0 20px;
+    font-family: Arial, monospace;
+    letter-spacing: 1px;
 }

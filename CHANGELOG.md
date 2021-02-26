@@ -1,3 +1,19 @@
+### 0.4.1
+
+commit c939147ef819b2fba47521eb17393bba9d71196c
+
+Date:   Fri Feb 26 18:11:47 2021 -0500
+
+    First version of the general config options in game component
+
+### 0.4.0
+
+commit 3afb7354a59e4dcc1b7d71e09d778efaa36c6bc4
+
+Date:   Fri Feb 26 17:33:33 2021 -0500
+
+    Minor bugfixes and a styling rewrite by Cristian-A
+
 ### 0.3.4
 
 commit dc807a5bb056a711d59d69679a35e517993903e3

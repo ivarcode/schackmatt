@@ -17,7 +17,7 @@ import {
     randomNumberInclusivelyBetween
 } from 'src/app/lib/util.library';
 import {
-    GameDisplayOptions,
+    GameConfig,
     GameEvent,
     LineNode,
     Move,
@@ -35,7 +35,7 @@ import { basic_checkmates } from 'data/basic_checkmates.json';
 })
 export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     @ViewChild('gameComponent') _gameComponent: GameComponent;
-    private _gameDisplayOptions: GameDisplayOptions;
+    private _gameConfig: GameConfig;
     private _game: Game;
     private _showBoardOverlay: boolean;
     private _boardOverlayData: {
@@ -69,7 +69,8 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         // console.log('testing char specials', parsedStudy.pgn.comment);
 
         this._showBoardOverlay = false;
-        this._gameDisplayOptions = {
+        this._gameConfig = {
+            restrictPieces: [Color.Black],
             orientation: Color.Black,
             showCoordinates: true,
             colorScheme: {
@@ -452,7 +453,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
         this.game.loadFEN();
         this.game.updateFENPiecesPositionsFromBoard();
         this.gameComponent.initPosition = this.game.board;
-        this.gameDisplayOptions.orientation = oppositeColor(this.game.turn);
+        this.gameConfig.orientation = oppositeColor(this.game.turn);
         this.gameComponent.drawBoard();
         this.game.moveHistory = [];
         setTimeout(() => {
@@ -599,8 +600,8 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
     get colorToPlayString(): string {
         return colorToString(this.colorToPlay);
     }
-    get gameDisplayOptions(): GameDisplayOptions {
-        return this._gameDisplayOptions;
+    get gameConfig(): GameConfig {
+        return this._gameConfig;
     }
     // get checkmateSequences(): Sequence[] {
     //     return this._checkmateSequences;

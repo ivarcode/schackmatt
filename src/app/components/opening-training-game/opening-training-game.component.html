@@ -29,7 +29,7 @@
             #gameComponent
             id="game"
             [game]="getGame()"
-            [displayOptions]="gameDisplayOptions"
+            [config]="gameConfig"
             (gameDataEmitter)="gameDataEvent($event)"
         ></app-game>
     </div>

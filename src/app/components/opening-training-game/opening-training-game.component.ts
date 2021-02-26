@@ -1,11 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Game } from 'src/app/lib/game.library';
 import { Study, moveClassificationKey } from 'src/app/lib/study.library';
-import {
-    GameEvent,
-    Branch,
-    GameDisplayOptions
-} from 'src/app/lib/interface.library';
+import { GameEvent, Branch, GameConfig } from 'src/app/lib/interface.library';
 import { Openings } from 'src/app/data/openings';
 import { GameComponent } from '../game/game.component';
 import { Color } from 'src/app/lib/util.library';
@@ -19,8 +15,7 @@ export class OpeningTrainingGameComponent implements OnInit {
     @ViewChild('gameComponent') _gameComponent: GameComponent;
 
     private game: Game;
-
-    private _gameDisplayOptions: GameDisplayOptions;
+    private _gameConfig: GameConfig;
     private opening: Study;
     private alertType: string;
     private choiceHeadingMessage: string;
@@ -38,7 +33,8 @@ export class OpeningTrainingGameComponent implements OnInit {
 
     constructor() {
         this.game = new Game();
-        this._gameDisplayOptions = {
+        this._gameConfig = {
+            restrictPieces: [],
             orientation: Color.White,
             showCoordinates: true,
             colorScheme: {
@@ -309,8 +305,8 @@ export class OpeningTrainingGameComponent implements OnInit {
     public getChoiceAuthor(): string {
         return this.choiceAuthor;
     }
-    get gameDisplayOptions(): GameDisplayOptions {
-        return this._gameDisplayOptions;
+    get gameConfig(): GameConfig {
+        return this._gameConfig;
     }
     get gameComponent(): GameComponent {
         return this._gameComponent;
