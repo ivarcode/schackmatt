@@ -1,3 +1,11 @@
+### 0.4.0
+
+commit 3afb7354a59e4dcc1b7d71e09d778efaa36c6bc4
+
+Date:   Fri Feb 26 17:33:33 2021 -0500
+
+    Minor bugfixes and a styling rewrite by Cristian-A
+
 ### 0.3.4
 
 commit dc807a5bb056a711d59d69679a35e517993903e3
