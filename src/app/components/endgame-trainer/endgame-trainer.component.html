@@ -29,7 +29,11 @@
                         You play {{ colorToPlayToString }}
                     </h4>
                 </div>
-                <h5 *ngFor="let p of currentExercise.info" style="width: 300px">
+                <h5
+                    *ngFor="let p of currentExercise.info"
+                    id="exercise-info"
+                    style="width: 300px"
+                >
                     {{ p }}
                 </h5>
             </div>
