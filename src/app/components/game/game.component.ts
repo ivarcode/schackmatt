@@ -562,6 +562,9 @@ export class GameComponent implements OnInit, OnChanges {
         if (this.twoClickMove.attempting) {
             for (const movement of pieceMovements) {
                 if (
+                    !this.config.restrictPieces.includes(
+                        this.game.getPiece(movement.src).color
+                    ) &&
                     movement.src.file === this.twoClickMove.source.x &&
                     movement.src.rank === 7 - this.twoClickMove.source.y
                 ) {
@@ -579,6 +582,9 @@ export class GameComponent implements OnInit, OnChanges {
         if (this.cursor.dragging) {
             for (const movement of pieceMovements) {
                 if (
+                    !this.config.restrictPieces.includes(
+                        this.game.getPiece(movement.src).color
+                    ) &&
                     movement.src.file === this.cursor.mouseDownOn.x &&
                     movement.src.rank === 7 - this.cursor.mouseDownOn.y
                 ) {
@@ -600,6 +606,9 @@ export class GameComponent implements OnInit, OnChanges {
         ) {
             for (const movement of pieceMovements) {
                 if (
+                    !this.config.restrictPieces.includes(
+                        this.game.getPiece(movement.src).color
+                    ) &&
                     movement.src.file === sq.file &&
                     movement.src.rank === sq.rank
                 ) {

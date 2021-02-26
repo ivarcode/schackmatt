@@ -48,7 +48,7 @@ export class EndgameTrainerComponent implements OnInit {
 
         this._showBoardOverlay = false;
         this._gameConfig = {
-            restrictPieces: [Color.White],
+            restrictPieces: [Color.Black],
             orientation: Color.Black,
             showCoordinates: true,
             colorScheme: {
