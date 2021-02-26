@@ -159,7 +159,9 @@ export function parsePGN(pgn: string): LineNode {
         let j = i + 1;
         // determine special case termination char
         let specialCase = null;
+        let remainingParensToSkip;
         if (pgn.charAt(i) === '(') {
+            remainingParensToSkip = 0;
             specialCase = ')';
         } else if (pgn.charAt(i) === '{') {
             specialCase = '}';
@@ -190,7 +192,18 @@ export function parsePGN(pgn: string): LineNode {
                 currNode = nextNode;
             }
         } else {
-            while (pgn.charAt(j) !== specialCase && j < pgn.length) {
+            while (j < pgn.length) {
+                if (pgn.charAt(j) === '}' && specialCase === '}') {
+                    break;
+                } else if (pgn.charAt(j) === ')' && specialCase === ')') {
+                    if (remainingParensToSkip > 0) {
+                        remainingParensToSkip--;
+                    } else {
+                        break;
+                    }
+                } else if (pgn.charAt(j) === '(') {
+                    remainingParensToSkip++;
+                }
                 // index up to the end of the segment
                 j++;
             }
