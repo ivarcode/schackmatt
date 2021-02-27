@@ -35,7 +35,12 @@
                 ></app-game>
             </div>
             <div class="col-sm-auto">
-                <div id="which-color-to-play-alert" class="alert alert-primary">
+                <div
+                    id="which-color-to-play-alert"
+                    class="alert alert-primary"
+                    [style.color]="colorToPlay ? '#fff' : '#000'"
+                    [style.background]="colorToPlay ? '#000' : '#fff'"
+                >
                     <h4 class="alert-heading">
                         You play {{ colorToPlayString }}
                     </h4>
