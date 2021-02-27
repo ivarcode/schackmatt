@@ -45,17 +45,20 @@
 }
 
 #sequence-list {
-    padding: 10px;
+    padding: 0px;
+    margin: 50px 20px;
     list-style: none;
+    background-color: white;
 }
 
 #sequence-list li {
+    text-align: center;
     padding: 5px;
     border: black 1px solid;
 }
 
-#sequence-list li:hover {
-    background-color: rgb(175, 175, 175);
+#sequence-list li:not(.current-puzzle):hover {
+    background-color: lightgray;
     cursor: pointer;
 }
 
@@ -65,5 +68,11 @@
 }
 
 .current-puzzle {
-    background-color: rgb(185, 235, 255);
+    color: white;
+    background-color: black;
+}
+
+.current-puzzle:hover {
+    cursor: pointer;
+    background-color: rgb(41, 41, 41);
 }
