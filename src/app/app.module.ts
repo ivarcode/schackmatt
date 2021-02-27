@@ -13,6 +13,7 @@ import { OpeningTrainingGameComponent } from './components/opening-training-game
 import { AboutComponent } from './components/about/about.component';
 import { BoardOverlayComponent } from './components/board-overlay/board-overlay.component';
 import { EndgameTrainerComponent } from './components/endgame-trainer/endgame-trainer.component';
+import { EndgamePuzzlesComponent } from './components/puzzles/endgame-puzzles/endgame-puzzles.component';
 
 @NgModule({
     declarations: [
@@ -25,7 +26,8 @@ import { EndgameTrainerComponent } from './components/endgame-trainer/endgame-tr
         AboutComponent,
         BoardOverlayComponent,
         EndgameTrainerComponent,
-        PuzzlesComponent
+        PuzzlesComponent,
+        EndgamePuzzlesComponent
     ],
     imports: [BrowserModule, AppRoutingModule, FormsModule],
     providers: [],

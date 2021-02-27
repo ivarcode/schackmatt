@@ -4,11 +4,16 @@ import { PuzzlesComponent } from './components/puzzles/puzzles.component';
 import { OpeningTrainingGameComponent } from './components/opening-training-game/opening-training-game.component';
 import { AboutComponent } from './components/about/about.component';
 import { EndgameTrainerComponent } from './components/endgame-trainer/endgame-trainer.component';
+import { EndgamePuzzlesComponent } from './components/puzzles/endgame-puzzles/endgame-puzzles.component';
 
 const routes: Routes = [
     {
         component: PuzzlesComponent,
         path: 'puzzles'
+    },
+    {
+        component: EndgamePuzzlesComponent,
+        path: 'endgame-puzzles'
     },
     {
         component: EndgameTrainerComponent,
@@ -23,7 +28,7 @@ const routes: Routes = [
         path: 'about'
     },
     {
-        redirectTo: 'puzzles',
+        redirectTo: 'endgame-puzzles',
         path: '**'
     }
 ];

@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    Input,
+    OnInit,
+    ViewChild
+} from '@angular/core';
 import { Game } from 'src/app/lib/game.library';
 import {
     GameConfig,
@@ -10,11 +16,9 @@ import {
     Color,
     colorToString,
     oppositeColor,
-    parseLichessStudies,
     randomNumberInclusivelyBetween
 } from 'src/app/lib/util.library';
 import { GameComponent } from '../game/game.component';
-import { basic_checkmates } from 'data/basic_checkmates.json';
 
 @Component({
     selector: 'app-puzzles',
@@ -22,7 +26,9 @@ import { basic_checkmates } from 'data/basic_checkmates.json';
     styleUrls: ['./puzzles.component.css']
 })
 export class PuzzlesComponent implements OnInit, AfterViewInit {
-    @ViewChild('gameComponent') _gameComponent: GameComponent;
+    @ViewChild('gameComponent') private _gameComponent: GameComponent;
+    @Input() private _puzzles: Puzzle[];
+
     private _gameConfig: GameConfig;
     private _game: Game;
     private _showBoardOverlay: boolean;
@@ -35,20 +41,13 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
     private _colorToPlay: Color;
 
     private _currentPuzzleIndex: number;
-    private _endgamePuzzles: Puzzle[];
     private _currentPuzzleNode: LineNode;
 
     constructor() {
         // TEMP
-        this.endgamePuzzles = parseLichessStudies(basic_checkmates);
-        this.currentPuzzleIndex = 1;
+        this.currentPuzzleIndex = 0;
 
-        this.currentPuzzleNode = this.currentPuzzle.pgn;
-
-        // console.log('endgmae puzzles', this.endgamePuzzles);
         // console.log(this.currentPuzzle);
-
-        // console.log('testing char specials', parsedStudy.pgn.comment);
 
         this._showBoardOverlay = false;
         this._gameConfig = {
@@ -74,6 +73,7 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
+        // console.log('puzzles', this.puzzles);
         this.setupPuzzle(this.currentPuzzleIndex);
     }
 
@@ -221,19 +221,24 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
     set currentPuzzleIndex(i: number) {
         this._currentPuzzleIndex = i;
     }
-    get endgamePuzzles(): Puzzle[] {
-        return this._endgamePuzzles;
+    get puzzles(): Puzzle[] {
+        return this._puzzles;
     }
-    set endgamePuzzles(puzzles: Puzzle[]) {
-        this._endgamePuzzles = puzzles;
+    set puzzles(puzzles: Puzzle[]) {
+        this._puzzles = puzzles;
     }
     get currentPuzzle(): Puzzle {
-        return this.endgamePuzzles[this.currentPuzzleIndex];
+        return this.puzzles ? this.puzzles[this.currentPuzzleIndex] : null;
     }
     get currentPuzzleNode(): LineNode {
         return this._currentPuzzleNode;
     }
     set currentPuzzleNode(node: LineNode) {
         this._currentPuzzleNode = node;
+    }
+    get currentPuzzleNodeComments(): string[] {
+        return this.currentPuzzleNode?.comment
+            ? this.currentPuzzleNode.comment
+            : [];
     }
 }
