@@ -1,3 +1,52 @@
-<p class="tactics-trainer-info">
-    Tactics trainer Page Demo
-</p>
+<div id="standard-game-container" class="row">
+    <div class="col-sm-2">
+        <ul id="sequence-list">
+            <li
+                *ngFor="let p of endgamePuzzles; index as i"
+                [class.current-puzzle]="i === currentPuzzleIndex"
+                (click)="setupPuzzle(i)"
+            >
+                <a class="sequence-link">
+                    {{ p.title }}
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-sm-10">
+        <div class="row">
+            <h2 id="title" *ngIf="currentPuzzle">
+                {{ currentPuzzle.title }}
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-sm-auto">
+                <app-board-overlay
+                    id="board-overlay"
+                    *ngIf="showBoardOverlay"
+                    [boardOverlayData]="boardOverlayData"
+                    (boardOverlayEmitter)="boardOverlayEvent($event)"
+                ></app-board-overlay>
+                <app-game
+                    #gameComponent
+                    id="game"
+                    [game]="game"
+                    [config]="gameConfig"
+                    (gameDataEmitter)="gameDataEvent($event)"
+                ></app-game>
+            </div>
+            <div class="col-sm-auto">
+                <div id="which-color-to-play-alert" class="alert alert-primary">
+                    <h4 class="alert-heading">
+                        You play {{ colorToPlayString }}
+                    </h4>
+                </div>
+                <h5
+                    *ngFor="let c of currentPuzzleNode.comment"
+                    style="width: 300px"
+                >
+                    {{ c }}
+                </h5>
+            </div>
+        </div>
+    </div>
+</div>
