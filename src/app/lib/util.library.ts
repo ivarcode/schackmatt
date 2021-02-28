@@ -120,7 +120,11 @@ export function parseLichessStudies(studies: any): Puzzle[] {
 
 export function parseLichessStudy(ls: LichessStudy): Puzzle {
     // TODO more here
-    return { FEN: ls.FEN, title: ls.Event, pgn: parsePGN(ls.pgnContent) };
+    return {
+        FEN: ls.FEN,
+        title: ls.Event.substring(ls.Event.indexOf(':') + 2),
+        pgn: parsePGN(ls.pgnContent)
+    };
 }
 
 export function parseLichessGame(lg: LichessGame): Puzzle {

@@ -3,7 +3,7 @@
 }
 
 #title {
-    margin: 50px 0 30px 50px;
+    margin: 30px 0 20px 40px;
     text-transform: uppercase;
     font-weight: 700;
     font-size: 40px;
@@ -46,7 +46,7 @@
 
 #sequence-list {
     padding: 0px;
-    margin: 50px 20px;
+    margin: 50px 0px 0px 20px;
     list-style: none;
     background-color: white;
 }

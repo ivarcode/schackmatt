@@ -87,13 +87,26 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
         this.game.loadFEN();
         this.game.updateFENPiecesPositionsFromBoard();
         this.gameComponent.initPosition = this.game.board;
+        this.game.moveHistory = [];
+
+        if (this.currentPuzzle.beginAt) {
+            // if beginAt present traverse there, else: set to beginning of pgn
+            while (
+                this.currentPuzzleNode &&
+                this.currentPuzzleNode.nextNodes[0] !==
+                    this.currentPuzzle.beginAt
+            ) {
+                this.currentPuzzleNode = this.currentPuzzleNode.nextNodes[0];
+                this.game.makeMove(this.currentPuzzleNode.move);
+                this.gameComponent.displayedMoveIndex++;
+            }
+        }
 
         this.colorToPlay = oppositeColor(this.game.turn);
         this.gameConfig.orientation = this.colorToPlay;
         this.gameConfig.restrictPieces = [this.game.turn];
 
         this.gameComponent.drawBoard();
-        this.game.moveHistory = [];
 
         setTimeout(() => {
             this.currentPuzzleNode = this.currentPuzzleNode.nextNodes[0];

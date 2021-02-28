@@ -89,5 +89,7 @@ export interface LineNode {
 export interface Puzzle {
     FEN: string;
     pgn: LineNode;
+    // if present, line begins at a specific LineNode
+    beginAt?: LineNode;
     title: string;
 }
