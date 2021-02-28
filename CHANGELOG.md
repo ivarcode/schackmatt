@@ -1,3 +1,11 @@
+### 0.4.2
+
+commit 2e5f5dd77cd3829d7a841b08c4726a98ebfc5c38
+
+Date:   Sun Feb 28 12:34:35 2021 -0500
+
+    Bugfix: canvas object event not behaving with expect offset values, causing unintended errors to get thrown.
+
 ### 0.4.1
 
 commit c939147ef819b2fba47521eb17393bba9d71196c
