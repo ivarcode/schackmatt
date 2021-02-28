@@ -491,13 +491,32 @@ export class GameComponent implements OnInit, OnChanges {
     private mouseEventOrientationResolver(event: any): any {
         // invert x,y if private input variable indicates our orientation
         // should be flipped
-        if (this.config.orientation === Color.Black) {
-            const offsetX = 640 - event.offsetX;
-            const offsetY = 640 - event.offsetY;
-            this.mouseMoveEvent({ offsetX, offsetY });
-        } else {
-            this.mouseMoveEvent(event);
+        const e = {
+            offsetX: event.offsetX,
+            offsetY: event.offsetY
+        };
+        /**
+         * keep the offset within the bounds of 1 && 640 - 1 ... canvas event
+         * objects have a tendency to spit out weird stuff sometimes, like -0
+         */
+        if (e.offsetX < 1) {
+            e.offsetX = 1;
         }
+        if (e.offsetY < 1) {
+            e.offsetY = 1;
+        }
+        if (e.offsetX > 640 - 1) {
+            e.offsetX = 640 - 1;
+        }
+        if (e.offsetY > 640 - 1) {
+            e.offsetY = 640 - 1;
+        }
+
+        if (this.config.orientation === Color.Black) {
+            e.offsetX = 640 - e.offsetX;
+            e.offsetY = 640 - e.offsetY;
+        }
+        this.mouseMoveEvent(e);
     }
 
     private mouseMoveEvent(event: any) {
