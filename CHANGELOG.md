@@ -1,3 +1,11 @@
+### 0.5.0
+
+commit ef8b00497bb7312a85191540bf87f3cbfd1c9859
+
+Date:   Mon Mar 1 23:54:29 2021 -0500
+
+    Endgame puzzles first version (one study) and finalization of base functionality
+
 ### 0.4.2
 
 commit 2e5f5dd77cd3829d7a841b08c4726a98ebfc5c38
