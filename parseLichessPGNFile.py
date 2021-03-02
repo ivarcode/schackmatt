@@ -15,8 +15,17 @@ if len(sys.argv) != 3:
 else:
     print('Located file: ' + sys.argv[1])
 
-# the encoding flag is required because PGN files are not UTF-8 by default
-f = open(sys.argv[1], 'r', encoding='utf-8')
+f = open(sys.argv[1])
+# the encoding flag might be required because PGN files are not UTF-8 by default
+try:
+    # mock attempt to interpret all lines of f
+    # will error if charmap fails
+    for line in f:
+        pass
+except:
+    f.close()
+    print('This file contains characters not encoded as UTF-8.  Encoding file and continuing execution.')
+    f = open(sys.argv[1], 'r', encoding='utf-8')
 # print(f.read())
 
 outObj = {}
