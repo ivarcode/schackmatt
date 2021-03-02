@@ -15,7 +15,8 @@ if len(sys.argv) != 3:
 else:
     print('Located file: ' + sys.argv[1])
 
-f = open(sys.argv[1], 'r')
+# the encoding flag is required because PGN files are not UTF-8 by default
+f = open(sys.argv[1], 'r', encoding='utf-8')
 # print(f.read())
 
 outObj = {}
