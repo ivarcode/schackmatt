@@ -1,5 +1,4 @@
-import { Move } from './interface.library';
-import { parsePGN } from './util.library';
+import { Move } from '../../lib/interface.library';
 
 /**
  * @description class that defines a specific sequence of moves by storing

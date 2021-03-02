@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { Exercise } from 'src/app/lib/exercises/exercise.library';
+import { Exercise } from 'src/app/components/stash/exercise.library';
 import { Game } from 'src/app/lib/game.library';
 import {
     Color,
