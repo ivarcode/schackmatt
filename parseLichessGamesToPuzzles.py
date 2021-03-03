@@ -43,25 +43,46 @@ def parseLineIntoObj(line):
             break
     obj[line[1:spaceIndex]] = line[(spaceIndex + 2):len(line) - 3]
 
+
+# def validatePotential(obj, outObj, eventIndex):
+
+
+
 pgnContent = ''
 for line in f:
-    print(line)
+    # print(line)
     if line[0] == '[':
         if pgnContent != '':
-            obj['pgnContent'] = pgnContent
+            obj['pgnContent'] = pgnContent.rstrip()
             pgnContent = ''
-            outObj[eventIndex] = obj
-            eventIndex += 1
-            obj = {}
+            if obj['Termination'] == 'Normal':
+                print('Normal termination, proceeding to look for checkmate.')
+                if obj['pgnContent'][len(obj['pgnContent']) - 5] == '#':
+                    print('\tGame terminated in checkmate. Adding to output object.')
+                    outObj[eventIndex] = obj
+                    obj = {}
+                    eventIndex += 1
+                else:
+                    print('\tGame terminated without a checkmate. Skipping.')
+            else:
+                print('Termination: ' + obj['Termination'] + '. Skipping.')
         # print(line)
         parseLineIntoObj(line)
     else:
         pgnContent += line
 
-obj['pgnContent'] = pgnContent
-outObj[eventIndex] = obj
-eventIndex += 1
-obj = {}
+obj['pgnContent'] = pgnContent.rstrip()
+if obj['Termination'] == 'Normal':
+    print('Normal termination, proceeding to look for checkmate.')
+    if obj['pgnContent'][len(obj['pgnContent']) - 5] == '#':
+        print('\tGame terminated in checkmate. Adding to output object.')
+        outObj[eventIndex] = obj
+        obj = {}
+        eventIndex += 1
+    else:
+        print('\tGame terminated without a checkmate. Skipping.')
+else:
+    print('Termination: ' + obj['Termination'] + '. Skipping.')
 
 # for the root object key, and for the filename, we want to grab this now
 filename = sys.argv[2]
