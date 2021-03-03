@@ -22,6 +22,9 @@ try:
     # will error if charmap fails
     for line in f:
         pass
+    # no error, reopen the file!
+    f.close()
+    f = open(sys.argv[1])
 except:
     f.close()
     print('This file contains characters not encoded as UTF-8.  Encoding file and continuing execution.')
