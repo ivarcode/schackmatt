@@ -1,5 +1,4 @@
 import {
-    AfterContentChecked,
     AfterViewInit,
     Component,
     Input,
