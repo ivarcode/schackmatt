@@ -1,19 +1,78 @@
-<div class="about-section">
-    <h1>About Us</h1>
-    <p>
-        Our mission is to provide a tool for chess players to learn and develop
-        their game.
-    </p>
-    <h1>Contact Us</h1>
-    <p>Dummy email</p>
-    <p>Git Repo</p>
+<div class="row about-section">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-5">
+        <h3>Our Mission</h3>
+        <h6>
+            The goal of Chess Trainer Hub is to help players of all levels
+            improve their chess skills through pattern recognition, repetition
+            and challenging puzzles via an interactive chess board.
+        </h6>
+        <h3>How It Works</h3>
+        <h6>
+            Chess Trainer Hub is built around lessons and practice scenarios.
+            Players will be able to learn the concepts and material and then
+            proceed to play those scenarios out in the interface.
+        </h6>
+        <h6>
+            This will help to learn and understand the main idea, but be able to
+            see the position played out in multiple scenarios.
+        </h6>
+        <h6>
+            Understanding the theory is one thing, but being able to identify
+            and execute the winning plan is how you improve.
+        </h6>
+    </div>
+    <div class="col-sm-1"></div>
+    <div class="col-sm-4">
+        <h3>Feedback</h3>
+        <h6>
+            The Hub is in a state of continuous optimization. We’re always
+            looking for feedback from users.
+            <ul>
+                <li>Are there specific lessons you’d like to see covered?</li>
+                <li>
+                    Is there a specific feature you’d like to see added to the
+                    Hub?
+                </li>
+                <li>
+                    Is there a bug that is interfering with your ability to
+                    complete a lesson or puzzle?
+                </li>
+            </ul>
+            Email us, we appreciate your help!
+        </h6>
+        <h3>Contact Us</h3>
+        <h6>
+            Email our marketing guy, Nick, at
+            <a href="nickgroh5375@gmail.com">nickgroh5375@gmail.com</a>!
+        </h6>
+    </div>
+    <div class="col-sm-1"></div>
 </div>
 
-<h2 class="ourTeamStyling" style="text-align: center;">Our Team</h2>
-<div class="container">
-    <div class="row">
-        <div *ngFor="let staff of staffMembers" class="col-sm-4">
-            <div class="card">
+<div class="row our-team-section">
+    <div class="col-sm-12"><h2>Our Team</h2></div>
+    <div class="col-sm-2"></div>
+    <div *ngFor="let staff of staffMembers" class="col-sm-4">
+        <div style="margin-right: auto; margin-left: auto">
+            <img src="{{ staff.url }}" alt="staff image" />
+        </div>
+        <h4>{{ staff.name }}</h4>
+        <h5>{{ staff.title }}</h5>
+        <p>{{ staff.bio }}</p>
+        <p>
+            lichess.org ::
+            <a href="https://lichess.org/@/{{ staff.lichess }}" target="_blank"
+                >@{{ staff.lichess }}</a
+            >
+        </p>
+        <p>
+            discord ::
+            <a href="{{ staff.discordLink }}" target="_blank"
+                >@{{ staff.discord }}</a
+            >
+        </p>
+        <!-- <div class="card">
                 <img src="{{ staff.url }}" />
                 <img class="img-top" src="{{ staff.goofyUrl }}" />
                 <div>
@@ -22,7 +81,7 @@
                     <p>{{ staff.bio }}</p>
                     <p>Discord Handle: {{ staff.discord }}</p>
                 </div>
-            </div>
-        </div>
+            </div> -->
     </div>
+    <div class="col-sm-2"></div>
 </div>
