@@ -1,5 +1,6 @@
 #standard-game-container {
     margin: 0px;
+    max-height: calc(100vh - 80px);
 }
 
 #title {
@@ -41,28 +42,31 @@
 }
 
 .col-sm-2 {
+    height: inherit;
     padding: 0px;
 }
 
-#sequence-list {
+#puzzle-list {
     padding: 0px;
     margin: 50px 0px 0px 20px;
     list-style: none;
     background-color: white;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
-#sequence-list li {
+#puzzle-list li {
     text-align: center;
     padding: 5px;
     border: black 1px solid;
 }
 
-#sequence-list li:not(.current-puzzle):hover {
+#puzzle-list li:not(.current-puzzle):hover {
     background-color: lightgray;
     cursor: pointer;
 }
 
-.sequence-link {
+.puzzle-link {
     cursor: pointer;
     font-size: 18px;
 }

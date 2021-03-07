@@ -1,0 +1,23 @@
+{
+    "example": {
+        "0": {
+            "Event": "Weekly HyperBullet Arena",
+            "Site": "https://lichess.org/Itis05Id",
+            "Date": "2019.10.26",
+            "White": "ivarcode",
+            "Black": "Maykopchanin",
+            "Result": "0-1",
+            "UTCDate": "2019.10.26",
+            "UTCTime": "18:09:19",
+            "WhiteElo": "2065",
+            "BlackElo": "2342",
+            "WhiteRatingDiff": "-2",
+            "BlackRatingDiff": "+2",
+            "Variant": "Standard",
+            "TimeControl": "30+0",
+            "ECO": "A00",
+            "Termination": "Normal",
+            "pgnContent": "\n1. g3 d6 2. Bg2 Nd7 3. Nf3 c6 4. O-O Qc7 5. c4 Ne5 6. Nc3 Nxf3+ 7. Bxf3 e5 8. d4 Be7 9. dxe5 dxe5 10. Bd2 Nf6 11. e4 O-O 12. Re1 Re8 13. Be3 Be6 14. Qc2 Rad8 15. Rad1 b6 16. c5 Nd7 17. cxb6 axb6 18. Na4 c5 19. a3 Nb8 20. Nc3 Nc6 21. Nd5 Qb8 22. Bd2 Nd4 23. Qd3 Bxd5 24. exd5 f5 25. Bg2 e4 26. Qc3 Bf6 27. Qc4 Qd6 28. Bc3 b5 29. Qa2 Qxd5 30. Qxd5+ Rxd5 31. Bxd4 cxd4 32. f3 e3 33. Re2 Rd6 34. Rc2 d3 35. Re2 dxe2 36. Re1 Rd1 37. f4 Rxe1+ 38. Bf1 Rxf1+ 39. Kg2 e1=Q 40. Kh3 Qf2 41. g4 Rh1 42. g5 Rxh2# 0-1"
+        }
+    }
+}
