@@ -55,6 +55,21 @@
     overflow-y: auto;
 }
 
+/* apparently, you need the basic call first to even make it register 
+    any -thumb -track... 
+*/
+#puzzle-list::-webkit-scrollbar {
+    width: 1em;
+}
+
+#puzzle-list::-webkit-scrollbar-thumb {
+    background-color: rgb(101, 101, 101);
+}
+
+#puzzle-list::-webkit-scrollbar-track {
+    background-color: rgb(181, 181, 181);
+}
+
 #puzzle-list li {
     text-align: center;
     padding: 5px;
