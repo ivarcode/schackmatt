@@ -1,0 +1,4 @@
+{
+    "devServerIP": "ec2user@{{ IP ADDRESS HERE }}",
+    "prodServerIP": "ec2user@{{ IP ADDRESS HERE }}"
+}
