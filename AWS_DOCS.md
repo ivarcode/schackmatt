@@ -37,5 +37,5 @@ server {
 Then from `git/schackmatt`
 
 -   Run whatever build script to put content in the `dist/` folder
--   `ssh -i "../../Google Drive/cwagner0" ec2-user@ec2-3-133-108-43.us-east-2.compute.amazonaws.com "sudo rm -rf /usr/share/nginx/schackmatt/*"`
+-   `ssh -i ./path_to/ssh_key ec2-user@ec2-3-133-108-43.us-east-2.compute.amazonaws.com "sudo rm -rf /usr/share/nginx/schackmatt/*"`
 -   `scp -r -i ./path_to/ssh_key ./dist/schackmatt/ ec2-user@ec2-3-133-108-43.us-east-2.compute.amazonaws.com:/usr/share/nginx`
