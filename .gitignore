@@ -45,3 +45,6 @@ Thumbs.db
 
 # scraps file
 scraps.txt
+
+# ssh keys
+/sshkeys
