@@ -74,9 +74,9 @@ Contains information about each version of the code.
 
 Run the respective shell script to bump a version `[ major | minor | patch ]`
 
-`sh bump-major.sh`
-`sh bump-minor.sh`
-`sh bump-patch.sh`
+`bash bump-major.sh`
+`bash bump-minor.sh`
+`bash bump-patch.sh`
 
 Write a description of the new version when prompted. The single line of text you enter will be written to `CHANGELOG.md` for a record of what the version changed in the code.
 
