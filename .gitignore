@@ -48,3 +48,6 @@ scraps.txt
 
 # ssh keys
 /sshkeys
+
+# deployment config
+config.json
