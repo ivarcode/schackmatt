@@ -50,4 +50,4 @@ scraps.txt
 /sshkeys
 
 # deployment config
-config.json
+/conf
