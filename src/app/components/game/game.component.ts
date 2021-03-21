@@ -74,6 +74,12 @@ export class GameComponent implements OnInit, OnChanges {
         color: string;
         lineWidth: number;
     }[];
+    private drawnArrows: {
+        src: Square;
+        dest: Square;
+        color: string;
+        lineWidth: number;
+    }[];
     private isPromoting: boolean;
     private matchingMoves: any[];
     private _initPosition: Board;
@@ -108,6 +114,7 @@ export class GameComponent implements OnInit, OnChanges {
         };
         this.tintSqFromMouseObjects = [];
         this.drawnCircles = [];
+        this.drawnArrows = [];
         this.tintSqData = [];
         this.isPromoting = false;
         this.matchingMoves = [];
@@ -1012,5 +1019,72 @@ export class GameComponent implements OnInit, OnChanges {
     }
     get boardCtx(): any {
         return this._boardCtx;
+    }
+
+    private drawArrows(): void {
+        this.boardCtx.globalAlpha = 0.5;
+        for (const arrow of this.drawnArrows) {
+            const fromX = arrow.src.file * 80 + 40;
+            const fromY = arrow.src.rank * 80 + 40;
+            const toX = arrow.dest.file * 80 + 40;
+            const toY = arrow.dest.rank * 80 + 40;
+            const color = arrow.color;
+            // pointer displacement from the center
+            const displacement = arrow.displacement;
+            // radius of the circumcircle of the triangle pointer
+            const r = arrow.pointerSize;
+            const lineWidth = arrow.lineWidth;
+            this.drawArrow(
+                fromX,
+                fromY,
+                toX,
+                toY,
+                color,
+                displacement,
+                r,
+                lineWidth
+            );
+        }
+    }
+
+    private drawArrow(
+        fromX: number,
+        fromY: number,
+        toX: number,
+        toY: number,
+        color: string,
+        displacement: number,
+        r: number,
+        lineWidth: number
+    ): void {
+        // imaginary triangle - hypotenuse goes from origin sq to dest sq
+        const angle = Math.atan2(toY - fromY, toX - fromX);
+        const hypotenuse =
+            Math.sqrt((toX - fromX) ** 2 + (toY - fromY) ** 2) + displacement;
+
+        // save the state of the canvas first then perform transformations
+        this.boardCtx.save();
+        this.boardCtx.translate(fromX, fromY);
+        this.boardCtx.rotate(angle);
+
+        // draws the line
+        this.boardCtx.beginPath();
+        this.boardCtx.moveTo(0, 0);
+        this.boardCtx.lineTo(hypotenuse - r, 0);
+        this.boardCtx.lineWidth = lineWidth;
+        this.boardCtx.strokeStyle = color;
+        this.boardCtx.stroke();
+
+        // draws the triangle pointer
+        this.boardCtx.beginPath();
+        this.boardCtx.lineTo(hypotenuse - r, r);
+        this.boardCtx.lineTo(hypotenuse, 0);
+        this.boardCtx.lineTo(hypotenuse - r, -r);
+        this.boardCtx.fillStyle = color;
+        this.boardCtx.fill();
+        this.boardCtx.translate(0, 0);
+
+        // finally restore the state of the canvas
+        this.boardCtx.restore();
     }
 }
