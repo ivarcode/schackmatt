@@ -161,6 +161,11 @@ export class GameComponent implements OnInit, OnChanges {
                 // left button
                 this.cursor.leftMouseIsDown = true;
 
+                // clear arrows and circles
+                this.drawnArrows = [];
+                this.drawnCircles = [];
+                this.drawBoard();
+
                 if (this.cursor.overSquare) {
                     this.cursor.mouseDownOn = this.cursor.overSquare;
                     if (!this.isPromoting) {
@@ -387,6 +392,35 @@ export class GameComponent implements OnInit, OnChanges {
                     this.drawBoard();
                 } else {
                     // arrow
+                    const newArrow = {
+                        src: new Square(
+                            this.cursor.mouseDownOn.x,
+                            this.cursor.mouseDownOn.y
+                        ),
+                        dest: new Square(
+                            this.cursor.mouseUpOn.x,
+                            this.cursor.mouseUpOn.y
+                        ),
+                        color: '#15781B',
+                        lineWidth: 5
+                    };
+                    // find index of a arrow that matches, that may or may not
+                    // already exist
+                    const index = this.drawnArrows.findIndex(
+                        (arrow) =>
+                            arrow.src.toString() === newArrow.src.toString() &&
+                            arrow.dest.toString() === newArrow.dest.toString()
+                    );
+                    let unique = true;
+                    // delete if arrow already exists, else add a new arrow
+                    if (index !== -1) {
+                        this.drawnArrows.splice(index, 1);
+                        unique = false;
+                    }
+                    if (unique) {
+                        this.drawnArrows.push(newArrow);
+                    }
+                    this.drawBoard();
                 }
             }
         };
@@ -755,6 +789,7 @@ export class GameComponent implements OnInit, OnChanges {
         }
 
         this.drawCircles();
+        this.drawArrows();
 
         this.boardCtx.globalAlpha = 1;
         if (
@@ -1030,9 +1065,9 @@ export class GameComponent implements OnInit, OnChanges {
             const toY = arrow.dest.rank * 80 + 40;
             const color = arrow.color;
             // pointer displacement from the center
-            const displacement = arrow.displacement;
+            const displacement = -5;
             // radius of the circumcircle of the triangle pointer
-            const r = arrow.pointerSize;
+            const r = 25;
             const lineWidth = arrow.lineWidth;
             this.drawArrow(
                 fromX,
