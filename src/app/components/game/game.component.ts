@@ -185,31 +185,6 @@ export class GameComponent implements OnInit, OnChanges {
                 }
                 // logic for right mouse pressed DOWN event here
                 this.cursor.draggedPieceIndex = -1;
-                const newCircle = {
-                    square: new Square(
-                        this.cursor.mouseDownOn.x,
-                        this.cursor.mouseDownOn.y
-                    ),
-                    color: '#15781B',
-                    lineWidth: 5
-                };
-                // find index of a circle that matches, that may or may not
-                // already exist
-                const index = this.drawnCircles.findIndex(
-                    (circle) =>
-                        circle.square.toString() === newCircle.square.toString()
-                );
-                let unique = true;
-                // delete if circle already exists, otherwise add a new circle
-                if (index !== -1) {
-                    this.drawnCircles.splice(index, 1);
-                    unique = false;
-                }
-                if (unique) {
-                    this.drawnCircles.push(newCircle);
-                }
-
-                this.drawBoard();
             }
         };
         this._mouseUpEventListener = (event: any) => {
@@ -371,8 +346,41 @@ export class GameComponent implements OnInit, OnChanges {
             } else if (event.which === 3) {
                 // right button
                 this.cursor.rightMouseIsDown = false;
+                this.cursor.mouseUpOn = this.cursor.overSquare;
 
-                // right mouse RELEASE logic here
+                if (
+                    this.cursor.mouseDownOn.x === this.cursor.mouseUpOn.x &&
+                    this.cursor.mouseDownOn.y === this.cursor.mouseUpOn.y
+                ) {
+                    // circle
+                    const newCircle = {
+                        square: new Square(
+                            this.cursor.mouseDownOn.x,
+                            this.cursor.mouseDownOn.y
+                        ),
+                        color: '#15781B',
+                        lineWidth: 5
+                    };
+                    // find index of a circle that matches, that may or may not
+                    // already exist
+                    const index = this.drawnCircles.findIndex(
+                        (circle) =>
+                            circle.square.toString() ===
+                            newCircle.square.toString()
+                    );
+                    let unique = true;
+                    // delete if circle already exists, else add a new circle
+                    if (index !== -1) {
+                        this.drawnCircles.splice(index, 1);
+                        unique = false;
+                    }
+                    if (unique) {
+                        this.drawnCircles.push(newCircle);
+                    }
+                    this.drawBoard();
+                } else {
+                    // arrow
+                }
             }
         };
         // console.log(this.game.toString());
