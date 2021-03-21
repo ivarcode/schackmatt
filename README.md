@@ -95,7 +95,7 @@ Run `bash dev-deploy.sh` to move the old files from the development server to a 
 
 #### Production Server
 
-There is currently no production build process. More details about this to come.
+There is currently no production deployment script. More details about this to come.
 
 ### [Developer Discord Server](https://discord.gg/uruXya4)
 
