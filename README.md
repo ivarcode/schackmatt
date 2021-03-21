@@ -8,16 +8,17 @@ Dev: https://schackmatt.net/
 
 #### Setup & Getting Started
 
--   fork repo to your account or organization
--   clone repository to your machine
--   install node https://nodejs.org/en/download/
--   install python https://www.python.org/downloads/ to use `.py` scripts in this project
-    -   be sure to add python to the path on Windows so you can run commands from the command line (check the box "Add python _version_ to PATH" in the installer)
--   navigate to the clone repo root in your preferred terminal; eg. `cd ~./git/schackmatt`
--   run `npm i` to install necessary packages (this might take some time)
--   run `npm audit` to ensure no critical vulnerabilities (this will make changes to `package.json` and `package-lock.json`)
-    -   run `npm audit fix` if there are any, this should usually resolve those vulnerabilities
-    -   if not, please open an issue and request my (@ivarcode's) assistance - sometimes dependency upon a backdated package can conflict with requirements for newer releases of packages it might require
+-   Fork repo to your account or organization
+-   Clone repository to your machine
+-   Install node https://nodejs.org/en/download/
+-   Install python https://www.python.org/downloads/ to use `.py` scripts in this project
+    -   Be sure to add python to the path on Windows so you can run commands from the command line (check the box "Add python _version_ to PATH" in the installer)
+-   Note: some scripts in this project are `.sh` executables, you will need to be in a terminal that supports this if you are developing on Windows (eg. git bash).
+-   Navigate to the clone repo root in your preferred terminal; eg. `cd ~./git/schackmatt`
+-   Run `npm i` to install necessary packages (this might take some time)
+-   Run `npm audit` to ensure no critical vulnerabilities (this will make changes to `package.json` and `package-lock.json`)
+    -   Run `npm audit fix` if there are any, this should usually resolve those vulnerabilities
+    -   If not, please open an issue and request my (@ivarcode's) assistance - sometimes dependency upon a backdated package can conflict with requirements for newer releases of packages it might require
 
 #### To start the local server
 
@@ -31,12 +32,12 @@ If you don't...
 
 Should be on localhost:4200/
 
-#### To build out to `/dist`
+#### To build out to `dist/`
 
 `npm run build`
 
--   run `npm run build-watch` to build and then rebuild the project to the output folder when relevant files are modified
--   run `npm run build-prod` to build on a production machine (_Windows batch script_ that moves relevant web configuration files after normal build process)
+-   Run `npm run build-watch` to build and then rebuild the project to the output folder when relevant files are modified
+-   Run `npm run build-prod` to build on a production machine (_Windows batch script_ that moves relevant web configuration files after normal build process)
 
 #### To set the upstream (might exist by default)
 
@@ -80,7 +81,21 @@ Run the respective shell script to bump a version `[ major | minor | patch ]`
 
 Write a description of the new version when prompted. The single line of text you enter will be written to `CHANGELOG.md` for a record of what the version changed in the code.
 
-Note: these scripts are `.sh` executables, you will need to be in a terminal that supports this if you are developing on Windows (eg. git bash).
+### Deployment
+
+#### SSH Keys
+
+The existing deployment script/s expect the `cwagner0` ssh private key to live `../../sshkeys/` in relation to this repository. The scripts can be edited to change that expectation but for the time being (until we need multiple people to hold deployment ssh keys) this documentation is strictly for me.
+
+#### Dev Server
+
+Build the project using `npm run build` to generate the latest version of the code into `dist/`.
+
+Run `bash dev-deploy.sh` to move the old files from the development server to a separate backup directory on the host, and replace those files with the current `dist/` build.
+
+#### Production Server
+
+There is currently no production build process. More details about this to come.
 
 ### [Developer Discord Server](https://discord.gg/uruXya4)
 
