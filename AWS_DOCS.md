@@ -11,7 +11,7 @@ Spin an Amazon EC2 instance. Use an Amazon Linux machine optimized for EC2.
 
 SSH into instance
 
-`ssh -i ./path_to/ssh_key ec2-user@ec2-3-133-108-43.us-east-2.compute.amazonaws.com`
+`ssh -i ./path_to/ssh_key ec2-user@ec2HOSTNAME`
 
 Use the following commands to install nginx and prepare a webserver on the Linux instance.
 
@@ -32,10 +32,18 @@ server {
 ```
 
 -   `sudo nginx -s reload` to reload server with new configurations
--   `sudo chown -R ec2-user /usr/share/nginx/schackmatt/` to give `ec2-user` r/w rights
+-   Create two new directories `schackmatt/` and `last_version_schackmatt/` in `/usr/share/nginx`
+-   Use `chown` to give `ec2-user` r/w rights to both directories
+    -   eg. `sudo chown -R ec2-user /usr/share/nginx/schackmatt/`
 
 Then from `git/schackmatt`
 
 -   Run whatever build script to put content in the `dist/` folder
--   `ssh -i ./path_to/ssh_key ec2-user@ec2-3-133-108-43.us-east-2.compute.amazonaws.com "sudo rm -rf /usr/share/nginx/schackmatt/*"`
--   `scp -r -i ./path_to/ssh_key ./dist/schackmatt/ ec2-user@ec2-3-133-108-43.us-east-2.compute.amazonaws.com:/usr/share/nginx`
+-   Run the dev server deployment script
+
+`bash dev-deploy.sh`
+
+-   OR run the commands manually like so:
+    -   `ssh -i ./path_to/ssh_key ec2-user@ec2HOSTNAME "sudo rm -rf /usr/share/nginx/last_version_schackmatt/*"`
+    -   `ssh -i ./path_to/ssh_key ec2-user@ec2HOSTNAME "sudo mv /usr/share/nginx/schackmatt/* /usr/share/nginx/last_version_schackmatt/"`
+    -   `scp -r -i ./path_to/ssh_key ./dist/schackmatt/ ec2-user@ec2HOSTNAME:/usr/share/nginx`
