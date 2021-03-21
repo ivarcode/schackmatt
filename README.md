@@ -83,9 +83,18 @@ Write a description of the new version when prompted. The single line of text yo
 
 ### Deployment
 
-#### SSH Keys
+#### Setup
 
 The existing deployment script/s expect the `cwagner0` ssh private key to live `../../sshkeys/` in relation to this repository. The scripts can be edited to change that expectation but for the time being (until we need multiple people to hold deployment ssh keys) this documentation is strictly for me.
+
+Deployment configuration is expected to live in this file `conf/deploymentConfig.json`. The entire `conf/` directory is in `.gitignore` so it will not come down with your clone. If need be, create this file and fill it with the following:
+
+```
+{
+    "devServerIP": "ec2-user@{{ IP ADDRESS HERE }}",
+    "prodServerIP": "ec2-user@{{ IP ADDRESS HERE }}"
+}
+```
 
 #### Dev Server
 
