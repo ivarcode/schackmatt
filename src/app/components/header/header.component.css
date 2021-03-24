@@ -31,13 +31,26 @@
     transition-duration: 0.4s;
     text-decoration-color: white;
 }
+
+.nav-link {
+    color: white;
+}
+
+.dropdown-item {
+    background-color: #111111 !important;
+}
+
 .button:hover,
-.nav-link.active {
+.nav-link.active,
+.dropdown-item:hover {
     border-color: #ff4656 !important;
 }
 
 nav {
     height: 80px;
+}
+nav,
+.dropdown-menu {
     background-color: #111111;
 }
 

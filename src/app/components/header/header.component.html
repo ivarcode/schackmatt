@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm navbar-light">
+<nav class="navbar navbar-expand-sm">
     <svg viewBox="0 0 2 2" class="navbar-logo">
         <rect x="0" fill="#fff" y="0" width="1" height="1"></rect>
         <rect x="1" fill="#fff" y="1" width="1" height="1"></rect>
@@ -23,21 +23,41 @@
                     >Home <span class="sr-only">(current)</span></a
                 >
             </li> -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a
                 routerLink="/endgame-puzzles"
                 routerLinkActive="active"
                 class="button nav-link"
-                style="color: white"
                 >Endgame Puzzles
             </a>
+        </li> -->
+        <li class="nav-item dropdown">
+            <a
+                class="button nav-link dropdown-toggle"
+                routerLinkActive="active"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+            >
+                Courses
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a routerLink="/endgame-puzzles" class="dropdown-item nav-link"
+                    >Rook Endgames</a
+                >
+                <!-- <a class="dropdown-item" href="#">Another action</a> -->
+                <!-- <div class="dropdown-divider"></div> -->
+                <!-- <a class="dropdown-item" href="#">Something else here</a> -->
+            </div>
         </li>
         <!-- <li class="nav-item">
             <a
                 routerLink="/endgame-trainer"
                 routerLinkActive="active"
                 class="button nav-link"
-                style="color: white"
                 >Endgame Trainer
             </a>
         </li>
@@ -46,7 +66,6 @@
                 routerLink="/opening-training-game"
                 routerLinkActive="active"
                 class="button nav-link"
-                style="color: white"
                 >Opening Trainer <sup>BETA</sup>
             </a>
         </li> -->
@@ -58,7 +77,6 @@
                 routerLink="/about"
                 routerLinkActive="active"
                 class="button nav-link"
-                style="color: white"
                 >About
             </a>
         </li>
