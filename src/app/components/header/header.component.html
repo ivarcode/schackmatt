@@ -46,18 +46,18 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a
-                    routerLink="/endgame-puzzles?set=endgame_checkmates"
+                    [routerLink]="['endgame-puzzles']"
+                    [queryParams]="{ set: 'endgame_checkmates' }"
                     class="dropdown-item nav-link"
                     >Endgame Checkmates</a
                 ><a
-                    routerLink="/endgame-puzzles?set=queen_endgames"
+                    [routerLink]="['endgame-puzzles']"
+                    [queryParams]="{ set: 'queen_endgames' }"
                     class="dropdown-item nav-link"
                     >Queen Endgames</a
                 ><a
-                    [routerLink]="[
-                        '/endgame-puzzles',
-                        { set: 'pawn_endgames' }
-                    ]"
+                    [routerLink]="['endgame-puzzles']"
+                    [queryParams]="{ set: 'pawn_endgames' }"
                     class="dropdown-item nav-link"
                     >Pawn Endgames</a
                 >
