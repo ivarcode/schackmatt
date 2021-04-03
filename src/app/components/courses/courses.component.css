@@ -45,3 +45,7 @@
 .cards .card:hover p {
     color: #f5f2ee;
 }
+
+.show {
+    display: none;
+}

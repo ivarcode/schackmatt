@@ -1,0 +1,17 @@
+<div id="course-cards" class="cards" [class.show]="lessons.length !== 0">
+    <a
+        *ngFor="let entry of courseKey"
+        [routerLink]="['courses']"
+        [queryParams]="entry[0]"
+        class="card"
+    >
+        <h2>{{ entry[1] }}</h2>
+        <p>This is a very simple, yet effective description.</p>
+    </a>
+</div>
+
+<app-puzzles
+    #puzzlesComponent
+    [_puzzles]="lessons"
+    [class.show]="lessons.length === 0"
+></app-puzzles>
