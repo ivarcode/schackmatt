@@ -1,0 +1,111 @@
+[Event "Hub - Queen Endgames: Queen - Stopping an advanced pawn on 6th"]
+[Site "https://lichess.org/study/mj9fmIRM/YIe9dKC2"]
+[Result "*"]
+[UTCDate "2021.03.04"]
+[UTCTime "21:33:36"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "Q7/1K6/8/8/1k6/4p3/8/8 b - - 0 1"]
+[SetUp "1"]
+
+{ [%csl Ge1] }
+1... Kc3 { Queen must get in front of the pawn. Then it doesn't matter if it gets to the 7th because it cannot progress further.
+Begin by "skewering" the king to the e1 square with Qa5. } { [%csl Ga8,Ge3,Ge1] } 2. Qa5+ Kd3 { We must occupy the squares in front of the pawn to easily win. } 3. Qe1 e2 { White just needs to bring the king closer now. Move towards the pawn as quick as you can. } 4. Kc6 Ke3 { Move towards the pawn as quick as you can. } 5. Kd5 Kf3 { Move closer to the pawn } 6. Kd4 Kf4 7. Qxe2 *
+
+
+[Event "Hub - Queen Endgames: Queen - Stopping Rook pawn on 6th"]
+[Site "https://lichess.org/study/mj9fmIRM/OkrUAPJ0"]
+[Result "*"]
+[UTCDate "2021.03.04"]
+[UTCTime "21:42:37"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "1K6/8/8/1Q6/8/7p/8/5k2 b - - 0 1"]
+[SetUp "1"]
+
+1... Kg1 { If the pawn is on the 6th rank, there is still time to stop the pawn even if you cannot get in front of it. Even with the king so far away, you can utilize checkmate patterns to force the win.
+Check the king on g5. } 2. Qg5+ Kh1 { Check the king on d5 } 3. Qd5+ Kg1 { Start moving closer with your checks with d4. } 4. Qd4+ Kh1 { If the king goes to the corner like this, you can force the win by forcing him to move his pawn. The extra tempo spells his doom. } 5. Qf2 h2 { Finish the game with checkmate in 1 } 6. Qf1# *
+
+
+[Event "Hub - Queen Endgames: Queen - Stopping e pawn on 7th"]
+[Site "https://lichess.org/study/mj9fmIRM/3W6Tz47n"]
+[Result "*"]
+[UTCDate "2021.03.04"]
+[UTCTime "21:45:13"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "K7/1Q6/8/8/8/4k3/4p3/8 b - - 0 1"]
+[SetUp "1"]
+
+1... Kd2 { In this scenarios, it is a win with proper play if the pawn is on the b, d, e, or g files. It is a draw if the pawn is on the a, c, f, or h files because of stalemate techniques.
+Begin by checking on b4. } { [%csl Ga8,Gb2,Gd2,Ge2,Gg2][%cal Gd2e1] } 2. Qb4+ (2. Qh1 e1=Q) 2... Kd1 { Check on d4. } 3. Qd4+ Kc2 { Attack the pawn and force the king to stay close to it. } 4. Qe3 Kd1 { Force the king in front of the pawn } 5. Qd3+ { [%csl Gb2,Gd2,Ge2,Gg2,Ra2,Rc2,Rf2,Rh2][%cal Ga8b7] } 5... Ke1 { Now with the king in front of the pawn, move your king closer } 6. Kb7 Kf2 { repeat the steps. keep the king in front of the pawn by pinning the pawn or checking.
+Start with Qd2 } 7. Qd2 Kf1 { Check the king } 8. Qf4+ Kg1 { Check the king } 9. Qe3+ Kf1 10. Qf3+ Ke1 { Move the king closer } 11. Kc6 Kd2 { Repeat the moves by pinning the pawn to the king } 12. Qf2 { [%cal Gd2e1,Gd5c4,Gc4d3,Gd3e3,Gc6e4] } 12... Kd1 13. Qd4+ Kc1 14. Qe3+ Kd1 15. Qd3+ Ke1 { move the king closer } 16. Kd5 Kf2 { Repeat the moves by pinning the pawn to the king } 17. Qd2 Kf1 18. Qf4+ Kg2 19. Qe3 Kf1 20. Qf3+ Ke1 { Let's play Ke4 to bring the king closer. } 21. Ke4 Kd2 22. Qd3+ Ke1 { Bring the king closer on f3 } 23. Kf3 Kf1 24. Qxe2+ Kg1 25. Qg2# *
+
+
+[Event "Hub - Queen Endgames: Queen - Pawn on f file 7th rank"]
+[Site "https://lichess.org/study/mj9fmIRM/68TwY3tn"]
+[Result "*"]
+[UTCDate "2021.03.04"]
+[UTCTime "21:51:03"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "KQ6/8/8/8/8/8/5p2/5k2 b - - 0 1"]
+[SetUp "1"]
+
+1... Ke2 { Because the pawn is on the f file, there are stalemate tricks. White begins by trying the same tactics as last time.
+Let's see what happens by playing Qb5 } 2. Qb5+ Ke1 { Play Qe5 } 3. Qe5+ Kd2 { play Qd4 to bring the queen closer } 4. Qd4+ Ke1 { Play qe3 } 5. Qe3+ Kf1 { Bring your king closer } 6. Kb7 Kg2 { Let's try the same method as before starting by pinning the pawn. } 7. Qe2 Kg1 8. Qg4+ Kh2 9. Qf3 Kg1 10. Qg3+ Kh1 { Now the pawn cannot be capture of the game ends in a stalemate. } 11. Qxf2 { [%csl Gc2,Gf2] } *
+
+
+[Event "Hub - Queen Endgames: Queen - Pawn on h file 7th rank"]
+[Site "https://lichess.org/study/mj9fmIRM/7ZdpufkD"]
+[Result "*"]
+[UTCDate "2021.03.04"]
+[UTCTime "21:53:35"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "KQ6/8/8/8/8/8/7p/7k b - - 0 1"]
+[SetUp "1"]
+
+1... Kg2 { Let's see if we can win with the pawn on the h file. Bring your queen to b2 } 2. Qb2+ Kg1 { Check on a1 } 3. Qa1+ Kg2 { check on g7 } 4. Qg7+ Kh1 { No progress can be made by the king since black is out of moves.
+Zig zag your queen down to the king to see if we can win if we're closer. Move to h6 } 5. Qh6 Kg2 { move to g5 } 6. Qg5+ Kh1 { move to h4 } 7. Qh4 Kg2 { check on g4 } 8. Qg4+ Kh1 { check on f3 } 9. Qf3+ Kg1 { check on g1 } 10. Qd1+ Kg2 { There is no way to make progress. If the king comes closer, then black is out of moves. He can hide in the corner forever. } *
+
+
+[Event "Hub - Queen Endgames: Queen - Exception 2: a, c, f, and h files - If the king is close enough"]
+[Site "https://lichess.org/study/mj9fmIRM/zaHcDHNR"]
+[Result "*"]
+[UTCDate "2021.03.04"]
+[UTCTime "21:56:41"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "6K1/8/7P/8/6k1/8/8/1q6 w - - 0 1"]
+[SetUp "1"]
+
+1. h7 { To win the game, the king needs to be in a specific zone where it it two squares away from g6. } 1... Qg6+ 2. Kh8 { Check the king on e8. } 2... Qe8+ { [%csl Gh7,Gf7,Gc7,Ga7,Ga1,Gg4] } 3. Kg7 { Get your queen to the 7th rank and one square away from the king. } 3... Qe7+ 4. Kg8 { Now we need to get our king to g6 in two moves. } { [%csl Gg4] } 4... Kf5 (4... Kg5 5. h8=Q Kg6 6. Qh1 Qg7# (6... Qd8#)  (6... Qe8#)) 5. h8=Q { Oh no he has promoted! However, the queen in the corner is of no use } 5... Kg6 6. Qh1 Qg7# (6... Qe8#)  (6... Qd8#) *
+
+
+[Event "Hub - Queen Endgames: Queen - Exception 1: a, c, f, and h files - If there is an extra tempo"]
+[Site "https://lichess.org/study/mj9fmIRM/rTIFLVWt"]
+[Result "*"]
+[UTCDate "2021.03.04"]
+[UTCTime "21:58:42"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "2K5/P7/7P/8/2q5/8/8/6k1 w - - 0 1"]
+[SetUp "1"]
+
+1. Kb8 { In this scenario, white has an extra tempo, meaning we can force a win if we get the king to the corner.
+Start with Qb5 } 1... Qb5+ 2. Ka8 { play Qa6, threatening checkmate in one } 2... Qa6 3. Kb8 { Play qb6 } 3... Qb6+ 4. Ka8 { set up the mate in 2 by playing Qc7. } 4... Qc7 { This would have been a stalemate if the h pawn didn't exist. However, this gives white a forced move and forces checkmate with one tempo to spare. } 5. h7 Qc8# *
