@@ -74,7 +74,9 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit() {
         // console.log('puzzles', this.puzzles);
-        this.setupPuzzle(this.currentPuzzleIndex);
+        if (this.puzzles.length !== 0) {
+            this.setupPuzzle(this.currentPuzzleIndex);
+        }
     }
 
     public setupPuzzle(puzzleIndex: number): void {

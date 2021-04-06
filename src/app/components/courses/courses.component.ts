@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { endgame_checkmates } from 'data/endgame_checkmates.json';
 import { queen_endgames } from 'data/queen_endgames.json';
 import { pawn_endgames } from 'data/pawn_endgames.json';
 import { Puzzle } from 'src/app/lib/interface.library';
 import { parseLichessStudies } from 'src/app/lib/util.library';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PuzzlesComponent } from '../puzzles/puzzles.component';
 
 @Component({
     selector: 'app-courses',
@@ -12,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     styleUrls: ['./courses.component.css']
 })
 export class CoursesComponent implements OnInit {
+    @ViewChild('puzzlesComponent') private _puzzlesComponent: PuzzlesComponent;
     private _lessons: Puzzle[];
     public courseKey: [{}, string][];
     private studyObjects = {
@@ -44,6 +46,16 @@ export class CoursesComponent implements OnInit {
                 this.lessons = parseLichessStudies(
                     this.studyObjects[paramString]
                 );
+                console.log(
+                    'afasdf',
+                    this.lessons,
+                    this._puzzlesComponent.puzzles
+                );
+                setTimeout(() => {
+                    this._puzzlesComponent.setupPuzzle(
+                        this._puzzlesComponent.currentPuzzleIndex
+                    );
+                });
             }
         });
     }
