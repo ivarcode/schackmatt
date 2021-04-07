@@ -142,6 +142,9 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
                 // this.gameComponent.drawBoard();
                 this.setupPuzzle(this.currentPuzzleIndex);
                 break;
+            case 'Close Overlay':
+                // continue, and rid the board overlay
+                break;
             default:
                 break;
         }

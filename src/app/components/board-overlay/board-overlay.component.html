@@ -2,6 +2,13 @@
     <div class="row justify-content-center">
         <div id="popup-window" class="col-sm-6" style="margin-top: 200px">
             <div class="card text-center">
+                <button
+                    id="closeOverlayButton"
+                    class="btn btn-danger"
+                    (click)="emit('Close Overlay')"
+                >
+                    X
+                </button>
                 <h5 class="card-title">{{ boardOverlayData.title }}</h5>
                 <div
                     *ngIf="boardOverlayData.displayLoadingMessage"
