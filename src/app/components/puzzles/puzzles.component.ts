@@ -80,6 +80,9 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
     }
 
     public setupPuzzle(puzzleIndex: number): void {
+        // close board overlay
+        this.showBoardOverlay = false;
+
         this.currentPuzzleIndex = puzzleIndex;
         console.log(this.currentPuzzle);
         this.currentPuzzleNode = this.currentPuzzle.pgn;

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { endgame_checkmates } from 'data/endgame_checkmates.json';
 import { queen_endgames } from 'data/queen_endgames.json';
 import { pawn_endgames } from 'data/pawn_endgames.json';
@@ -21,9 +21,13 @@ export class CoursesComponent implements OnInit {
         queen_endgames,
         pawn_endgames
     };
+
+    // needs a better name
+    public initPuzzleSetupFlag: boolean;
     // public courseParamObject: { set: 'pawn_endgames' };
 
     constructor(private route: ActivatedRoute, private router: Router) {
+        this.initPuzzleSetupFlag = true;
         this.lessons = [];
         this.courseKey = [
             [{ set: 'endgame_checkmates' }, 'Endgame Checkmates'],
@@ -37,6 +41,7 @@ export class CoursesComponent implements OnInit {
             // const defaultParamString = 'endgame_checkmates';
             let paramString: string;
             if (!params?.set) {
+                this.initPuzzleSetupFlag = false;
                 // this.router.navigate(['courses'], {
                 //     queryParams: { set: defaultParamString }
                 // });
@@ -46,16 +51,21 @@ export class CoursesComponent implements OnInit {
                 this.lessons = parseLichessStudies(
                     this.studyObjects[paramString]
                 );
-                console.log(
-                    'afasdf',
-                    this.lessons,
-                    this._puzzlesComponent.puzzles
-                );
-                setTimeout(() => {
-                    this._puzzlesComponent.setupPuzzle(
-                        this._puzzlesComponent.currentPuzzleIndex
-                    );
-                });
+                // console.log(
+                //     'afasdf',
+                //     this.lessons,
+                //     this._puzzlesComponent.puzzles
+                // );
+                if (this.initPuzzleSetupFlag) {
+                    this.initPuzzleSetupFlag = false;
+                } else {
+                    setTimeout(() => {
+                        this._puzzlesComponent.currentPuzzleIndex = 0;
+                        this._puzzlesComponent.setupPuzzle(
+                            this._puzzlesComponent.currentPuzzleIndex
+                        );
+                    });
+                }
             }
         });
     }
