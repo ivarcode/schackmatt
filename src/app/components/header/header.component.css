@@ -38,20 +38,36 @@
 
 .dropdown-item {
     background-color: #111111 !important;
+    width: auto;
+    padding: 10px 20px !important;
+    margin: 0;
+    text-align: center;
+    font-size: 16px;
+    transition: all 0.15s ease-in-out;
+}
+
+.dropdown-item:hover {
+    color: #ff4656;
 }
 
 .button:hover,
-.nav-link.active,
-.dropdown-item:hover {
+.nav-link.active {
     border-color: #ff4656 !important;
 }
 
 nav {
     height: 80px;
+    background-color: #111111;
 }
-nav,
+
 .dropdown-menu {
     background-color: #111111;
+    border-radius: 0;
+    border: none;
+    background-clip: unset;
+    padding: 20px 0 6px;
+    border-bottom: 3px solid #ff4656;
+    box-shadow: 0 0 8px 4px #00000024;
 }
 
 /* .nav-disabled {
