@@ -119,8 +119,6 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
             this.gameConfig.restrictPieces = [this.game.turn];
         });
 
-        this.gameComponent.drawBoard();
-
         /**
          * This setTimeout expression is used to delay the move being played
          * as the starting move of the puzzle (1 second)
