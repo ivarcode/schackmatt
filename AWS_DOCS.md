@@ -41,7 +41,7 @@ To generate a cert for your domain:
 -   `sudo certbot --nginx`
     -   follow the instructions
 
-Add the location block AFTER generating the cert:
+Add the location block directly BELOW the `server_name` and `root` AFTER generating the cert:
 
 ```
 server {
@@ -66,12 +66,9 @@ Then from `git/schackmatt`
 -   Run the dev server deployment script
 
 `bash dev-deploy.sh`
+`base prod-deploy.sh`
 
 -   OR run the commands manually like so:
     -   `ssh -i ./path_to/ssh_key ec2-user@ec2HOSTNAME "sudo rm -rf /usr/share/nginx/last_version_schackmatt/*"`
     -   `ssh -i ./path_to/ssh_key ec2-user@ec2HOSTNAME "sudo mv /usr/share/nginx/schackmatt/* /usr/share/nginx/last_version_schackmatt/"`
     -   `scp -r -i ./path_to/ssh_key ./dist/schackmatt/ ec2-user@ec2HOSTNAME:/usr/share/nginx`
-
-```
-
-```
