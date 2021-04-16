@@ -18,26 +18,42 @@ Use the following commands to install the Let's Encrypt client, `certbot`.
 -   `sudo yum update` (not completely necessary)
 -   `sudo amazon-linux-extras install epel -y`
 -   `sudo yum install -y certbot`
--   `sudo certbot certonly`
-    -   follow the instructions
+-   `sudo yum install -y python-certbot-nginx`
 
 Use the following commands to install nginx and prepare a webserver on the Linux instance.
 
 -   `sudo amazon-linux-extras install nginx1`
 -   `sudo vi /etc/nginx/nginx.conf`
 -   Ensure the `worker_processes` value is set to `auto`
--   Include the following `location` block in the `server` to ensure proper URI routing and set the root directory to the following as well.
+-   Include the following `location` block in the `server` to ensure proper URI routing and set the root directory to the following as well. Add a server_name (or multiple) if you require SSL.
 
 ```
 server {
     ...
     root /usr/share/nginx/schackmatt;
+    server_name schackmatt.net;
+    ...
+}
+```
+
+To generate a cert for your domain:
+
+-   `sudo certbot --nginx`
+    -   follow the instructions
+
+Add the location block AFTER generating the cert:
+
+```
+server {
+    ...
     location / {
         try_files $uri $uri/ /index.html;
     }
     ...
 }
 ```
+
+Then to prepare the location for the files:
 
 -   `sudo nginx -s reload` to reload server with new configurations
 -   Create two new directories `schackmatt/` and `last_version_schackmatt/` in `/usr/share/nginx`
@@ -55,3 +71,7 @@ Then from `git/schackmatt`
     -   `ssh -i ./path_to/ssh_key ec2-user@ec2HOSTNAME "sudo rm -rf /usr/share/nginx/last_version_schackmatt/*"`
     -   `ssh -i ./path_to/ssh_key ec2-user@ec2HOSTNAME "sudo mv /usr/share/nginx/schackmatt/* /usr/share/nginx/last_version_schackmatt/"`
     -   `scp -r -i ./path_to/ssh_key ./dist/schackmatt/ ec2-user@ec2HOSTNAME:/usr/share/nginx`
+
+```
+
+```
