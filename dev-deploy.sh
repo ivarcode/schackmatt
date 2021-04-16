@@ -1,5 +1,5 @@
 # uncomment for debugging
-set -x
+# set -x
 sshKey=../../sshkeys/cwagner0
 echo $sshKey
 echo "Reading dev server IP address from deploymentConfig.json..."
