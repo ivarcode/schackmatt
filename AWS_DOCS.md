@@ -13,6 +13,14 @@ SSH into instance
 
 `ssh -i ./path_to/ssh_key ec2-user@ec2HOSTNAME`
 
+Use the following commands to install the Let's Encrypt client, `certbot`.
+
+-   `sudo yum update` (not completely necessary)
+-   `sudo amazon-linux-extras install epel -y`
+-   `sudo yum install -y certbot`
+-   `sudo certbot certonly`
+    -   follow the instructions
+
 Use the following commands to install nginx and prepare a webserver on the Linux instance.
 
 -   `sudo amazon-linux-extras install nginx1`
