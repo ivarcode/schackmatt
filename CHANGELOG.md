@@ -1,3 +1,11 @@
+### 0.5.1
+
+commit 56a602364767d115fd48aec73ba12c1499b28fd6
+
+Date:   Fri Apr 16 18:44:40 2021 -0400
+
+    AWS documentation and notes allowing a spin on an SSL secured nginx server on a linux machine
+
 ### 0.5.0
 
 commit ef8b00497bb7312a85191540bf87f3cbfd1c9859
