@@ -1,5 +1,20 @@
 ### AWS Documentation
 
+#### Deployment Configuration (local)
+
+To use the `.sh` scripts written for deployment, you need to have a valid sshkey (currently the only valid key is `cwagner0`) at `../../sshkeys/` relation to your checkout. Having this sshkey as default also works.
+
+The following deployment configuration should look like this:
+
+`/conf/deploymentConfig.json`
+
+```
+{
+    "devServerIP": "ec2-user@ec2-<REDACTED_IP_ADDRESS>.us-east-2.compute.amazonaws.com",
+    "prodServerIP": "ec2-user@ec2-<REDACTED_IP_ADDRESS>.us-east-2.compute.amazonaws.com"
+}
+```
+
 #### Example process
 
 Spin an Amazon EC2 instance. Use an Amazon Linux machine optimized for EC2. Choose t3.nano (or other).
