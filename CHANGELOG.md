@@ -1,3 +1,11 @@
+### 0.5.2
+
+commit 4543933e39484b75d38440121e7dbbf4609c2a92
+
+Date:   Sat Apr 17 11:54:43 2021 -0400
+
+    documentation about adding a cronjob to the prod server containing an SSL cert[D[D[D[D[D[D[D[Dactive SSL cert
+
 ### 0.5.1
 
 commit 56a602364767d115fd48aec73ba12c1499b28fd6
