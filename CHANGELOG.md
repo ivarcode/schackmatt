@@ -4,7 +4,7 @@ commit 4543933e39484b75d38440121e7dbbf4609c2a92
 
 Date:   Sat Apr 17 11:54:43 2021 -0400
 
-    documentation about adding a cronjob to the prod server containing an SSL cert[D[D[D[D[D[D[D[Dactive SSL cert
+    documentation about adding a cronjob to the prod server containing an active SSL cert
 
 ### 0.5.1
 
@@ -130,7 +130,7 @@ Date:   Sun Jan 10 18:57:41 2021 -0500
 
 commit 42a6deb540f526fb9a9661490779ad013f53a422
 
-Date: Sun Jan 10 17:57:42 2021 -0500
+Date:   Sun Jan 10 17:57:42 2021 -0500
 
     Updated the scripts to push the tags automatically (minor formatting edits to README).
 
@@ -138,6 +138,6 @@ Date: Sun Jan 10 17:57:42 2021 -0500
 
 commit a97f30966dde54fd03ed99f72f57bea285514f7a
 
-Date: Sun Jan 10 17:36:23 2021 -0500
+Date:   Sun Jan 10 17:36:23 2021 -0500
 
     This version is the first minor and contains the bump scripts to update versions.
