@@ -75,6 +75,11 @@ Then to prepare the location for the files:
 -   Use `chown` to give `ec2-user` r/w rights to both directories
     -   eg. `sudo chown -R ec2-user /usr/share/nginx/schackmatt/`
 
+Add a cronjob to automatically renew the cert if necessary:
+
+-   `crontab -e`
+-   Add (for example) the line `0 12 * * * /usr/bin/certbot renew --quiet` to check to renew everyday at noon.
+
 Then from `git/schackmatt`
 
 -   Run whatever build script to put content in the `dist/` folder
