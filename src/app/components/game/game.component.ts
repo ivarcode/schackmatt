@@ -69,12 +69,7 @@ export class GameComponent implements OnInit, OnChanges {
         color: string;
         gA: number;
     }[];
-    private drawnCircles: {
-        square: Square;
-        color: string;
-        lineWidth: number;
-    }[];
-    private drawnArrows: {
+    private drawnArrowsAndCircles: {
         src: Square;
         dest: Square;
         color: string;
@@ -113,8 +108,7 @@ export class GameComponent implements OnInit, OnChanges {
             preventPromote: false
         };
         this.tintSqFromMouseObjects = [];
-        this.drawnCircles = [];
-        this.drawnArrows = [];
+        this.drawnArrowsAndCircles = [];
         this.tintSqData = [];
         this.isPromoting = false;
         this.matchingMoves = [];
@@ -162,8 +156,7 @@ export class GameComponent implements OnInit, OnChanges {
                 this.cursor.leftMouseIsDown = true;
 
                 // clear arrows and circles
-                this.drawnArrows = [];
-                this.drawnCircles = [];
+                this.drawnArrowsAndCircles = [];
                 this.drawBoard();
 
                 if (this.cursor.overSquare) {
@@ -360,68 +353,70 @@ export class GameComponent implements OnInit, OnChanges {
                 this.cursor.rightMouseIsDown = false;
                 this.cursor.mouseUpOn = this.cursor.overSquare;
 
-                if (
-                    this.cursor.mouseDownOn.x === this.cursor.mouseUpOn.x &&
-                    this.cursor.mouseDownOn.y === this.cursor.mouseUpOn.y
-                ) {
-                    // circle
-                    const newCircle = {
-                        square: new Square(
-                            this.cursor.mouseDownOn.x,
-                            this.cursor.mouseDownOn.y
-                        ),
-                        color: '#15781B',
-                        lineWidth: 5
-                    };
-                    // find index of a circle that matches, that may or may not
-                    // already exist
-                    const index = this.drawnCircles.findIndex(
-                        (circle) =>
-                            circle.square.toString() ===
-                            newCircle.square.toString()
-                    );
-                    let unique = true;
-                    // delete if circle already exists, else add a new circle
-                    if (index !== -1) {
-                        this.drawnCircles.splice(index, 1);
-                        unique = false;
-                    }
-                    if (unique) {
-                        this.drawnCircles.push(newCircle);
-                    }
-                    this.drawBoard();
-                } else {
-                    // arrow
-                    const newArrow = {
-                        src: new Square(
-                            this.cursor.mouseDownOn.x,
-                            this.cursor.mouseDownOn.y
-                        ),
-                        dest: new Square(
-                            this.cursor.mouseUpOn.x,
-                            this.cursor.mouseUpOn.y
-                        ),
-                        color: '#15781B',
-                        lineWidth: 5
-                    };
-                    // find index of a arrow that matches, that may or may not
-                    // already exist
-                    const index = this.drawnArrows.findIndex(
-                        (arrow) =>
-                            arrow.src.toString() === newArrow.src.toString() &&
-                            arrow.dest.toString() === newArrow.dest.toString()
-                    );
-                    let unique = true;
-                    // delete if arrow already exists, else add a new arrow
-                    if (index !== -1) {
-                        this.drawnArrows.splice(index, 1);
-                        unique = false;
-                    }
-                    if (unique) {
-                        this.drawnArrows.push(newArrow);
-                    }
-                    this.drawBoard();
+                // if (
+                //     this.cursor.mouseDownOn.x === this.cursor.mouseUpOn.x &&
+                //     this.cursor.mouseDownOn.y === this.cursor.mouseUpOn.y
+                // ) {
+                // // circle
+                // const newCircle = {
+                //     square: new Square(
+                //         this.cursor.mouseDownOn.x,
+                //         this.cursor.mouseDownOn.y
+                //     ),
+                //     color: '#15781B',
+                //     lineWidth: 5
+                // };
+                // // find index of a circle that matches, that may or may not
+                // // already exist
+                // const index = this.drawnCircles.findIndex(
+                //     (circle) =>
+                //         circle.square.toString() ===
+                //         newCircle.square.toString()
+                // );
+                // let unique = true;
+                // // delete if circle already exists, else add a new circle
+                // if (index !== -1) {
+                //     this.drawnCircles.splice(index, 1);
+                //     unique = false;
+                // }
+                // if (unique) {
+                //     this.drawnCircles.push(newCircle);
+                // }
+                // this.drawBoard();
+                // } else {
+                // arrow
+                const newArrowOrCircle = {
+                    src: new Square(
+                        this.cursor.mouseDownOn.x,
+                        this.cursor.mouseDownOn.y
+                    ),
+                    dest: new Square(
+                        this.cursor.mouseUpOn.x,
+                        this.cursor.mouseUpOn.y
+                    ),
+                    color: '#15781B',
+                    lineWidth: 5
+                };
+                // find index of a arrow that matches, that may or may not
+                // already exist
+                const index = this.drawnArrowsAndCircles.findIndex(
+                    (arrow) =>
+                        arrow.src.toString() ===
+                            newArrowOrCircle.src.toString() &&
+                        arrow.dest.toString() ===
+                            newArrowOrCircle.dest.toString()
+                );
+                let unique = true;
+                // delete if arrow already exists, else add a new arrow
+                if (index !== -1) {
+                    this.drawnArrowsAndCircles.splice(index, 1);
+                    unique = false;
                 }
+                if (unique) {
+                    this.drawnArrowsAndCircles.push(newArrowOrCircle);
+                }
+                this.drawBoard();
+                // }
             }
         };
         // console.log(this.game.toString());
@@ -788,8 +783,7 @@ export class GameComponent implements OnInit, OnChanges {
             this.drawCoordinates();
         }
 
-        this.drawCircles();
-        this.drawArrows();
+        this.drawArrowsAndCircles();
 
         this.boardCtx.globalAlpha = 1;
         if (
@@ -1022,28 +1016,26 @@ export class GameComponent implements OnInit, OnChanges {
         }, milliDuration);
     }
 
-    private drawCircles(): void {
+    private drawCircle(circle): void {
         this.boardCtx.globalAlpha = 0.5;
-        for (const circle of this.drawnCircles) {
-            const x = circle.square.file * 80 + 40;
-            const y = circle.square.rank * 80 + 40;
-            const color = circle.color;
-            const lineWidth = circle.lineWidth;
+        const x = circle.square.file * 80 + 40;
+        const y = circle.square.rank * 80 + 40;
+        const color = circle.color;
+        const lineWidth = circle.lineWidth;
 
-            // save the state of the canvas first then perform transformation
-            this.boardCtx.save();
-            this.boardCtx.translate(x, y);
+        // save the state of the canvas first then perform transformation
+        this.boardCtx.save();
+        this.boardCtx.translate(x, y);
 
-            // draws the circle
-            this.boardCtx.beginPath();
-            this.boardCtx.arc(0, 0, 37.5, 0, 2 * Math.PI);
-            this.boardCtx.lineWidth = lineWidth;
-            this.boardCtx.strokeStyle = color;
-            this.boardCtx.stroke();
+        // draws the circle
+        this.boardCtx.beginPath();
+        this.boardCtx.arc(0, 0, 37.5, 0, 2 * Math.PI);
+        this.boardCtx.lineWidth = lineWidth;
+        this.boardCtx.strokeStyle = color;
+        this.boardCtx.stroke();
 
-            // finally restore the state of the canvas
-            this.boardCtx.restore();
-        }
+        // finally restore the state of the canvas
+        this.boardCtx.restore();
     }
 
     get displayedMoveIndex(): number {
@@ -1056,29 +1048,36 @@ export class GameComponent implements OnInit, OnChanges {
         return this._boardCtx;
     }
 
-    private drawArrows(): void {
+    private drawArrowsAndCircles(): void {
         this.boardCtx.globalAlpha = 0.5;
-        for (const arrow of this.drawnArrows) {
-            const fromX = arrow.src.file * 80 + 40;
-            const fromY = arrow.src.rank * 80 + 40;
-            const toX = arrow.dest.file * 80 + 40;
-            const toY = arrow.dest.rank * 80 + 40;
-            const color = arrow.color;
-            // pointer displacement from the center
-            const displacement = -5;
-            // radius of the circumcircle of the triangle pointer
-            const r = 25;
-            const lineWidth = arrow.lineWidth;
-            this.drawArrow(
-                fromX,
-                fromY,
-                toX,
-                toY,
-                color,
-                displacement,
-                r,
-                lineWidth
-            );
+        for (const ac of this.drawnArrowsAndCircles) {
+            if (ac.src.file === ac.dest.file && ac.src.rank === ac.dest.rank) {
+                // draw circle
+                this.drawCircle(ac);
+            } else {
+                // draw arrow
+                const arrow = ac;
+                const fromX = arrow.src.file * 80 + 40;
+                const fromY = arrow.src.rank * 80 + 40;
+                const toX = arrow.dest.file * 80 + 40;
+                const toY = arrow.dest.rank * 80 + 40;
+                const color = arrow.color;
+                // pointer displacement from the center
+                const displacement = -5;
+                // radius of the circumcircle of the triangle pointer
+                const r = 25;
+                const lineWidth = arrow.lineWidth;
+                this.drawArrow(
+                    fromX,
+                    fromY,
+                    toX,
+                    toY,
+                    color,
+                    displacement,
+                    r,
+                    lineWidth
+                );
+            }
         }
     }
 
