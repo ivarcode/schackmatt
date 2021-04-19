@@ -12,6 +12,7 @@ import { GameConfig, GameEvent } from 'src/app/lib/interface.library';
 import { fileToString, Color, RANK } from 'src/app/lib/util.library';
 import { Square } from 'src/app/lib/square.library';
 import { Board } from 'src/app/lib/board.library';
+import { cursorTo } from 'readline';
 
 @Component({
     selector: 'app-game',
@@ -577,8 +578,21 @@ export class GameComponent implements OnInit, OnChanges {
                 this.cursor.overSquare = { x, y };
                 this.showMoves();
             }
+            this.drawBoard();
+            if (this.cursor.rightMouseIsDown) {
+                console.log(
+                    'draw circle or sq at ',
+                    this.cursor.mouseDownOn,
+                    this.cursor.overSquare
+                );
+                if (
+                    this.cursor.mouseDownOn.x === this.cursor.overSquare.x &&
+                    this.cursor.mouseDownOn.y === this.cursor.overSquare.y
+                ) {
+                    // const src = new Square()
+                }
+            }
         }
-        this.drawBoard();
     }
 
     public setDisplayedMoveIndex(index: number): void {
@@ -1016,10 +1030,15 @@ export class GameComponent implements OnInit, OnChanges {
         }, milliDuration);
     }
 
-    private drawCircle(circle): void {
+    private drawCircle(circle: {
+        src: Square;
+        dest: Square;
+        color: string;
+        lineWidth: number;
+    }): void {
         this.boardCtx.globalAlpha = 0.5;
-        const x = circle.square.file * 80 + 40;
-        const y = circle.square.rank * 80 + 40;
+        const x = circle.src.file * 80 + 40;
+        const y = circle.src.rank * 80 + 40;
         const color = circle.color;
         const lineWidth = circle.lineWidth;
 
