@@ -353,48 +353,30 @@ export class GameComponent implements OnInit, OnChanges {
                 // right button
                 this.cursor.rightMouseIsDown = false;
                 this.cursor.mouseUpOn = this.cursor.overSquare;
-
-                // if (
-                //     this.cursor.mouseDownOn.x === this.cursor.mouseUpOn.x &&
-                //     this.cursor.mouseDownOn.y === this.cursor.mouseUpOn.y
-                // ) {
-                // // circle
-                // const newCircle = {
-                //     square: new Square(
-                //         this.cursor.mouseDownOn.x,
-                //         this.cursor.mouseDownOn.y
-                //     ),
-                //     color: '#15781B',
-                //     lineWidth: 5
-                // };
-                // // find index of a circle that matches, that may or may not
-                // // already exist
-                // const index = this.drawnCircles.findIndex(
-                //     (circle) =>
-                //         circle.square.toString() ===
-                //         newCircle.square.toString()
-                // );
-                // let unique = true;
-                // // delete if circle already exists, else add a new circle
-                // if (index !== -1) {
-                //     this.drawnCircles.splice(index, 1);
-                //     unique = false;
-                // }
-                // if (unique) {
-                //     this.drawnCircles.push(newCircle);
-                // }
-                // this.drawBoard();
-                // } else {
-                // arrow
+                // create new circle or arrow
+                const src =
+                    this.config.orientation === Color.White
+                        ? new Square(
+                              this.cursor.mouseDownOn.x,
+                              this.cursor.mouseDownOn.y
+                          )
+                        : new Square(
+                              7 - this.cursor.mouseDownOn.x,
+                              7 - this.cursor.mouseDownOn.y
+                          );
+                const dest =
+                    this.config.orientation === Color.White
+                        ? new Square(
+                              this.cursor.mouseUpOn.x,
+                              this.cursor.mouseUpOn.y
+                          )
+                        : new Square(
+                              7 - this.cursor.mouseUpOn.x,
+                              7 - this.cursor.mouseUpOn.y
+                          );
                 const newArrowOrCircle = {
-                    src: new Square(
-                        this.cursor.mouseDownOn.x,
-                        this.cursor.mouseDownOn.y
-                    ),
-                    dest: new Square(
-                        this.cursor.mouseUpOn.x,
-                        this.cursor.mouseUpOn.y
-                    ),
+                    src,
+                    dest,
                     color: '#15781B',
                     lineWidth: 5
                 };
@@ -585,11 +567,39 @@ export class GameComponent implements OnInit, OnChanges {
                     this.cursor.mouseDownOn,
                     this.cursor.overSquare
                 );
+                const src =
+                    this.config.orientation === Color.White
+                        ? new Square(
+                              this.cursor.mouseDownOn.x,
+                              this.cursor.mouseDownOn.y
+                          )
+                        : new Square(
+                              7 - this.cursor.mouseDownOn.x,
+                              7 - this.cursor.mouseDownOn.y
+                          );
+                const dest =
+                    this.config.orientation === Color.White
+                        ? new Square(
+                              this.cursor.overSquare.x,
+                              this.cursor.overSquare.y
+                          )
+                        : new Square(
+                              7 - this.cursor.overSquare.x,
+                              7 - this.cursor.overSquare.y
+                          );
+                const tempArrowOrCircle = {
+                    src,
+                    dest,
+                    color: '#6578EB',
+                    lineWidth: 15
+                };
                 if (
                     this.cursor.mouseDownOn.x === this.cursor.overSquare.x &&
                     this.cursor.mouseDownOn.y === this.cursor.overSquare.y
                 ) {
-                    // const src = new Square()
+                    this.drawCircle(tempArrowOrCircle);
+                } else {
+                    this.drawArrow(tempArrowOrCircle);
                 }
             }
         }
@@ -1030,6 +1040,29 @@ export class GameComponent implements OnInit, OnChanges {
         }, milliDuration);
     }
 
+    get displayedMoveIndex(): number {
+        return this._displayedMoveIndex;
+    }
+    set displayedMoveIndex(i: number) {
+        this._displayedMoveIndex = i;
+    }
+    get boardCtx(): any {
+        return this._boardCtx;
+    }
+
+    private drawArrowsAndCircles(): void {
+        this.boardCtx.globalAlpha = 0.5;
+        for (const ac of this.drawnArrowsAndCircles) {
+            if (ac.src.file === ac.dest.file && ac.src.rank === ac.dest.rank) {
+                // draw circle
+                this.drawCircle(ac);
+            } else {
+                // draw arrow
+                this.drawArrow(ac);
+            }
+        }
+    }
+
     private drawCircle(circle: {
         src: Square;
         dest: Square;
@@ -1057,59 +1090,23 @@ export class GameComponent implements OnInit, OnChanges {
         this.boardCtx.restore();
     }
 
-    get displayedMoveIndex(): number {
-        return this._displayedMoveIndex;
-    }
-    set displayedMoveIndex(i: number) {
-        this._displayedMoveIndex = i;
-    }
-    get boardCtx(): any {
-        return this._boardCtx;
-    }
-
-    private drawArrowsAndCircles(): void {
-        this.boardCtx.globalAlpha = 0.5;
-        for (const ac of this.drawnArrowsAndCircles) {
-            if (ac.src.file === ac.dest.file && ac.src.rank === ac.dest.rank) {
-                // draw circle
-                this.drawCircle(ac);
-            } else {
-                // draw arrow
-                const arrow = ac;
-                const fromX = arrow.src.file * 80 + 40;
-                const fromY = arrow.src.rank * 80 + 40;
-                const toX = arrow.dest.file * 80 + 40;
-                const toY = arrow.dest.rank * 80 + 40;
-                const color = arrow.color;
-                // pointer displacement from the center
-                const displacement = -5;
-                // radius of the circumcircle of the triangle pointer
-                const r = 25;
-                const lineWidth = arrow.lineWidth;
-                this.drawArrow(
-                    fromX,
-                    fromY,
-                    toX,
-                    toY,
-                    color,
-                    displacement,
-                    r,
-                    lineWidth
-                );
-            }
-        }
-    }
-
-    private drawArrow(
-        fromX: number,
-        fromY: number,
-        toX: number,
-        toY: number,
-        color: string,
-        displacement: number,
-        r: number,
-        lineWidth: number
-    ): void {
+    private drawArrow(arrow: {
+        src: Square;
+        dest: Square;
+        color: string;
+        lineWidth: number;
+    }): void {
+        // setup values
+        const fromX = arrow.src.file * 80 + 40;
+        const fromY = arrow.src.rank * 80 + 40;
+        const toX = arrow.dest.file * 80 + 40;
+        const toY = arrow.dest.rank * 80 + 40;
+        const color = arrow.color;
+        // pointer displacement from the center
+        const displacement = -5;
+        // radius of the circumcircle of the triangle pointer
+        const r = 25;
+        const lineWidth = arrow.lineWidth;
         // imaginary triangle - hypotenuse goes from origin sq to dest sq
         const angle = Math.atan2(toY - fromY, toX - fromX);
         const hypotenuse =
