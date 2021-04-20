@@ -378,7 +378,7 @@ export class GameComponent implements OnInit, OnChanges {
                     src,
                     dest,
                     color: '#15781B',
-                    lineWidth: 5
+                    lineWidth: 10
                 };
                 // find index of a arrow that matches, that may or may not
                 // already exist
@@ -590,8 +590,8 @@ export class GameComponent implements OnInit, OnChanges {
                 const tempArrowOrCircle = {
                     src,
                     dest,
-                    color: '#6578EB',
-                    lineWidth: 15
+                    color: '15781B',
+                    lineWidth: 12
                 };
                 if (
                     this.cursor.mouseDownOn.x === this.cursor.overSquare.x &&
@@ -1069,7 +1069,8 @@ export class GameComponent implements OnInit, OnChanges {
         color: string;
         lineWidth: number;
     }): void {
-        this.boardCtx.globalAlpha = 0.5;
+        // line not completely necessary
+        // this.boardCtx.globalAlpha = 0.5;
         const x = circle.src.file * 80 + 40;
         const y = circle.src.rank * 80 + 40;
         const color = circle.color;
