@@ -589,7 +589,7 @@ export class GameComponent implements OnInit, OnChanges {
                 const tempArrowOrCircle = {
                     src,
                     dest,
-                    color: '15781B',
+                    color: '#15781B',
                     lineWidth: 12
                 };
                 if (
