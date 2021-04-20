@@ -12,7 +12,6 @@ import { GameConfig, GameEvent } from 'src/app/lib/interface.library';
 import { fileToString, Color, RANK } from 'src/app/lib/util.library';
 import { Square } from 'src/app/lib/square.library';
 import { Board } from 'src/app/lib/board.library';
-import { cursorTo } from 'readline';
 
 @Component({
     selector: 'app-game',
