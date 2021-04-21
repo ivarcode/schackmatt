@@ -1,5 +1,6 @@
 #standard-game-container {
     margin: 0px;
+    max-height: calc(100vh - 80px);
 }
 
 #title {
@@ -41,28 +42,49 @@
 }
 
 .col-sm-2 {
+    height: inherit;
     padding: 0px;
 }
 
-#sequence-list {
+#puzzle-list {
     padding: 0px;
     margin: 50px 0px 0px 20px;
     list-style: none;
     background-color: white;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
-#sequence-list li {
+/* apparently, you need the basic call first to even make it register 
+    any -thumb -track... 
+*/
+#dialogue-box::-webkit-scrollbar,
+#puzzle-list::-webkit-scrollbar {
+    width: 1em;
+}
+
+#dialogue-box::-webkit-scrollbar-thumb,
+#puzzle-list::-webkit-scrollbar-thumb {
+    background-color: rgb(101, 101, 101);
+}
+
+#dialogue-box::-webkit-scrollbar-track,
+#puzzle-list::-webkit-scrollbar-track {
+    background-color: rgb(181, 181, 181);
+}
+
+#puzzle-list li {
     text-align: center;
     padding: 5px;
     border: black 1px solid;
 }
 
-#sequence-list li:not(.current-puzzle):hover {
+#puzzle-list li:not(.current-puzzle):hover {
     background-color: lightgray;
     cursor: pointer;
 }
 
-.sequence-link {
+.puzzle-link {
     cursor: pointer;
     font-size: 18px;
 }
@@ -75,4 +97,9 @@
 .current-puzzle:hover {
     cursor: pointer;
     background-color: rgb(41, 41, 41);
+}
+
+#dialogue-box {
+    max-height: 500px;
+    overflow-y: auto;
 }

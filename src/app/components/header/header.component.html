@@ -1,4 +1,5 @@
-<nav class="navbar navbar-expand-sm navbar-light">
+<nav class="navbar navbar-expand-sm">
+    <!-- LOGO -->
     <svg viewBox="0 0 2 2" class="navbar-logo">
         <rect x="0" fill="#fff" y="0" width="1" height="1"></rect>
         <rect x="1" fill="#fff" y="1" width="1" height="1"></rect>
@@ -23,21 +24,57 @@
                     >Home <span class="sr-only">(current)</span></a
                 >
             </li> -->
-        <li class="nav-item">
+
+        <li class="nav-item dropdown">
             <a
-                routerLink="/endgame-puzzles"
+                class="button nav-link dropdown-toggle"
+                routerLinkActive="active"
+                href="#"
+                id="coursesDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+            >
+                Courses
+            </a>
+            <div class="dropdown-menu" aria-labelledby="coursesDropdown">
+                <a
+                    [routerLink]="['courses']"
+                    [queryParams]="{ set: 'endgame_checkmates' }"
+                    class="dropdown-item nav-link"
+                    >Endgame Checkmates</a
+                ><a
+                    [routerLink]="['courses']"
+                    [queryParams]="{ set: 'queen_endgames' }"
+                    class="dropdown-item nav-link"
+                    >Queen Endgames</a
+                ><a
+                    [routerLink]="['courses']"
+                    [queryParams]="{ set: 'pawn_endgames' }"
+                    class="dropdown-item nav-link"
+                    >Pawn Endgames</a
+                >
+                <!-- <a class="dropdown-item" href="#">Another action</a> -->
+                <!-- <div class="dropdown-divider"></div> -->
+                <!-- <a class="dropdown-item" href="#">Something else here</a> -->
+            </div>
+        </li>
+
+        <!-- <li class="nav-item">
+            <a
+                routerLink="/auto-generated-puzzles"
                 routerLinkActive="active"
                 class="button nav-link"
-                style="color: white"
-                >Endgame Puzzles
+                >Random Puzzles
             </a>
-        </li>
+        </li> -->
+
         <!-- <li class="nav-item">
             <a
                 routerLink="/endgame-trainer"
                 routerLinkActive="active"
                 class="button nav-link"
-                style="color: white"
                 >Endgame Trainer
             </a>
         </li>
@@ -46,7 +83,6 @@
                 routerLink="/opening-training-game"
                 routerLinkActive="active"
                 class="button nav-link"
-                style="color: white"
                 >Opening Trainer <sup>BETA</sup>
             </a>
         </li> -->
@@ -58,7 +94,6 @@
                 routerLink="/about"
                 routerLinkActive="active"
                 class="button nav-link"
-                style="color: white"
                 >About
             </a>
         </li>

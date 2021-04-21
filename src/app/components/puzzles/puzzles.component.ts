@@ -74,10 +74,15 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit() {
         // console.log('puzzles', this.puzzles);
-        this.setupPuzzle(this.currentPuzzleIndex);
+        if (this.puzzles.length !== 0) {
+            this.setupPuzzle(this.currentPuzzleIndex);
+        }
     }
 
     public setupPuzzle(puzzleIndex: number): void {
+        // close board overlay
+        this.showBoardOverlay = false;
+
         this.currentPuzzleIndex = puzzleIndex;
         console.log(this.currentPuzzle);
         this.currentPuzzleNode = this.currentPuzzle.pgn;
@@ -102,12 +107,22 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
             }
         }
 
-        this.colorToPlay = oppositeColor(this.game.turn);
-        this.gameConfig.orientation = this.colorToPlay;
-        this.gameConfig.restrictPieces = [this.game.turn];
+        setTimeout(() => {
+            /**
+             * really interesting, this code in a "valueless setTimeout" avoids
+             * the ExpressionChangedAfterItHasBeenCheckedError in the DOM
+             * binding
+             */
+            this.colorToPlay = oppositeColor(this.game.turn);
+            this.gameConfig.orientation = this.colorToPlay;
+            this.gameComponent.drawBoard();
+            this.gameConfig.restrictPieces = [this.game.turn];
+        });
 
-        this.gameComponent.drawBoard();
-
+        /**
+         * This setTimeout expression is used to delay the move being played
+         * as the starting move of the puzzle (1 second)
+         */
         setTimeout(() => {
             this.currentPuzzleNode = this.currentPuzzleNode.nextNodes[0];
             const m = this.currentPuzzleNode.move;
@@ -128,6 +143,9 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
 
                 // this.gameComponent.drawBoard();
                 this.setupPuzzle(this.currentPuzzleIndex);
+                break;
+            case 'Close Overlay':
+                // continue, and rid the board overlay
                 break;
             default:
                 break;

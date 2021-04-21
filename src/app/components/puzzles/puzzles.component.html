@@ -1,12 +1,12 @@
 <div id="standard-game-container" class="row">
     <div class="col-sm-2">
-        <ul id="sequence-list">
+        <ul id="puzzle-list">
             <li
                 *ngFor="let p of puzzles; index as i"
                 [class.current-puzzle]="i === currentPuzzleIndex"
                 (click)="setupPuzzle(i)"
             >
-                <a class="sequence-link">
+                <a class="puzzle-link">
                     {{ p.title }}
                 </a>
             </li>
@@ -45,12 +45,14 @@
                         You play {{ colorToPlayString }}
                     </h4>
                 </div>
-                <h5
-                    *ngFor="let c of currentPuzzleNodeComments"
-                    style="width: 300px"
-                >
-                    {{ c }}
-                </h5>
+                <div id="dialogue-box">
+                    <h5
+                        *ngFor="let c of currentPuzzleNodeComments"
+                        style="width: 300px"
+                    >
+                        {{ c }}
+                    </h5>
+                </div>
             </div>
         </div>
     </div>

@@ -1,3 +1,4 @@
+import { Game } from './game.library';
 import {
     LichessGame,
     LichessStudy,
@@ -106,6 +107,10 @@ function instanceOfLichessStudy(object: any): object is LichessStudy {
     return 'Event' in object;
 }
 
+function instanceOfLichessGame(object: any): object is LichessGame {
+    return 'Event' in object;
+}
+
 export function parseLichessStudies(studies: any): Puzzle[] {
     // it is expected the study array be an object with numerically increasing
     // keys that all contain a LichessStudy object
@@ -113,6 +118,16 @@ export function parseLichessStudies(studies: any): Puzzle[] {
     for (const study of Object.values(studies)) {
         if (instanceOfLichessStudy(study)) {
             puzzles.push(parseLichessStudy(study));
+        }
+    }
+    return puzzles;
+}
+
+export function parseLichessGames(games: any): Puzzle[] {
+    const puzzles = [];
+    for (const game of Object.values(games)) {
+        if (instanceOfLichessGame(game)) {
+            puzzles.push(parseLichessGame(game));
         }
     }
     return puzzles;
@@ -129,7 +144,12 @@ export function parseLichessStudy(ls: LichessStudy): Puzzle {
 
 export function parseLichessGame(lg: LichessGame): Puzzle {
     // TODO more here
-    return null;
+    const pgnContent = parsePGN(lg.pgnContent);
+    return {
+        FEN: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        title: lg.Event.substring(lg.Event.indexOf(':') + 2),
+        pgn: pgnContent
+    };
 }
 
 function parseDrawObjectsString(s: string): any {
@@ -185,15 +205,25 @@ export function parsePGN(pgn: string): LineNode {
                 // just a move numba or the termination *
                 // TODO add other result (termination) keys here
             } else {
-                const nextNode = {
-                    move: pgn.substring(i, j),
-                    nextNodes: [],
-                    comment: null,
-                    draws: null
-                };
-                currNode.nextNodes.push(nextNode);
-                prevNode = currNode;
-                currNode = nextNode;
+                if (
+                    !currNode.move ||
+                    currNode.move.charAt(currNode.move.length - 1) !== '#'
+                ) {
+                    const nextNode = {
+                        move: pgn.substring(i, j),
+                        nextNodes: [],
+                        comment: null,
+                        draws: null
+                    };
+                    currNode.nextNodes.push(nextNode);
+                    prevNode = currNode;
+                    currNode = nextNode;
+                } else {
+                    console.log(
+                        'checkmate already happened in this line, no moves being added'
+                    );
+                    // TODO here is where we do the 0-1 "result" set or whatever
+                }
             }
         } else {
             while (j < pgn.length) {

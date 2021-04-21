@@ -17,3 +17,12 @@
     color: white;
     width: fit-content;
 }
+
+#closeOverlayButton {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 0em 0.35em;
+}
