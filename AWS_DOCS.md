@@ -85,8 +85,8 @@ Then from `git/schackmatt`
 -   Run whatever build script to put content in the `dist/` folder
 -   Run the dev server deployment script
 
-`bash dev-deploy.sh`
-`base prod-deploy.sh`
+`bash deploy-dev.sh`
+`base deploy-prod.sh`
 
 -   OR run the commands manually like so:
     -   `ssh -i ./path_to/ssh_key ec2-user@ec2HOSTNAME "sudo rm -rf /usr/share/nginx/last_version_schackmatt/*"`
