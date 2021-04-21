@@ -15,7 +15,7 @@ import { PuzzlesComponent } from '../puzzles/puzzles.component';
 export class CoursesComponent implements OnInit {
     @ViewChild('puzzlesComponent') private _puzzlesComponent: PuzzlesComponent;
     private _lessons: Puzzle[];
-    public courseKey: [{}, string][];
+    public courseKey: [{}, string, string][];
     private studyObjects = {
         endgame_checkmates,
         queen_endgames,
@@ -30,9 +30,21 @@ export class CoursesComponent implements OnInit {
         this.initPuzzleSetupFlag = true;
         this.lessons = [];
         this.courseKey = [
-            [{ set: 'endgame_checkmates' }, 'Endgame Checkmates'],
-            [{ set: 'pawn_endgames' }, 'Pawn Endgames'],
-            [{ set: 'queen_endgames' }, 'Queen Endgames']
+            [
+                { set: 'endgame_checkmates' },
+                'Endgame Checkmates',
+                'Practice simple endgame patterns'
+            ],
+            [
+                { set: 'pawn_endgames' },
+                'Pawn Endgames',
+                'Learn ideas about every aspect of pawn endgames'
+            ],
+            [
+                { set: 'queen_endgames' },
+                'Queen Endgames',
+                'Practice how to win with a queen against a pawn'
+            ]
         ];
     }
 
