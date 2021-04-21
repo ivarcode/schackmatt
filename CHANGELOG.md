@@ -1,3 +1,11 @@
+### 0.6.0
+
+commit 08897257fad80d5b73f79de34aa69a6a397d6e4d
+
+Date:   Tue Apr 20 21:20:41 2021 -0400
+
+    After resolving various bugfixes, character encoding issues, merging in arrow / circle draw code, this is going to be the codepoinfor the first public beta
+
 ### 0.5.2
 
 commit 4543933e39484b75d38440121e7dbbf4609c2a92
