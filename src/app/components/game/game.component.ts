@@ -69,6 +69,12 @@ export class GameComponent implements OnInit, OnChanges {
         color: string;
         gA: number;
     }[];
+    private drawnArrowsAndCircles: {
+        src: Square;
+        dest: Square;
+        color: string;
+        lineWidth: number;
+    }[];
     private isPromoting: boolean;
     private matchingMoves: any[];
     private _initPosition: Board;
@@ -102,6 +108,7 @@ export class GameComponent implements OnInit, OnChanges {
             preventPromote: false
         };
         this.tintSqFromMouseObjects = [];
+        this.drawnArrowsAndCircles = [];
         this.tintSqData = [];
         this.isPromoting = false;
         this.matchingMoves = [];
@@ -148,6 +155,10 @@ export class GameComponent implements OnInit, OnChanges {
                 // left button
                 this.cursor.leftMouseIsDown = true;
 
+                // clear arrows and circles
+                this.drawnArrowsAndCircles = [];
+                this.drawBoard();
+
                 if (this.cursor.overSquare) {
                     this.cursor.mouseDownOn = this.cursor.overSquare;
                     if (!this.isPromoting) {
@@ -174,8 +185,11 @@ export class GameComponent implements OnInit, OnChanges {
             } else if (event.which === 3) {
                 // right button
                 this.cursor.rightMouseIsDown = true;
-
+                if (this.cursor.overSquare) {
+                    this.cursor.mouseDownOn = this.cursor.overSquare;
+                }
                 // logic for right mouse pressed DOWN event here
+                this.cursor.draggedPieceIndex = -1;
             }
         };
         this._mouseUpEventListener = (event: any) => {
@@ -337,8 +351,54 @@ export class GameComponent implements OnInit, OnChanges {
             } else if (event.which === 3) {
                 // right button
                 this.cursor.rightMouseIsDown = false;
-
-                // right mouse RELEASE logic here
+                this.cursor.mouseUpOn = this.cursor.overSquare;
+                // create new circle or arrow
+                const src =
+                    this.config.orientation === Color.White
+                        ? new Square(
+                              this.cursor.mouseDownOn.x,
+                              this.cursor.mouseDownOn.y
+                          )
+                        : new Square(
+                              7 - this.cursor.mouseDownOn.x,
+                              7 - this.cursor.mouseDownOn.y
+                          );
+                const dest =
+                    this.config.orientation === Color.White
+                        ? new Square(
+                              this.cursor.mouseUpOn.x,
+                              this.cursor.mouseUpOn.y
+                          )
+                        : new Square(
+                              7 - this.cursor.mouseUpOn.x,
+                              7 - this.cursor.mouseUpOn.y
+                          );
+                const newArrowOrCircle = {
+                    src,
+                    dest,
+                    color: '#15781B',
+                    lineWidth: 10
+                };
+                // find index of a arrow that matches, that may or may not
+                // already exist
+                const index = this.drawnArrowsAndCircles.findIndex(
+                    (arrow) =>
+                        arrow.src.toString() ===
+                            newArrowOrCircle.src.toString() &&
+                        arrow.dest.toString() ===
+                            newArrowOrCircle.dest.toString()
+                );
+                let unique = true;
+                // delete if arrow already exists, else add a new arrow
+                if (index !== -1) {
+                    this.drawnArrowsAndCircles.splice(index, 1);
+                    unique = false;
+                }
+                if (unique) {
+                    this.drawnArrowsAndCircles.push(newArrowOrCircle);
+                }
+                this.drawBoard();
+                // }
             }
         };
         // console.log(this.game.toString());
@@ -499,8 +559,49 @@ export class GameComponent implements OnInit, OnChanges {
                 this.cursor.overSquare = { x, y };
                 this.showMoves();
             }
+            this.drawBoard();
+            if (this.cursor.rightMouseIsDown) {
+                console.log(
+                    'draw circle or sq at ',
+                    this.cursor.mouseDownOn,
+                    this.cursor.overSquare
+                );
+                const src =
+                    this.config.orientation === Color.White
+                        ? new Square(
+                              this.cursor.mouseDownOn.x,
+                              this.cursor.mouseDownOn.y
+                          )
+                        : new Square(
+                              7 - this.cursor.mouseDownOn.x,
+                              7 - this.cursor.mouseDownOn.y
+                          );
+                const dest =
+                    this.config.orientation === Color.White
+                        ? new Square(
+                              this.cursor.overSquare.x,
+                              this.cursor.overSquare.y
+                          )
+                        : new Square(
+                              7 - this.cursor.overSquare.x,
+                              7 - this.cursor.overSquare.y
+                          );
+                const tempArrowOrCircle = {
+                    src,
+                    dest,
+                    color: '#15781B',
+                    lineWidth: 12
+                };
+                if (
+                    this.cursor.mouseDownOn.x === this.cursor.overSquare.x &&
+                    this.cursor.mouseDownOn.y === this.cursor.overSquare.y
+                ) {
+                    this.drawCircle(tempArrowOrCircle);
+                } else {
+                    this.drawArrow(tempArrowOrCircle);
+                }
+            }
         }
-        this.drawBoard();
     }
 
     public setDisplayedMoveIndex(index: number): void {
@@ -704,6 +805,9 @@ export class GameComponent implements OnInit, OnChanges {
         if (this.config.showCoordinates) {
             this.drawCoordinates();
         }
+
+        this.drawArrowsAndCircles();
+
         this.boardCtx.globalAlpha = 1;
         if (
             this.cursor.draggedPieceIndex !== -1 &&
@@ -943,5 +1047,94 @@ export class GameComponent implements OnInit, OnChanges {
     }
     get boardCtx(): any {
         return this._boardCtx;
+    }
+
+    private drawArrowsAndCircles(): void {
+        this.boardCtx.globalAlpha = 0.5;
+        for (const ac of this.drawnArrowsAndCircles) {
+            if (ac.src.file === ac.dest.file && ac.src.rank === ac.dest.rank) {
+                // draw circle
+                this.drawCircle(ac);
+            } else {
+                // draw arrow
+                this.drawArrow(ac);
+            }
+        }
+    }
+
+    private drawCircle(circle: {
+        src: Square;
+        dest: Square;
+        color: string;
+        lineWidth: number;
+    }): void {
+        // line not completely necessary
+        // this.boardCtx.globalAlpha = 0.5;
+        const x = circle.src.file * 80 + 40;
+        const y = circle.src.rank * 80 + 40;
+        const color = circle.color;
+        const lineWidth = circle.lineWidth;
+
+        // save the state of the canvas first then perform transformation
+        this.boardCtx.save();
+        this.boardCtx.translate(x, y);
+
+        // draws the circle
+        this.boardCtx.beginPath();
+        this.boardCtx.arc(0, 0, 37.5, 0, 2 * Math.PI);
+        this.boardCtx.lineWidth = lineWidth;
+        this.boardCtx.strokeStyle = color;
+        this.boardCtx.stroke();
+
+        // finally restore the state of the canvas
+        this.boardCtx.restore();
+    }
+
+    private drawArrow(arrow: {
+        src: Square;
+        dest: Square;
+        color: string;
+        lineWidth: number;
+    }): void {
+        // setup values
+        const fromX = arrow.src.file * 80 + 40;
+        const fromY = arrow.src.rank * 80 + 40;
+        const toX = arrow.dest.file * 80 + 40;
+        const toY = arrow.dest.rank * 80 + 40;
+        const color = arrow.color;
+        // pointer displacement from the center
+        const displacement = -5;
+        // radius of the circumcircle of the triangle pointer
+        const r = 25;
+        const lineWidth = arrow.lineWidth;
+        // imaginary triangle - hypotenuse goes from origin sq to dest sq
+        const angle = Math.atan2(toY - fromY, toX - fromX);
+        const hypotenuse =
+            Math.sqrt((toX - fromX) ** 2 + (toY - fromY) ** 2) + displacement;
+
+        // save the state of the canvas first then perform transformations
+        this.boardCtx.save();
+        this.boardCtx.translate(fromX, fromY);
+        this.boardCtx.rotate(angle);
+
+        // draws the line
+        this.boardCtx.beginPath();
+        this.boardCtx.moveTo(0, 0);
+        this.boardCtx.lineTo(hypotenuse - r, 0);
+        this.boardCtx.lineWidth = lineWidth;
+        this.boardCtx.strokeStyle = color;
+        this.boardCtx.stroke();
+
+        // draws the triangle pointer
+        this.boardCtx.beginPath();
+        this.boardCtx.lineTo(hypotenuse - r, r);
+        this.boardCtx.lineTo(hypotenuse, 0);
+        this.boardCtx.lineTo(hypotenuse - r, -r);
+        this.boardCtx.fillStyle = color;
+        this.boardCtx.fill();
+        this.boardCtx.translate(0, 0);
+
+        // finally restore the state of the canvas
+        this.boardCtx.restore();
     }
 }

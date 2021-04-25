@@ -100,11 +100,13 @@ Deployment configuration is expected to live in this file `conf/deploymentConfig
 
 Build the project using `npm run build` to generate the latest version of the code into `dist/`.
 
-Run `bash dev-deploy.sh` to move the old files from the development server to a separate backup directory on the host, and replace those files with the current `dist/` build.
+Run `bash deploy-dev.sh` to move the old files from the development server to a separate backup directory on the host, and replace those files with the current `dist/` build.
 
 #### Production Server
 
-There is currently no production deployment script. More details about this to come.
+Build the project using `npm run build` to generate the latest version of the code into `dist/`. _Soon we will have a build-prod script that does meaningful things... (more about this soon)._
+
+Run `bash deploy-prod.sh` to move the old files from the production server to a separate backup directory on the host, and replace those files with the current `dist/` build.
 
 ### [Developer Discord Server](https://discord.gg/uruXya4)
 

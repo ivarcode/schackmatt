@@ -1,3 +1,27 @@
+### 0.6.0
+
+commit 08897257fad80d5b73f79de34aa69a6a397d6e4d
+
+Date:   Tue Apr 20 21:20:41 2021 -0400
+
+    After resolving various bugfixes, character encoding issues, merging in arrow / circle draw code, this is going to be the codepoint for the first public beta
+
+### 0.5.2
+
+commit 4543933e39484b75d38440121e7dbbf4609c2a92
+
+Date:   Sat Apr 17 11:54:43 2021 -0400
+
+    documentation about adding a cronjob to the prod server containing an active SSL cert
+
+### 0.5.1
+
+commit 56a602364767d115fd48aec73ba12c1499b28fd6
+
+Date:   Fri Apr 16 18:44:40 2021 -0400
+
+    AWS documentation and notes allowing a spin on an SSL secured nginx server on a linux machine
+
 ### 0.5.0
 
 commit ef8b00497bb7312a85191540bf87f3cbfd1c9859
@@ -114,7 +138,7 @@ Date:   Sun Jan 10 18:57:41 2021 -0500
 
 commit 42a6deb540f526fb9a9661490779ad013f53a422
 
-Date: Sun Jan 10 17:57:42 2021 -0500
+Date:   Sun Jan 10 17:57:42 2021 -0500
 
     Updated the scripts to push the tags automatically (minor formatting edits to README).
 
@@ -122,6 +146,6 @@ Date: Sun Jan 10 17:57:42 2021 -0500
 
 commit a97f30966dde54fd03ed99f72f57bea285514f7a
 
-Date: Sun Jan 10 17:36:23 2021 -0500
+Date:   Sun Jan 10 17:36:23 2021 -0500
 
     This version is the first minor and contains the bump scripts to update versions.

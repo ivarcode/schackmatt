@@ -1,4 +1,4 @@
-<div id="course-cards" class="cards" [class.show]="lessons.length !== 0">
+<div id="course-cards" class="cards" [class.hide]="lessons.length !== 0">
     <a
         *ngFor="let entry of courseKey"
         [routerLink]="['courses']"
@@ -6,12 +6,12 @@
         class="card"
     >
         <h2>{{ entry[1] }}</h2>
-        <p>This is a very simple, yet effective description.</p>
+        <p>{{ entry[2] }}</p>
     </a>
 </div>
 
 <app-puzzles
     #puzzlesComponent
     [_puzzles]="lessons"
-    [class.show]="lessons.length === 0"
+    [class.hide]="lessons.length === 0"
 ></app-puzzles>

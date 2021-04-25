@@ -58,14 +58,17 @@
 /* apparently, you need the basic call first to even make it register 
     any -thumb -track... 
 */
+#dialogue-box::-webkit-scrollbar,
 #puzzle-list::-webkit-scrollbar {
     width: 1em;
 }
 
+#dialogue-box::-webkit-scrollbar-thumb,
 #puzzle-list::-webkit-scrollbar-thumb {
     background-color: rgb(101, 101, 101);
 }
 
+#dialogue-box::-webkit-scrollbar-track,
 #puzzle-list::-webkit-scrollbar-track {
     background-color: rgb(181, 181, 181);
 }
@@ -94,4 +97,9 @@
 .current-puzzle:hover {
     cursor: pointer;
     background-color: rgb(41, 41, 41);
+}
+
+#dialogue-box {
+    max-height: 500px;
+    overflow-y: auto;
 }

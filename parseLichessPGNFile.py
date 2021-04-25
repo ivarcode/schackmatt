@@ -55,7 +55,9 @@ for line in f:
         # print(line)
         parseLineIntoObj(line)
     else:
-        pgnContent += line
+        # replace smart single quote ? with '
+        # probably need a more clever function to handle this type of thing
+        pgnContent += line.replace('\u00e2\u20ac\u2122', '\'')
 
 obj['pgnContent'] = pgnContent
 outObj[eventIndex] = obj
@@ -66,7 +68,7 @@ obj = {}
 filename = sys.argv[2]
 rootKeyStartIndex = 0
 for i in range(0, len(filename)):
-    if filename[i] == '/':
+    if filename[i] == '/' or filename[i] == '\\':
         rootKeyStartIndex = i
 
 # assumption is that filename ends in .json

@@ -115,10 +115,9 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
              */
             this.colorToPlay = oppositeColor(this.game.turn);
             this.gameConfig.orientation = this.colorToPlay;
+            this.gameComponent.drawBoard();
             this.gameConfig.restrictPieces = [this.game.turn];
         });
-
-        this.gameComponent.drawBoard();
 
         /**
          * This setTimeout expression is used to delay the move being played
