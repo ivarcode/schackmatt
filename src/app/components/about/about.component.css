@@ -28,23 +28,9 @@ h6 {
 }
 
 .about-section {
-    padding-bottom: 30px;
     padding-top: 0px;
     background-color: #1f1f1f;
     color: white;
-}
-
-.about-section-panel-left,
-.about-section-panel-right {
-    height: 20%;
-    width: 30%;
-}
-
-.about-section-panel-left {
-    float: left;
-}
-.about-section-panel-right {
-    float: right;
 }
 
 .our-team-section {
@@ -71,4 +57,14 @@ h6 {
 
 p {
     margin-bottom: 5px;
+}
+
+.carousel-item {
+    height: 300px;
+}
+
+.carousel-inner img {
+    object-fit: cover;
+    position: absolute;
+    bottom: 0px;
 }
