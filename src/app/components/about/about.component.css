@@ -68,3 +68,21 @@ p {
     position: absolute;
     bottom: 0px;
 }
+
+.carousel-item p {
+    font-size: 1.25em;
+}
+
+.carousel-item .carousel-caption {
+    height: 100%;
+}
+
+.carousel-item h2 {
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+.carousel-indicators li:hover,
+.carousel-indicators:hover {
+    cursor: auto;
+}

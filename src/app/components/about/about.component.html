@@ -2,51 +2,28 @@
     <div class="col-sm-10">
         <div id="carousel" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
-                <li
+                <!-- <li
                     data-target="#carousel"
                     data-slide-to="0"
                     class="active"
+                ></li> -->
+                <li
+                    *ngFor="let carouselItem of carouselItems; index as i"
+                    [class.active]="i === 0"
                 ></li>
-                <li data-target="#carousel" data-slide-to="1"></li>
-                <li data-target="#carousel" data-slide-to="2"></li>
             </ol>
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img
-                        class="d-block w-100"
-                        src="../../../assets/wp2883270.jpg"
-                        alt="First slide"
-                    />
+                <div
+                    *ngFor="let carouselItem of carouselItems; index as i"
+                    class="carousel-item"
+                    [class.active]="i === 0"
+                >
+                    <img class="d-block w-100" alt="" />
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Our Mission</h5>
+                        <h2>{{ carouselItem.title }}</h2>
                         <p>
-                            The goal of Chess Trainer Hub is to help players of
-                            all levels improve their chess skills through
-                            pattern recognition, repetition and challenging
-                            puzzles via an interactive chess board.
+                            {{ carouselItem.details }}
                         </p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img
-                        class="d-block w-100"
-                        src="../../../assets/wp2883278.jpg"
-                        alt="Second slide"
-                    />
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5></h5>
-                        <p></p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img
-                        class="d-block w-100"
-                        src="../../../assets/wp2883321.jpg"
-                        alt="Third slide"
-                    />
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5></h5>
-                        <p></p>
                     </div>
                 </div>
             </div>
@@ -136,18 +113,18 @@
         <h4>{{ staff.name }}</h4>
         <h5>{{ staff.title }}</h5>
         <p>{{ staff.bio }}</p>
-        <p>
+        <h5>
             lichess.org ::
             <a href="https://lichess.org/@/{{ staff.lichess }}" target="_blank"
                 >@{{ staff.lichess }}</a
             >
-        </p>
-        <p>
+        </h5>
+        <h5>
             discord ::
             <a href="{{ staff.discordLink }}" target="_blank"
                 >@{{ staff.discord }}</a
             >
-        </p>
+        </h5>
     </div>
     <div class="col-sm-2"></div>
 </div>

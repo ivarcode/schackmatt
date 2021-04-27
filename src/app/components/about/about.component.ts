@@ -6,6 +6,10 @@ import { Component } from '@angular/core';
     styleUrls: ['./about.component.css']
 })
 export class AboutComponent {
+    public carouselItems: {
+        title: string;
+        details: string;
+    }[];
     public staffMembers: {
         name: string;
         title: string;
@@ -37,14 +41,20 @@ export class AboutComponent {
                 discordLink: 'https://discord.gg/msr7NuZW',
                 url: '../../../assets/Nick.png'
             }
-            // {
-            //     name: 'Nicolas Holmgren',
-            //     title: 'Junior Developer',
-            //     bio: 'chess player',
-            //     discord: 'Enrico',
-            //     url: '../../../assets/Nick.png',
-            //     goofyUrl: '../../../assets/Nick.png'
-            // }
+        ];
+        this.carouselItems = [
+            {
+                title: 'Our Mission',
+                details:
+                    'The goal of Chess Trainer Hub is to help players of all levels improve their chess skills through pattern recognition, repetition and challenging puzzles via an interactive chess board.'
+            },
+            {
+                title: 'How It Works',
+                details:
+                    'Chess Trainer Hub is built around lessons and practice scenarios. Players will be able to learn the concepts and material and then proceed to play those scenarios out in the interface.\nThis will help to learn and understand the main idea, but be able to see the position played out in multiple scenarios.\nUnderstanding the theory is one thing, but being able to identify and execute the winning plan is how you improve.'
+            },
+            { title: 'asdf', details: 'dfas' },
+            { title: 'nulsdfasd', details: 'derp you' }
         ];
     }
 }
