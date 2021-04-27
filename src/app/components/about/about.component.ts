@@ -51,10 +51,18 @@ export class AboutComponent {
             {
                 title: 'How It Works',
                 details:
-                    'Chess Trainer Hub is built around lessons and practice scenarios. Players will be able to learn the concepts and material and then proceed to play those scenarios out in the interface.\nThis will help to learn and understand the main idea, but be able to see the position played out in multiple scenarios.\nUnderstanding the theory is one thing, but being able to identify and execute the winning plan is how you improve.'
+                    'Chess Trainer Hub is built around lessons and practice scenarios. Players will be able to learn the concepts and material and then proceed to play those scenarios out in the interface. Various modes of tactical, positional, and theory-based training tools are what we strive to bring to you!'
             },
-            { title: 'asdf', details: 'dfas' },
-            { title: 'nulsdfasd', details: 'derp you' }
+            {
+                title: 'Feedback',
+                details:
+                    'Our site is in a state of continuous optimization. We’re always looking for feedback from users. Are there specific lessons you’d like to see covered? Is there a specific feature you’d like to see added? Is there a bug that is interfering with your ability tocomplete a lesson or puzzle? Email us, we appreciate your help!'
+            },
+            {
+                title: 'Contact Us',
+                details:
+                    'Our head developer is doing his best to triage new tasks and welcomes new collaborators! Use the links below to join our Discord, find us on lichess, connect any way you want...'
+            }
         ];
     }
 }
