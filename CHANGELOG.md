@@ -1,3 +1,11 @@
+### 0.6.1
+
+commit 68c684b6b5c47ab896bb767f382b71377365c559
+
+Date:   Mon Apr 26 22:25:20 2021 -0400
+
+    Removing about page clutter and various small data changes in current courses
+
 ### 0.6.0
 
 commit 08897257fad80d5b73f79de34aa69a6a397d6e4d
