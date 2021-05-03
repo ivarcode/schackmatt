@@ -1,0 +1,156 @@
+[Event "Rook Endgame Principles: Principle 1 - Cutting the king off"]
+[Site "https://lichess.org/study/pgLQK5zW/T7vrlPoG"]
+[Result "*"]
+[UTCDate "2021.03.20"]
+[UTCTime "16:56:01"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "3r4/8/8/8/3P3k/3K4/8/R7 b - - 0 1"]
+[SetUp "1"]
+
+1... Kg4 { Rook Endgames are the most common endgames you'll encounter. There are 5 main principles you should always keep in the back of your head when approaching them.
+Sometimes, multiple principles can be applied at the same time. We're going to look at each of them in the next few lessons. This lessons involves the first two principles.
+Principle 1 - Cutting the king off
+This endgame is won for white, but you need to make sure black doesn't get their king too close to the pawn, making it hard to push forward.
+With black's king three files away from the pawn, you want to begin by cutting the king off with the rook. } 2. Rf1 Kg5 { Now with the rook cut off, the dance begins between the king and the rook.
+Navigate your king towards c7 while keeping an eye that the pawn is always protected when threatened. } { [%cal Gd3c4,Gc4b5,Gb5c5,Gc5b6,Gb6c7] } 3. Kc4 Rc8+ { Navigate your king towards c7 while keeping an eye that the pawn is always protected when threatened. } 4. Kb5 Rd8 { Navigate your king towards c7 while keeping an eye that the pawn is always protected when threatened. } 5. Kc5 Rc8+ { Navigate your king towards c7 while keeping an eye that the pawn is always protected when threatened. } 6. Kb6 Rd8 { Now that the king is in position, the goal is to apply our second principle.
+Principle 2 - Rooks are placed best behind passed pawns. } 7. Rd1 Kf6 { It's time to help the pawn come forward. Let's attack the rook. } 8. Kc7 { [%csl Gd7,Gd6,Gd8] } 8... Rd5 { Approach the rook so the king can come forward. } 9. Kc6 { [%cal Gd5a5] } 9... Ra5 { Now that the pawn can move forward, let's abide by the first principle again and cut the king off. } (9... Rd8 10. d5 Rc8+ { Now we can get in front of the pawn and win the game with a technique known as the Lucena. This will be covered in a later lesson. }) 10. Re1 Ra6+ 11. Kb5 Rd6 12. Kc5 Rd8 { We can now push the pawn forward. } 13. d5 Rc8+ { This position will now turn into the Lucena, which will be discussed in another chapter. } *
+
+
+[Event "Rook Endgame Principles: Cutting the King off 2"]
+[Site "https://lichess.org/study/pgLQK5zW/3OlaflCA"]
+[Result "*"]
+[UTCDate "2021.04.29"]
+[UTCTime "23:57:56"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "6RK/1k6/8/8/2p5/8/8/8 b - - 0 1"]
+[SetUp "1"]
+
+1... Kb6 { Cutting the king off is valuable maneuver to keep in mind against a rook and king, but also king and pawn as well. If black gets enough time, and white's king is far out of the picture, then the game can be drawn.
+In this instance however, white can apply the first principle and cut off the king.
+Getting behind the pawn with Rc8 is not enough to win as black can support the pawn to promotion and the rook will have to sacrifice itself for the pawn. } 2. Rg5 c3 { If the pawn decides to move forward, we can now attack the pawn in time to stop it.
+Note that this doesn't work if the pawn starts on the 3rd rank as there isn't enough time to attack from the side and get behind the pawn. } 3. Rg3 Kc5 (3... c2 4. Rc3 c1=Q 5. Rxc1) 4. Rxc3+ *
+
+
+[Event "Rook Endgame Principles: Principle 2 - Rooks behind passed pawns"]
+[Site "https://lichess.org/study/pgLQK5zW/t97q2ZQC"]
+[Result "*"]
+[UTCDate "2021.04.30"]
+[UTCTime "20:41:17"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "8/5pk1/r5pp/P2R4/7P/6P1/5PK1/8 b - - 2 52"]
+[SetUp "1"]
+
+52... Rf6 { Alekhine - Capablanca 1927
+We took a brief look at the second principle in the first lesson, but now we'll examine it more closely in a game by two world champions in the early 1900s.
+Principle 2 - Rooks belong behind passed pawns.
+In this situation, white's rook is defending the passed pawn from behind. In order to make progress, the rook belongs behind the passed pawn.
+It's not enough to manuever to d1 and then a1. The reason being behind the passed pawn works well is because you have more space and control of the board, since your rook can protect the pawn, but also cut the king off from making progress. } 53. Rd4 Ra6 54. Ra4 Kf6 { Now that our rook is behind the passed pawn, our goal is to activate the king.
+Kings should be very active in end games so they can assist the rook by giving passed pawns the chance to turn into a queen. } 55. Kf3 Ke5 { We want to move towards the pawn. If we get the chance, we will move to b5 so we can push our pawn forward.
+If black plays correctly to defend this, then we can create a counter threat on the kingside and attack the weak pawn on f7. } { [%cal Gf3d3,Gd3b5] } 56. Ke3 h5 57. Kd3 Kd5 58. Kc3 Kc5 { In the game, Alekhine brought his rook to a2 to defend f2 and force the black king to make a decision which way it wants to go. } { [%cal Gc5b5,Gc3d4] } 59. Ra2 Kb5 { Now that the king is fully distracted by the passed pawn, we are free to navigate towards the weak f pawn.
+Black can never capture the a pawn because his king will be too far out of position.
+In the mean time, we can navigate along the dark squares towards the pawn on f7 and eventually win the game. } { [%cal Gc3e5,Ge5f4,Gf4h6,Gh6g7] } 60. Kd4 Rd6+ 61. Ke5 Re6+ 62. Kf4 Ka6 { [%cal Gf4h6,Gh6g7] } *
+
+
+[Event "Rook Endgame Principles: Principle 3 - Rooks on the 7th"]
+[Site "https://lichess.org/study/pgLQK5zW/fN02dFq8"]
+[Result "*"]
+[UTCDate "2021.04.30"]
+[UTCTime "20:43:31"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "6k1/5pp1/p2Pp2p/8/6P1/P3P2P/3r1P2/1R4K1 b - - 2 28"]
+[SetUp "1"]
+
+28... Rxd6 { Wesley So - Vidit Santosh Gujrathi
+Principle 3 - Rooks are best on the 7th.
+This principle is true because in many cases, pawns are on the 7th rank and the king is on the 8th rank.
+Because of our first principle of cutting off the king and reducing its activity, our rooks are best on the 7th if they are not behind passed pawns.
+You will want to achieve this position in a lot of middle games as they are transitioning into endgames.
+Going to the 7th right away isn't ideal in this situation because we want to reduce the activity of the king. Let's force him to the h file. } 29. Rb8+ Kh7 { Now that the king is further away and we've saved ourselves a tempo for later, we can occupy the 7th rank.
+This is useful because it puts pressure on the f and g pawns so black must continue defending them.
+Meanwhile, our goal is to get behind the a pawn so we keep the rook limited to b6, c6, and d6. } { [%cal Gb8b7,Gb7a7] } 30. Rb7 { [%cal Gb7f7,Gb7a7] } 30... Kg6 31. Ra7 { Now the rook is stuck defending the passed pawn and white will start making progress towards the weak 1 pawn.
+There isn't anything that can be done by the pawns on the kingside so white will also start bringing the a pawn to a5 and working to create a passed pawn by bringing the rook to b7 and then b6. } { [%cal Gg1f1,Gf1c4,Ga3a5,Ga7b7,Gb7b6] } *
+
+
+[Event "Rook Endgame Principles: Principle 4 - transposing into pawn endgame"]
+[Site "https://lichess.org/study/pgLQK5zW/y8IvvWBW"]
+[Result "*"]
+[UTCDate "2021.04.30"]
+[UTCTime "20:44:56"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "8/5p1p/1k4p1/pp1KPP2/2r3P1/R1P5/7P/8 b - - 0 42"]
+[SetUp "1"]
+
+{ Vassily Ivanchuk - Baadur Jobava
+
+Principle 4 - Transpose into won pawn endgames where possible.
+
+Rook endgames always have a theme to them: create and queen a passed pawn.
+
+Because of this theme, you'll want to identify when the right time to transpose into a won pawn endgame occurs.
+
+Always keep this idea in the back of your mind when your opponent offers a rook trade.
+
+In this game, Jobava offered a rook exchange in the hopes that the passed a pawn would win the game. However, what he overlooked was a pawn break that will win the game on the kingside. }
+42... Ra4 43. Rxa4 bxa4 { We need to jump into the square and prevent the pawn from queening before looking for any pawn breaks. } 44. Kc4 gxf5 45. gxf5 Kc6 { We now want to make progress towards the pawn while still staying in the square.
+Black's king can never approach the pawns or we will create the pawn break. Let's see how it occurs. } { [%cal Gc4d3,Ga4d1] } 46. Kd3 Kd5 { Our goal is to create passed pawns for the c and f pawns. Try to find the best way to accomplish this. } { [%cal Gc3c8,Gf5f8] } 47. e6 fxe6 { If black did not capture, we would be able to capture the f pawn and have two passed pawns anyway. } 48. f6 Kd6 { The black king is unable to approach the f pawn, so we can start to push our c pawn.
+Nothing else can be accomplished by black for counterplay. } 49. c4 e5 50. c5+ Kd7 { If black captures the c pawn, he is outside the square and the f pawn will queen. } 51. c6+ Kxc6 { Queen the pawn. } 52. f7 Kd7 53. f8=Q *
+
+
+[Event "Rook Endgame Principles: Principle 5 - Rook Activity"]
+[Site "https://lichess.org/study/pgLQK5zW/pC4SZ5Tg"]
+[Result "*"]
+[UTCDate "2021.04.30"]
+[UTCTime "20:46:13"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "2r2k2/1p3p1p/p1N3p1/2Rp4/8/1P2PP2/P5PP/5K2 b - - 2 31"]
+[SetUp "1"]
+
+31... bxc6 { Salomon Flohr - Milan Vidmar
+Principle 5 - Rook Activity
+This principle is the last we're mentioning, but it's probably the most important. If your rook is stuck protecting a pawn, then it's unable to accomplish other tasks.
+Sometimes, having less pawns doesn't matter as much as rook activity does.
+Right now, black's rook is inactive because it's stuck defending the c6 pawn. Because black's rook is inactive, there's no rush to move our own rook. Activating the king is the first step.
+Playing Ra5 right away allows black to gain activity with a pawn sacrifice of c5. This then creates an open file for black and the rook is much more active. } 32. Ke2 Ke7 33. Kd3 Kd6 { Now that our king is more centralized and our rook is threatened to move, we can go after the weak a6 pawn, forcing black's rook to remain inactive behind it.
+This time, white's king is more centralized and can help prevent black from playing c5. c5 also comes with check right away now if black plays it. } 34. Ra5 Ra8 { c5 didn't work because white captures the pawn with check.
+Let's prevent c5 now with our king to better centralize it. } 35. Kd4 f5 { In the game, white made progress with b4 then a3 } { [%cal Gb3b4,Ga2a3] } 36. b4 Rb8 { In the game, white made progress with b4 then a3 } { [%cal Ga2a3] } 37. a3 Ra8 { Now our goal is to open the 5th rank so our rook can gain even more activity. } 38. e4 fxe4 39. fxe4 dxe4 { The 5th rank is now open and the rook both attacks the a pawn, but also maintains control of the 5th rank to stop the kingside pawns.
+black's rook is stuck behind its own pawn, but it is not passed, so this is not where it wants to be. } { [%cal Ga5g5] } 40. Kxe4 { White will now begin to make progress with its king and work towards the weak h7 pawn. } { [%cal Ga5h5,Ge4f4,Gf4h6] } *
+
+
+[Event "Rook Endgame Principles: Rook Activity 2"]
+[Site "https://lichess.org/study/pgLQK5zW/u0CGQ7Ly"]
+[Result "*"]
+[UTCDate "2021.05.01"]
+[UTCTime "19:22:54"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "1r3k2/5pp1/3p2p1/8/3P4/P6P/2R2P1K/8 b - - 0 40"]
+[SetUp "1"]
+
+40... Rb3 { Rudolf Spielmann - Akiba Rubinstein
+This scenario is drawn from a game from the masterful Rubinstein.
+Despite having a passed pawn, Rubinstein was able to win the game, but it wasn't by playing the move that was just played.
+This is a side line to show what happens if you go after material rather than getting your rook active.
+Black should have played Ra8 to get the rook in front of the passed pawn and stop it.
+Instead, we have chosen for black to go after the d pawn to create their own passed pawn, going up in material, but down in rook activity.
+Let's push our pawn and follow our tch } 41. a4 Rb4 { Follow the second principle and get your rook behind the passed pawn. } 42. Ra2 Rxd4 { Black has gone up material (4 pawns vs 3) but the activity of the black rook is sacrificed as it has to get in front of the pawn and will end up stuck on a8.
+Push your pawn } 43. a5 Rb4 { Push your pawn } 44. a6 Rb8 { Push your pawn } 45. a7 Ra8 { Now you have a very active rook that controls much of the board while black is stuck to the 8th rank, protecting the pawn from queening. } { [%cal Ga2a6,Ga6d6] } *

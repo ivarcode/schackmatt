@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { endgame_checkmates } from 'data/endgame_checkmates.json';
+import { rook_endgame_principles } from 'data/rook_endgame_principles.json';
 import { queen_endgames } from 'data/queen_endgames.json';
 import { pawn_endgames } from 'data/pawn_endgames.json';
 import { Puzzle } from 'src/app/lib/interface.library';
@@ -19,7 +20,8 @@ export class CoursesComponent implements OnInit {
     private studyObjects = {
         endgame_checkmates,
         queen_endgames,
-        pawn_endgames
+        pawn_endgames,
+        rook_endgame_principles
     };
 
     // needs a better name
@@ -44,6 +46,11 @@ export class CoursesComponent implements OnInit {
                 { set: 'queen_endgames' },
                 'Queen Endgames',
                 'Practice how to win with a queen against a pawn'
+            ],
+            [
+                { set: 'rook_endgame_principles' },
+                'Rook Endgame Principles',
+                'Train to understand the critical ideas in rook endgames'
             ]
         ];
     }
