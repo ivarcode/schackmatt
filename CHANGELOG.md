@@ -1,3 +1,11 @@
+### 0.6.2
+
+commit 081add973e12406e69feb1da663f33add72ae46a
+
+Date:   Sun May 2 22:31:09 2021 -0400
+
+    Rook Endgame Principles course released
+
 ### 0.6.1
 
 commit 68c684b6b5c47ab896bb767f382b71377365c559
