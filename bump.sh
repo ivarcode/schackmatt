@@ -9,7 +9,7 @@ then
     then
         echo "Bumping a $bumpType version..."
     else
-        echo "version bump type != [ major | minor | patch ]"
+        echo "Error arg[0]: version bump type != [ major | minor | patch ]"
         echo "Aborting."
         # exit unhappily
         exit 1
@@ -48,8 +48,6 @@ rm vertext.md
 # add all changed files (CHANGELOG.MD, package.json, package-lock.json)
 git add .
 git commit -m "v$verval"
-# delete tag if it already exists
-git tag -d v$verval
 # tag the version
 echo "Tagging v$verval"
 git tag -a $verval -m "$verval"
