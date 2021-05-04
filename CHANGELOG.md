@@ -1,3 +1,11 @@
+### 0.6.3
+
+commit d4a16e2a42b03917f289bf35076a391be78273ac
+
+Date:   Mon May 3 20:18:25 2021 -0400
+
+    Changes to make bump.sh take the version type as an argument
+
 ### 0.6.2
 
 commit 081add973e12406e69feb1da663f33add72ae46a
