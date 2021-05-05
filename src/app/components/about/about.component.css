@@ -45,6 +45,10 @@ h6 {
     text-align: center;
 }
 
+.our-team-section .col-sm-4 img {
+    margin-top: 25px;
+}
+
 .col-sm-4 img {
     display: block;
     margin-right: auto;
@@ -87,6 +91,6 @@ p {
     cursor: auto;
 }
 
+/* desktop */
 @media only screen and (min-width: 768px) {
-    /*  */
 }

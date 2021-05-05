@@ -90,9 +90,8 @@
     <div class="col-sm-1"></div> -->
 </div>
 
-<div class="row our-team-section">
+<div class="row our-team-section justify-content-sm-center">
     <div class="col-sm-12"><h2>Our Team</h2></div>
-    <div class="col-sm-2"></div>
     <div *ngFor="let staff of staffMembers" class="col-sm-4">
         <div style="margin-right: auto; margin-left: auto">
             <img src="{{ staff.url }}" alt="staff image" />
@@ -113,5 +112,4 @@
             >
         </h5>
     </div>
-    <div class="col-sm-2"></div>
 </div>
