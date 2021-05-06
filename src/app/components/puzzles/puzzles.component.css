@@ -3,6 +3,11 @@
     max-height: calc(100vh - 80px);
 }
 
+#game {
+    /* temporary */
+    overflow: auto;
+}
+
 #title {
     margin: 30px 0 20px 40px;
     text-transform: uppercase;
