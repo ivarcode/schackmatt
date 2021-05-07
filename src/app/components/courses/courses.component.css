@@ -7,7 +7,6 @@
     background-color: #ece8e1;
     height: 100%;
 }
-
 .cards .card {
     display: grid;
     padding: 15px;
@@ -19,12 +18,9 @@
     box-shadow: 8px 8px 0px 0px #38383817;
     background-color: #f5f2ee;
     transition: all 0.3s ease-in-out;
-    /* min-width: 550px;
-    max-width: 600px; */
     margin: 20px;
     overflow: hidden;
 }
-
 .cards .card:hover {
     text-decoration: none;
     color: #f5f2ee;
@@ -32,22 +28,44 @@
     /* padding-left: 50px; */
     transition: all 0.3s ease-in-out;
 }
-
 .cards .card h2 {
+    font-size: 1.5rem;
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing: 2px;
 }
-
 .cards .card p {
     margin-bottom: 0;
     color: #444;
 }
-
 .cards .card:hover p {
     color: #f5f2ee;
 }
-
 .hide {
     display: none;
+}
+
+/* Mobile M - 375px and larger */
+@media only screen and (min-width: 375px) {
+}
+/* misc 600px and smaller */
+@media only screen and (max-width: 600px) {
+    .cards .card {
+        width: 100%;
+    }
+}
+/* misc 600px and larger */
+@media only screen and (min-width: 600px) {
+    .cards .card {
+        width: 500px;
+    }
+}
+/* Tablet - 768px and larger */
+@media only screen and (min-width: 768px) {
+    .cards .card h2 {
+        /* font-size: 2rem; */
+    }
+    .cards .card {
+        width: 550px;
+    }
 }
