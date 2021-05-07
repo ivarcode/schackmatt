@@ -438,13 +438,18 @@ export class GameComponent implements OnInit {
             pImg.src = '../../assets/pieces/' + pieceSrc + '.png';
             this.pieceImages.push(pImg);
         }
-
+        // probably don't need a board image anymore? TODO
         this.boardImage = new Image();
         this.boardImage.src = '../../assets/board_640x640.png';
         // because apparently I have to wait on the image smh
         this.boardImage.onload = () => {
             this.drawBoard();
         };
+        // doing this inside a timeout allows the DOM to exist :D
+        setTimeout(() => {
+            // resize the board once
+            this.resizeBoard(null);
+        });
         // create all the board event listeners
         this.initializeEventListeners();
     }
@@ -496,7 +501,7 @@ export class GameComponent implements OnInit {
         );
     }
 
-    public onWindowResize(event: any) {
+    public resizeBoard(event: any) {
         // console.log('event', event);
         const currentGameContainerWidth = this._gameContainer.nativeElement
             .offsetWidth;
@@ -510,7 +515,10 @@ export class GameComponent implements OnInit {
             this.squareSize = newSize;
             console.log('square size adjusted to: ', this.squareSize);
         }
-        this.drawBoard();
+        // doing this inside a setTimeout call allows the variables to populate
+        setTimeout(() => {
+            this.drawBoard();
+        });
     }
 
     /**
