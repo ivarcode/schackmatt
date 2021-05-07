@@ -1,4 +1,4 @@
-#standard-game-container {
+#puzzle-component-container {
     margin: 0px;
     /* 62 is navbar max height */
     max-height: calc(100vh - 62px);
@@ -38,10 +38,6 @@
     text-align: justify;
     color: #525252;
     font-size: 16px;
-}
-.col-sm-2 {
-    height: inherit;
-    padding: 0px;
 }
 #puzzle-list {
     padding: 0px;
