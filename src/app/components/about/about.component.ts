@@ -46,7 +46,7 @@ export class AboutComponent {
             {
                 title: 'Our Mission',
                 details:
-                    'The goal of Chess Trainer Hub is to help players of all levels improve their chess skills through pattern recognition, repetition and challenging puzzles via an interactive chess board.'
+                    'The goal of Chess Trainer Hub is to help players improve their chess skills through pattern recognition, repetition and challenging puzzles. Using an interactive chess board and detailed guides, players of all levels are able to learn and develop better techniques.'
             },
             {
                 title: 'How It Works',

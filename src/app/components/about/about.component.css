@@ -1,54 +1,44 @@
 body {
     margin: 0;
 }
-
 h2,
 h3 {
     text-transform: uppercase;
     font-weight: 700;
 }
-
 h3 {
     margin-top: 20px;
 }
-
 h6 {
     font-weight: 400;
     text-align: left;
 }
-
 .row {
     margin: 0;
     width: 100%;
 }
-
 .about-section,
 .our-team-section {
     text-align: center;
 }
-
 .about-section {
     padding-top: 0px;
     background-color: #1f1f1f;
     color: white;
 }
-
 .our-team-section {
     padding-top: 20px;
     padding-bottom: 10px;
 }
-
 .our-team-section .col-sm-4 {
     top: -20px;
     padding-left: 25px;
     padding-right: 25px;
     text-align: center;
 }
-
 .our-team-section .col-sm-4 img {
     margin-top: 25px;
 }
-
 .col-sm-4 img {
     display: block;
     margin-right: auto;
@@ -58,40 +48,44 @@ h6 {
     width: 200px;
     height: 200px;
 }
-
 p {
     margin-bottom: 5px;
 }
-
 .carousel-item {
     height: 300px;
 }
-
 .carousel-inner img {
     object-fit: cover;
     position: absolute;
     bottom: 0px;
 }
-
 .carousel-item p {
-    font-size: 1.25em;
+    font-size: 0.8rem;
 }
-
 .carousel-item .carousel-caption {
     height: 100%;
 }
-
 .carousel-item h2 {
-    margin-top: 50px;
-    margin-bottom: 30px;
+    font-size: 1.5rem;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
-
 .carousel-indicators li:hover,
 .carousel-indicators:hover {
     cursor: auto;
 }
 
-/* desktop */
+/* Mobile M - 375px and larger */
+@media only screen and (min-width: 375px) {
+}
+/* Tablet - 768px and larger */
 @media only screen and (min-width: 768px) {
-    /*  */
+    .carousel-item h2 {
+        font-size: 2rem;
+        margin-top: 50px;
+        margin-bottom: 30px;
+    }
+    .carousel-item p {
+        font-size: 1rem;
+    }
 }
