@@ -519,16 +519,16 @@ export class GameComponent implements OnInit, OnChanges {
         if (e.offsetY < 1) {
             e.offsetY = 1;
         }
-        if (e.offsetX > 640 - 1) {
-            e.offsetX = 640 - 1;
+        if (e.offsetX > this.boardSize - 1) {
+            e.offsetX = this.boardSize - 1;
         }
-        if (e.offsetY > 640 - 1) {
-            e.offsetY = 640 - 1;
+        if (e.offsetY > this.boardSize - 1) {
+            e.offsetY = this.boardSize - 1;
         }
 
         if (this.config.orientation === Color.Black) {
-            e.offsetX = 640 - e.offsetX;
-            e.offsetY = 640 - e.offsetY;
+            e.offsetX = this.boardSize - e.offsetX;
+            e.offsetY = this.boardSize - e.offsetY;
         }
         this.mouseMoveEvent(e);
     }
@@ -545,10 +545,10 @@ export class GameComponent implements OnInit, OnChanges {
             this.cursor.currentMousePosition = this.getMousePosition(event);
             let x = this.cursor.currentMousePosition.x;
             let y = this.cursor.currentMousePosition.y;
-            x -= x % 80;
-            y -= y % 80;
-            x /= 80;
-            y /= 80;
+            x -= x % this.config.squareSize;
+            y -= y % this.config.squareSize;
+            x /= this.config.squareSize;
+            y /= this.config.squareSize;
             if (
                 this.cursor.overSquare === null ||
                 this.cursor.overSquare.x !== x ||
@@ -561,11 +561,11 @@ export class GameComponent implements OnInit, OnChanges {
             }
             this.drawBoard();
             if (this.cursor.rightMouseIsDown) {
-                console.log(
-                    'draw circle or sq at ',
-                    this.cursor.mouseDownOn,
-                    this.cursor.overSquare
-                );
+                // console.log(
+                //     'draw circle or sq at ',
+                //     this.cursor.mouseDownOn,
+                //     this.cursor.overSquare
+                // );
                 const src =
                     this.config.orientation === Color.White
                         ? new Square(
@@ -785,7 +785,6 @@ export class GameComponent implements OnInit, OnChanges {
     public drawBoard(): void {
         this.boardCtx.restore();
         this.boardCtx.globalAlpha = 1;
-        // this.boardCtx.drawImage(this.boardImage, 0, 0);
         this.boardCtx.font = '15px Arial';
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
@@ -794,7 +793,12 @@ export class GameComponent implements OnInit, OnChanges {
                     (i + j) % 2 === 0
                         ? this.config.colorScheme.light
                         : this.config.colorScheme.dark;
-                this.boardCtx.fillRect(i * 80, j * 80, 80, 80);
+                this.boardCtx.fillRect(
+                    i * this.config.squareSize,
+                    j * this.config.squareSize,
+                    this.config.squareSize,
+                    this.config.squareSize
+                );
             }
         }
         for (let i = 0; i < 8; i++) {
@@ -816,19 +820,21 @@ export class GameComponent implements OnInit, OnChanges {
             let x = this.cursor.currentMousePosition.x;
             let y = this.cursor.currentMousePosition.y;
             if (this.config.orientation === Color.Black) {
-                x = 640 - 1 - x;
-                y = 640 - 1 - y;
+                x = this.boardSize - 1 - x;
+                y = this.boardSize - 1 - y;
             }
             this.boardCtx.drawImage(
                 this.pieceImages[this.cursor.draggedPieceIndex],
-                x - 40,
-                y - 40
+                x - this.config.squareSize / 2,
+                y - this.config.squareSize / 2,
+                this.config.squareSize,
+                this.config.squareSize
             );
         }
         if (this.isPromoting) {
             this.boardCtx.globalAlpha = 0.5;
             this.boardCtx.fillStyle = 'black';
-            this.boardCtx.fillRect(0, 0, 640, 640);
+            this.boardCtx.fillRect(0, 0, this.boardSize, this.boardSize);
             this.boardCtx.globalAlpha = 1;
             // this is where we do the invert trickery
             let drawAtTopOfBoard = this.game.turn === Color.White;
@@ -840,24 +846,82 @@ export class GameComponent implements OnInit, OnChanges {
             }
             this.boardCtx.fillStyle = '#AAAAAA';
             this.boardCtx.fillRect(
-                x * 80,
-                drawAtTopOfBoard ? 0 : 80 * 4,
-                80,
-                80 * 4
+                x * this.config.squareSize,
+                drawAtTopOfBoard ? 0 : this.config.squareSize * 4,
+                this.config.squareSize,
+                this.config.squareSize * 4
             );
             const _4ys = drawAtTopOfBoard
-                ? [0, 80, 80 * 2, 80 * 3]
-                : [80 * 7, 80 * 6, 80 * 5, 80 * 4];
+                ? [
+                      0,
+                      this.config.squareSize,
+                      this.config.squareSize * 2,
+                      this.config.squareSize * 3
+                  ]
+                : [
+                      this.config.squareSize * 7,
+                      this.config.squareSize * 6,
+                      this.config.squareSize * 5,
+                      this.config.squareSize * 4
+                  ];
             if (this.game.turn === Color.White) {
-                this.boardCtx.drawImage(this.pieceImages[1], x * 80, _4ys[0]);
-                this.boardCtx.drawImage(this.pieceImages[3], x * 80, _4ys[1]);
-                this.boardCtx.drawImage(this.pieceImages[4], x * 80, _4ys[2]);
-                this.boardCtx.drawImage(this.pieceImages[2], x * 80, _4ys[3]);
+                this.boardCtx.drawImage(
+                    this.pieceImages[1],
+                    x * this.config.squareSize,
+                    _4ys[0],
+                    this.config.squareSize,
+                    this.config.squareSize
+                );
+                this.boardCtx.drawImage(
+                    this.pieceImages[3],
+                    x * this.config.squareSize,
+                    _4ys[1],
+                    this.config.squareSize,
+                    this.config.squareSize
+                );
+                this.boardCtx.drawImage(
+                    this.pieceImages[4],
+                    x * this.config.squareSize,
+                    _4ys[2],
+                    this.config.squareSize,
+                    this.config.squareSize
+                );
+                this.boardCtx.drawImage(
+                    this.pieceImages[2],
+                    x * this.config.squareSize,
+                    _4ys[3],
+                    this.config.squareSize,
+                    this.config.squareSize
+                );
             } else {
-                this.boardCtx.drawImage(this.pieceImages[7], x * 80, _4ys[0]);
-                this.boardCtx.drawImage(this.pieceImages[9], x * 80, _4ys[1]);
-                this.boardCtx.drawImage(this.pieceImages[10], x * 80, _4ys[2]);
-                this.boardCtx.drawImage(this.pieceImages[8], x * 80, _4ys[3]);
+                this.boardCtx.drawImage(
+                    this.pieceImages[7],
+                    x * this.config.squareSize,
+                    _4ys[0],
+                    this.config.squareSize,
+                    this.config.squareSize
+                );
+                this.boardCtx.drawImage(
+                    this.pieceImages[9],
+                    x * this.config.squareSize,
+                    _4ys[1],
+                    this.config.squareSize,
+                    this.config.squareSize
+                );
+                this.boardCtx.drawImage(
+                    this.pieceImages[10],
+                    x * this.config.squareSize,
+                    _4ys[2],
+                    this.config.squareSize,
+                    this.config.squareSize
+                );
+                this.boardCtx.drawImage(
+                    this.pieceImages[8],
+                    x * this.config.squareSize,
+                    _4ys[3],
+                    this.config.squareSize,
+                    this.config.squareSize
+                );
             }
         }
     }
@@ -877,8 +941,8 @@ export class GameComponent implements OnInit, OnChanges {
                             (this.config.orientation === Color.White
                                 ? 8 - j
                                 : j + 1),
-                        628,
-                        j * 80 + 15
+                        this.boardSize - 12,
+                        j * this.config.squareSize + 15
                     );
                 }
                 if (j === 7) {
@@ -887,8 +951,8 @@ export class GameComponent implements OnInit, OnChanges {
                         fileToString(
                             this.config.orientation === Color.White ? i : 7 - i
                         ),
-                        i * 80 + 5,
-                        635
+                        i * this.config.squareSize + 5,
+                        this.boardSize - 5
                     );
                 }
             }
@@ -947,8 +1011,12 @@ export class GameComponent implements OnInit, OnChanges {
                 const index = (color ? 6 : 0) + pieceType;
                 this.boardCtx.drawImage(
                     this.pieceImages[index],
-                    (this.config.orientation === Color.White ? x : 7 - x) * 80,
-                    (this.config.orientation === Color.White ? 7 - y : y) * 80
+                    (this.config.orientation === Color.White ? x : 7 - x) *
+                        this.config.squareSize,
+                    (this.config.orientation === Color.White ? 7 - y : y) *
+                        this.config.squareSize,
+                    this.config.squareSize,
+                    this.config.squareSize
                 );
             }
         }
@@ -976,8 +1044,12 @@ export class GameComponent implements OnInit, OnChanges {
             } else {
                 this.boardCtx.drawImage(
                     this.pieceImages[index],
-                    (this.config.orientation === Color.White ? x : 7 - x) * 80,
-                    (this.config.orientation === Color.White ? 7 - y : y) * 80
+                    (this.config.orientation === Color.White ? x : 7 - x) *
+                        this.config.squareSize,
+                    (this.config.orientation === Color.White ? 7 - y : y) *
+                        this.config.squareSize,
+                    this.config.squareSize,
+                    this.config.squareSize
                 );
             }
         }
@@ -995,7 +1067,12 @@ export class GameComponent implements OnInit, OnChanges {
             x = 7 - x;
             y = 7 - y;
         }
-        this.boardCtx.fillRect(x * 80, y * 80, 80, 80);
+        this.boardCtx.fillRect(
+            x * this.config.squareSize,
+            y * this.config.squareSize,
+            this.config.squareSize,
+            this.config.squareSize
+        );
     }
 
     public getGame(): Game {
@@ -1070,8 +1147,12 @@ export class GameComponent implements OnInit, OnChanges {
     }): void {
         // line not completely necessary
         // this.boardCtx.globalAlpha = 0.5;
-        const x = circle.src.file * 80 + 40;
-        const y = circle.src.rank * 80 + 40;
+        const x =
+            circle.src.file * this.config.squareSize +
+            this.config.squareSize / 2;
+        const y =
+            circle.src.rank * this.config.squareSize +
+            this.config.squareSize / 2;
         const color = circle.color;
         const lineWidth = circle.lineWidth;
 
@@ -1097,10 +1178,18 @@ export class GameComponent implements OnInit, OnChanges {
         lineWidth: number;
     }): void {
         // setup values
-        const fromX = arrow.src.file * 80 + 40;
-        const fromY = arrow.src.rank * 80 + 40;
-        const toX = arrow.dest.file * 80 + 40;
-        const toY = arrow.dest.rank * 80 + 40;
+        const fromX =
+            arrow.src.file * this.config.squareSize +
+            this.config.squareSize / 2;
+        const fromY =
+            arrow.src.rank * this.config.squareSize +
+            this.config.squareSize / 2;
+        const toX =
+            arrow.dest.file * this.config.squareSize +
+            this.config.squareSize / 2;
+        const toY =
+            arrow.dest.rank * this.config.squareSize +
+            this.config.squareSize / 2;
         const color = arrow.color;
         // pointer displacement from the center
         const displacement = -5;
@@ -1136,5 +1225,9 @@ export class GameComponent implements OnInit, OnChanges {
 
         // finally restore the state of the canvas
         this.boardCtx.restore();
+    }
+
+    get boardSize(): number {
+        return this.config.squareSize * 8;
     }
 }
