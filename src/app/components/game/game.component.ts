@@ -561,11 +561,11 @@ export class GameComponent implements OnInit, OnChanges {
             }
             this.drawBoard();
             if (this.cursor.rightMouseIsDown) {
-                console.log(
-                    'draw circle or sq at ',
-                    this.cursor.mouseDownOn,
-                    this.cursor.overSquare
-                );
+                // console.log(
+                //     'draw circle or sq at ',
+                //     this.cursor.mouseDownOn,
+                //     this.cursor.overSquare
+                // );
                 const src =
                     this.config.orientation === Color.White
                         ? new Square(
