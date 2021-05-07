@@ -2,14 +2,16 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    padding: 80px;
+    /* padding: 80px; */
+    padding: 10px;
     background-color: #ece8e1;
     height: 100%;
 }
 
 .cards .card {
     display: grid;
-    padding: 30px;
+    padding: 15px;
+    /* padding: 30px; */
     border-radius: 0;
     border: 0;
     border-bottom: 3px solid #bdbcb7;
@@ -17,8 +19,8 @@
     box-shadow: 8px 8px 0px 0px #38383817;
     background-color: #f5f2ee;
     transition: all 0.3s ease-in-out;
-    min-width: 550px;
-    max-width: 600px;
+    /* min-width: 550px;
+    max-width: 600px; */
     margin: 20px;
     overflow: hidden;
 }
@@ -27,7 +29,7 @@
     text-decoration: none;
     color: #f5f2ee;
     background-color: #171918;
-    padding-left: 50px;
+    /* padding-left: 50px; */
     transition: all 0.3s ease-in-out;
 }
 
