@@ -1,16 +1,31 @@
 #puzzle-component-container {
     margin: 0px;
+    padding: 0;
     /* 62 is navbar max height */
     max-height: calc(100vh - 62px);
+}
+.row {
+    margin: 0px;
+    width: 100%;
+}
+.col-sm-3,
+.col-sm-6 {
+    margin: 0px;
+    padding: 0px;
 }
 #game {
     /*  */
 }
 #title {
-    margin: 30px 0 20px 40px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: auto;
+    margin-left: auto;
     text-transform: uppercase;
     font-weight: 700;
-    font-size: 40px;
+    text-align: center;
+    /* font-size: 40px; */
+    font-size: 30px;
 }
 #board-overlay {
     /* margin: 0 auto; */
@@ -33,7 +48,7 @@
     font-weight: 400;
 }
 #exercise-info {
-    width: 300px;
+    /* width: 300px; */
     padding: 10px 32px;
     text-align: justify;
     color: #525252;
@@ -41,7 +56,7 @@
 }
 #puzzle-list {
     padding: 0px;
-    margin: 50px 0px 0px 20px;
+    margin: 10px;
     list-style: none;
     background-color: white;
     max-height: 80vh;

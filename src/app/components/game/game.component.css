@@ -2,6 +2,7 @@
     margin: 0px;
     /* max-width: 800px; */
     /* margin: 0 auto; */
+    overflow-x: hidden;
 }
 #board {
     margin: 20px;

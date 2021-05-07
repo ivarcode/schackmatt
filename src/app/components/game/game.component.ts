@@ -90,7 +90,7 @@ export class GameComponent implements OnInit {
 
     constructor() {
         // this.game = new Game('1k6/1p6/8/2P5/5p2/4P3/1K6/8 w - - 0 1');
-        this._squareSize = 80;
+        this._squareSize = 1;
         this.cursor = {
             leftMouseIsDown: false,
             rightMouseIsDown: false,
