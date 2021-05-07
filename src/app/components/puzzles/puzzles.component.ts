@@ -51,6 +51,7 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
 
         this._showBoardOverlay = false;
         this._gameConfig = {
+            squareSize: 65,
             restrictPieces: [],
             orientation: Color.Black,
             showCoordinates: true,
