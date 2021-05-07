@@ -75,9 +75,6 @@ p {
     cursor: auto;
 }
 
-/* Mobile M - 375px and larger */
-@media only screen and (min-width: 375px) {
-}
 /* Tablet - 768px and larger */
 @media only screen and (min-width: 768px) {
     .carousel-item h2 {

@@ -1,34 +1,29 @@
 #standard-game-container {
     margin: 0px;
-    max-height: calc(100vh - 80px);
+    /* 62 is navbar max height */
+    max-height: calc(100vh - 62px);
 }
-
 #game {
-    /* temporary */
-    overflow: auto;
+    /*  */
 }
-
 #title {
     margin: 30px 0 20px 40px;
     text-transform: uppercase;
     font-weight: 700;
     font-size: 40px;
 }
-
 #board-overlay {
     /* margin: 0 auto; */
     margin: 0px;
     padding: 20px;
     position: absolute;
 }
-
 #which-color-to-play-alert {
     margin: 30px;
     padding: 18px;
     border: 0;
     border-radius: 0;
 }
-
 #which-color-to-play-alert h4 {
     margin: 0;
     text-align: center;
@@ -37,7 +32,6 @@
     font-size: 20px;
     font-weight: 400;
 }
-
 #exercise-info {
     width: 300px;
     padding: 10px 32px;
@@ -45,12 +39,10 @@
     color: #525252;
     font-size: 16px;
 }
-
 .col-sm-2 {
     height: inherit;
     padding: 0px;
 }
-
 #puzzle-list {
     padding: 0px;
     margin: 50px 0px 0px 20px;
@@ -59,7 +51,6 @@
     max-height: 80vh;
     overflow-y: auto;
 }
-
 /* apparently, you need the basic call first to even make it register 
     any -thumb -track... 
 */
@@ -67,43 +58,35 @@
 #puzzle-list::-webkit-scrollbar {
     width: 1em;
 }
-
 #dialogue-box::-webkit-scrollbar-thumb,
 #puzzle-list::-webkit-scrollbar-thumb {
     background-color: rgb(101, 101, 101);
 }
-
 #dialogue-box::-webkit-scrollbar-track,
 #puzzle-list::-webkit-scrollbar-track {
     background-color: rgb(181, 181, 181);
 }
-
 #puzzle-list li {
     text-align: center;
     padding: 5px;
     border: black 1px solid;
 }
-
 #puzzle-list li:not(.current-puzzle):hover {
     background-color: lightgray;
     cursor: pointer;
 }
-
 .puzzle-link {
     cursor: pointer;
     font-size: 18px;
 }
-
 .current-puzzle {
     color: white;
     background-color: black;
 }
-
 .current-puzzle:hover {
     cursor: pointer;
     background-color: rgb(41, 41, 41);
 }
-
 #dialogue-box {
     max-height: 500px;
     overflow-y: auto;
