@@ -70,7 +70,7 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
 
         this._showBoardOverlay = false;
         this._gameConfig = {
-            squareSize: 80,
+            maxSquareDimensions: 80,
             restrictPieces: [Color.Black],
             orientation: Color.Black,
             showCoordinates: true,

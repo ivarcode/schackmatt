@@ -1,4 +1,9 @@
-<div id="game" class="row">
+<div
+    #gameContainer
+    id="game-container"
+    class="row"
+    (window:resize)="onWindowResize($event)"
+>
     <canvas id="board" width="{{ boardSize }}" height="{{ boardSize }}"
         >canvas</canvas
     >

@@ -4,8 +4,8 @@ import {
     Output,
     EventEmitter,
     Input,
-    SimpleChanges,
-    OnChanges
+    ViewChild,
+    ElementRef
 } from '@angular/core';
 import { Game } from '../../lib/game.library';
 import { GameConfig, GameEvent } from 'src/app/lib/interface.library';
@@ -18,12 +18,14 @@ import { Board } from 'src/app/lib/board.library';
     templateUrl: './game.component.html',
     styleUrls: ['./game.component.css']
 })
-export class GameComponent implements OnInit, OnChanges {
+export class GameComponent implements OnInit {
+    @ViewChild('gameContainer') private _gameContainer: ElementRef;
     @Output() gameDataEmitter = new EventEmitter<GameEvent>();
     @Input() game: Game;
     @Input() config: GameConfig;
 
     private _displayedMoveIndex: number;
+    private _squareSize: number;
     private boardCanvas: any;
     private _boardCtx: any;
     private boardImage: any;
@@ -88,6 +90,7 @@ export class GameComponent implements OnInit, OnChanges {
 
     constructor() {
         // this.game = new Game('1k6/1p6/8/2P5/5p2/4P3/1K6/8 w - - 0 1');
+        this._squareSize = 80;
         this.cursor = {
             leftMouseIsDown: false,
             rightMouseIsDown: false,
@@ -446,10 +449,6 @@ export class GameComponent implements OnInit, OnChanges {
         this.initializeEventListeners();
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        // console.log(changes);
-    }
-
     public initializeEventListeners(): void {
         // listeners
         this.boardCanvas.addEventListener(
@@ -495,6 +494,23 @@ export class GameComponent implements OnInit, OnChanges {
             'mouseup',
             this._mouseUpEventListener
         );
+    }
+
+    public onWindowResize(event: any) {
+        // console.log('event', event);
+        const currentGameContainerWidth = this._gameContainer.nativeElement
+            .offsetWidth;
+        // default margin on edges of board is 20px
+        const marginDiff = 40;
+        let newSize = Math.floor((currentGameContainerWidth - marginDiff) / 8);
+        if (newSize > this.config.maxSquareDimensions) {
+            newSize = this.config.maxSquareDimensions;
+        }
+        if (this.squareSize !== newSize) {
+            this.squareSize = newSize;
+            console.log('square size adjusted to: ', this.squareSize);
+        }
+        this.drawBoard();
     }
 
     /**
@@ -545,10 +561,10 @@ export class GameComponent implements OnInit, OnChanges {
             this.cursor.currentMousePosition = this.getMousePosition(event);
             let x = this.cursor.currentMousePosition.x;
             let y = this.cursor.currentMousePosition.y;
-            x -= x % this.config.squareSize;
-            y -= y % this.config.squareSize;
-            x /= this.config.squareSize;
-            y /= this.config.squareSize;
+            x -= x % this.squareSize;
+            y -= y % this.squareSize;
+            x /= this.squareSize;
+            y /= this.squareSize;
             if (
                 this.cursor.overSquare === null ||
                 this.cursor.overSquare.x !== x ||
@@ -794,10 +810,10 @@ export class GameComponent implements OnInit, OnChanges {
                         ? this.config.colorScheme.light
                         : this.config.colorScheme.dark;
                 this.boardCtx.fillRect(
-                    i * this.config.squareSize,
-                    j * this.config.squareSize,
-                    this.config.squareSize,
-                    this.config.squareSize
+                    i * this.squareSize,
+                    j * this.squareSize,
+                    this.squareSize,
+                    this.squareSize
                 );
             }
         }
@@ -825,10 +841,10 @@ export class GameComponent implements OnInit, OnChanges {
             }
             this.boardCtx.drawImage(
                 this.pieceImages[this.cursor.draggedPieceIndex],
-                x - this.config.squareSize / 2,
-                y - this.config.squareSize / 2,
-                this.config.squareSize,
-                this.config.squareSize
+                x - this.squareSize / 2,
+                y - this.squareSize / 2,
+                this.squareSize,
+                this.squareSize
             );
         }
         if (this.isPromoting) {
@@ -846,81 +862,76 @@ export class GameComponent implements OnInit, OnChanges {
             }
             this.boardCtx.fillStyle = '#AAAAAA';
             this.boardCtx.fillRect(
-                x * this.config.squareSize,
-                drawAtTopOfBoard ? 0 : this.config.squareSize * 4,
-                this.config.squareSize,
-                this.config.squareSize * 4
+                x * this.squareSize,
+                drawAtTopOfBoard ? 0 : this.squareSize * 4,
+                this.squareSize,
+                this.squareSize * 4
             );
             const _4ys = drawAtTopOfBoard
-                ? [
-                      0,
-                      this.config.squareSize,
-                      this.config.squareSize * 2,
-                      this.config.squareSize * 3
-                  ]
+                ? [0, this.squareSize, this.squareSize * 2, this.squareSize * 3]
                 : [
-                      this.config.squareSize * 7,
-                      this.config.squareSize * 6,
-                      this.config.squareSize * 5,
-                      this.config.squareSize * 4
+                      this.squareSize * 7,
+                      this.squareSize * 6,
+                      this.squareSize * 5,
+                      this.squareSize * 4
                   ];
             if (this.game.turn === Color.White) {
                 this.boardCtx.drawImage(
                     this.pieceImages[1],
-                    x * this.config.squareSize,
+                    x * this.squareSize,
                     _4ys[0],
-                    this.config.squareSize,
-                    this.config.squareSize
+                    this.squareSize,
+                    this.squareSize
                 );
                 this.boardCtx.drawImage(
                     this.pieceImages[3],
-                    x * this.config.squareSize,
+                    x * this.squareSize,
                     _4ys[1],
-                    this.config.squareSize,
-                    this.config.squareSize
+                    this.squareSize,
+                    this.squareSize
                 );
                 this.boardCtx.drawImage(
                     this.pieceImages[4],
-                    x * this.config.squareSize,
+                    x * this.squareSize,
                     _4ys[2],
-                    this.config.squareSize,
-                    this.config.squareSize
+                    this.squareSize,
+                    this.squareSize
                 );
                 this.boardCtx.drawImage(
                     this.pieceImages[2],
-                    x * this.config.squareSize,
+                    x * this.squareSize,
                     _4ys[3],
-                    this.config.squareSize,
-                    this.config.squareSize
+                    this.squareSize,
+                    this.squareSize
                 );
             } else {
                 this.boardCtx.drawImage(
                     this.pieceImages[7],
-                    x * this.config.squareSize,
+                    x * this.squareSize,
                     _4ys[0],
-                    this.config.squareSize,
-                    this.config.squareSize
+                    this.squareSize,
+                    this.squareSize
                 );
                 this.boardCtx.drawImage(
                     this.pieceImages[9],
-                    x * this.config.squareSize,
+                    x * this.squareSize,
                     _4ys[1],
-                    this.config.squareSize,
-                    this.config.squareSize
+                    this.squareSize,
+                    this.squareSize
                 );
                 this.boardCtx.drawImage(
                     this.pieceImages[10],
-                    x * this.config.squareSize,
+                    x * this.squareSize,
                     _4ys[2],
-                    this.config.squareSize,
-                    this.config.squareSize
+                    this.squareSize,
+                    this.squareSize
                 );
                 this.boardCtx.drawImage(
                     this.pieceImages[8],
-                    x * this.config.squareSize,
+                    x * this.squareSize,
                     _4ys[3],
-                    this.config.squareSize,
-                    this.config.squareSize
+                    this.squareSize,
+                    this.squareSize
                 );
             }
         }
@@ -942,7 +953,7 @@ export class GameComponent implements OnInit, OnChanges {
                                 ? 8 - j
                                 : j + 1),
                         this.boardSize - 12,
-                        j * this.config.squareSize + 15
+                        j * this.squareSize + 15
                     );
                 }
                 if (j === 7) {
@@ -951,7 +962,7 @@ export class GameComponent implements OnInit, OnChanges {
                         fileToString(
                             this.config.orientation === Color.White ? i : 7 - i
                         ),
-                        i * this.config.squareSize + 5,
+                        i * this.squareSize + 5,
                         this.boardSize - 5
                     );
                 }
@@ -1012,11 +1023,11 @@ export class GameComponent implements OnInit, OnChanges {
                 this.boardCtx.drawImage(
                     this.pieceImages[index],
                     (this.config.orientation === Color.White ? x : 7 - x) *
-                        this.config.squareSize,
+                        this.squareSize,
                     (this.config.orientation === Color.White ? 7 - y : y) *
-                        this.config.squareSize,
-                    this.config.squareSize,
-                    this.config.squareSize
+                        this.squareSize,
+                    this.squareSize,
+                    this.squareSize
                 );
             }
         }
@@ -1045,11 +1056,11 @@ export class GameComponent implements OnInit, OnChanges {
                 this.boardCtx.drawImage(
                     this.pieceImages[index],
                     (this.config.orientation === Color.White ? x : 7 - x) *
-                        this.config.squareSize,
+                        this.squareSize,
                     (this.config.orientation === Color.White ? 7 - y : y) *
-                        this.config.squareSize,
-                    this.config.squareSize,
-                    this.config.squareSize
+                        this.squareSize,
+                    this.squareSize,
+                    this.squareSize
                 );
             }
         }
@@ -1068,10 +1079,10 @@ export class GameComponent implements OnInit, OnChanges {
             y = 7 - y;
         }
         this.boardCtx.fillRect(
-            x * this.config.squareSize,
-            y * this.config.squareSize,
-            this.config.squareSize,
-            this.config.squareSize
+            x * this.squareSize,
+            y * this.squareSize,
+            this.squareSize,
+            this.squareSize
         );
     }
 
@@ -1147,12 +1158,8 @@ export class GameComponent implements OnInit, OnChanges {
     }): void {
         // line not completely necessary
         // this.boardCtx.globalAlpha = 0.5;
-        const x =
-            circle.src.file * this.config.squareSize +
-            this.config.squareSize / 2;
-        const y =
-            circle.src.rank * this.config.squareSize +
-            this.config.squareSize / 2;
+        const x = circle.src.file * this.squareSize + this.squareSize / 2;
+        const y = circle.src.rank * this.squareSize + this.squareSize / 2;
         const color = circle.color;
         const lineWidth = circle.lineWidth;
 
@@ -1178,18 +1185,10 @@ export class GameComponent implements OnInit, OnChanges {
         lineWidth: number;
     }): void {
         // setup values
-        const fromX =
-            arrow.src.file * this.config.squareSize +
-            this.config.squareSize / 2;
-        const fromY =
-            arrow.src.rank * this.config.squareSize +
-            this.config.squareSize / 2;
-        const toX =
-            arrow.dest.file * this.config.squareSize +
-            this.config.squareSize / 2;
-        const toY =
-            arrow.dest.rank * this.config.squareSize +
-            this.config.squareSize / 2;
+        const fromX = arrow.src.file * this.squareSize + this.squareSize / 2;
+        const fromY = arrow.src.rank * this.squareSize + this.squareSize / 2;
+        const toX = arrow.dest.file * this.squareSize + this.squareSize / 2;
+        const toY = arrow.dest.rank * this.squareSize + this.squareSize / 2;
         const color = arrow.color;
         // pointer displacement from the center
         const displacement = -5;
@@ -1227,7 +1226,13 @@ export class GameComponent implements OnInit, OnChanges {
         this.boardCtx.restore();
     }
 
+    set squareSize(s: number) {
+        this._squareSize = s;
+    }
+    get squareSize(): number {
+        return this._squareSize;
+    }
     get boardSize(): number {
-        return this.config.squareSize * 8;
+        return this.squareSize * 8;
     }
 }
