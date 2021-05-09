@@ -505,8 +505,8 @@ export class GameComponent implements OnInit {
         // console.log('event', event);
         const currentGameContainerWidth = this._gameContainer.nativeElement
             .offsetWidth;
-        // default margin on edges of board is 20px
-        const marginDiff = 40;
+        // default margin on edges of board is 15px * 2 = 30
+        const marginDiff = 30;
         let newSize = Math.floor((currentGameContainerWidth - marginDiff) / 8);
         if (newSize > this.config.maxSquareDimensions) {
             newSize = this.config.maxSquareDimensions;

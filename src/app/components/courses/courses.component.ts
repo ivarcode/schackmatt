@@ -86,6 +86,9 @@ export class CoursesComponent implements OnInit {
                     });
                 }
             }
+            // TODO
+            // resize the board DOESN'T WORK
+            // this._puzzlesComponent.gameComponent.resizeBoard(null);
         });
     }
 

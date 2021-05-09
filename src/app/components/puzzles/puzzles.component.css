@@ -13,9 +13,6 @@
     margin: 0px;
     padding: 0px;
 }
-#game {
-    /*  */
-}
 #title {
     margin-top: 5px;
     margin-bottom: 5px;
@@ -24,8 +21,7 @@
     text-transform: uppercase;
     font-weight: 700;
     text-align: center;
-    /* font-size: 40px; */
-    font-size: 30px;
+    font-size: 22px;
 }
 #board-overlay {
     /* margin: 0 auto; */
@@ -34,7 +30,7 @@
     position: absolute;
 }
 #which-color-to-play-alert {
-    margin: 30px;
+    margin: 15px;
     padding: 18px;
     border: 0;
     border-radius: 0;
@@ -62,12 +58,15 @@
     max-height: 80vh;
     overflow-y: auto;
 }
+#puzzle-list li a {
+    font-size: 16px;
+}
 /* apparently, you need the basic call first to even make it register 
     any -thumb -track... 
 */
 #dialogue-box::-webkit-scrollbar,
 #puzzle-list::-webkit-scrollbar {
-    width: 1em;
+    width: 0.8em;
 }
 #dialogue-box::-webkit-scrollbar-thumb,
 #puzzle-list::-webkit-scrollbar-thumb {
@@ -99,6 +98,37 @@
     background-color: rgb(41, 41, 41);
 }
 #dialogue-box {
-    max-height: 500px;
+    margin: 10px;
+    max-height: 80vh;
     overflow-y: auto;
+}
+#dialogue-box h5 {
+    font-size: 16px;
+    padding: 5px;
+}
+
+/* Tablet - 768px and larger */
+@media only screen and (min-width: 768px) {
+    #title {
+        font-size: 30px;
+    }
+    #puzzle-list {
+        max-height: 70vh;
+    }
+    #dialogue-box {
+        max-height: 60vh;
+    }
+}
+
+/* Laptop - 1024px and larger */
+@media only screen and (min-width: 1024px) {
+    #title {
+        font-size: 40px;
+    }
+    #dialogue-box h5 {
+        font-size: 20px;
+    }
+    #puzzle-list li a {
+        font-size: 20px;
+    }
 }
