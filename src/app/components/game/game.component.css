@@ -1,8 +1,12 @@
 #game-container {
-    margin: 0px;
     /* max-width: 800px; */
     /* margin: 0 auto; */
     overflow-x: hidden;
+}
+#game-container .col-auto {
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
 }
 #board {
     margin: 15px;

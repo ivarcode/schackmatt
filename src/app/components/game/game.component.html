@@ -4,7 +4,9 @@
     class="row"
     (window:resize)="resizeBoard($event)"
 >
-    <canvas id="board" width="{{ boardSize }}" height="{{ boardSize }}"
-        >canvas</canvas
-    >
+    <div class="col-auto">
+        <canvas id="board" width="{{ boardSize }}" height="{{ boardSize }}"
+            >canvas</canvas
+        >
+    </div>
 </div>
