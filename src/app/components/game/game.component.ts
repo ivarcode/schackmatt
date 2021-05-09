@@ -513,7 +513,7 @@ export class GameComponent implements OnInit {
         }
         if (this.squareSize !== newSize) {
             this.squareSize = newSize;
-            console.log('square size adjusted to: ', this.squareSize);
+            // console.log('square size adjusted to: ', this.squareSize);
         }
         // doing this inside a setTimeout call allows the variables to populate
         setTimeout(() => {

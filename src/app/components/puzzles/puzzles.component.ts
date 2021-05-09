@@ -114,6 +114,8 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
              * the ExpressionChangedAfterItHasBeenCheckedError in the DOM
              * binding
              */
+            this.gameComponent.resizeBoard(null);
+            // setting a bunch of the important values after
             this.colorToPlay = oppositeColor(this.game.turn);
             this.gameConfig.orientation = this.colorToPlay;
             this.gameComponent.drawBoard();
