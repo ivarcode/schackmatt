@@ -5,9 +5,21 @@
 }
 #game-container .col-auto {
     padding: 0;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 15px;
 }
 #board {
-    margin: 15px;
+    margin-top: 15px;
+}
+/* col breakpoint - 576px and larger */
+@media only screen and (min-width: 576px) {
+    #puzzle-select {
+        display: none;
+    }
+    #puzzle-list {
+        display: inline-block;
+    }
+    #game-container .col-auto {
+        margin-left: auto;
+        margin-right: auto;
+    }
 }

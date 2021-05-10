@@ -9,7 +9,9 @@
     margin-right: auto;
 }
 #board-overlay {
-    margin: 15px;
+    margin: 0;
+    margin-top: 15px;
+    margin-bottom: 15px;
     background: rgba(0, 0, 0, 0.3);
 }
 

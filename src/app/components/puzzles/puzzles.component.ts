@@ -86,6 +86,12 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
         }
     }
 
+    public selectChange(value: any): void {
+        const index = this._puzzles.map((p) => p.title).indexOf(value);
+        console.log('index', index);
+        this.setupPuzzle(index);
+    }
+
     public setupPuzzle(puzzleIndex: number): void {
         // close board overlay
         this.showBoardOverlay = false;
