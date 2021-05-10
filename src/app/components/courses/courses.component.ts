@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { lucena_philidor_and_vancura } from 'data/lucena_philidor_and_vancura.json';
 import { endgame_checkmates } from 'data/endgame_checkmates.json';
 import { rook_endgame_principles } from 'data/rook_endgame_principles.json';
 import { queen_endgames } from 'data/queen_endgames.json';
@@ -21,7 +22,8 @@ export class CoursesComponent implements OnInit {
         endgame_checkmates,
         queen_endgames,
         pawn_endgames,
-        rook_endgame_principles
+        rook_endgame_principles,
+        lucena_philidor_and_vancura
     };
 
     // needs a better name
@@ -51,6 +53,11 @@ export class CoursesComponent implements OnInit {
                 { set: 'rook_endgame_principles' },
                 'Rook Endgame Principles',
                 'Train to understand the critical ideas in rook endgames'
+            ],
+            [
+                { set: 'lucena_philidor_and_vancura' },
+                'Lucena, Philidor and Vancura',
+                'Master these classic scenarios for easy endgame conversion'
             ]
         ];
     }

@@ -21,10 +21,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <!-- <li class="nav-item active nav-disabled">
-                <a class="button nav-link" href="#" style="color: white;"
-                    >Home <span class="sr-only">(current)</span></a
-                >
-            </li> -->
+                    <a class="button nav-link" href="#" style="color: white;"
+                        >Home <span class="sr-only">(current)</span></a
+                    >
+                </li> -->
 
                 <li class="nav-item dropdown">
                     <a
@@ -63,6 +63,13 @@
                             [queryParams]="{ set: 'rook_endgame_principles' }"
                             class="dropdown-item nav-link"
                             >Rook Endgame Principles</a
+                        ><a
+                            [routerLink]="['courses']"
+                            [queryParams]="{
+                                set: 'lucena_philidor_and_vancura'
+                            }"
+                            class="dropdown-item nav-link"
+                            >Lucena, Philidor and Vancura</a
                         >
                         <!-- <a class="dropdown-item" href="#">Another action</a> -->
                         <!-- <div class="dropdown-divider"></div> -->
@@ -71,33 +78,33 @@
                 </li>
 
                 <!-- <li class="nav-item">
-            <a
-                routerLink="/auto-generated-puzzles"
-                routerLinkActive="active"
-                class="button nav-link"
-                >Random Puzzles
-            </a>
-        </li> -->
+                    <a
+                        routerLink="/auto-generated-puzzles"
+                        routerLinkActive="active"
+                        class="button nav-link"
+                        >Random Puzzles
+                    </a>
+                </li> -->
 
                 <!-- <li class="nav-item">
-            <a
-                routerLink="/endgame-trainer"
-                routerLinkActive="active"
-                class="button nav-link"
-                >Endgame Trainer
-            </a>
-        </li>
-        <li class="nav-item">
-            <a
-                routerLink="/opening-training-game"
-                routerLinkActive="active"
-                class="button nav-link"
-                >Opening Trainer <sup>BETA</sup>
-            </a>
-        </li> -->
+                    <a
+                        routerLink="/endgame-trainer"
+                        routerLinkActive="active"
+                        class="button nav-link"
+                        >Endgame Trainer
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a
+                        routerLink="/opening-training-game"
+                        routerLinkActive="active"
+                        class="button nav-link"
+                        >Opening Trainer <sup>BETA</sup>
+                    </a>
+                </li> -->
                 <!-- <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li> -->
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li> -->
                 <li class="nav-item">
                     <a
                         routerLink="/about"
@@ -108,11 +115,11 @@
                 </li>
             </ul>
             <!-- <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-                Search
-            </button>
-        </form> -->
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                    Search
+                </button>
+            </form> -->
             <!-- </div> -->
             <span id="version" class="navbar-text"> v{{ version }} </span>
         </div>
