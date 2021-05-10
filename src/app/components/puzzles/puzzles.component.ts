@@ -88,7 +88,7 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
 
     public selectChange(value: any): void {
         const index = this._puzzles.map((p) => p.title).indexOf(value);
-        console.log('index', index);
+        // console.log('index', index);
         this.setupPuzzle(index);
     }
 
