@@ -18,6 +18,8 @@ import {
     oppositeColor,
     randomNumberInclusivelyBetween
 } from 'src/app/lib/util.library';
+// tslint:disable-next-line: max-line-length
+import { BoardOverlayComponent } from '../board-overlay/board-overlay.component';
 import { GameComponent } from '../game/game.component';
 
 @Component({
@@ -27,6 +29,8 @@ import { GameComponent } from '../game/game.component';
 })
 export class PuzzlesComponent implements OnInit, AfterViewInit {
     @ViewChild('gameComponent') private _gameComponent: GameComponent;
+    @ViewChild('boardOverlayComponent')
+    private _boardOverlayComponent: BoardOverlayComponent;
     @Input() private _puzzles: Puzzle[];
 
     private _gameConfig: GameConfig;
@@ -37,6 +41,7 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
         displayLoadingMessage: boolean;
         detailedMessage: string;
         displayButtons: string[];
+        maxWidth: number;
     };
     private _colorToPlay: Color;
 
@@ -64,7 +69,8 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
             title: 'Well done!',
             displayLoadingMessage: false,
             detailedMessage: 'You completed this exercise successfully!',
-            displayButtons: ['Retry Exercise']
+            displayButtons: ['Retry Exercise'],
+            maxWidth: this._gameConfig.maxSquareDimensions * 8
         };
     }
 

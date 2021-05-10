@@ -24,9 +24,8 @@
     font-size: 22px;
 }
 #board-overlay {
-    /* margin: 0 auto; */
-    margin: 0px;
-    padding: 20px;
+    z-index: 3;
+    width: 100%;
     position: absolute;
 }
 #which-color-to-play-alert {

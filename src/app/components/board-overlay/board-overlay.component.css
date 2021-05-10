@@ -1,6 +1,15 @@
 #container {
-    height: 640px;
-    width: 640px;
+    /* height: 640px;
+    width: 640px; */
+    overflow-x: hidden;
+}
+#container .col-auto {
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+#board-overlay {
+    margin: 15px;
     background: rgba(0, 0, 0, 0.3);
 }
 
@@ -62,4 +71,22 @@
     background: transparent;
     color: #000;
     border: none;
+}
+
+#popup-window {
+    margin-top: 50px;
+}
+
+/* col breakpoint - 576px and larger */
+@media only screen and (min-width: 576px) {
+    #popup-window {
+        width: 80%;
+    }
+}
+
+/* Laptop - 1024px and larger */
+@media only screen and (min-width: 1024px) {
+    #popup-window {
+        margin-top: 200px;
+    }
 }

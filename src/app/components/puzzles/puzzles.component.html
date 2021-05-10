@@ -22,6 +22,7 @@
         </div>
         <div class="col-sm-6">
             <app-board-overlay
+                #boardOverlayComponent
                 id="board-overlay"
                 *ngIf="showBoardOverlay"
                 [boardOverlayData]="boardOverlayData"
