@@ -1,3 +1,11 @@
+### 0.6.4
+
+commit 5e31e2d7325ac98b3a712fc89d6615223c0cd008
+
+Author: Camden Wagner <camden.i.wagner@ivarcode.net>
+
+    Lucena, Philidor and Vancura position update & google analytics
+
 ### 0.6.3
 
 commit d4a16e2a42b03917f289bf35076a391be78273ac
