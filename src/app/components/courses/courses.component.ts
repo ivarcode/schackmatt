@@ -1,5 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { lucena_philidor_and_vancura } from 'data/lucena_philidor_and_vancura.json';
 import { endgame_checkmates } from 'data/endgame_checkmates.json';
+import { rook_endgame_principles } from 'data/rook_endgame_principles.json';
 import { queen_endgames } from 'data/queen_endgames.json';
 import { pawn_endgames } from 'data/pawn_endgames.json';
 import { Puzzle } from 'src/app/lib/interface.library';
@@ -15,11 +17,13 @@ import { PuzzlesComponent } from '../puzzles/puzzles.component';
 export class CoursesComponent implements OnInit {
     @ViewChild('puzzlesComponent') private _puzzlesComponent: PuzzlesComponent;
     private _lessons: Puzzle[];
-    public courseKey: [{}, string][];
+    public courseKey: [{}, string, string][];
     private studyObjects = {
         endgame_checkmates,
         queen_endgames,
-        pawn_endgames
+        pawn_endgames,
+        rook_endgame_principles,
+        lucena_philidor_and_vancura
     };
 
     // needs a better name
@@ -30,9 +34,31 @@ export class CoursesComponent implements OnInit {
         this.initPuzzleSetupFlag = true;
         this.lessons = [];
         this.courseKey = [
-            [{ set: 'endgame_checkmates' }, 'Endgame Checkmates'],
-            [{ set: 'pawn_endgames' }, 'Pawn Endgames'],
-            [{ set: 'queen_endgames' }, 'Queen Endgames']
+            [
+                { set: 'endgame_checkmates' },
+                'Endgame Checkmates',
+                'Practice simple endgame patterns'
+            ],
+            [
+                { set: 'pawn_endgames' },
+                'Pawn Endgames',
+                'Learn ideas about every aspect of pawn endgames'
+            ],
+            [
+                { set: 'queen_endgames' },
+                'Queen Endgames',
+                'Practice how to win with a queen against a pawn'
+            ],
+            [
+                { set: 'rook_endgame_principles' },
+                'Rook Endgame Principles',
+                'Train to understand the critical ideas in rook endgames'
+            ],
+            [
+                { set: 'lucena_philidor_and_vancura' },
+                'Lucena, Philidor and Vancura',
+                'Master these classic scenarios for easy endgame conversion'
+            ]
         ];
     }
 

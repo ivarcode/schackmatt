@@ -73,11 +73,11 @@ Contains information about each version of the code.
 
 `git checkout develop`
 
-Run the respective shell script to bump a version `[ major | minor | patch ]`
+Run `bump.sh` with the necessary argument `[ major | minor | patch ]` to bump a version.
 
-`bash bump-major.sh`
-`bash bump-minor.sh`
-`bash bump-patch.sh`
+`bash bump.sh major`
+`bash bump.sh minor`
+`bash bump.sh patch`
 
 Write a description of the new version when prompted. The single line of text you enter will be written to `CHANGELOG.md` for a record of what the version changed in the code.
 

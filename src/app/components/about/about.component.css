@@ -28,16 +28,9 @@ h6 {
 }
 
 .about-section {
-    padding-bottom: 30px;
     padding-top: 0px;
     background-color: #1f1f1f;
     color: white;
-}
-
-.about-section .col-sm-1,
-.about-section .col-sm-4,
-.about-section .col-sm-5 {
-    padding: 0px;
 }
 
 .our-team-section {
@@ -64,4 +57,32 @@ h6 {
 
 p {
     margin-bottom: 5px;
+}
+
+.carousel-item {
+    height: 300px;
+}
+
+.carousel-inner img {
+    object-fit: cover;
+    position: absolute;
+    bottom: 0px;
+}
+
+.carousel-item p {
+    font-size: 1.25em;
+}
+
+.carousel-item .carousel-caption {
+    height: 100%;
+}
+
+.carousel-item h2 {
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+.carousel-indicators li:hover,
+.carousel-indicators:hover {
+    cursor: auto;
 }

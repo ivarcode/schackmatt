@@ -1,54 +1,93 @@
-<div class="row about-section">
-    <div class="col-sm-1"></div>
+<div class="row about-section justify-content-sm-center">
+    <div class="col-sm-10">
+        <div id="carousel" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <!-- <li
+                    data-target="#carousel"
+                    data-slide-to="0"
+                    class="active"
+                ></li> -->
+                <li
+                    *ngFor="let carouselItem of carouselItems; index as i"
+                    [class.active]="i === 0"
+                ></li>
+            </ol>
+            <div class="carousel-inner">
+                <div
+                    *ngFor="let carouselItem of carouselItems; index as i"
+                    class="carousel-item"
+                    [class.active]="i === 0"
+                >
+                    <img class="d-block w-100" alt="" />
+                    <div class="carousel-caption d-none d-md-block">
+                        <h2>{{ carouselItem.title }}</h2>
+                        <p>
+                            {{ carouselItem.details }}
+                        </p>
+                        <p *ngIf="i === 3">
+                            ...even feel free to directly
+                            <a href="https://www.ragchess.com/contact/"
+                                >email our marketing guy, Nick!</a
+                            >
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <a
+                class="carousel-control-prev"
+                href="#carousel"
+                role="button"
+                data-slide="prev"
+            >
+                <span
+                    class="carousel-control-prev-icon"
+                    aria-hidden="true"
+                ></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a
+                class="carousel-control-next"
+                href="#carousel"
+                role="button"
+                data-slide="next"
+            >
+                <span
+                    class="carousel-control-next-icon"
+                    aria-hidden="true"
+                ></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+    <!-- <div class="col-sm-1"></div>
     <div class="col-sm-5">
-        <h3>Our Mission</h3>
+        <h3></h3>
         <h6>
-            The goal of Chess Trainer Hub is to help players of all levels
-            improve their chess skills through pattern recognition, repetition
-            and challenging puzzles via an interactive chess board.
+            
         </h6>
-        <h3>How It Works</h3>
+        <h3></h3>
         <h6>
-            Chess Trainer Hub is built around lessons and practice scenarios.
-            Players will be able to learn the concepts and material and then
-            proceed to play those scenarios out in the interface.
+            
         </h6>
         <h6>
-            This will help to learn and understand the main idea, but be able to
-            see the position played out in multiple scenarios.
+            
         </h6>
         <h6>
-            Understanding the theory is one thing, but being able to identify
-            and execute the winning plan is how you improve.
+            
         </h6>
     </div>
     <div class="col-sm-1"></div>
     <div class="col-sm-4">
-        <h3>Feedback</h3>
+        <h3></h3>
         <h6>
-            The Hub is in a state of continuous optimization. We’re always
-            looking for feedback from users.
-            <ul>
-                <li>Are there specific lessons you’d like to see covered?</li>
-                <li>
-                    Is there a specific feature you’d like to see added to the
-                    Hub?
-                </li>
-                <li>
-                    Is there a bug that is interfering with your ability to
-                    complete a lesson or puzzle?
-                </li>
-            </ul>
-            Email us, we appreciate your help!
+            
         </h6>
-        <h3>Contact Us</h3>
+        <h3></h3>
         <h6 style="text-align: center">
-            <a href="mailto:nickgroh5375@gmail.com"
-                >Email our marketing guy, Nick!</a
-            >
+            
         </h6>
     </div>
-    <div class="col-sm-1"></div>
+    <div class="col-sm-1"></div> -->
 </div>
 
 <div class="row our-team-section">
@@ -61,18 +100,18 @@
         <h4>{{ staff.name }}</h4>
         <h5>{{ staff.title }}</h5>
         <p>{{ staff.bio }}</p>
-        <p>
+        <h5>
             lichess.org ::
             <a href="https://lichess.org/@/{{ staff.lichess }}" target="_blank"
                 >@{{ staff.lichess }}</a
             >
-        </p>
-        <p>
+        </h5>
+        <h5>
             discord ::
             <a href="{{ staff.discordLink }}" target="_blank"
                 >@{{ staff.discord }}</a
             >
-        </p>
+        </h5>
     </div>
     <div class="col-sm-2"></div>
 </div>

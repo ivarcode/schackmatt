@@ -1,3 +1,35 @@
+### 0.6.3
+
+commit d4a16e2a42b03917f289bf35076a391be78273ac
+
+Date:   Mon May 3 20:18:25 2021 -0400
+
+    Changes to make bump.sh take the version type as an argument
+
+### 0.6.2
+
+commit 081add973e12406e69feb1da663f33add72ae46a
+
+Date:   Sun May 2 22:31:09 2021 -0400
+
+    Rook Endgame Principles course released
+
+### 0.6.1
+
+commit 68c684b6b5c47ab896bb767f382b71377365c559
+
+Date:   Mon Apr 26 22:25:20 2021 -0400
+
+    Removing about page clutter and various small data changes in current courses
+
+### 0.6.0
+
+commit 08897257fad80d5b73f79de34aa69a6a397d6e4d
+
+Date:   Tue Apr 20 21:20:41 2021 -0400
+
+    After resolving various bugfixes, character encoding issues, merging in arrow / circle draw code, this is going to be the codepoint for the first public beta
+
 ### 0.5.2
 
 commit 4543933e39484b75d38440121e7dbbf4609c2a92

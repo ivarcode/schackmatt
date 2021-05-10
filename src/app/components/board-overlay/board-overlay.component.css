@@ -5,7 +5,42 @@
 }
 
 #popup-window .card {
-    padding: 10px;
+    border: 0;
+    box-shadow: 0px 0px 14px 5px #00000026;
+    border-radius: 0;
+    padding: 36px 40px 30px;
+    background: #f5f5f5;
+}
+
+#popup-window .card-title {
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+#popup-window p {
+    margin-bottom: 24px;
+}
+
+#popup-window .action-btn {
+    border: 0;
+    border-radius: 0;
+    text-transform: uppercase;
+    background: #0072e8;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+}
+
+#popup-window .action-btn:hover {
+    background: #0064ce;
+    box-shadow: 0 0 12px 2px #5c70ff38;
+}
+
+#closeOverlayButton:active,
+#closeOverlayButton:focus {
+    box-shadow: none !important;
+    outline: none !important;
 }
 
 .spinner-border {
@@ -20,9 +55,11 @@
 
 #closeOverlayButton {
     position: absolute;
-    right: 5px;
-    top: 5px;
-    font-size: 20px;
-    font-weight: 700;
-    padding: 0em 0.35em;
+    right: 6px;
+    top: 4px;
+    font-size: 26px;
+    line-height: 1;
+    background: transparent;
+    color: #000;
+    border: none;
 }
