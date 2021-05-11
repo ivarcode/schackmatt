@@ -57,7 +57,7 @@ export class CoursesComponent implements OnInit {
             [
                 { set: 'lucena_philidor_and_vancura' },
                 'Lucena, Philidor and Vancura',
-                'Master these classic scenarios for easy endgame conversion'
+                'Practice the most essential rook endgames'
             ]
         ];
     }
