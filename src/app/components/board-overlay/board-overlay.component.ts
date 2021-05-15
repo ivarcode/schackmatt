@@ -46,7 +46,7 @@ export class BoardOverlayComponent implements OnInit {
         const currentContainerWidth = this._container.nativeElement.offsetWidth;
         // default margin on edges of board is 15px * 2 = 30
         const marginDiff = 30;
-        let newSize = Math.floor(currentContainerWidth - marginDiff);
+        let newSize = Math.floor((currentContainerWidth - marginDiff) / 8) * 8;
         if (newSize > this.boardOverlayData.maxWidth) {
             newSize = this.boardOverlayData.maxWidth;
         }
