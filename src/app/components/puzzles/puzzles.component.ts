@@ -18,6 +18,8 @@ import {
     oppositeColor,
     randomNumberInclusivelyBetween
 } from 'src/app/lib/util.library';
+// tslint:disable-next-line: max-line-length
+import { BoardOverlayComponent } from '../board-overlay/board-overlay.component';
 import { GameComponent } from '../game/game.component';
 
 @Component({
@@ -27,6 +29,8 @@ import { GameComponent } from '../game/game.component';
 })
 export class PuzzlesComponent implements OnInit, AfterViewInit {
     @ViewChild('gameComponent') private _gameComponent: GameComponent;
+    @ViewChild('boardOverlayComponent')
+    private _boardOverlayComponent: BoardOverlayComponent;
     @Input() private _puzzles: Puzzle[];
 
     private _gameConfig: GameConfig;
@@ -37,6 +41,7 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
         displayLoadingMessage: boolean;
         detailedMessage: string;
         displayButtons: string[];
+        maxWidth: number;
     };
     private _colorToPlay: Color;
 
@@ -51,6 +56,7 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
 
         this._showBoardOverlay = false;
         this._gameConfig = {
+            maxSquareDimensions: 80,
             restrictPieces: [],
             orientation: Color.Black,
             showCoordinates: true,
@@ -63,7 +69,8 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
             title: 'Well done!',
             displayLoadingMessage: false,
             detailedMessage: 'You completed this exercise successfully!',
-            displayButtons: ['Retry Exercise']
+            displayButtons: ['Retry Exercise'],
+            maxWidth: this._gameConfig.maxSquareDimensions * 8
         };
     }
 
@@ -77,6 +84,12 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
         if (this.puzzles.length !== 0) {
             this.setupPuzzle(this.currentPuzzleIndex);
         }
+    }
+
+    public selectChange(value: any): void {
+        const index = this._puzzles.map((p) => p.title).indexOf(value);
+        // console.log('index', index);
+        this.setupPuzzle(index);
     }
 
     public setupPuzzle(puzzleIndex: number): void {
@@ -113,6 +126,8 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
              * the ExpressionChangedAfterItHasBeenCheckedError in the DOM
              * binding
              */
+            this.gameComponent.resizeBoard(null);
+            // setting a bunch of the important values after
             this.colorToPlay = oppositeColor(this.game.turn);
             this.gameConfig.orientation = this.colorToPlay;
             this.gameComponent.drawBoard();

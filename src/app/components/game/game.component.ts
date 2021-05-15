@@ -4,8 +4,8 @@ import {
     Output,
     EventEmitter,
     Input,
-    SimpleChanges,
-    OnChanges
+    ViewChild,
+    ElementRef
 } from '@angular/core';
 import { Game } from '../../lib/game.library';
 import { GameConfig, GameEvent } from 'src/app/lib/interface.library';
@@ -18,12 +18,14 @@ import { Board } from 'src/app/lib/board.library';
     templateUrl: './game.component.html',
     styleUrls: ['./game.component.css']
 })
-export class GameComponent implements OnInit, OnChanges {
+export class GameComponent implements OnInit {
+    @ViewChild('gameContainer') private _gameContainer: ElementRef;
     @Output() gameDataEmitter = new EventEmitter<GameEvent>();
     @Input() game: Game;
     @Input() config: GameConfig;
 
     private _displayedMoveIndex: number;
+    private _squareSize: number;
     private boardCanvas: any;
     private _boardCtx: any;
     private boardImage: any;
@@ -88,6 +90,7 @@ export class GameComponent implements OnInit, OnChanges {
 
     constructor() {
         // this.game = new Game('1k6/1p6/8/2P5/5p2/4P3/1K6/8 w - - 0 1');
+        this._squareSize = 1;
         this.cursor = {
             leftMouseIsDown: false,
             rightMouseIsDown: false,
@@ -435,19 +438,20 @@ export class GameComponent implements OnInit, OnChanges {
             pImg.src = '../../assets/pieces/' + pieceSrc + '.png';
             this.pieceImages.push(pImg);
         }
-
+        // probably don't need a board image anymore? TODO
         this.boardImage = new Image();
         this.boardImage.src = '../../assets/board_640x640.png';
         // because apparently I have to wait on the image smh
         this.boardImage.onload = () => {
             this.drawBoard();
         };
+        // doing this inside a timeout allows the DOM to exist :D
+        setTimeout(() => {
+            // resize the board once
+            this.resizeBoard(null);
+        });
         // create all the board event listeners
         this.initializeEventListeners();
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
-        // console.log(changes);
     }
 
     public initializeEventListeners(): void {
@@ -497,6 +501,26 @@ export class GameComponent implements OnInit, OnChanges {
         );
     }
 
+    public resizeBoard(event: any) {
+        // console.log('event', event);
+        const currentGameContainerWidth = this._gameContainer.nativeElement
+            .offsetWidth;
+        // default margin on edges of board is 15px * 2 = 30
+        const marginDiff = 30;
+        let newSize = Math.floor((currentGameContainerWidth - marginDiff) / 8);
+        if (newSize > this.config.maxSquareDimensions) {
+            newSize = this.config.maxSquareDimensions;
+        }
+        if (this.squareSize !== newSize) {
+            this.squareSize = newSize;
+            // console.log('square size adjusted to: ', this.squareSize);
+        }
+        // doing this inside a setTimeout call allows the variables to populate
+        setTimeout(() => {
+            this.drawBoard();
+        });
+    }
+
     /**
      * @description returns the mouse event, if necessary, with inverted x,y
      * @param event - mouse event
@@ -519,16 +543,16 @@ export class GameComponent implements OnInit, OnChanges {
         if (e.offsetY < 1) {
             e.offsetY = 1;
         }
-        if (e.offsetX > 640 - 1) {
-            e.offsetX = 640 - 1;
+        if (e.offsetX > this.boardSize - 1) {
+            e.offsetX = this.boardSize - 1;
         }
-        if (e.offsetY > 640 - 1) {
-            e.offsetY = 640 - 1;
+        if (e.offsetY > this.boardSize - 1) {
+            e.offsetY = this.boardSize - 1;
         }
 
         if (this.config.orientation === Color.Black) {
-            e.offsetX = 640 - e.offsetX;
-            e.offsetY = 640 - e.offsetY;
+            e.offsetX = this.boardSize - e.offsetX;
+            e.offsetY = this.boardSize - e.offsetY;
         }
         this.mouseMoveEvent(e);
     }
@@ -545,10 +569,10 @@ export class GameComponent implements OnInit, OnChanges {
             this.cursor.currentMousePosition = this.getMousePosition(event);
             let x = this.cursor.currentMousePosition.x;
             let y = this.cursor.currentMousePosition.y;
-            x -= x % 80;
-            y -= y % 80;
-            x /= 80;
-            y /= 80;
+            x -= x % this.squareSize;
+            y -= y % this.squareSize;
+            x /= this.squareSize;
+            y /= this.squareSize;
             if (
                 this.cursor.overSquare === null ||
                 this.cursor.overSquare.x !== x ||
@@ -561,11 +585,11 @@ export class GameComponent implements OnInit, OnChanges {
             }
             this.drawBoard();
             if (this.cursor.rightMouseIsDown) {
-                console.log(
-                    'draw circle or sq at ',
-                    this.cursor.mouseDownOn,
-                    this.cursor.overSquare
-                );
+                // console.log(
+                //     'draw circle or sq at ',
+                //     this.cursor.mouseDownOn,
+                //     this.cursor.overSquare
+                // );
                 const src =
                     this.config.orientation === Color.White
                         ? new Square(
@@ -785,7 +809,6 @@ export class GameComponent implements OnInit, OnChanges {
     public drawBoard(): void {
         this.boardCtx.restore();
         this.boardCtx.globalAlpha = 1;
-        // this.boardCtx.drawImage(this.boardImage, 0, 0);
         this.boardCtx.font = '15px Arial';
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
@@ -794,7 +817,12 @@ export class GameComponent implements OnInit, OnChanges {
                     (i + j) % 2 === 0
                         ? this.config.colorScheme.light
                         : this.config.colorScheme.dark;
-                this.boardCtx.fillRect(i * 80, j * 80, 80, 80);
+                this.boardCtx.fillRect(
+                    i * this.squareSize,
+                    j * this.squareSize,
+                    this.squareSize,
+                    this.squareSize
+                );
             }
         }
         for (let i = 0; i < 8; i++) {
@@ -816,19 +844,21 @@ export class GameComponent implements OnInit, OnChanges {
             let x = this.cursor.currentMousePosition.x;
             let y = this.cursor.currentMousePosition.y;
             if (this.config.orientation === Color.Black) {
-                x = 640 - 1 - x;
-                y = 640 - 1 - y;
+                x = this.boardSize - 1 - x;
+                y = this.boardSize - 1 - y;
             }
             this.boardCtx.drawImage(
                 this.pieceImages[this.cursor.draggedPieceIndex],
-                x - 40,
-                y - 40
+                x - this.squareSize / 2,
+                y - this.squareSize / 2,
+                this.squareSize,
+                this.squareSize
             );
         }
         if (this.isPromoting) {
             this.boardCtx.globalAlpha = 0.5;
             this.boardCtx.fillStyle = 'black';
-            this.boardCtx.fillRect(0, 0, 640, 640);
+            this.boardCtx.fillRect(0, 0, this.boardSize, this.boardSize);
             this.boardCtx.globalAlpha = 1;
             // this is where we do the invert trickery
             let drawAtTopOfBoard = this.game.turn === Color.White;
@@ -840,24 +870,77 @@ export class GameComponent implements OnInit, OnChanges {
             }
             this.boardCtx.fillStyle = '#AAAAAA';
             this.boardCtx.fillRect(
-                x * 80,
-                drawAtTopOfBoard ? 0 : 80 * 4,
-                80,
-                80 * 4
+                x * this.squareSize,
+                drawAtTopOfBoard ? 0 : this.squareSize * 4,
+                this.squareSize,
+                this.squareSize * 4
             );
             const _4ys = drawAtTopOfBoard
-                ? [0, 80, 80 * 2, 80 * 3]
-                : [80 * 7, 80 * 6, 80 * 5, 80 * 4];
+                ? [0, this.squareSize, this.squareSize * 2, this.squareSize * 3]
+                : [
+                      this.squareSize * 7,
+                      this.squareSize * 6,
+                      this.squareSize * 5,
+                      this.squareSize * 4
+                  ];
             if (this.game.turn === Color.White) {
-                this.boardCtx.drawImage(this.pieceImages[1], x * 80, _4ys[0]);
-                this.boardCtx.drawImage(this.pieceImages[3], x * 80, _4ys[1]);
-                this.boardCtx.drawImage(this.pieceImages[4], x * 80, _4ys[2]);
-                this.boardCtx.drawImage(this.pieceImages[2], x * 80, _4ys[3]);
+                this.boardCtx.drawImage(
+                    this.pieceImages[1],
+                    x * this.squareSize,
+                    _4ys[0],
+                    this.squareSize,
+                    this.squareSize
+                );
+                this.boardCtx.drawImage(
+                    this.pieceImages[3],
+                    x * this.squareSize,
+                    _4ys[1],
+                    this.squareSize,
+                    this.squareSize
+                );
+                this.boardCtx.drawImage(
+                    this.pieceImages[4],
+                    x * this.squareSize,
+                    _4ys[2],
+                    this.squareSize,
+                    this.squareSize
+                );
+                this.boardCtx.drawImage(
+                    this.pieceImages[2],
+                    x * this.squareSize,
+                    _4ys[3],
+                    this.squareSize,
+                    this.squareSize
+                );
             } else {
-                this.boardCtx.drawImage(this.pieceImages[7], x * 80, _4ys[0]);
-                this.boardCtx.drawImage(this.pieceImages[9], x * 80, _4ys[1]);
-                this.boardCtx.drawImage(this.pieceImages[10], x * 80, _4ys[2]);
-                this.boardCtx.drawImage(this.pieceImages[8], x * 80, _4ys[3]);
+                this.boardCtx.drawImage(
+                    this.pieceImages[7],
+                    x * this.squareSize,
+                    _4ys[0],
+                    this.squareSize,
+                    this.squareSize
+                );
+                this.boardCtx.drawImage(
+                    this.pieceImages[9],
+                    x * this.squareSize,
+                    _4ys[1],
+                    this.squareSize,
+                    this.squareSize
+                );
+                this.boardCtx.drawImage(
+                    this.pieceImages[10],
+                    x * this.squareSize,
+                    _4ys[2],
+                    this.squareSize,
+                    this.squareSize
+                );
+                this.boardCtx.drawImage(
+                    this.pieceImages[8],
+                    x * this.squareSize,
+                    _4ys[3],
+                    this.squareSize,
+                    this.squareSize
+                );
             }
         }
     }
@@ -877,8 +960,8 @@ export class GameComponent implements OnInit, OnChanges {
                             (this.config.orientation === Color.White
                                 ? 8 - j
                                 : j + 1),
-                        628,
-                        j * 80 + 15
+                        this.boardSize - 12,
+                        j * this.squareSize + 15
                     );
                 }
                 if (j === 7) {
@@ -887,8 +970,8 @@ export class GameComponent implements OnInit, OnChanges {
                         fileToString(
                             this.config.orientation === Color.White ? i : 7 - i
                         ),
-                        i * 80 + 5,
-                        635
+                        i * this.squareSize + 5,
+                        this.boardSize - 5
                     );
                 }
             }
@@ -947,8 +1030,12 @@ export class GameComponent implements OnInit, OnChanges {
                 const index = (color ? 6 : 0) + pieceType;
                 this.boardCtx.drawImage(
                     this.pieceImages[index],
-                    (this.config.orientation === Color.White ? x : 7 - x) * 80,
-                    (this.config.orientation === Color.White ? 7 - y : y) * 80
+                    (this.config.orientation === Color.White ? x : 7 - x) *
+                        this.squareSize,
+                    (this.config.orientation === Color.White ? 7 - y : y) *
+                        this.squareSize,
+                    this.squareSize,
+                    this.squareSize
                 );
             }
         }
@@ -976,8 +1063,12 @@ export class GameComponent implements OnInit, OnChanges {
             } else {
                 this.boardCtx.drawImage(
                     this.pieceImages[index],
-                    (this.config.orientation === Color.White ? x : 7 - x) * 80,
-                    (this.config.orientation === Color.White ? 7 - y : y) * 80
+                    (this.config.orientation === Color.White ? x : 7 - x) *
+                        this.squareSize,
+                    (this.config.orientation === Color.White ? 7 - y : y) *
+                        this.squareSize,
+                    this.squareSize,
+                    this.squareSize
                 );
             }
         }
@@ -995,7 +1086,12 @@ export class GameComponent implements OnInit, OnChanges {
             x = 7 - x;
             y = 7 - y;
         }
-        this.boardCtx.fillRect(x * 80, y * 80, 80, 80);
+        this.boardCtx.fillRect(
+            x * this.squareSize,
+            y * this.squareSize,
+            this.squareSize,
+            this.squareSize
+        );
     }
 
     public getGame(): Game {
@@ -1070,8 +1166,8 @@ export class GameComponent implements OnInit, OnChanges {
     }): void {
         // line not completely necessary
         // this.boardCtx.globalAlpha = 0.5;
-        const x = circle.src.file * 80 + 40;
-        const y = circle.src.rank * 80 + 40;
+        const x = circle.src.file * this.squareSize + this.squareSize / 2;
+        const y = circle.src.rank * this.squareSize + this.squareSize / 2;
         const color = circle.color;
         const lineWidth = circle.lineWidth;
 
@@ -1097,10 +1193,10 @@ export class GameComponent implements OnInit, OnChanges {
         lineWidth: number;
     }): void {
         // setup values
-        const fromX = arrow.src.file * 80 + 40;
-        const fromY = arrow.src.rank * 80 + 40;
-        const toX = arrow.dest.file * 80 + 40;
-        const toY = arrow.dest.rank * 80 + 40;
+        const fromX = arrow.src.file * this.squareSize + this.squareSize / 2;
+        const fromY = arrow.src.rank * this.squareSize + this.squareSize / 2;
+        const toX = arrow.dest.file * this.squareSize + this.squareSize / 2;
+        const toY = arrow.dest.rank * this.squareSize + this.squareSize / 2;
         const color = arrow.color;
         // pointer displacement from the center
         const displacement = -5;
@@ -1136,5 +1232,15 @@ export class GameComponent implements OnInit, OnChanges {
 
         // finally restore the state of the canvas
         this.boardCtx.restore();
+    }
+
+    set squareSize(s: number) {
+        this._squareSize = s;
+    }
+    get squareSize(): number {
+        return this._squareSize;
+    }
+    get boardSize(): number {
+        return this.squareSize * 8;
     }
 }

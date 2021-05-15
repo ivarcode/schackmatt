@@ -1,124 +1,132 @@
-<nav class="navbar navbar-expand-sm">
-    <!-- LOGO -->
-    <svg viewBox="0 0 2 2" class="navbar-logo">
-        <rect x="0" fill="#fff" y="0" width="1" height="1"></rect>
-        <rect x="1" fill="#fff" y="1" width="1" height="1"></rect>
-    </svg>
-    <a class="navbar-brand" href="/">Chess Trainer</a>
-    <!-- <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-    >
-        <span class="navbar-toggler-icon"></span>
-    </button> -->
+<nav class="navbar navbar-dark navbar-expand-md">
+    <div class="container-fluid">
+        <!-- LOGO -->
+        <svg viewBox="0 0 2 2" class="navbar-logo">
+            <rect x="0" fill="#fff" y="0" width="1" height="1"></rect>
+            <rect x="1" fill="#fff" y="1" width="1" height="1"></rect>
+        </svg>
+        <a class="navbar-brand" href="/">Chess Trainer</a>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
-    <ul class="navbar-nav mr-auto">
-        <!-- <li class="nav-item active nav-disabled">
-                <a class="button nav-link" href="#" style="color: white;"
-                    >Home <span class="sr-only">(current)</span></a
-                >
-            </li> -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <!-- <li class="nav-item active nav-disabled">
+                    <a class="button nav-link" href="#" style="color: white;"
+                        >Home <span class="sr-only">(current)</span></a
+                    >
+                </li> -->
 
-        <li class="nav-item dropdown">
-            <a
-                class="button nav-link dropdown-toggle"
-                routerLinkActive="active"
-                href="#"
-                id="coursesDropdown"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-            >
-                Courses
-            </a>
-            <div class="dropdown-menu" aria-labelledby="coursesDropdown">
-                <a
-                    [routerLink]="['courses']"
-                    [queryParams]="{ set: 'endgame_checkmates' }"
-                    class="dropdown-item nav-link"
-                    >Endgame Checkmates</a
-                ><a
-                    [routerLink]="['courses']"
-                    [queryParams]="{ set: 'queen_endgames' }"
-                    class="dropdown-item nav-link"
-                    >Queen Endgames</a
-                ><a
-                    [routerLink]="['courses']"
-                    [queryParams]="{ set: 'pawn_endgames' }"
-                    class="dropdown-item nav-link"
-                    >Pawn Endgames</a
-                ><a
-                    [routerLink]="['courses']"
-                    [queryParams]="{ set: 'rook_endgame_principles' }"
-                    class="dropdown-item nav-link"
-                    >Rook Endgame Principles</a
-                ><a
-                    [routerLink]="['courses']"
-                    [queryParams]="{ set: 'lucena_philidor_and_vancura' }"
-                    class="dropdown-item nav-link"
-                    >Lucena, Philidor and Vancura</a
-                ><a
-                    [routerLink]="['courses']"
-                    [queryParams]="{ set: 'rook_vs_one_pawn' }"
-                    class="dropdown-item nav-link"
-                    >Rook vs. One Pawn</a
-                >
-                <!-- <a class="dropdown-item" href="#">Another action</a> -->
-                <!-- <div class="dropdown-divider"></div> -->
-                <!-- <a class="dropdown-item" href="#">Something else here</a> -->
-            </div>
-        </li>
+                <li class="nav-item dropdown">
+                    <a
+                        class="button nav-link dropdown-toggle"
+                        routerLinkActive="active"
+                        href="#"
+                        id="coursesDropdown"
+                        role="button"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                    >
+                        Courses
+                    </a>
+                    <div
+                        class="dropdown-menu"
+                        aria-labelledby="coursesDropdown"
+                    >
+                        <a
+                            [routerLink]="['courses']"
+                            [queryParams]="{ set: 'endgame_checkmates' }"
+                            class="dropdown-item nav-link"
+                            >Endgame Checkmates</a
+                        ><a
+                            [routerLink]="['courses']"
+                            [queryParams]="{ set: 'queen_endgames' }"
+                            class="dropdown-item nav-link"
+                            >Queen Endgames</a
+                        ><a
+                            [routerLink]="['courses']"
+                            [queryParams]="{ set: 'pawn_endgames' }"
+                            class="dropdown-item nav-link"
+                            >Pawn Endgames</a
+                        ><a
+                            [routerLink]="['courses']"
+                            [queryParams]="{ set: 'rook_endgame_principles' }"
+                            class="dropdown-item nav-link"
+                            >Rook Endgame Principles</a
+                        ><a
+                            [routerLink]="['courses']"
+                            [queryParams]="{
+                                set: 'lucena_philidor_and_vancura'
+                            }"
+                            class="dropdown-item nav-link"
+                            >Lucena, Philidor and Vancura</a
+                        ><a
+                            [routerLink]="['courses']"
+                            [queryParams]="{ set: 'rook_vs_one_pawn' }"
+                            class="dropdown-item nav-link"
+                            >Rook vs. One Pawn</a
+                        >
+                        <!-- <a class="dropdown-item" href="#">Another action</a> -->
+                        <!-- <div class="dropdown-divider"></div> -->
+                        <!-- <a class="dropdown-item" href="#">Something else here</a> -->
+                    </div>
+                </li>
 
-        <!-- <li class="nav-item">
-            <a
-                routerLink="/auto-generated-puzzles"
-                routerLinkActive="active"
-                class="button nav-link"
-                >Random Puzzles
-            </a>
-        </li> -->
+                <!-- <li class="nav-item">
+                    <a
+                        routerLink="/auto-generated-puzzles"
+                        routerLinkActive="active"
+                        class="button nav-link"
+                        >Random Puzzles
+                    </a>
+                </li> -->
 
-        <!-- <li class="nav-item">
-            <a
-                routerLink="/endgame-trainer"
-                routerLinkActive="active"
-                class="button nav-link"
-                >Endgame Trainer
-            </a>
-        </li>
-        <li class="nav-item">
-            <a
-                routerLink="/opening-training-game"
-                routerLinkActive="active"
-                class="button nav-link"
-                >Opening Trainer <sup>BETA</sup>
-            </a>
-        </li> -->
-        <!-- <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li> -->
-        <li class="nav-item">
-            <a
-                routerLink="/about"
-                routerLinkActive="active"
-                class="button nav-link"
-                >About
-            </a>
-        </li>
-    </ul>
-    <!-- <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-                Search
-            </button>
-        </form> -->
-    <!-- </div> -->
-    <span id="version" class="navbar-text"> v{{ version }} </span>
+                <!-- <li class="nav-item">
+                    <a
+                        routerLink="/endgame-trainer"
+                        routerLinkActive="active"
+                        class="button nav-link"
+                        >Endgame Trainer
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a
+                        routerLink="/opening-training-game"
+                        routerLinkActive="active"
+                        class="button nav-link"
+                        >Opening Trainer <sup>BETA</sup>
+                    </a>
+                </li> -->
+                <!-- <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li> -->
+                <li class="nav-item">
+                    <a
+                        routerLink="/about"
+                        routerLinkActive="active"
+                        class="button nav-link"
+                        >About
+                    </a>
+                </li>
+            </ul>
+            <!-- <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                    Search
+                </button>
+            </form> -->
+            <!-- </div> -->
+            <span id="version" class="navbar-text"> v{{ version }} </span>
+        </div>
+    </div>
 </nav>

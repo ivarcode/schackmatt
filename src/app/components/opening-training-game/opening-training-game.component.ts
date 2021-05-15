@@ -34,6 +34,7 @@ export class OpeningTrainingGameComponent implements OnInit {
     constructor() {
         this.game = new Game();
         this._gameConfig = {
+            maxSquareDimensions: 80,
             restrictPieces: [],
             orientation: Color.White,
             showCoordinates: true,

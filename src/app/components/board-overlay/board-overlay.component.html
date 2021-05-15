@@ -1,38 +1,50 @@
-<div id="container">
-    <div class="row justify-content-center">
-        <div id="popup-window" class="col-sm-6" style="margin-top: 200px">
-            <div class="card text-center">
-                <button
-                    id="closeOverlayButton"
-                    class="btn btn-danger"
-                    (click)="emit('Close Overlay')"
-                >
-                    &times;
-                </button>
-                <h5 class="card-title">{{ boardOverlayData.title }}</h5>
-                <div
-                    *ngIf="boardOverlayData.displayLoadingMessage"
-                    class="row justify-content-center"
-                >
-                    <div class="spinner-border text-primary" role="status">
-                        <!-- lol keep this -->
-                        <!-- <h5><span class="sr-only">Loading...</span>Loading...</h5> -->
-                        <span class="sr-only">Loading...</span>
+<div
+    #container
+    id="container"
+    class="row"
+    (window:resize)="resizeBoardOverlay($event)"
+>
+    <div class="col-auto">
+        <div
+            id="board-overlay"
+            class="row justify-content-center"
+            [style.width]="overlayWidthAndHeightPx"
+            [style.height]="overlayWidthAndHeightPx"
+        >
+            <div id="popup-window" class="col-auto">
+                <div class="card text-center">
+                    <button
+                        id="closeOverlayButton"
+                        class="btn btn-danger"
+                        (click)="emit('Close Overlay')"
+                    >
+                        &times;
+                    </button>
+                    <h5 class="card-title">{{ boardOverlayData.title }}</h5>
+                    <div
+                        *ngIf="boardOverlayData.displayLoadingMessage"
+                        class="row justify-content-center"
+                    >
+                        <div class="spinner-border text-primary" role="status">
+                            <!-- lol keep this -->
+                            <!-- <h5><span class="sr-only">Loading...</span>Loading...</h5> -->
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <h4>Loading...</h4>
                     </div>
-                    <h4>Loading...</h4>
-                </div>
-                <p class="card-text">
-                    {{ boardOverlayData.detailedMessage }}
-                </p>
-                <div
-                    *ngIf="boardOverlayData.displayButtons"
-                    class="row justify-content-center"
-                >
-                    <a
-                        (click)="emit(boardOverlayData.displayButtons[0])"
-                        class="btn btn-primary action-btn"
-                        >{{ boardOverlayData.displayButtons[0] }}
-                    </a>
+                    <p class="card-text">
+                        {{ boardOverlayData.detailedMessage }}
+                    </p>
+                    <div
+                        *ngIf="boardOverlayData.displayButtons"
+                        class="row justify-content-center"
+                    >
+                        <a
+                            (click)="emit(boardOverlayData.displayButtons[0])"
+                            class="btn btn-primary action-btn"
+                            >{{ boardOverlayData.displayButtons[0] }}
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
