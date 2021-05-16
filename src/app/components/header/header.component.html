@@ -44,26 +44,36 @@
                         aria-labelledby="coursesDropdown"
                     >
                         <a
+                            data-toggle="collapse"
+                            data-target=".navbar-collapse.show"
                             [routerLink]="['courses']"
                             [queryParams]="{ set: 'endgame_checkmates' }"
                             class="dropdown-item nav-link"
                             >Endgame Checkmates</a
                         ><a
+                            data-toggle="collapse"
+                            data-target=".navbar-collapse.show"
                             [routerLink]="['courses']"
                             [queryParams]="{ set: 'queen_endgames' }"
                             class="dropdown-item nav-link"
                             >Queen Endgames</a
                         ><a
+                            data-toggle="collapse"
+                            data-target=".navbar-collapse.show"
                             [routerLink]="['courses']"
                             [queryParams]="{ set: 'pawn_endgames' }"
                             class="dropdown-item nav-link"
                             >Pawn Endgames</a
                         ><a
+                            data-toggle="collapse"
+                            data-target=".navbar-collapse.show"
                             [routerLink]="['courses']"
                             [queryParams]="{ set: 'rook_endgame_principles' }"
                             class="dropdown-item nav-link"
                             >Rook Endgame Principles</a
                         ><a
+                            data-toggle="collapse"
+                            data-target=".navbar-collapse.show"
                             [routerLink]="['courses']"
                             [queryParams]="{
                                 set: 'lucena_philidor_and_vancura'
@@ -71,6 +81,8 @@
                             class="dropdown-item nav-link"
                             >Lucena, Philidor and Vancura</a
                         ><a
+                            data-toggle="collapse"
+                            data-target=".navbar-collapse.show"
                             [routerLink]="['courses']"
                             [queryParams]="{ set: 'rook_vs_one_pawn' }"
                             class="dropdown-item nav-link"
@@ -112,6 +124,8 @@
                 </li> -->
                 <li class="nav-item">
                     <a
+                        data-toggle="collapse"
+                        data-target=".navbar-collapse.show"
                         routerLink="/about"
                         routerLinkActive="active"
                         class="button nav-link"
