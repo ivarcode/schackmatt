@@ -171,7 +171,7 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
 
     public gameDataEvent(event: GameEvent) {
         console.log(event);
-
+        // MOVE EVENT
         if (event.type === 'move') {
             // if event was a move
             let isCorrectMove = false;
@@ -235,6 +235,24 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
                 }, 1000);
             }
         }
+    }
+
+    public displayHint(): void {
+        // next expected move
+        const nextMove = this.currentPuzzleNode.nextNodes[0].move;
+        // all legal moves
+        const legalMoves = this.game.getLegalMoves();
+        // move notation array
+        const legalMoveNotations = legalMoves.map((m) =>
+            this.game.getNotation(m)
+        );
+        // the index in which the expected next move lies
+        const i = legalMoveNotations.indexOf(nextMove);
+        // src sq to hint
+        const srcSquare = legalMoves[i].src;
+        // flash the hint square
+        this.gameComponent.flashSquare(srcSquare, 'yellow', 250, 5);
+        // this.gameComponent.flashSquare(srcSquare, '#ebba34', 250, 5);
     }
 
     get game(): Game {

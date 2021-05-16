@@ -99,7 +99,7 @@
 }
 #dialogue-box {
     margin: 10px;
-    max-height: 80vh;
+    max-height: 70vh;
     overflow-y: auto;
 }
 #dialogue-box h5 {
@@ -110,6 +110,10 @@
 #puzzle-select {
     width: 80%;
     margin-left: 10%;
+}
+
+#right-sidebar-button-container {
+    padding: 15px;
 }
 
 /* col breakpoint - 576px and larger */
@@ -131,7 +135,7 @@
         max-height: 70vh;
     }
     #dialogue-box {
-        max-height: 60vh;
+        max-height: 50vh;
     }
 }
 
