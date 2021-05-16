@@ -186,7 +186,7 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
             }
             if (isCorrectMove) {
                 if (this.currentPuzzleNode.nextNodes.length === 0) {
-                    // reset
+                    // show board overlay because puzzle is completed
                     setTimeout(() => {
                         this.showBoardOverlay = true;
                     }, 1500);
@@ -208,6 +208,13 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
                         this.game.makeMove(moveNotation);
                         this.gameComponent.displayedMoveIndex++;
                         this.gameComponent.drawBoard();
+                        // check if puzzle is completed after black's move
+                        if (this.currentPuzzleNode.nextNodes.length === 0) {
+                            // show board overlay because puzzle is completed
+                            setTimeout(() => {
+                                this.showBoardOverlay = true;
+                            }, 1500);
+                        }
                     }, 1000);
                 }
             } else {
