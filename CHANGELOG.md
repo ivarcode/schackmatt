@@ -1,3 +1,11 @@
+### 0.6.5
+
+commit bc703b8f9d6a8656233f00c685ecf1488b37f3d2
+
+Date:   Mon May 17 10:57:43 2021 -0400
+
+    Rook vs One Pawn weekly course release, mobile first layout, minor feature improvements to course flow
+
 ### 0.6.4
 
 commit 5e31e2d7325ac98b3a712fc89d6615223c0cd008
