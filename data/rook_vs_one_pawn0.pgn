@@ -536,7 +536,7 @@ We instead need to underpromote. } 6. c8=R Ra4 { Black now has to block against 
 Let's push our pawn first to prevent draws. } 2. c7 Rf6+ { Let's move down the d file and avoid the c file. } 3. Kd5 Rf5+ { Let's move down the d file and avoid the c file. } 4. Kd4 Rf4+ { Let's move down the d file and avoid the c file. } 5. Kd3 Rf3+ { Let's move to the c file now. } 6. Kc2 Rf2+ { To make progress, let's move up the board along the b file. } 7. Kb3 Rf3+ { To make progress, let's move up the board along the b file. } 8. Kb4 Rf4+ { To make progress, let's move up the board along the b file. } 9. Kb5 Rf5+ { To make progress, let's move up the board along the b file. } 10. Kb6 Rf6+ { To make progress, let's move up the board along the b file. Black is now out of checks. } 11. Kb7 Rf1 12. c8=Q Rb1+ { We can now zigzag towards the rook and win the game since he will run out of checks } 13. Ka6 Ra1+ { We can now zigzag towards the rook and win the game since he will run out of checks } 14. Kb5 Rb1+ { We can now zigzag towards the rook and win the game since he will run out of checks } 15. Ka4 Ra1+ { We can now zigzag towards the rook and win the game since he will run out of checks } 16. Kb3 Rb1+ { We can now zigzag towards the rook and win the game since he will run out of checks } 17. Ka2 *
 
 
-[Event "Hub - Rook Endgame - Rook vs 1 Pawn: A fun trick 3"]
+[Event "Hub - Rook Endgame - Rook vs 1 Pawn: A fun trick 2"]
 [Site "https://lichess.org/study/7MOYCloV/fobXNGwP"]
 [Result "*"]
 [UTCDate "2021.05.14"]
