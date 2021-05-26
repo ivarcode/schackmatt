@@ -40,9 +40,12 @@
                         class="row justify-content-center"
                     >
                         <a
-                            (click)="emit(boardOverlayData.displayButtons[0])"
+                            *ngFor="
+                                let buttonString of boardOverlayData.displayButtons
+                            "
+                            (click)="emit(buttonString)"
                             class="btn btn-primary action-btn"
-                            >{{ boardOverlayData.displayButtons[0] }}
+                            >{{ buttonString }}
                         </a>
                     </div>
                 </div>

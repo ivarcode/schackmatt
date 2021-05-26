@@ -64,6 +64,7 @@
 .card .btn-primary {
     color: white;
     width: fit-content;
+    margin: 3px;
 }
 
 #closeOverlayButton {

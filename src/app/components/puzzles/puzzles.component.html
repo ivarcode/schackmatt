@@ -60,8 +60,24 @@
                 </h5>
             </div>
             <div id="right-sidebar-button-container">
-                <button class="btn btn-lg btn-warning" (click)="displayHint()">
+                <button
+                    *ngIf="currentPuzzleNode?.nextNodes.length !== 0"
+                    class="btn btn-md btn-warning"
+                    (click)="displayHint()"
+                >
                     HINT
+                </button>
+                <button
+                    *ngIf="currentPuzzleNode?.nextNodes.length === 0"
+                    class="btn btn-md btn-success"
+                    (click)="nextPuzzle()"
+                >
+                    <span *ngIf="currentPuzzleIndex !== puzzles.length - 1">
+                        NEXT PUZZLE ➤
+                    </span>
+                    <span *ngIf="currentPuzzleIndex === puzzles.length - 1">
+                        BACK TO BEGINNING
+                    </span>
                 </button>
             </div>
         </div>
