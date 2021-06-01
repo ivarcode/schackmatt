@@ -3,6 +3,7 @@ import { lucena_philidor_and_vancura } from 'data/lucena_philidor_and_vancura.js
 import { endgame_checkmates } from 'data/endgame_checkmates.json';
 import { rook_vs_one_pawn } from 'data/rook_vs_one_pawn.json';
 import { rook_vs_two_pawns } from 'data/rook_vs_two_pawns.json';
+import { rook_and_pawns_vs_rook_and_pawns } from 'data/rook_and_pawns_vs_rook_and_pawns.json';
 import { rook_endgame_principles } from 'data/rook_endgame_principles.json';
 import { queen_endgames } from 'data/queen_endgames.json';
 import { pawn_endgames } from 'data/pawn_endgames.json';
@@ -27,7 +28,8 @@ export class CoursesComponent implements OnInit {
         rook_endgame_principles,
         lucena_philidor_and_vancura,
         rook_vs_one_pawn,
-        rook_vs_two_pawns
+        rook_vs_two_pawns,
+        rook_and_pawns_vs_rook_and_pawns
     };
 
     // needs a better name
@@ -73,6 +75,11 @@ export class CoursesComponent implements OnInit {
                 { set: 'rook_vs_two_pawns' },
                 'Rook vs. Two Pawns',
                 'Learn how to draw with a rook against two connected pawns'
+            ],
+            [
+                { set: 'rook_and_pawns_vs_rook_and_pawns' },
+                'Rook and Pawns vs Rook and Pawns',
+                'Learn how to draw and when you win with a rook and one or multiple pawns vs rook and one pawn'
             ]
         ];
     }
