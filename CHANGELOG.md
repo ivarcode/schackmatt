@@ -1,3 +1,11 @@
+### 0.6.6
+
+commit bedc9c3c7da0a9beb66b127d967d374d45c6efef
+
+Date:   Tue Jun 1 11:34:30 2021 -0400
+
+    Rook and Pawns vs Rook and Pawns part one
+
 ### 0.6.5
 
 commit bc703b8f9d6a8656233f00c685ecf1488b37f3d2
