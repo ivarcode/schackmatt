@@ -10,12 +10,9 @@
 [FEN "6k1/1r6/8/6p1/2R3P1/5P1K/8/8 w - - 0 1"]
 [SetUp "1"]
 
-{ Let's take a look at scenarios where each side has a rook and one or multiple pawns.
-
+1. Kg3 { Let's take a look at scenarios where each side has a rook and one or multiple pawns.
 Most of these scenarios are theoretical draws, but that doesn't mean they're automatically so. Often there are single moves that draw and a lot that may lose the game.
-
-Play Kg3 to continue. }
-1. Kg3 *
+Play Rb5 to continue. } 1... Rb5 *
 
 
 [Event "Hub - Rook and Pawns vs Rook and Pawns: One pawn each side. Not passed pawns"]
@@ -30,7 +27,7 @@ Play Kg3 to continue. }
 [FEN "4R3/r7/5Kp1/7k/7P/8/8/8 b - - 0 1"]
 [SetUp "1"]
 
-1... Ra6+ { First, let's look at a situation with each side having a pawn still.
+1... Ra6+ { First, let's look at a situation with each side having a single pawn each.
 What matters the most is the position of the pawns relative to each other. In this case, neither pawn is passed so a draw is often easier. No passed pawn can be created unless you're able to capture your opponent's pawn.
 Keep your composure in these situations. It looks like white is lost because of the check, protecting the g pawn, which allows the black king to win the h pawn and create a passed pawn.
 Let's play Kg7, though Kf7 accomplishes the same thing and still draws. All other moves lose. } 2. Kg7 Kxh4 { Often, these endgames may turn into previous courses we've reviewed. Now the question is whether or not black can win with the passed pawn that was created.
@@ -41,26 +38,23 @@ With the pawn forward, our king is cut off from the pawn by the rook. But since 
 
 
 [Event "Hub - Rook and Pawns vs Rook and Pawns: One pawn each - gridlocked but advanced"]
-[Site "https://lichess.org/study/ru53JEZW/kftNHJXj"]
+[Site "https://lichess.org/study/ru53JEZW/RqaTjlkd"]
 [Result "*"]
-[UTCDate "2021.05.27"]
-[UTCTime "22:17:14"]
+[UTCDate "2021.06.01"]
+[UTCTime "16:29:05"]
 [Variant "Standard"]
 [ECO "?"]
 [Opening "?"]
 [Annotator "https://lichess.org/@/ragnarok5375"]
-[FEN "5R2/8/r4pK1/4kP2/8/8/8/8 w - - 0 1"]
+[FEN "5R2/8/r4pK1/5P2/5k2/8/8/8 b - - 0 1"]
 [SetUp "1"]
 
-{ Let's now look at pawns that are gridlocked. As white, you'll want to achieve this superior position to win. You may also notice that without the rooks on the board, this is a trebuchet and whoever is to move loses in that situation.
-
+1... Ke5 { Let's now look at pawns that are gridlocked. As white, you'll want to achieve this superior position to win. You may also notice that without the rooks on the board, this is a trebuchet and whoever is to move loses in that situation.
 The biggest point to note is how far advanced the f pawn is. That's why earlier in the game, you'll want to consider pushing a pawn further into your opponent's camp to work towards a situation such as this.
-
-Begin by checking the king. }
-1. Re8+ Kf4 { A key move in rook and pawn endgames, and why you want to advance your pawn as far as you can, is to create a passed pawn by offering a rook trade. } 2. Re6 Ra1 { With the king outside of the square, black cannot possibly capture the rook. This allows you to capture the pawn immediately.
+Begin by checking the king. } 2. Re8+ Kf4 { A key move in rook and pawn endgames, and why you want to advance your pawn as far as you can, is to create a passed pawn by offering a rook trade. } 3. Re6 Ra1 { With the king outside of the square, black cannot possibly capture the rook. This allows you to capture the pawn immediately.
 However, We don't need to capture with the rook right away. Patience helps a ton in these endings.
-Let's play Rb6 to see which way black moves. } 3. Rb6 Rh1 { If black played Ke5 right away, we would be able to check on b5 and create a Lucena position.
-We have to be careful about capturing the pawn. This would lead to a draw as black has the skewer as a resource with Rh6. } 4. Rb4+ Ke5 { We're able to get in the move Rb5 now with a tempo on the king. We want to capture the f6 pawn with our king to create a lucena. } 5. Rb5+ Kd6 { Capture the pawn to enter the Lucena scenario. } 6. Kxf6 *
+Let's play Rb6 to see which way black moves. } 4. Rb6 Rh1 { If black played Ke5 right away, we would be able to check on b5 and create a Lucena position.
+We have to be careful about capturing the pawn. This would lead to a draw as black has the skewer as a resource with Rh6. } 5. Rb4+ Ke5 { We're able to get in the move Rb5 now with a tempo on the king. We want to capture the f6 pawn with our king to create a lucena. } 6. Rb5+ Kd6 { Capture the pawn to enter the Lucena scenario. } 7. Kxf6 *
 
 
 [Event "Hub - Rook and Pawns vs Rook and Pawns: One pawn transposing into Philidor"]
@@ -130,7 +124,7 @@ Let's move our king closer. Notice how Kd5 is unavailable thanks to black's move
 
 1... Rb4+ { Before we move into multiple pawns, it's important to know how to win with a rook and 2 pawns vs rook and king. This could end in a draw if you're unsure the winning methods.
 The goal is to advance the pawns, but keep your king safe from checks from the rook.
-Use the fact that trading rooks would still lose the game for black as we've seen in our pawn endgames course. } 2. Re4 Rb6 { We can safely start advancing our pawns. They need to move together and one cannot queen alone. } 3. g4 Rf6+ 4. Kg3 Rb6 { Now we can check the king and make progress with our king on the h file. } 5. h5+ Kg5 6. Re5+ Kh6 7. Kh4 Rb4 8. Re6+ Kh7 { Black will try to keep your pawns pinned. Let's play h6. } 9. h6 Rd4 { Bring the king up to h5 so the pawn can block from side checks. } 10. Kh5 Rd5+ 11. g5 Rb5 12. Re7+ Kg8 { You can repeat this pattern of checking the king and moving up the board, but now Kg6 is trickier. It wins, but let's play Kg4 to show that our goal is just to transfer our king to the other side so we can block checks from the side with our rook. } 13. Kg4 Rb4+ 14. Kf5 Rb5+ { Move the king so we can block checks from the side. } 15. Kf6 Rb1 { Black gave up the fight and we can win in three moves a few ways. Let's do so by trying to promote the h pawn. } 16. h7+ Kf8 (16... Kh8 { Force black to capture the pawn so we can win with a rook checkmate. } 17. Re8+ Kxh7 18. g6+ Kh6 19. Rh8#) 17. h8=Q# *
+Use the fact that trading rooks would still lose the game for black as we've seen in our pawn endgames course. } 2. Re4 Rb6 { We can safely start advancing our pawns. They need to move together and one cannot queen alone. } 3. g4 Rf6+ 4. Kg3 Rb6 { Now we can check the king and make progress with our king on the h file. } 5. h5+ Kg5 { Make progress with your king towards the h file. } 6. Re5+ Kh6 { Make progress with your king towards the h file. } 7. Kh4 Rb4 { Check the King } 8. Re6+ Kh7 { Black will try to keep your pawns pinned. Let's play h6. } 9. h6 Rd4 { Bring the king up to h5 so the pawn can block from side checks. } 10. Kh5 Rd5+ 11. g5 Rb5 12. Re7+ Kg8 { You can repeat this pattern of checking the king and moving up the board, but now Kg6 is trickier. It wins, but let's play Kg4 to show that our goal is just to transfer our king to the other side so we can block checks from the side with our rook. } 13. Kg4 Rb4+ 14. Kf5 Rb5+ { Move the king so we can block checks from the side. } 15. Kf6 Rb1 { Black gave up the fight and we can win in three moves a few ways. Let's do so by trying to promote the h pawn. } 16. h7+ Kf8 (16... Kh8 { Force black to capture the pawn so we can win with a rook checkmate. } 17. Re8+ Kxh7 18. g6+ Kh6 19. Rh8#) 17. h8=Q# *
 
 
 [Event "Hub - Rook and Pawns vs Rook and Pawns: Rook and 2 pawns vs Rook and pawn"]
@@ -170,21 +164,6 @@ Let's play Kh5, but know that Rb6 accomplishes the same thing. } 2. Kh5 Rc7 { We
 A key method in a lot of instances of creating a passed pawn is to first advance one pawn as far as it can go, and then break the pawn in front of it. } 4. g6+ Kf6 { Now we can check the king and protect our f pawn. } 5. Rf8+ Ke5 { Now we're able to create a pawn break. } 6. f6 gxf6 { Before we advance our pawn, which would be captured, we need to protect the pawn's advancement with our king. } 7. Kh6 Ra1 { Advance the pawn. } 8. g7 Rh1+ { We can now use the f pawn as shelter and win the game. } 9. Kg6 Rg1+ { We can now use the f pawn as shelter and win the game. } 10. Kf7 *
 
 
-[Event "Hub - Rook and Pawns vs Rook and Pawns: 2 pawns vs 1.  Both passed"]
-[Site "https://lichess.org/study/ru53JEZW/wzp58rOx"]
-[Result "*"]
-[UTCDate "2021.05.28"]
-[UTCTime "20:50:30"]
-[Variant "From Position"]
-[ECO "?"]
-[Opening "?"]
-[Annotator "https://lichess.org/@/ragnarok5375"]
-[FEN "7R/8/3p4/2pk3P/5r2/2K5/8/8 w - - 0 1"]
-[SetUp "1"]
-
-1. h6 Rf3+ 2. Kc2 c4 3. h7 Rf7 4. Kc3 Re7 5. Rg8 Rxh7 6. Rg5+ Ke4 7. Rg4+ Kf5 8. Rd4 Ke6 9. Kxc4 *
-
-
 [Event "Hub - Rook and Pawns vs Rook and Pawns: 2 Passed Pawn and Rook vs 1 Passed Pawn and Rook"]
 [Site "https://lichess.org/study/ru53JEZW/R9lqpoiH"]
 [Result "*"]
@@ -219,4 +198,4 @@ Safer is Rg4 first so the white king can stay in front of the pawn. } 8. Rg4+ Ke
 White's rook is optimally placed protecting the pawn from the side, but also controlling what happens with the pawns on the king side.
 Black has to keep their rook passively placed on g8 while black's king is forced to just play back and forth from a6 to b7.
 Meanwhile, white starts advancing their pawns, starting with the H pawn.
-Start with Kg4 to limit black's pawn movements. } 2. Kg5 Kb7 { Starts advancing the pawns, starting with the H pawn. } 3. h4 Ka6 { Starts advancing the pawns, starting with the H pawn. } 4. h5 Kb7 { Advance the g pawn. } 5. g4 Ka6 { Now we want to create a passed pawn thanks to our space advantage. We need our king out of the way first. } 6. Kh4 Kb7 { Which pawn do we advance? } 7. h6 gxh6 { If black had played g6, we would have an advantage on the dark squares and we could win the h7 pawn and the game. } 8. Rxh6 Rg7 { Black's limited moves are all forced. Let's develop our king further. } 9. Kh5 Ka6 { We can now create a threat if black moves back to b7. Our threat is to force the trade of rooks. } 10. Rc6 Re7 { Let's win the h pawn with the same threat we sought out. } 11. Rc7 Re5+ 12. g5 Kxb6 { We can now win the h pawn and black's king is 5 files away. This will result in a winning Lucena position. } 13. Rxh7 *
+Start with Kg5 to limit black's pawn movements. } 2. Kg5 Kb7 { Starts advancing the pawns, starting with the H pawn. } 3. h4 Ka6 { Starts advancing the pawns, starting with the H pawn. } 4. h5 Kb7 { Advance the g pawn. } 5. g4 Ka6 { Now we want to create a passed pawn thanks to our space advantage. We need our king out of the way first. } 6. Kh4 Kb7 { Which pawn do we advance? } 7. h6 gxh6 { If black had played g6, we would have an advantage on the dark squares and we could win the h7 pawn and the game. } 8. Rxh6 Rg7 { Black's limited moves are all forced. Let's develop our king further. } 9. Kh5 Ka6 { We can now create a threat if black moves back to b7. Our threat is to force the trade of rooks. } 10. Rc6 Re7 { Let's win the h pawn with the same threat we sought out. } 11. Rc7 Re5+ 12. g5 Kxb6 { We can now win the h pawn and black's king is 5 files away. This will result in a winning Lucena position. } 13. Rxh7 *
