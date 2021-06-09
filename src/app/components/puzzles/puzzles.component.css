@@ -61,6 +61,9 @@
 #puzzle-list li a {
     font-size: 16px;
 }
+.btn-md {
+    margin: 5px;
+}
 /* apparently, you need the basic call first to even make it register 
     any -thumb -track... 
 */

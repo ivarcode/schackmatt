@@ -69,7 +69,7 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
             title: 'Well done!',
             displayLoadingMessage: false,
             detailedMessage: 'You completed this exercise successfully!',
-            displayButtons: ['Retry Exercise'],
+            displayButtons: ['Retry Exercise', 'Next Puzzle'],
             maxWidth: this._gameConfig.maxSquareDimensions * 8
         };
     }
@@ -158,6 +158,9 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
 
                 // this.gameComponent.drawBoard();
                 this.setupPuzzle(this.currentPuzzleIndex);
+                break;
+            case 'Next Puzzle':
+                this.nextPuzzle();
                 break;
             case 'Close Overlay':
                 // continue, and rid the board overlay
@@ -253,6 +256,16 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
         // flash the hint square
         this.gameComponent.flashSquare(srcSquare, 'yellow', 250, 5);
         // this.gameComponent.flashSquare(srcSquare, '#ebba34', 250, 5);
+    }
+
+    public nextPuzzle(): void {
+        if (this.currentPuzzleIndex !== this.puzzles.length - 1) {
+            // setup the following puzzle
+            this.setupPuzzle(this.currentPuzzleIndex + 1);
+        } else {
+            // wrap back to first puzzle
+            this.setupPuzzle(0);
+        }
     }
 
     get game(): Game {
