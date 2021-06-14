@@ -26,7 +26,7 @@ import {
 import { Square } from 'src/app/lib/square.library';
 import { GameComponent } from '../game/game.component';
 import { Piece } from 'src/app/lib/piece.libary';
-import { endgame_checkmates } from 'data/endgame_checkmates.json';
+import endgame_checkmates from 'data/endgame_checkmates.json';
 
 @Component({
     selector: 'app-endgame-trainer',
@@ -58,7 +58,9 @@ export class EndgameTrainerComponent implements OnInit, AfterViewInit {
 
     constructor() {
         // TEMP
-        this.endgamePuzzles = parseLichessStudies(endgame_checkmates);
+        this.endgamePuzzles = parseLichessStudies(
+            endgame_checkmates.endgame_checkmates
+        );
         this.currentPuzzleIndex = 1;
 
         this.currentPuzzleNode = this.currentPuzzle.pgn;
