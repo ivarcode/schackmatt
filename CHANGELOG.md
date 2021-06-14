@@ -1,3 +1,11 @@
+### 0.6.8
+
+commit 2623c5eda3755b667a289270dbdfb5106c4fbbe4
+
+Date:   Mon Jun 14 17:49:20 2021 -0400
+
+    Changing from named import pattern for JSON to default import pattern, and adding Ruy Lopez opening study for the week of 6/14
+
 ### 0.6.7
 
 commit 64942121459d1002c75411795e7d3f93bf901664
