@@ -28,7 +28,8 @@ npm --no-git-tag-version version $bumpType
 # construct CHANGELOG entry
 git log -1 > LAST_COMMIT.txt
 sed -n 3p package.json > vertext.md
-sed -i 's/    \"version\": \"//g' vertext.md
+sed -i 's/\s\{2,\}//g' vertext.md
+sed -i 's/\"version\": \"//g' vertext.md
 sed -i 's/\",//g' vertext.md
 verval=`cat vertext.md`
 cat CHANGELOG.md > old_changelog.md
