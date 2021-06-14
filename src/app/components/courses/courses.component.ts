@@ -24,16 +24,18 @@ export class CoursesComponent implements OnInit {
     private _lessons: Puzzle[];
     public courseKey: [{}, string, string][];
     private studyObjects = {
-        endgame_checkmates,
-        queen_endgames,
-        pawn_endgames,
-        rook_endgame_principles,
-        lucena_philidor_and_vancura,
-        rook_vs_one_pawn,
-        rook_vs_two_pawns,
-        rook_endgames_1v1_2v3,
-        rook_endgames_4v3,
-        ruy_lopez
+        endgame_checkmates: endgame_checkmates.endgame_checkmates,
+        queen_endgames: queen_endgames.queen_endgames,
+        pawn_endgames: pawn_endgames.pawn_endgames,
+        rook_endgame_principles:
+            rook_endgame_principles.rook_endgame_principles,
+        lucena_philidor_and_vancura:
+            lucena_philidor_and_vancura.lucena_philidor_and_vancura,
+        rook_vs_one_pawn: rook_vs_one_pawn.rook_vs_one_pawn,
+        rook_vs_two_pawns: rook_vs_two_pawns.rook_vs_two_pawns,
+        rook_endgames_1v1_2v3: rook_endgames_1v1_2v3.rook_endgames_1v1_2v3,
+        rook_endgames_4v3: rook_endgames_4v3.rook_endgames_4v3,
+        ruy_lopez: ruy_lopez.ruy_lopez
     };
 
     // needs a better name
