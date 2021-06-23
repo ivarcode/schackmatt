@@ -147,7 +147,8 @@ export function parseLichessGame(lg: LichessGame): Puzzle {
     const pgnContent = parsePGN(lg.pgnContent);
     return {
         FEN: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-        title: lg.Event.substring(lg.Event.indexOf(':') + 2),
+        // title: lg.Event.substring(lg.Event.indexOf(':') + 2),
+        title: 'Mate in One',
         pgn: pgnContent
     };
 }
