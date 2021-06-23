@@ -1,58 +1,84 @@
-<div id="standard-game-container" class="row">
-    <div class="col-sm-2">
-        <ul id="puzzle-list">
-            <li
-                *ngFor="let p of puzzles; index as i"
-                [class.current-puzzle]="i === currentPuzzleIndex"
-                (click)="setupPuzzle(i)"
-            >
-                <a class="puzzle-link">
-                    {{ p.title }}
-                </a>
-            </li>
-        </ul>
-    </div>
-    <div class="col-sm-10">
-        <div class="row">
+<div id="puzzle-component-container" class="row">
+    <div class="row">
+        <div class="col-sm-12">
             <h2 id="title" *ngIf="currentPuzzle">
                 {{ currentPuzzle.title }}
             </h2>
         </div>
-        <div class="row">
-            <div class="col-sm-auto">
-                <app-board-overlay
-                    id="board-overlay"
-                    *ngIf="showBoardOverlay"
-                    [boardOverlayData]="boardOverlayData"
-                    (boardOverlayEmitter)="boardOverlayEvent($event)"
-                ></app-board-overlay>
-                <app-game
-                    #gameComponent
-                    id="game"
-                    [game]="game"
-                    [config]="gameConfig"
-                    (gameDataEmitter)="gameDataEvent($event)"
-                ></app-game>
-            </div>
-            <div class="col-sm-auto">
-                <div
-                    id="which-color-to-play-alert"
-                    class="alert alert-primary"
-                    [style.color]="colorToPlay ? '#fff' : '#000'"
-                    [style.background]="colorToPlay ? '#000' : '#fff'"
+    </div>
+    <div class="row">
+        <div id="left-sidebar" class="col-sm-3">
+            <select
+                (change)="selectChange($event.target.value)"
+                name="puzzle-select"
+                id="puzzle-select"
+            >
+                <option *ngFor="let p of puzzles; index as i">
+                    {{ p.title }}
+                </option>
+            </select>
+            <ul id="puzzle-list">
+                <li
+                    *ngFor="let p of puzzles; index as i"
+                    [class.current-puzzle]="i === currentPuzzleIndex"
+                    (click)="setupPuzzle(i)"
                 >
-                    <h4 class="alert-heading">
-                        You play {{ colorToPlayString }}
-                    </h4>
-                </div>
-                <div id="dialogue-box">
-                    <h5
-                        *ngFor="let c of currentPuzzleNodeComments"
-                        style="width: 300px"
-                    >
-                        {{ c }}
-                    </h5>
-                </div>
+                    <a class="puzzle-link">
+                        {{ p.title }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-6">
+            <app-board-overlay
+                #boardOverlayComponent
+                id="board-overlay"
+                *ngIf="showBoardOverlay"
+                [boardOverlayData]="boardOverlayData"
+                (boardOverlayEmitter)="boardOverlayEvent($event)"
+            ></app-board-overlay>
+            <app-game
+                #gameComponent
+                id="game"
+                [game]="game"
+                [config]="gameConfig"
+                (gameDataEmitter)="gameDataEvent($event)"
+            ></app-game>
+        </div>
+        <div id="right-sidebar" class="col-sm-3">
+            <div
+                id="which-color-to-play-alert"
+                class="alert alert-primary"
+                [style.color]="colorToPlay ? '#fff' : '#000'"
+                [style.background]="colorToPlay ? '#000' : '#fff'"
+            >
+                <h4 class="alert-heading">You play {{ colorToPlayString }}</h4>
+            </div>
+            <div id="dialogue-box">
+                <h5 *ngFor="let c of currentPuzzleNodeComments">
+                    {{ c }}
+                </h5>
+            </div>
+            <div id="right-sidebar-button-container">
+                <button
+                    *ngIf="currentPuzzleNode?.nextNodes.length !== 0"
+                    class="btn btn-md btn-warning"
+                    (click)="displayHint()"
+                >
+                    HINT
+                </button>
+                <button
+                    *ngIf="currentPuzzleNode?.nextNodes.length === 0"
+                    class="btn btn-md btn-success"
+                    (click)="nextPuzzle()"
+                >
+                    <span *ngIf="currentPuzzleIndex !== puzzles.length - 1">
+                        NEXT PUZZLE ➤
+                    </span>
+                    <span *ngIf="currentPuzzleIndex === puzzles.length - 1">
+                        BACK TO BEGINNING
+                    </span>
+                </button>
             </div>
         </div>
     </div>

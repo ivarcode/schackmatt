@@ -18,6 +18,8 @@ import {
     oppositeColor,
     randomNumberInclusivelyBetween
 } from 'src/app/lib/util.library';
+// tslint:disable-next-line: max-line-length
+import { BoardOverlayComponent } from '../board-overlay/board-overlay.component';
 import { GameComponent } from '../game/game.component';
 
 @Component({
@@ -27,6 +29,8 @@ import { GameComponent } from '../game/game.component';
 })
 export class PuzzlesComponent implements OnInit, AfterViewInit {
     @ViewChild('gameComponent') private _gameComponent: GameComponent;
+    @ViewChild('boardOverlayComponent')
+    private _boardOverlayComponent: BoardOverlayComponent;
     @Input() private _puzzles: Puzzle[];
 
     private _gameConfig: GameConfig;
@@ -37,6 +41,7 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
         displayLoadingMessage: boolean;
         detailedMessage: string;
         displayButtons: string[];
+        maxWidth: number;
     };
     private _colorToPlay: Color;
 
@@ -51,6 +56,7 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
 
         this._showBoardOverlay = false;
         this._gameConfig = {
+            maxSquareDimensions: 80,
             restrictPieces: [],
             orientation: Color.Black,
             showCoordinates: true,
@@ -63,7 +69,8 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
             title: 'Well done!',
             displayLoadingMessage: false,
             detailedMessage: 'You completed this exercise successfully!',
-            displayButtons: ['Retry Exercise']
+            displayButtons: ['Retry Exercise', 'Next Puzzle'],
+            maxWidth: this._gameConfig.maxSquareDimensions * 8
         };
     }
 
@@ -77,6 +84,12 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
         if (this.puzzles.length !== 0) {
             this.setupPuzzle(this.currentPuzzleIndex);
         }
+    }
+
+    public selectChange(value: any): void {
+        const index = this._puzzles.map((p) => p.title).indexOf(value);
+        // console.log('index', index);
+        this.setupPuzzle(index);
     }
 
     public setupPuzzle(puzzleIndex: number): void {
@@ -113,6 +126,8 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
              * the ExpressionChangedAfterItHasBeenCheckedError in the DOM
              * binding
              */
+            this.gameComponent.resizeBoard(null);
+            // setting a bunch of the important values after
             this.colorToPlay = oppositeColor(this.game.turn);
             this.gameConfig.orientation = this.colorToPlay;
             this.gameComponent.drawBoard();
@@ -144,6 +159,9 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
                 // this.gameComponent.drawBoard();
                 this.setupPuzzle(this.currentPuzzleIndex);
                 break;
+            case 'Next Puzzle':
+                this.nextPuzzle();
+                break;
             case 'Close Overlay':
                 // continue, and rid the board overlay
                 break;
@@ -156,7 +174,7 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
 
     public gameDataEvent(event: GameEvent) {
         console.log(event);
-
+        // MOVE EVENT
         if (event.type === 'move') {
             // if event was a move
             let isCorrectMove = false;
@@ -171,7 +189,7 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
             }
             if (isCorrectMove) {
                 if (this.currentPuzzleNode.nextNodes.length === 0) {
-                    // reset
+                    // show board overlay because puzzle is completed
                     setTimeout(() => {
                         this.showBoardOverlay = true;
                     }, 1500);
@@ -193,6 +211,13 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
                         this.game.makeMove(moveNotation);
                         this.gameComponent.displayedMoveIndex++;
                         this.gameComponent.drawBoard();
+                        // check if puzzle is completed after black's move
+                        if (this.currentPuzzleNode.nextNodes.length === 0) {
+                            // show board overlay because puzzle is completed
+                            setTimeout(() => {
+                                this.showBoardOverlay = true;
+                            }, 1500);
+                        }
                     }, 1000);
                 }
             } else {
@@ -212,6 +237,34 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
                     );
                 }, 1000);
             }
+        }
+    }
+
+    public displayHint(): void {
+        // next expected move
+        const nextMove = this.currentPuzzleNode.nextNodes[0].move;
+        // all legal moves
+        const legalMoves = this.game.getLegalMoves();
+        // move notation array
+        const legalMoveNotations = legalMoves.map((m) =>
+            this.game.getNotation(m)
+        );
+        // the index in which the expected next move lies
+        const i = legalMoveNotations.indexOf(nextMove);
+        // src sq to hint
+        const srcSquare = legalMoves[i].src;
+        // flash the hint square
+        this.gameComponent.flashSquare(srcSquare, 'yellow', 250, 5);
+        // this.gameComponent.flashSquare(srcSquare, '#ebba34', 250, 5);
+    }
+
+    public nextPuzzle(): void {
+        if (this.currentPuzzleIndex !== this.puzzles.length - 1) {
+            // setup the following puzzle
+            this.setupPuzzle(this.currentPuzzleIndex + 1);
+        } else {
+            // wrap back to first puzzle
+            this.setupPuzzle(0);
         }
     }
 

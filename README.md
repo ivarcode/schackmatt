@@ -16,6 +16,7 @@ Dev: https://schackmatt.net/
 -   Note: some scripts in this project are `.sh` executables, you will need to be in a terminal that supports this if you are developing on Windows (eg. git bash).
 -   Navigate to the clone repo root in your preferred terminal; eg. `cd ~./git/schackmatt`
 -   Run `npm i` to install necessary packages (this might take some time)
+    -   Run `npm i -g @angular/cli` for Angular CLI (optional)
 -   Run `npm audit` to ensure no critical vulnerabilities (this will make changes to `package.json` and `package-lock.json`)
     -   Run `npm audit fix` if there are any, this should usually resolve those vulnerabilities
     -   If not, please open an issue and request my (@ivarcode's) assistance - sometimes dependency upon a backdated package can conflict with requirements for newer releases of packages it might require

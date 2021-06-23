@@ -1,3 +1,12 @@
-<div id="game" class="row">
-    <canvas id="board" width="640" height="640">canvas</canvas>
+<div
+    #gameContainer
+    id="game-container"
+    class="row"
+    (window:resize)="resizeBoard($event)"
+>
+    <div class="col-auto">
+        <canvas id="board" width="{{ boardSize }}" height="{{ boardSize }}"
+            >canvas</canvas
+        >
+    </div>
 </div>

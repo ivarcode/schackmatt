@@ -97,7 +97,7 @@ In many cases, you'll need to cut off the king by 5 files to win. In this exact 
 For this reason, our king doesn't need to stay close to the pawn and can begin running away. } { [%cal Gg1g7,Gg7a7] } 2. Kb7 Rb2+ { Make sure to defend the pawn and make progress. } 3. Ka6 Ra2+ { Defend the pawn and make progress. } 4. Kb6 Rb2+ { We can now make a break for it since the pawn is safe thanks to a skewer by the rook. } 5. Kc5 Ra2 { Protect the advancement of the a pawn. } 6. Rg8 Rxa7 { Skewer the rook } 7. Rg7+ Ke6 8. Rxa7 *
 
 
-[Event "Hub - Lucena, Philidor, and Vancura: rook paw with the king cut off by 5 files"]
+[Event "Hub - Lucena, Philidor, and Vancura: rook pawn with the king cut off by 5 files"]
 [Site "https://lichess.org/study/Yvo5PG8E/B18D47Ch"]
 [Result "*"]
 [UTCDate "2021.05.06"]
@@ -124,7 +124,7 @@ For this reason, our king doesn't need to stay close to the pawn and can begin r
 [FEN "7K/4k2P/8/8/8/8/7r/6R1 b - - 0 1"]
 [SetUp "1"]
 
-1... Kf7 { This position is a draw because the king is too close to the pawn for white to make any progress. However that doesn't mean you shouldn't play on to see if your opponent knows the right moves.f } 2. Rf1+ Kg6 { The correct move for black is to move away and white cannot make progress with the king so close. In this case however, we can utilize checks to win the rook or queen our pawn. Note that we now have shelter from rook checks thanks to the kings last move. } 3. Kg8 Rxh7 { We can now kick the king away from the rook's protection, or force it to the h file where we can skewer the king to the rook. } { [%cal Gf1g1,Gg1g6] } 4. Rg1+ Kh6 5. Rh1+ { [%cal Gh1h7] } 5... Kg6 6. Rxh7 *
+1... Kf7 { This position is a draw because the king is too close to the pawn for white to make any progress. However that doesn't mean you shouldn't play on to see if your opponent knows the right moves. } 2. Rf1+ Kg6 { The correct move for black is to move away and white cannot make progress with the king so close. In this case however, we can utilize checks to win the rook or queen our pawn. Note that we now have shelter from rook checks thanks to the kings last move. } 3. Kg8 Rxh7 { We can now kick the king away from the rook's protection, or force it to the h file where we can skewer the king to the rook. } { [%cal Gf1g1,Gg1g6] } 4. Rg1+ Kh6 5. Rh1+ { [%cal Gh1h7] } 5... Kg6 6. Rxh7 *
 
 
 [Event "Hub - Lucena, Philidor, and Vancura: The Umbrella"]
@@ -194,7 +194,7 @@ Waiting means not trying to make progress, and waiting for your opponent to make
 So how do you wait? You move your rook back and forth along the third or sixth rank. In this scenario, your opponent should do the same.
 If the player with the extra pawn ever gets tired of waiting and tries to advance the pawn, the key to a draw is to move the rook to the first rank and check from behind.
 Because the pawn will have advanced too far, the king can no longer get shelter.
-Let's move to g6. } 1... Rg6 2. Rb7 { mark time by moving back and forth between g6 and h7 to see no progress can be made. } 2... Rh6 3. Ra7 { mark time by moving back and forth between g6 and h7 to see no progress can be made. } 3... Rg6 4. Rb7 { mark time by moving back and forth between g6 and h7 to see no progress can be made. } 4... Rh6 5. e6 { Now that white has grown impatient and moved the pawn forward, we can now check from behind. Let's move the rook as far away as it can go. } 5... Rh1 6. Kd6 { Check from behind. } 6... Rd1+ 7. Ke5 { Check from behind. } 7... Re1+ 8. Kf6 { Check from behind. } 8... Rf1+ 9. Ke5 { So in the Philidor Position you should always keep these things in mind:
+Let's move to g6. } 1... Rg6 2. Rb7 { mark time by moving back and forth between g6 and h6 to see no progress can be made. } 2... Rh6 3. Ra7 { mark time by moving back and forth between g6 and h6 to see no progress can be made. } 3... Rg6 4. Rb7 { mark time by moving back and forth between g6 and h6 to see no progress can be made. } 4... Rh6 5. e6 { Now that white has grown impatient and moved the pawn forward, we can now check from behind. Let's move the rook as far away as it can go. } 5... Rh1 6. Kd6 { Check from behind. } 6... Rd1+ 7. Ke5 { Check from behind. } 7... Re1+ 8. Kf6 { Check from behind. } 8... Rf1+ 9. Ke5 { So in the Philidor Position you should always keep these things in mind:
 - It is a draw because the rook keeps checking from behind and there is nowhere to hide.
 - The white king needs shelter in order to advance the pawn.
 - Black bides his time until the pawn is pushed too far and then black retreats the rook to the e file } *

@@ -1,3 +1,43 @@
+### 0.6.8
+
+commit 2623c5eda3755b667a289270dbdfb5106c4fbbe4
+
+Date:   Mon Jun 14 17:49:20 2021 -0400
+
+    Changing from named import pattern for JSON to default import pattern, and adding Ruy Lopez opening study for the week of 6/14
+
+### 0.6.7
+
+commit 64942121459d1002c75411795e7d3f93bf901664
+
+Date:   Mon Jun 7 11:42:03 2021 -0400
+
+    Rook Endgames 4v3 and renaming the other course
+
+### 0.6.6
+
+commit bedc9c3c7da0a9beb66b127d967d374d45c6efef
+
+Date:   Tue Jun 1 11:34:30 2021 -0400
+
+    Rook and Pawns vs Rook and Pawns part one
+
+### 0.6.5
+
+commit bc703b8f9d6a8656233f00c685ecf1488b37f3d2
+
+Date:   Mon May 17 10:57:43 2021 -0400
+
+    Rook vs One Pawn weekly course release, mobile first layout, minor feature improvements to course flow
+
+### 0.6.4
+
+commit 5e31e2d7325ac98b3a712fc89d6615223c0cd008
+
+Author: Camden Wagner <camden.i.wagner@ivarcode.net>
+
+    Lucena, Philidor and Vancura position update & google analytics
+
 ### 0.6.3
 
 commit d4a16e2a42b03917f289bf35076a391be78273ac

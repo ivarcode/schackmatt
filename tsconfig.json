@@ -11,6 +11,8 @@
         "moduleResolution": "node",
         "importHelpers": true,
         "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
         "target": "es2015",
         "lib": ["es2018", "dom"]
     },

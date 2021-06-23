@@ -1,9 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { lucena_philidor_and_vancura } from 'data/lucena_philidor_and_vancura.json';
-import { endgame_checkmates } from 'data/endgame_checkmates.json';
-import { rook_endgame_principles } from 'data/rook_endgame_principles.json';
-import { queen_endgames } from 'data/queen_endgames.json';
-import { pawn_endgames } from 'data/pawn_endgames.json';
+import lucena_philidor_and_vancura from 'data/lucena_philidor_and_vancura.json';
+import endgame_checkmates from 'data/endgame_checkmates.json';
+import rook_vs_one_pawn from 'data/rook_vs_one_pawn.json';
+import rook_vs_two_pawns from 'data/rook_vs_two_pawns.json';
+import rook_endgames_1v1_2v3 from 'data/rook_endgames_1v1_2v3.json';
+import rook_endgames_4v3 from 'data/rook_endgames_4v3.json';
+import ruy_lopez from 'data/ruy_lopez.json';
+import rook_endgame_principles from 'data/rook_endgame_principles.json';
+import queen_endgames from 'data/queen_endgames.json';
+import pawn_endgames from 'data/pawn_endgames.json';
 import { Puzzle } from 'src/app/lib/interface.library';
 import { parseLichessStudies } from 'src/app/lib/util.library';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,11 +24,18 @@ export class CoursesComponent implements OnInit {
     private _lessons: Puzzle[];
     public courseKey: [{}, string, string][];
     private studyObjects = {
-        endgame_checkmates,
-        queen_endgames,
-        pawn_endgames,
-        rook_endgame_principles,
-        lucena_philidor_and_vancura
+        endgame_checkmates: endgame_checkmates.endgame_checkmates,
+        queen_endgames: queen_endgames.queen_endgames,
+        pawn_endgames: pawn_endgames.pawn_endgames,
+        rook_endgame_principles:
+            rook_endgame_principles.rook_endgame_principles,
+        lucena_philidor_and_vancura:
+            lucena_philidor_and_vancura.lucena_philidor_and_vancura,
+        rook_vs_one_pawn: rook_vs_one_pawn.rook_vs_one_pawn,
+        rook_vs_two_pawns: rook_vs_two_pawns.rook_vs_two_pawns,
+        rook_endgames_1v1_2v3: rook_endgames_1v1_2v3.rook_endgames_1v1_2v3,
+        rook_endgames_4v3: rook_endgames_4v3.rook_endgames_4v3,
+        ruy_lopez: ruy_lopez.ruy_lopez
     };
 
     // needs a better name
@@ -57,7 +69,33 @@ export class CoursesComponent implements OnInit {
             [
                 { set: 'lucena_philidor_and_vancura' },
                 'Lucena, Philidor and Vancura',
-                'Master these classic scenarios for easy endgame conversion'
+                'Practice the most essential rook endgames'
+            ],
+            [
+                { set: 'rook_vs_one_pawn' },
+                'Rook vs. One Pawn',
+                // tslint:disable-next-line: quotemark
+                "Learn when you're able to win with a rook vs a single pawn"
+            ],
+            [
+                { set: 'rook_vs_two_pawns' },
+                'Rook vs. Two Pawns',
+                'Learn how to draw with a rook against two connected pawns'
+            ],
+            [
+                { set: 'rook_endgames_1v1_2v3' },
+                'Rook Endgames: 1v1 & 2v3',
+                'Learn how to draw and when you win with a rook and one or multiple pawns vs rook and one pawn'
+            ],
+            [
+                { set: 'rook_endgames_4v3' },
+                'Rook Endgames: 4v3',
+                'Learn how to find winning techniques in rook endgames with multiples pawns on each side'
+            ],
+            [
+                { set: 'ruy_lopez' },
+                'Ruy Lopez',
+                'Learn the main lines of the Ruy Lopez opening'
             ]
         ];
     }

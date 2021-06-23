@@ -1,29 +1,39 @@
-#standard-game-container {
+#puzzle-component-container {
     margin: 0px;
-    max-height: calc(100vh - 80px);
+    padding: 0;
+    /* 62 is navbar max height */
+    max-height: calc(100vh - 62px);
 }
-
+.row {
+    margin: 0px;
+    width: 100%;
+}
+.col-sm-3,
+.col-sm-6 {
+    margin: 0px;
+    padding: 0px;
+}
 #title {
-    margin: 30px 0 20px 40px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: auto;
+    margin-left: auto;
     text-transform: uppercase;
     font-weight: 700;
-    font-size: 40px;
+    text-align: center;
+    font-size: 22px;
 }
-
 #board-overlay {
-    /* margin: 0 auto; */
-    margin: 0px;
-    padding: 20px;
+    z-index: 3;
+    width: 100%;
     position: absolute;
 }
-
 #which-color-to-play-alert {
-    margin: 30px;
+    margin: 15px;
     padding: 18px;
     border: 0;
     border-radius: 0;
 }
-
 #which-color-to-play-alert h4 {
     margin: 0;
     text-align: center;
@@ -32,74 +42,115 @@
     font-size: 20px;
     font-weight: 400;
 }
-
 #exercise-info {
-    width: 300px;
+    /* width: 300px; */
     padding: 10px 32px;
     text-align: justify;
     color: #525252;
     font-size: 16px;
 }
-
-.col-sm-2 {
-    height: inherit;
-    padding: 0px;
-}
-
 #puzzle-list {
     padding: 0px;
-    margin: 50px 0px 0px 20px;
+    margin: 10px;
     list-style: none;
     background-color: white;
     max-height: 80vh;
     overflow-y: auto;
+    display: none;
 }
-
+#puzzle-list li a {
+    font-size: 16px;
+}
+.btn-md {
+    margin: 5px;
+}
 /* apparently, you need the basic call first to even make it register 
     any -thumb -track... 
 */
 #dialogue-box::-webkit-scrollbar,
 #puzzle-list::-webkit-scrollbar {
-    width: 1em;
+    width: 0.8em;
 }
-
 #dialogue-box::-webkit-scrollbar-thumb,
 #puzzle-list::-webkit-scrollbar-thumb {
     background-color: rgb(101, 101, 101);
 }
-
 #dialogue-box::-webkit-scrollbar-track,
 #puzzle-list::-webkit-scrollbar-track {
     background-color: rgb(181, 181, 181);
 }
-
 #puzzle-list li {
     text-align: center;
     padding: 5px;
     border: black 1px solid;
 }
-
 #puzzle-list li:not(.current-puzzle):hover {
     background-color: lightgray;
     cursor: pointer;
 }
-
 .puzzle-link {
     cursor: pointer;
     font-size: 18px;
 }
-
 .current-puzzle {
     color: white;
     background-color: black;
 }
-
 .current-puzzle:hover {
     cursor: pointer;
     background-color: rgb(41, 41, 41);
 }
-
 #dialogue-box {
-    max-height: 500px;
+    margin: 10px;
+    max-height: 70vh;
     overflow-y: auto;
+}
+#dialogue-box h5 {
+    font-size: 16px;
+    padding: 5px;
+}
+
+#puzzle-select {
+    width: 80%;
+    margin-left: 10%;
+}
+
+#right-sidebar-button-container {
+    padding: 15px;
+}
+
+/* col breakpoint - 576px and larger */
+@media only screen and (min-width: 576px) {
+    #puzzle-select {
+        display: none;
+    }
+    #puzzle-list {
+        display: inline-block;
+    }
+}
+
+/* Tablet - 768px and larger */
+@media only screen and (min-width: 768px) {
+    #title {
+        font-size: 30px;
+    }
+    #puzzle-list {
+        max-height: 70vh;
+    }
+    #dialogue-box {
+        max-height: 50vh;
+    }
+}
+
+/* Laptop - 1024px and larger */
+@media only screen and (min-width: 1024px) {
+    #title {
+        font-size: 40px;
+    }
+    #dialogue-box h5 {
+        font-size: 20px;
+    }
+    #puzzle-list li a {
+        font-size: 20px;
+    }
 }

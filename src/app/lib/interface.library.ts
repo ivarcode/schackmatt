@@ -26,6 +26,7 @@ export interface GameEvent {
 }
 
 export interface GameConfig {
+    maxSquareDimensions: number;
     restrictPieces: Color[];
     orientation: Color;
     showCoordinates: boolean;
