@@ -93,34 +93,36 @@ export class PuzzlesComponent implements OnInit, AfterViewInit {
     }
 
     public setupPuzzle(puzzleIndex: number): void {
-        // close board overlay
-        this.showBoardOverlay = false;
-
-        this.currentPuzzleIndex = puzzleIndex;
-        console.log(this.currentPuzzle);
-        this.currentPuzzleNode = this.currentPuzzle.pgn;
-
-        this.game.fen = this.currentPuzzle.FEN;
-        this.gameComponent.displayedMoveIndex = 0;
-        this.game.loadFEN();
-        this.game.updateFENPiecesPositionsFromBoard();
-        this.gameComponent.initPosition = this.game.board;
-        this.game.moveHistory = [];
-
-        if (this.currentPuzzle.beginAt) {
-            // if beginAt present traverse there, else: set to beginning of pgn
-            while (
-                this.currentPuzzleNode &&
-                this.currentPuzzleNode.nextNodes[0] !==
-                    this.currentPuzzle.beginAt
-            ) {
-                this.currentPuzzleNode = this.currentPuzzleNode.nextNodes[0];
-                this.game.makeMove(this.currentPuzzleNode.move);
-                this.gameComponent.displayedMoveIndex++;
-            }
-        }
-
         setTimeout(() => {
+            // close board overlay
+            this.showBoardOverlay = false;
+
+            this.currentPuzzleIndex = puzzleIndex;
+            console.log(this.currentPuzzle);
+            this.currentPuzzleNode = this.currentPuzzle.pgn;
+
+            this.game.fen = this.currentPuzzle.FEN;
+            this.gameComponent.displayedMoveIndex = 0;
+            this.game.loadFEN();
+            this.game.updateFENPiecesPositionsFromBoard();
+            this.gameComponent.initPosition = this.game.board;
+            this.game.moveHistory = [];
+
+            if (this.currentPuzzle.beginAt) {
+                // if beginAt present traverse there,
+                // else: set to beginning of pgn
+                while (
+                    this.currentPuzzleNode &&
+                    this.currentPuzzleNode.nextNodes[0] !==
+                        this.currentPuzzle.beginAt
+                ) {
+                    this.currentPuzzleNode =
+                        this.currentPuzzleNode.nextNodes[0];
+                    this.game.makeMove(this.currentPuzzleNode.move);
+                    this.gameComponent.displayedMoveIndex++;
+                }
+            }
+
             /**
              * really interesting, this code in a "valueless setTimeout" avoids
              * the ExpressionChangedAfterItHasBeenCheckedError in the DOM

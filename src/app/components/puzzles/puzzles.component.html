@@ -60,8 +60,13 @@
                 </h5>
             </div>
             <div id="right-sidebar-button-container">
-                <p *ngIf="currentPuzzle?.configOptions?.revealNextMove">
-                    Next move is: {{ currentPuzzleNode?.nextNodes[0].move }}
+                <p
+                    *ngIf="
+                        currentPuzzle?.configOptions?.revealNextMove &&
+                        currentPuzzleNode?.nextNodes.length !== 0
+                    "
+                >
+                    Next move is: {{ currentPuzzleNode?.nextNodes[0]?.move }}
                 </p>
                 <button
                     *ngIf="currentPuzzleNode?.nextNodes.length !== 0"
