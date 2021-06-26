@@ -123,14 +123,23 @@ export function parseLichessStudies(studies: any): Puzzle[] {
     return puzzles;
 }
 
-export function parseLichessGames(games: any): Puzzle[] {
-    const puzzles = [];
-    for (const game of Object.values(games)) {
-        if (instanceOfLichessGame(game)) {
-            puzzles.push(parseLichessGame(game));
-        }
+// export function parseLichessGames(games: any): Puzzle[] {
+//     const puzzles = [];
+//     for (const game of Object.values(games)) {
+//         if (instanceOfLichessGame(game)) {
+//             puzzles.push(parseLichessGame(game));
+//         }
+//     }
+//     return puzzles;
+// }
+
+// parses the games into their own individuals (fix this wording)
+export function parseGames(games: any): any[] {
+    const gamesArr = [];
+    for (const g of Object.values(games)) {
+        gamesArr.push(g);
     }
-    return puzzles;
+    return gamesArr;
 }
 
 export function parseLichessStudy(ls: LichessStudy): Puzzle {
