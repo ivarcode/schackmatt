@@ -6,6 +6,7 @@ import rook_vs_two_pawns from 'data/rook_vs_two_pawns.json';
 import rook_endgames_1v1_2v3 from 'data/rook_endgames_1v1_2v3.json';
 import rook_endgames_4v3 from 'data/rook_endgames_4v3.json';
 import ruy_lopez from 'data/ruy_lopez.json';
+import ruy_lopez_closed from 'data/ruy_lopez_closed.json';
 import rook_endgame_principles from 'data/rook_endgame_principles.json';
 import queen_endgames from 'data/queen_endgames.json';
 import pawn_endgames from 'data/pawn_endgames.json';
@@ -35,7 +36,8 @@ export class CoursesComponent implements OnInit {
         rook_vs_two_pawns: rook_vs_two_pawns.rook_vs_two_pawns,
         rook_endgames_1v1_2v3: rook_endgames_1v1_2v3.rook_endgames_1v1_2v3,
         rook_endgames_4v3: rook_endgames_4v3.rook_endgames_4v3,
-        ruy_lopez: ruy_lopez.ruy_lopez
+        ruy_lopez: ruy_lopez.ruy_lopez,
+        ruy_lopez_closed: ruy_lopez_closed.ruy_lopez_closed
     };
 
     // needs a better name
@@ -96,6 +98,11 @@ export class CoursesComponent implements OnInit {
                 { set: 'ruy_lopez' },
                 'Ruy Lopez',
                 'Learn the main lines of the Ruy Lopez opening'
+            ],
+            [
+                { set: 'ruy_lopez_closed' },
+                'Ruy Lopez Closed',
+                'Learn the closed lines of the Ruy Lopez opening'
             ]
         ];
     }

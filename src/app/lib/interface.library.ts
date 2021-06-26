@@ -93,4 +93,5 @@ export interface Puzzle {
     // if present, line begins at a specific LineNode
     beginAt?: LineNode;
     title: string;
+    configOptions?: { revealNextMove: boolean };
 }

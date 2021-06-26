@@ -138,7 +138,8 @@ export function parseLichessStudy(ls: LichessStudy): Puzzle {
     return {
         FEN: ls.FEN,
         title: ls.Event.substring(ls.Event.indexOf(':') + 2),
-        pgn: parsePGN(ls.pgnContent)
+        pgn: parsePGN(ls.pgnContent),
+        configOptions: { revealNextMove: ls.Site === 'REVEAL ALL MOVES' }
     };
 }
 
