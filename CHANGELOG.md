@@ -1,3 +1,11 @@
+### 0.6.9
+
+commit 950f5d558dea14663a300a50caab9052344d0361
+
+Date:   Mon Jun 28 23:05:32 2021 -0400
+
+    Ruy Lopez Closed
+
 ### 0.6.8
 
 commit 2623c5eda3755b667a289270dbdfb5106c4fbbe4
