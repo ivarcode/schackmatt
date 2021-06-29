@@ -139,7 +139,7 @@ export function parseLichessStudy(ls: LichessStudy): Puzzle {
         FEN: ls.FEN,
         title: ls.Event.substring(ls.Event.indexOf(':') + 2),
         pgn: parsePGN(ls.pgnContent),
-        configOptions: { revealNextMove: ls.Site === 'REVEAL ALL MOVES' }
+        configOptions: { revealNextMove: ls.Site === 'reveal all moves' }
     };
 }
 
