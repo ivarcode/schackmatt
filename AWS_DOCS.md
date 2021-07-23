@@ -15,6 +15,12 @@ The following deployment configuration should look like this:
 }
 ```
 
+#### Manually renew certs (if they can't auto-renew)
+
+SSH into relevant server.
+
+Run `sudo certbot renew --nginx`
+
 #### Example process
 
 Spin an Amazon EC2 instance. Use an Amazon Linux machine optimized for EC2. Choose t3.nano (or other).
