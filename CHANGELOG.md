@@ -1,3 +1,11 @@
+### 0.6.10
+
+commit e49110bd4fbaef276113581f69dc7a228e09d48a
+
+Date:   Fri Aug 6 14:14:49 2021 -0400
+
+    Najdorf Introduction study
+
 ### 0.6.9
 
 commit 950f5d558dea14663a300a50caab9052344d0361
