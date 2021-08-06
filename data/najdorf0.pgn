@@ -6,6 +6,7 @@
 [Variant "Standard"]
 [ECO "B90"]
 [Opening "Sicilian Defense: Najdorf Variation"]
+[FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]
 [Annotator "https://lichess.org/@/ragnarok5375"]
 
 1. e4 { This Sicilian opening has been used by top Grandmasters including Bobby Fischer and Gary Kasparov, and for good reason. It’s solid, tough to crack, and is filled with small positional advantages for both sides.

@@ -10,6 +10,7 @@
             "ECO": "B90",
             "Opening": "Sicilian Defense: Najdorf Variation",
             "Annotator": "https://lichess.org/@/ragnarok5375",
+            "FEN": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
             "pgnContent": "\n1. e4 { This Sicilian opening has been used by top Grandmasters including Bobby Fischer and Gary Kasparov, and for good reason. It's solid, tough to crack, and is filled with small positional advantages for both sides.\nThis course will give you an introduction to the more popular variations of the Najdorf as well as some ideas to think about.\nBegin by playing the Sicilian with c5. } 1... c5 2. Nf3 { White's goals are to play d4 and open the center and to advance e4-e5 if the knight comes to f6.\nOne of the more traditional ways to continue is to play d6 and control the center. } 2... d6 3. d4 { White has the ideal center and the pawn must be taken right away or else black will face immediate passivity after a cramping move like d5, or simply capturing the c5 pawn and trading queens to remove black's ability to castle. } 3... cxd4 4. Nxd4 { Now black should prevent a passive game after white's potential c4 by playing nf6, attacking the e4 pawn. } 4... Nf6 5. Nc3 { We will now enter the najdorf with a6, which prevents multiple white pieces from occupying b5 early and putting pressure on black. } 5... a6 *\n\n\n"
         },
         "1": {
