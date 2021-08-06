@@ -1,0 +1,180 @@
+[Event "Najdorf Intro: Hub: The Sicilian Najdorf: Intro"]
+[Site "https://lichess.org/study/IWMoDGNq/K2e17VhZ"]
+[Result "*"]
+[UTCDate "2021.07.12"]
+[UTCTime "18:57:55"]
+[Variant "Standard"]
+[ECO "B90"]
+[Opening "Sicilian Defense: Najdorf Variation"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+
+1. e4 { This Sicilian opening has been used by top Grandmasters including Bobby Fischer and Gary Kasparov, and for good reason. It’s solid, tough to crack, and is filled with small positional advantages for both sides.
+This course will give you an introduction to the more popular variations of the Najdorf as well as some ideas to think about.
+Begin by playing the Sicilian with c5. } 1... c5 2. Nf3 { White's goals are to play d4 and open the center and to advance e4-e5 if the knight comes to f6.
+One of the more traditional ways to continue is to play d6 and control the center. } 2... d6 3. d4 { White has the ideal center and the pawn must be taken right away or else black will face immediate passivity after a cramping move like d5, or simply capturing the c5 pawn and trading queens to remove black's ability to castle. } 3... cxd4 4. Nxd4 { Now black should prevent a passive game after white's potential c4 by playing nf6, attacking the e4 pawn. } 4... Nf6 5. Nc3 { We will now enter the najdorf with a6, which prevents multiple white pieces from occupying b5 early and putting pressure on black. } 5... a6 *
+
+
+[Event "Najdorf Intro: Hub: The English Attack"]
+[Site "https://lichess.org/study/IWMoDGNq/r0zPf0SU"]
+[Result "*"]
+[UTCDate "2021.07.12"]
+[UTCTime "19:07:20"]
+[Variant "Standard"]
+[ECO "B90"]
+[Opening "Sicilian Defense: Najdorf Variation, English Attack"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "rnbqkb1r/1p2pppp/p2p1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 1"]
+[SetUp "1"]
+
+1. Be3 { The English Attack is one of the more popular variations of the Najdorf in recent years.
+White places their dark-squared bishop, which is their good bishop, on e3 to try to take advantage of the weakness created on b6 by the move a6.
+Black can try to attack the bishop right away with Ng4, but white will be able to transpose into the mainline with Bg5, and black wastes a tempo.
+White's goals are to play f3 to stop the possibility of ng4 or bg4 in the future. f3 also helps with traditional Sicilian attacks with moves like g4 and h4 to attack the kingside.
+Black's plan is to play e5 and try to control d5 so white cannot maintain a piece there. } 1... e5 2. Nb3 { White can also move to f3, but b3 is more popular.
+Black's goals are to get both bishops to e7 and e6, play b5, nd7 and nb6 to really control the d5 square.
+In some cases, the light-squared bishop finds itself on b7 and black has a lot of pressure on the e4 square. } 2... Be6 3. f3 Be7 4. Qd2 { White is planning to play g4 and h4 to create a kingside attack with a pawn storm.
+One variation to prevent this is to play h5. Another is to castle and let the white pawns advantage. A third is to continue on the queenside with nd7 and complete development.
+All of these variations will be explored in the English Attack course.
+Play h5 to continue to the next lesson. } 4... h5 *
+
+
+[Event "Najdorf Intro: Hub: Main Lain: Bg5"]
+[Site "https://lichess.org/study/IWMoDGNq/fEReVGvP"]
+[Result "*"]
+[UTCDate "2021.07.12"]
+[UTCTime "19:09:11"]
+[Variant "Standard"]
+[ECO "B99"]
+[Opening "Sicilian Defense: Najdorf Variation, Main Line"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "rnbqkb1r/1p2pppp/p2p1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 1"]
+[SetUp "1"]
+
+1. Bg5 { Bg5 is the mainline of the Najdorf. White continues developing the queenside pieces. The goal is to create a kingside attack with f4, bring the queen to f3, castle queenside, and begin the pawn storm.
+Black's usual plans are to play the e pawn to e6 rather than e5. This helps to defend the knight without the fear of doubling your own pawns, while also controlling the d5 square so the white knight doesn't occupy it. } 1... e6 2. f4 { White gets on with the king side attack and plays f4 to allow the queen to come to f3 where it has an x-ray on f7. White is also immediately threatening to win the knight with e4 since the knight is pinned.
+Black does not always castle in this variation as there is too much pressure on the kingside.
+There are multiple variations for black at this point. The plans revolve around defending the f6 knight with a piece (be7 or nbd7), creating counter play with the poisoned pawn variation (Qb6), and complicating the game with b5 (the Polugaevsky).
+We will explore the latter two in the next two lessons. For now, we can continue with the second most popular move, Be7. } 2... Be7 3. Qf3 { White continues to develop in traditional fashion and is ready to castle on the queenside.
+The most common replies are Qc7, h6, and Nbd7.
+Qc7 activates the queen and indirectly controls the e5 square to prevent white from playing e5.
+Black's goals are to bring the knight to d7, play b5, and Bb7.
+Since white's goals are to play g4 and h4, if black can get a bishop on b7 with the queen on c7 protecting it, then white has a more challenging time playing e5 since the queen and rook would be under attack from the light-squared bishop. } 3... Qc7 4. O-O-O { Black can continue the main plans with Nbd7. } 4... Nbd7 5. g4 { Black can continue with the plan and play b5 to bring the bishop to c7. White does not have a discover attack on the rook on a8 and knight on f6 thanks to the queen protecting the b7 square for the bishop. } 5... b5 6. Bxf6 { The bishop capturing is one variation, but the main goals of the opening have been achieved for both sides. The game will be determined based on who achieves the full fruition of their plans first.
+White will continue the pawn storm while black will plan to attack the kingside with moves like b4 and putting pressure on the c2 pawn. } *
+
+
+[Event "Najdorf Intro: Hub: Poisoned Pawn Variation"]
+[Site "https://lichess.org/study/IWMoDGNq/WLAP8hKo"]
+[Result "*"]
+[UTCDate "2021.07.12"]
+[UTCTime "19:15:13"]
+[Variant "Standard"]
+[ECO "B97"]
+[Opening "Sicilian Defense: Najdorf Variation, Poisoned Pawn Accepted"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "rnbqkb1r/1p2pppp/p2p1n2/6B1/3NP3/2N5/PPP2PPP/R2QKB1R b KQkq - 0 1"]
+[SetUp "1"]
+
+{ The poisoned pawn variation arises out of the mainline of Bg5.
+
+Black still continues with e6 to prevent the knight from coming in to d5. }
+1... e6 2. f4 { In the poisoned pawn variation, black moves the queen out of the pin and creates counter play by attacking the weak b2 pawn with Qb6. } 2... Qb6 3. Qd2 { White's most common answer is to give up the weak b2 pawn for more activity. This variation is called the poisoned pawn because black gains a pawn, but white's activity is often enough compensation because the queen is away from the defense of black's kingside where it needs to be.
+The black queen can also find itself trapped if it is not careful.
+Let's venture into the lions den with Qxb2. } 3... Qxb2 4. Rb1 { The rook is protected by the knight and the queen move earlier to d2 now shows as the queen protects the knight. The black queen is forced to a3. } 4... Qa3 5. e5 { Here's one example of how white can keep black passive. e5 forces black to make a decision. Black scores better when replying with h6 and attacking the bishop, but let's see what happens if black captures the pawn. } 5... dxe5 6. fxe5 { Black can still transpose into the previously mentioned h6 to attack the bishop, but let's play the more common Nfd7. } 6... Nfd7 7. Ne4 { Notice how much activity white has and how passive black's pieces are. Most of black's pieces are not developed because black moved their queen 3 times.
+Black can continue to play greedily by now capturing the pawn on a2, going up 2 pawns. Top level play suggests that white wins more than half of the time and black wins about 12% of games in this case.
+In general, you want to develop your pieces rather than moving your queen around the board. White is two moves away from casting and there is a tremendous pressure on the kingside. } *
+
+
+[Event "Najdorf Intro: Hub: Polugaevsky Variation"]
+[Site "https://lichess.org/study/IWMoDGNq/xmXgUrUU"]
+[Result "*"]
+[UTCDate "2021.07.12"]
+[UTCTime "19:10:36"]
+[Variant "Standard"]
+[ECO "B96"]
+[Opening "Sicilian Defense: Najdorf Variation, Polugaevsky Variation"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "rnbqkb1r/1p2pppp/p2p1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 1"]
+[SetUp "1"]
+
+1. Bg5 e6 2. f4 { The Polugaevsky variation is a complicated variation in which black seemingly gives up their knight by allowing the e4 pin by playing b5.
+The move baits white into playing e4 and if white is not careful, they can find themselves in a bind early. } 2... b5 3. e5 { Black captures the pawn. } 3... dxe5 4. fxe5 { Now black plays Qc7, moving out of the way of the pin, but allowing the knight to be captured.
+Thanks to the early incoordination of the white pieces and the exposed king, black is able to keep the game even tacticvally. } 4... Qc7 5. exf6 { The queen can now check the king and pick up the bishop to even the game. } 5... Qe5+ 6. Be2 Qxg5 7. O-O { Now the toughest move to find if you're unsure what to do. Ra7.
+Black has trouble developing the bishop or the knight and the best thing to do this early is to bring the rook to d7 where it pins the knight to the queen.
+Only then can black play Bb7 since it doesn't block the rook in the corner.
+Additionally, after white captures on g7, there is a lot of pressure on f7 and the rook on the 7th rank helps prevent any strikes against it. } 7... Ra7 8. Qd3 Rd7 9. Ne4 { Finally, the queen belongs on e5 where the knight on d4 is exposed.
+This is a tricky variation, but definitely a fun one to try out. } 9... Qe5 *
+
+
+[Event "Najdorf Intro: Hub: Fischer Sozin Attack"]
+[Site "https://lichess.org/study/IWMoDGNq/5H6xv9sm"]
+[Result "*"]
+[UTCDate "2021.07.19"]
+[UTCTime "14:47:22"]
+[Variant "Standard"]
+[ECO "B89"]
+[Opening "Sicilian Defense: Sozin Attack, Main Line"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "rnbqkb1r/pp2pppp/3p1n2/8/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 0 1"]
+[SetUp "1"]
+
+1. Nc3 { Let's look at a slight variation of the move orders and play a more classical Sicilian with Nc6. } 1... Nc6 2. Bc4 { Before playing the traditional a6, we played Nc6 to show the possibility of the Fischer Sozin attack with Bc4.
+This is a slight variation of the Scheveningen as black often ends up playing e6 rather than e5 to stop the bishop that is on c4 from tactics on f7. } 2... e6 3. Be3 { Now we can transpose into the main line of the Sozin attack with our more traditional a6. } 3... a6 4. Qe2 { Black often develops in the same way in most variations of the Najdorf with Qc7 or Be7.
+The difference here is white is fully developed and has more space in the center and the black knight is on c6 rather than d7. Black's light-squared bishop is also more likely to come to d7 rather than b6 since the knight on c6 would be en prise after b5.
+Let's play Qc7 to move on to the next lesson. } 4... Qc7 *
+
+
+[Event "Najdorf Intro: Hub: Opocensky Variation"]
+[Site "https://lichess.org/study/IWMoDGNq/DOHagNEK"]
+[Result "*"]
+[UTCDate "2021.07.12"]
+[UTCTime "19:09:25"]
+[Variant "Standard"]
+[ECO "B92"]
+[Opening "Sicilian Defense: Najdorf Variation, Opocensky Variation"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "rnbqkb1r/1p2pppp/p2p1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 1"]
+[SetUp "1"]
+
+1. Be2 { The Opocensky Variation is a more quiet and positional game by white. White does not opt for any more sharp variations like the poisoned pawn, and instead simply develops.
+There variation can transpose into a ton of different games and there is no one single line that both players follow.
+The plans are simply the same and are a matter of preference.
+Let's play e5 to continue. } 1... e5 *
+
+
+[Event "Najdorf Intro: Hub: Adams Attack"]
+[Site "https://lichess.org/study/IWMoDGNq/IbZHq2N4"]
+[Result "*"]
+[UTCDate "2021.07.12"]
+[UTCTime "19:11:55"]
+[Variant "Standard"]
+[ECO "B90"]
+[Opening "Sicilian Defense: Najdorf Variation, Adams Attack"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "rnbqkb1r/1p2pppp/p2p1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 1"]
+[SetUp "1"]
+
+1. h3 { The Adams attack is a slightly obscure move that accomplishes a lot of the same goals of white.
+White plans to create a kingside pawn storm at some point and play g4 and f4. g4 is also a great positional move as it helps fight for the d5 square by forcing the knight on f6 away.
+In more other variations, white plays f3 then g4 and h4. However, f4 is a more central pawn thrust and has more purposes than h4 does. White doesn't waste a tempo in this variation by playing f3 then f4, which also weakens the g4 square.
+Since white can continue to play f4 without fear of giving up control of the g4 square, this move makes sense even if it is slower.
+Let's play e5 to continue. } 1... e5 2. Nde2 { White's goals are to play g4 early, move the bishop to g2, and the knight to g3 where it can control or move into f5.
+All of these moves help to control the d5 square as white can also play g5 and kick the knight away.
+Black's main plan is to stop this early by playing h5 and control the g4 square.
+Let's play h5 to move on to the next lesson. } 2... h5 *
+
+
+[Event "Najdorf Intro: Hub: O'Kelly Variation"]
+[Site "https://lichess.org/study/IWMoDGNq/YDPgaBdF"]
+[Result "*"]
+[UTCDate "2021.07.19"]
+[UTCTime "13:44:46"]
+[Variant "Standard"]
+[ECO "B28"]
+[Opening "Sicilian Defense: O'Kelly Variation, Normal System"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1"]
+[SetUp "1"]
+
+1. Nf3 { The O'Kelly Variation arises out of an early a6, before d6 has been played.
+In a similar fashion to the Accelerated Dragon, black is delaying the slow move of d6 for a possible d5 in one go later on.
+If white tries to open the center with d4 in a traditional sense, then black can employ a more rapid development. } 1... a6 2. d4 cxd4 3. Nxd4 { Let's continue as we normally do with Nf6. } 3... Nf6 4. Nc3 { If white responds in a traditional sense, we can play e5 right away. Notice that black has not played d6 and thus can possible castle, or at least is more developed than main lines. Black is mostly threatening to play d5 right away and open the game up to equal the playing field. } 4... e5 *
