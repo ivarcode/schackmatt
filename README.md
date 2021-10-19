@@ -109,6 +109,13 @@ Build the project using `npm run build` to generate the latest version of the co
 
 Run `bash deploy-prod.sh` to move the old files from the production server to a separate backup directory on the host, and replace those files with the current `dist/` build.
 
+Renew SSL cert with `certbot`: ssh into prod server and run `sudo certbot --nginx renew`. If there are problems with SSL renewal, try the following to resolve:
+
+```
+sudo pkill -f nginx & wait $!
+sudo systemctl start nginx
+```
+
 ### [Developer Discord Server](https://discord.gg/uruXya4)
 
 Please submit bugs or feature requests in detailed issues.
