@@ -1,3 +1,11 @@
+### 0.6.11
+
+commit c2ed5e4aef00d21dd37548a17d0de8421772b467
+
+Date:   Mon Oct 18 21:54:26 2021 -0400
+
+    Adding miscellaneous rook endgame exercises
+
 ### 0.6.10
 
 commit e49110bd4fbaef276113581f69dc7a228e09d48a
