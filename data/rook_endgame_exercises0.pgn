@@ -1,0 +1,345 @@
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R vs 2 Pawns"]
+[Site "https://lichess.org/study/DRDgRNkB/7l5tsXxY"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:31:08"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "6R1/8/8/5k2/2K4p/6p1/8/8 b - - 0 1"]
+[SetUp "1"]
+
+1... Ke4 2. Rg4+ Kf3 3. Rxh4 g2 4. Rh3+ Kf4 5. Rh4+ Kf5 6. Rh5+ Kf6 7. Rh6+ Kg7 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R vs 3 pawns"]
+[Site "https://lichess.org/study/DRDgRNkB/cpFgoY9H"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "14:33:19"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "8/7R/8/8/3Kp1p1/5k1p/8/8 w - - 0 1"]
+[SetUp "1"]
+
+1. Rh8 e3 2. Rf8+ Kg2 3. Kxe3 g3 4. Rh8 h2 5. Kf4 h1=Q 6. Rxh1 Kxh1 7. Kxg3 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R v 2 isolated pawns"]
+[Site "https://lichess.org/study/DRDgRNkB/TZxHBwdJ"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "14:34:27"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "8/8/8/5K2/3p4/7p/R7/6k1 w - - 0 1"]
+[SetUp "1"]
+
+1. Kg4 h2 2. Kg3 h1=N+ 3. Kf3 d3 4. Rd2 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): Philidor"]
+[Site "https://lichess.org/study/DRDgRNkB/AikBrsmf"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "14:38:22"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "8/6k1/3KP3/8/8/8/7r/5R2 b - - 0 1"]
+[SetUp "1"]
+
+1... Ra2 2. e7 Ra6+ 3. Kd7 Ra7+ 4. Ke6 Ra6+ 5. Kd5 Ra5+ 6. Kc6 Ra6+ *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R and Doubled Pawn  v R"]
+[Site "https://lichess.org/study/DRDgRNkB/ZoBuQxDy"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "14:39:23"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "6k1/6P1/7K/6P1/8/8/6r1/4R3 b - - 0 1"]
+[SetUp "1"]
+
+1... Rh2+ 2. Kg6 Re2 3. Rf1 Rf2 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R P vs R P"]
+[Site "https://lichess.org/study/DRDgRNkB/cFxJUVw5"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "18:58:43"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "4k3/1R6/5pK1/5P2/r7/8/8/8 b - - 0 1"]
+[SetUp "1"]
+
+1... Kf8 2. Kxf6 Ra6+ *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R Ps vs R Ps"]
+[Site "https://lichess.org/study/DRDgRNkB/adYfzd7a"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "18:59:19"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "5R2/8/8/8/4p1k1/5p2/3K1P1P/5r2 w - - 0 1"]
+[SetUp "1"]
+
+1. Rg8+ Kh3 2. Ke3 Re1+ 3. Kf4 Kxh2 4. Rg7 Rg1 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R P vs R Ps"]
+[Site "https://lichess.org/study/DRDgRNkB/tVFzGt6n"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:00:20"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "1k4r1/p7/2PK3R/1P6/8/8/8/8 b - - 0 1"]
+[SetUp "1"]
+
+1... Rf8 2. Kc5 Rf5+ 3. Kd6 Rf8 4. Rh7 Rg8 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R and 2 non connected P vs R P"]
+[Site "https://lichess.org/study/DRDgRNkB/DE3v9And"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:01:10"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "8/8/6pk/P4p2/7P/r7/6K1/4R3 w - - 0 1"]
+[SetUp "1"]
+
+1. Rg1 Rxa5 2. Kh3 Ra8 3. Rg3 Re8 4. Rg1 Re6 5. Rg3 Rf6 6. Rg2 Rf8 7. Rg1 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R P vs R 2P Connected"]
+[Site "https://lichess.org/study/DRDgRNkB/TFifHnRq"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:02:55"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "8/8/5k2/R3pp2/8/5KP1/2r5/8 w - - 0 1"]
+[SetUp "1"]
+
+1. Ra8 e4+ 2. Ke3 Kg5 3. Rg8+ Kh5 4. Rg7 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R Ps vs R P"]
+[Site "https://lichess.org/study/DRDgRNkB/h7qAyx2E"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:04:37"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "8/5P2/4R3/4P3/8/7k/r6p/7K w - - 0 1"]
+[SetUp "1"]
+
+1. Rh6+ Kg3 2. Rg6+ Kh3 3. Rg1 hxg1=Q+ 4. Kxg1 Ra8 5. Kf2 Kg4 6. e6 Rf8 7. Ke3 Kg5 8. e7 Rxf7 9. e8=Q *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R Ps vs R Ps"]
+[Site "https://lichess.org/study/DRDgRNkB/kSK7j2hQ"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:05:18"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "8/4Rpk1/8/r3PKp1/6P1/5P2/8/8 b - - 0 1"]
+[SetUp "1"]
+
+1... Ra3 2. Kxg5 Kf8 3. Rb7 Rxf3 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R P vs R P"]
+[Site "https://lichess.org/study/DRDgRNkB/EEiMpxtB"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:07:36"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "5K2/5P2/8/p7/k7/8/1R6/7r w - - 0 9"]
+[SetUp "1"]
+
+9. Rb6 Ka3 10. Ke7 Rh8 11. f8=Q Rxf8 12. Kxf8 a4 13. Ke7 Ka2 14. Kd6 a3 15. Kd5 Ka1 16. Kc4 a2 17. Kb3 Kb1 18. Rh6 Kc1 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R P vs R P"]
+[Site "https://lichess.org/study/DRDgRNkB/W2pZvjoz"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:08:48"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "7R/7P/8/8/K7/2p4r/8/2k5 b - - 0 9"]
+[SetUp "1"]
+
+9... c2 10. Rg8 Rxh7 11. Kb3 Kb1 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R non connected Ps vs P"]
+[Site "https://lichess.org/study/DRDgRNkB/JRmjuxcX"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:45:25"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "6R1/6P1/2k5/2p5/6r1/1KP5/8/8 b - - 0 10"]
+[SetUp "1"]
+
+10... c4+ 11. Kb4 Kb7 12. Kc5 Ka7 13. Kc6 Rg6+ 14. Kc5 Rg4 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R C Ps vs R P"]
+[Site "https://lichess.org/study/DRDgRNkB/8pYfoU8V"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:13:41"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "8/8/6k1/R7/7P/p5PK/3r4/8 b - - 0 10"]
+[SetUp "1"]
+
+10... a2 11. h5+ Kf6 12. Kh4 Rh2+ 13. Kg4 Rb2 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R Ps vs R Ps 3 v 4 outside passed pawn"]
+[Site "https://lichess.org/study/DRDgRNkB/nAOmR5YW"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:14:31"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "R7/5pkp/pr4p1/8/7P/8/5PP1/6K1 w - - 0 10"]
+[SetUp "1"]
+
+10. g4 Kf6 11. Kg2 Ke6 12. Rh8 a5 13. Ra8 Rb5 14. Ra7 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R Ps vs R Ps 3 v 4 outside passed pawn"]
+[Site "https://lichess.org/study/DRDgRNkB/8itlD9JE"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:15:10"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "8/1R3p2/5kp1/1p3r1p/8/6P1/5PKP/8 b - - 0 10"]
+[SetUp "1"]
+
+10... Ke6 11. h3 Kd6 12. g4 hxg4 13. hxg4 Kc6 14. Ra7 Rf4 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R Ps vs R Ps 3 v 4 outside passed pawn - F Pawn"]
+[Site "https://lichess.org/study/DRDgRNkB/X5QLYLEk"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:16:29"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "R7/P5k1/8/r5p1/7p/5KPP/5P2/8 b - - 0 10"]
+[SetUp "1"]
+
+10... hxg3 11. Kxg3 Ra4 12. f3 Ra3 13. h4 gxh4+ 14. Kxh4 Ra1 15. f4 Ra4 16. Kg5 Ra5+ 17. f5 Ra4 18. f6+ Kf7 19. Rh8 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): r p vs r p 4 v 3"]
+[Site "https://lichess.org/study/DRDgRNkB/NQzexLI2"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:18:19"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "R7/4kpp1/P6p/4P2P/r5P1/8/3K4/8 w - - 0 10"]
+[SetUp "1"]
+
+10. a7 Ra5 11. Kc3 Ra3+ 12. Kb4 Ra2 13. Kc4 Ra5 14. e6 fxe6 15. Rg8 Kf7 16. a8=Q *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R p vs R P 5 v 4"]
+[Site "https://lichess.org/study/DRDgRNkB/zOO6oc8H"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:20:17"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "R7/P5p1/5pk1/4p2p/4P2P/5PP1/r7/6K1 w - - 0 10"]
+[SetUp "1"]
+
+10. f4 Kf7 11. fxe5 fxe5 12. Kf1 Kg6 13. Ke1 Kf7 14. Kd1 Kg6 15. Kc1 Kf7 16. Kb1 Ra6 17. Kc2 Ra3 18. Kb2 Ra6 19. Kc3 Ra3+ 20. Kb4 Ra6 21. Kc5 Kg6 22. Kd5 Ra5+ 23. Ke6 Ra6+ 24. Kxe5 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R Ps vs R Ps both sides of board"]
+[Site "https://lichess.org/study/DRDgRNkB/g6WgxRkO"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:28:32"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "8/6p1/1p1k1p1p/p2p1K1P/3r2P1/P4P2/1P4R1/8 w - - 0 10"]
+[SetUp "1"]
+
+10. Kg6 Ke5 11. Kxg7 Kf4 12. g5 fxg5 13. Rg4+ Ke3 14. Rxd4 Kxd4 15. Kxh6 Ke3 16. Kxg5 d4 17. h6 d3 18. h7 d2 19. h8=Q d1=Q 20. Qe8+ Kf2 21. f4 *
+
+
+[Event "Rook Endgame Exercises (Up to One Rook Each Side): R Ps vs R Ps both sides"]
+[Site "https://lichess.org/study/DRDgRNkB/wmjGWWMh"]
+[Result "*"]
+[UTCDate "2021.10.12"]
+[UTCTime "19:30:08"]
+[Variant "Standard"]
+[ECO "?"]
+[Opening "?"]
+[Annotator "https://lichess.org/@/ragnarok5375"]
+[FEN "8/pp3pk1/5r1p/6p1/4P3/4P3/P2R1PKP/8 b - - 0 21"]
+[SetUp "1"]
+
+21... Ra6 22. Kf3 Ra4 23. Rb2 b6 24. e5 Kg6 25. Kg3 Kf5 26. f4 gxf4+ 27. exf4 Rxf4 28. e6 fxe6 29. Rb5+ e5 *
+
+

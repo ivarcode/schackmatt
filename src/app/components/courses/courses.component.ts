@@ -5,6 +5,7 @@ import rook_vs_one_pawn from 'data/rook_vs_one_pawn.json';
 import rook_vs_two_pawns from 'data/rook_vs_two_pawns.json';
 import rook_endgames_1v1_2v3 from 'data/rook_endgames_1v1_2v3.json';
 import rook_endgames_4v3 from 'data/rook_endgames_4v3.json';
+import rook_endgame_exercises from 'data/rook_endgame_exercises.json';
 import ruy_lopez from 'data/ruy_lopez.json';
 import najdorf from 'data/najdorf.json';
 import ruy_lopez_closed from 'data/ruy_lopez_closed.json';
@@ -37,6 +38,7 @@ export class CoursesComponent implements OnInit {
         rook_vs_two_pawns: rook_vs_two_pawns.rook_vs_two_pawns,
         rook_endgames_1v1_2v3: rook_endgames_1v1_2v3.rook_endgames_1v1_2v3,
         rook_endgames_4v3: rook_endgames_4v3.rook_endgames_4v3,
+        rook_endgame_exercises: rook_endgame_exercises.rook_endgame_exercises,
         ruy_lopez: ruy_lopez.ruy_lopez,
         ruy_lopez_closed: ruy_lopez_closed.ruy_lopez_closed,
         najdorf: najdorf.najdorf
@@ -95,6 +97,11 @@ export class CoursesComponent implements OnInit {
                 { set: 'rook_endgames_4v3' },
                 'Rook Endgames: 4v3',
                 'Learn how to find winning techniques in rook endgames with multiples pawns on each side'
+            ],
+            [
+                { set: 'rook_endgame_exercises' },
+                'Rook Endgame Exercises',
+                'Miscellaneous Rook Endgame practice'
             ],
             [
                 { set: 'ruy_lopez' },
